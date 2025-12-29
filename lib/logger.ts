@@ -1,8 +1,10 @@
 /**
  * Centralized logging utility
  * Integrates with Sentry for production error tracking and monitoring
+ * Works on both server and client side
  */
 
+import * as Sentry from '@sentry/nextjs'
 import { isDevelopment, isTest } from './env'
 
 type LogLevel = 'info' | 'warn' | 'error'
@@ -11,17 +13,11 @@ interface LogContext {
   [key: string]: unknown
 }
 
-// Dynamically import Sentry only on client-side to avoid SSR issues
-let Sentry: typeof import('@sentry/nextjs') | null = null
-
-if (typeof window !== 'undefined') {
-  // Import Sentry dynamically on client-side
-  import('@sentry/nextjs').then((module) => {
-    Sentry = module
-  }).catch(() => {
-    // Sentry failed to load, continue without it
-    console.warn('Sentry failed to load')
-  })
+/**
+ * Check if Sentry is properly configured and available
+ */
+function isSentryAvailable(): boolean {
+  return Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN)
 }
 
 /**
@@ -31,7 +27,7 @@ if (typeof window !== 'undefined') {
 export function logInfo(message: string, context?: LogContext) {
   if (isDevelopment() || isTest()) {
     console.info('[INFO]', message, context || '')
-  } else if (Sentry && process.env.NEXT_PUBLIC_SENTRY_DSN) {
+  } else if (isSentryAvailable()) {
     Sentry.captureMessage(message, { level: 'info', extra: context })
   }
 }
@@ -43,7 +39,7 @@ export function logInfo(message: string, context?: LogContext) {
 export function logWarn(message: string, context?: LogContext) {
   if (isDevelopment() || isTest()) {
     console.warn('[WARN]', message, context || '')
-  } else if (Sentry && process.env.NEXT_PUBLIC_SENTRY_DSN) {
+  } else if (isSentryAvailable()) {
     Sentry.captureMessage(message, { level: 'warning', extra: context })
   }
 }
@@ -55,7 +51,7 @@ export function logWarn(message: string, context?: LogContext) {
 export function logError(message: string, error?: Error | unknown, context?: LogContext) {
   if (isDevelopment() || isTest()) {
     console.error('[ERROR]', message, error, context || '')
-  } else if (Sentry && process.env.NEXT_PUBLIC_SENTRY_DSN) {
+  } else if (isSentryAvailable()) {
     if (error instanceof Error) {
       Sentry.captureException(error, { extra: { message, ...context } })
     } else {

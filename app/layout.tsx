@@ -33,29 +33,6 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: 'https://yourdedicatedmarketer.com',
-    siteName: 'Your Dedicated Marketer',
-    title: 'Your Dedicated Marketer | Digital Marketing Services That Drive Results',
-    description: 'Expert digital marketing services for businesses that want to grow. We specialize in SEO, content marketing, social media, and email marketing that delivers real ROI.',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Your Dedicated Marketer',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Your Dedicated Marketer | Digital Marketing Services That Drive Results',
-    description: 'Expert digital marketing services for businesses that want to grow. SEO, content, social media, and email marketing that delivers ROI.',
-    images: ['/og-image.jpg'],
-    creator: '@yourdedicatedmarketer',
-  },
   robots: {
     index: true,
     follow: true,
