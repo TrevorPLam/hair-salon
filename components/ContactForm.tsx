@@ -56,7 +56,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" aria-label="Contact form">
       <Input
         label="Name"
         type="text"
@@ -130,6 +130,9 @@ export default function ContactForm() {
 
       {submitStatus.type && (
         <div
+          role="alert"
+          aria-live="polite"
+          aria-atomic="true"
           className={`p-4 rounded-lg ${
             submitStatus.type === 'success'
               ? 'bg-success/10 text-success border border-success/20'
@@ -146,10 +149,11 @@ export default function ContactForm() {
         size="large"
         className="w-full"
         disabled={isSubmitting}
+        aria-label={isSubmitting ? 'Sending message' : 'Send message'}
       >
         {isSubmitting ? (
           <>
-            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+            <Loader2 className="w-5 h-5 mr-2 animate-spin" aria-hidden="true" />
             Sending...
           </>
         ) : (
