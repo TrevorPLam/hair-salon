@@ -20,32 +20,32 @@ export async function submitContactForm(data: ContactFormData) {
     // Validate the data
     const validatedData = contactFormSchema.parse(data)
 
-    // In production, you would send this via Resend API
-    // For now, we'll just log it and return success
-    console.log('Contact form submission:', validatedData)
+    // Send email via Resend API
+    if (process.env.RESEND_API_KEY) {
+      const { Resend } = await import('resend')
+      const resend = new Resend(process.env.RESEND_API_KEY)
 
-    // TODO: Implement Resend email sending
-    /*
-    const { Resend } = await import('resend')
-    const resend = new Resend(process.env.RESEND_API_KEY)
-
-    await resend.emails.send({
-      from: 'contact@yourdedicatedmarketer.com',
-      to: process.env.CONTACT_EMAIL || 'contact@yourdedicatedmarketer.com',
-      subject: `New Contact Form Submission from ${validatedData.name}`,
-      html: `
-        <h2>New Contact Form Submission</h2>
-        <p><strong>Name:</strong> ${validatedData.name}</p>
-        <p><strong>Email:</strong> ${validatedData.email}</p>
-        ${validatedData.company ? `<p><strong>Company:</strong> ${validatedData.company}</p>` : ''}
-        ${validatedData.phone ? `<p><strong>Phone:</strong> ${validatedData.phone}</p>` : ''}
-        ${validatedData.marketingSpend ? `<p><strong>Marketing Spend:</strong> ${validatedData.marketingSpend}</p>` : ''}
-        ${validatedData.hearAboutUs ? `<p><strong>How they heard about us:</strong> ${validatedData.hearAboutUs}</p>` : ''}
-        <p><strong>Message:</strong></p>
-        <p>${validatedData.message}</p>
-      `,
-    })
-    */
+      await resend.emails.send({
+        from: 'onboarding@resend.dev', // Use Resend's test domain or your verified domain
+        to: process.env.CONTACT_EMAIL || 'contact@yourdedicatedmarketer.com',
+        subject: `New Contact Form Submission from ${validatedData.name}`,
+        html: `
+          <h2>New Contact Form Submission</h2>
+          <p><strong>Name:</strong> ${validatedData.name}</p>
+          <p><strong>Email:</strong> ${validatedData.email}</p>
+          ${validatedData.company ? `<p><strong>Company:</strong> ${validatedData.company}</p>` : ''}
+          ${validatedData.phone ? `<p><strong>Phone:</strong> ${validatedData.phone}</p>` : ''}
+          ${validatedData.marketingSpend ? `<p><strong>Marketing Spend:</strong> ${validatedData.marketingSpend}</p>` : ''}
+          ${validatedData.hearAboutUs ? `<p><strong>How they heard about us:</strong> ${validatedData.hearAboutUs}</p>` : ''}
+          <p><strong>Message:</strong></p>
+          <p>${validatedData.message.replace(/\n/g, '<br>')}</p>
+        `,
+      })
+    } else {
+      // Log warning if no API key is set
+      console.warn('RESEND_API_KEY not set - email not sent')
+      console.log('Contact form submission:', validatedData)
+    }
 
     return { success: true, message: 'Thank you for your message! We\'ll be in touch soon.' }
   } catch (error) {
