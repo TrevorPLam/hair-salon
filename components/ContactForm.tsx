@@ -20,10 +20,13 @@ export default function ContactForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, touchedFields, dirtyFields },
     reset,
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
+    mode: 'onBlur', // Validate on blur for better UX
+    reValidateMode: 'onChange', // Re-validate on change after first validation
+    delayError: 500, // Debounce error display by 500ms
   })
 
   const onSubmit = async (data: ContactFormData) => {
@@ -45,7 +48,7 @@ export default function ContactForm() {
           message: result.message,
         })
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus({
         type: 'error',
         message: 'Something went wrong. Please try again.',
@@ -63,6 +66,7 @@ export default function ContactForm() {
         placeholder="John Smith"
         required
         error={errors.name?.message}
+        isValid={touchedFields.name && !errors.name}
         {...register('name')}
       />
 
@@ -72,6 +76,7 @@ export default function ContactForm() {
         placeholder="john@company.com"
         required
         error={errors.email?.message}
+        isValid={touchedFields.email && !errors.email}
         {...register('email')}
       />
 
@@ -80,6 +85,7 @@ export default function ContactForm() {
         type="text"
         placeholder="Your Company"
         error={errors.company?.message}
+        isValid={touchedFields.company && dirtyFields.company && !errors.company}
         {...register('company')}
       />
 
@@ -88,6 +94,7 @@ export default function ContactForm() {
         type="tel"
         placeholder="(555) 123-4567"
         error={errors.phone?.message}
+        isValid={touchedFields.phone && dirtyFields.phone && !errors.phone}
         {...register('phone')}
       />
 
@@ -111,6 +118,7 @@ export default function ContactForm() {
         rows={5}
         required
         error={errors.message?.message}
+        isValid={touchedFields.message && !errors.message}
         {...register('message')}
       />
 

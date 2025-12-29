@@ -66,7 +66,7 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
       content,
       featured: data.featured || false,
     }
-  } catch (error) {
+  } catch {
     return undefined
   }
 }

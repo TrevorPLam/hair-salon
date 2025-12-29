@@ -36,8 +36,44 @@ export default function CaseStudyPage({ params }: Props) {
     notFound()
   }
 
+  // Structured data for case study
+  const caseStudyStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Review',
+    itemReviewed: {
+      '@type': 'Service',
+      name: 'Digital Marketing Services',
+      provider: {
+        '@type': 'Organization',
+        name: 'Your Dedicated Marketer',
+      },
+    },
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: '5',
+      bestRating: '5',
+    },
+    author: {
+      '@type': 'Person',
+      name: study.testimonial.author,
+      jobTitle: study.testimonial.position,
+      worksFor: {
+        '@type': 'Organization',
+        name: study.client,
+      },
+    },
+    reviewBody: study.testimonial.quote,
+    name: study.title,
+    description: study.description,
+  }
+
   return (
     <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(caseStudyStructuredData) }}
+      />
+
       {/* Back Link */}
       <section className="bg-gray-50 border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">

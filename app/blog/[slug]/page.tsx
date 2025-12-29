@@ -41,8 +41,41 @@ export default function BlogPostPage({ params }: Props) {
     notFound()
   }
 
+  // Structured data for article
+  const articleStructuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.description,
+    image: `https://yourdedicatedmarketer.com/blog/${post.slug}.jpg`,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: {
+      '@type': 'Person',
+      name: post.author,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Your Dedicated Marketer',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://yourdedicatedmarketer.com/logo.png',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://yourdedicatedmarketer.com/blog/${post.slug}`,
+    },
+    articleSection: post.category,
+  }
+
   return (
     <div className="min-h-screen bg-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleStructuredData) }}
+      />
+
       {/* Back Link */}
       <section className="bg-gray-50 border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
