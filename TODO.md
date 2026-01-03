@@ -75,11 +75,11 @@ npm audit reports 3 high severity vulnerabilities in glob dependency (versions 1
 
 **References:**
 - Advisory: GHSA-5j98-mcp5-4vw2
-- File: `package.json` (eslint-config-next: updated from ^14.2.18 to ^15.0.0)
+- File: `package.json` (eslint-config-next: updated from ^14.2.18 to ^15.5.9)
 
 **Dependencies:** None
 
-**Completion Notes:** Fixed on 2026-01-03. Updated eslint-config-next from 14.2.18 to 15.0.0. All npm audit vulnerabilities resolved (0 found).
+**Completion Notes:** Fixed on 2026-01-03. Updated eslint-config-next from 14.2.18 to 15.5.9. All npm audit vulnerabilities resolved (0 found).
 
 ---
 
