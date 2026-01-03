@@ -66,7 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Dependencies** - Significant dependency updates
 
 ### Dependency Changes
-Per DEPENDENCY_HEALTH.md.md:
+Per DEPENDENCY_HEALTH.md:
 - Document dependency additions with justification
 - Note dependency removals and what replaced them
 - Record major version upgrades with impact summary
