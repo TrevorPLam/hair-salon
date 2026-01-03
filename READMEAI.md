@@ -190,7 +190,7 @@ For complete documentation index: **[docs/DOCS_INDEX.md](docs/DOCS_INDEX.md)**
 
 ### Support
 - Email: contact@yourdedicatedmarketer.com
-- Security issues: security@ydFirms.com
+- Security issues: security@ydFirms.com (parent company security team)
 
 ---
 

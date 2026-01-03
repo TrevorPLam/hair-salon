@@ -35,7 +35,7 @@ Before deploying, ensure you've completed these steps:
    - Wait for verification (usually < 24 hours)
    - Once verified, update `from` address in `lib/actions.ts`:
      ```typescript
-     from: 'contact@yourdedicatedmarketer.com'
+     from: 'contact@yourdomain.com' // Replace with your verified domain
      ```
 
 4. **Test Email Delivery**

@@ -86,7 +86,7 @@ This application uses Next.js 14 Server Actions for all form submissions, which 
 **References:**
 - Implementation: `lib/actions.ts` (Server Actions)
 - Security headers: `middleware.ts`
-- Decision rationale: See [DECISIONS.md - ADR-006](DECISIONS.md)
+- Decision rationale: See [DECISIONS.md - ADR-006 (CSRF Protection via Next.js Server Actions)](DECISIONS.md)
 
 ---
 
@@ -124,7 +124,7 @@ For production deployment, implement persistent rate limiting:
 3. **Arcjet:** Purpose-built rate limiting and bot protection
 4. **Cloudflare Rate Limiting:** Built into Cloudflare Pages
 
-**Migration path:** See [DECISIONS.md - ADR-007](DECISIONS.md) and [TODO.md - T-016](TODO.md)
+**Migration path:** See [DECISIONS.md - ADR-007 (In-Memory Rate Limiting)](DECISIONS.md) and [TODO.md - T-016](TODO.md)
 
 **Implementation:** `lib/actions.ts` lines 21-48
 
