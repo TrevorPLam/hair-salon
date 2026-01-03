@@ -1,5 +1,10 @@
 # Architecture
 
+> **Last Updated:** 2026-01-03  
+> **Canonical Status:** Canonical  
+> **Purpose:** High-level system architecture overview  
+> **See Also:** [CODEBASE-ANALYSIS.md](./CODEBASE-ANALYSIS.md), [DOCS_INDEX.md](../DOCS_INDEX.md)
+
 ## System Overview
 Your Dedicated Marketer is a static marketing website built with Next.js 14 and deployed to Cloudflare Pages. All pages are pre-rendered at build time for maximum performance. Contact form submissions are sent via Resend API.
 

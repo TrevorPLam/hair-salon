@@ -1,5 +1,10 @@
 # Development Context
 
+> **Last Updated:** 2026-01-03  
+> **Canonical Status:** Canonical  
+> **Purpose:** Project constraints, requirements, and technical decisions  
+> **See Also:** [DECISIONS.md](../../DECISIONS.md), [DOCS_INDEX.md](../DOCS_INDEX.md)
+
 ## Project Constraints
 - **Budget**: Free tier (Cloudflare Pages)
 - **Compliance**: GDPR compliant, CAN-SPAM Act compliant

@@ -1,3 +1,12 @@
+# DEPRECATED: Your Dedicated Marketer
+
+**Canonical Status:** Deprecated  
+**Replaced by:** [../README.md](../../README.md)  
+**Reason:** Consolidated into main README.md with more current information  
+**Archived:** 2026-01-03
+
+---
+
 # Your Dedicated Marketer
 
 ## Purpose

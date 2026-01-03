@@ -1,5 +1,10 @@
 # Contributing
 
+> **Last Updated:** 2026-01-03  
+> **Canonical Status:** Canonical  
+> **Purpose:** Development workflow and contribution guidelines  
+> **See Also:** [SETUP.md](./SETUP.md), [DOCS_INDEX.md](../DOCS_INDEX.md)
+
 ## Development Workflow
 1. Create feature branch from `main`: `git checkout -b feature/your-feature-name`
 2. Make changes following code style (Prettier + ESLint)
