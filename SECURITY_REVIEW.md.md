@@ -312,3 +312,123 @@ Top findings:
 
 * Notes / assumptions:
 ---
+
+## Security Review Summary — 2026-01-03
+
+### Scope Reviewed
+
+Complete security review of Next.js 14 marketing website covering all 7 phases:
+- Secrets & sensitive data handling
+- Authentication & authorization (limited scope - no auth system)
+- Input validation & injection risks
+- External integrations (Resend email service)
+- Data protection & privacy
+- Dependency hygiene
+- Deployment & runtime hardening
+
+**Codebase Statistics:**
+- 40+ TypeScript/TSX files reviewed
+- Key security files: `lib/actions.ts`, `lib/sanitize.ts`, `lib/env.ts`, `lib/logger.ts`, `middleware.ts`, Sentry configs
+- Security implementations: Input sanitization, rate limiting, security headers, environment validation
+
+### Top Findings
+
+**No P0 (Critical) Issues Found** ✓
+- No secrets committed to repository
+- No authentication bypass (no auth system present)
+- No SQL injection (no database)
+- No arbitrary code execution vectors identified
+- All secrets properly managed via environment variables
+
+**P1 (High Priority) Findings:**
+- **(P1) T-004:** CSRF protection relies on Next.js server actions without explicit documentation or token validation
+- **(P1) T-007:** Rate limiting uses in-memory storage, not suitable for production multi-instance deployments
+
+**P2 (Hardening) Findings:**
+- **(P2) T-001:** Sentry error tracking lacks explicit PII redaction in `beforeSend` hooks
+- **(P2) T-002:** Logger utility doesn't explicitly sanitize sensitive fields from contexts
+- **(P2) T-003:** No documented data retention policy for PII collected via contact form
+- **(P2) T-005:** Production console logging not explicitly suppressed
+- **(P2) T-006:** Security headers well-implemented but CSP trade-offs (unsafe-inline/eval) not documented
+- **(P2) T-008:** Dependency version pinning uses caret ranges; consider exact versions for security-critical deps
+- **(P2) T-009:** No HTTP-level payload size limits to prevent DoS via large requests
+- **(P2) T-010:** Environment variable separation not explicitly verified (should be automatic with Next.js)
+
+### Tasks Created
+
+All findings documented in TODO.md with detailed acceptance criteria:
+- **T-001** through **T-010** (10 tasks total)
+- 2 P1 tasks, 8 P2 tasks
+- All tagged with [SEC] category
+- Each task includes affected files, acceptance criteria, and remediation guidance
+
+### Positive Security Findings
+
+**Strong Security Practices Observed:**
+1. ✅ **Input Sanitization:** Comprehensive XSS prevention using `escapeHtml()` and `sanitizeEmailSubject()` functions
+2. ✅ **Input Validation:** Zod schema validation with strict field length limits and type checking
+3. ✅ **Security Headers:** Excellent middleware implementation with CSP, HSTS, X-Frame-Options, X-Content-Type-Options, etc.
+4. ✅ **Environment Variable Management:** Proper use of `NEXT_PUBLIC_` prefix, validation with Zod, no secrets in code
+5. ✅ **Rate Limiting:** Basic rate limiting implemented (3 submissions/hour/email) - suitable for MVP
+6. ✅ **Error Handling:** Proper error handling with Sentry integration, generic error messages to users
+7. ✅ **Structured Data Safety:** All `dangerouslySetInnerHTML` usage limited to JSON-LD structured data (safe)
+8. ✅ **Logging Discipline:** No sensitive data (passwords, tokens, keys) logged in current code
+9. ✅ **No Database:** Static site generation eliminates entire class of SQL injection and data breach risks
+10. ✅ **Email Injection Prevention:** Contact form sanitizes email subjects to prevent header injection
+
+**Architecture Security Benefits:**
+- Static site generation (SSG) minimizes attack surface
+- No authentication system = no auth vulnerabilities
+- No payment processing = no PCI compliance concerns
+- No file uploads = no upload vulnerabilities
+- No webhooks = no signature validation concerns
+- Server actions provide automatic CSRF protection via Next.js
+
+### Notes / Assumptions
+
+**Deployment Context:**
+- Assumes deployment to modern platform with HTTPS by default (Vercel, Cloudflare Pages, etc.)
+- Assumes single-instance deployment or platform-provided rate limiting for MVP
+- Production deployment should address T-007 (persistent rate limiting) for scalability
+
+**Risk Assessment:**
+- Overall risk level: **LOW**
+- Application is a marketing website with minimal user interaction (contact form only)
+- No authentication, no sensitive transactions, no database, no file uploads
+- Primary risks are information disclosure via logs and potential DoS via form abuse
+- All identified findings are hardening opportunities, not exploitable vulnerabilities
+
+**Architecture Decisions:**
+- Next.js Server Actions used instead of API routes (provides built-in CSRF protection)
+- Resend used for transactional email (trusted third-party, API key properly secured)
+- Sentry for error tracking (should enhance PII redaction per T-001)
+- In-memory rate limiting acceptable for MVP (should upgrade for production scale per T-007)
+
+**Testing Performed:**
+- Code review of all security-relevant files
+- Secret scanning across repository (git history, current files)
+- Input validation review (Zod schemas)
+- Header configuration review
+- Dependency analysis
+- Logging and error handling review
+
+**Out of Scope:**
+- Penetration testing (not performed)
+- Dependency vulnerability scanning with automated tools (manual review only)
+- Infrastructure security (delegated to hosting platform)
+- Client-side bundle analysis (recommended in T-010)
+- DDoS mitigation (platform responsibility)
+
+**Recommendations for Production:**
+1. Implement T-004 and T-007 (P1 tasks) before high-traffic launch
+2. Set up automated dependency scanning (Dependabot, Snyk, or npm audit in CI/CD)
+3. Consider professional security review if handling payments or auth in future
+4. Monitor rate limit effectiveness and adjust thresholds based on actual traffic
+5. Implement proper production logging infrastructure with retention policies
+
+**Next Review:**
+- Recommended after any major feature additions (authentication, payments, user accounts)
+- Or quarterly for ongoing maintenance and dependency updates
+- Or immediately if any P0/P1 issues arise from external reports
+
+---
