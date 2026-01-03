@@ -6,6 +6,90 @@ This guide covers deploying Your Dedicated Marketer website to production.
 
 Before deploying, ensure you've completed these steps:
 
+### 0. API Keys Setup (T-015)
+
+**Critical: Production API keys must be configured before deployment**
+
+#### Resend Email Service
+
+1. **Sign Up for Resend**
+   - Go to [resend.com](https://resend.com)
+   - Create a free account (100 emails/day)
+   - Upgrade to paid plan if needed (unlimited)
+
+2. **Get API Key**
+   - Navigate to API Keys in dashboard
+   - Click "Create API Key"
+   - Name it: "Production - Your Dedicated Marketer"
+   - Copy the key (shown only once!)
+   - Store securely (password manager or secure notes)
+
+3. **Verify Domain (Production Only)**
+   - Go to Domains in dashboard
+   - Click "Add Domain"
+   - Enter your domain (e.g., `yourdedicatedmarketer.com`)
+   - Add DNS records provided by Resend:
+     - SPF record (TXT)
+     - DKIM record (TXT)
+     - DMARC record (TXT - optional but recommended)
+   - Wait for verification (usually < 24 hours)
+   - Once verified, update `from` address in `lib/actions.ts`:
+     ```typescript
+     from: 'contact@yourdedicatedmarketer.com'
+     ```
+
+4. **Test Email Delivery**
+   - After deployment, test contact form
+   - Check spam folder if not received
+   - Verify email formatting looks correct
+
+**Environment Variable:**
+```
+RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+#### Sentry Error Tracking (Optional but Recommended)
+
+1. **Sign Up for Sentry**
+   - Go to [sentry.io](https://sentry.io)
+   - Create free account (5,000 events/month free)
+
+2. **Create Project**
+   - Click "Create Project"
+   - Choose platform: "Next.js"
+   - Name: "Your Dedicated Marketer"
+   - Copy the DSN (Data Source Name)
+
+3. **Configure Sentry**
+   - Sentry config already exists in:
+     - `sentry.client.config.ts`
+     - `sentry.server.config.ts`
+     - `sentry.edge.config.ts`
+   - Add DSN to environment variables (see below)
+
+**Environment Variable:**
+```
+NEXT_PUBLIC_SENTRY_DSN=https://xxxxx@xxxxx.ingest.sentry.io/xxxxx
+```
+
+#### Environment Variables Checklist
+
+Add these to your deployment platform:
+
+**Required:**
+- ✅ `RESEND_API_KEY` - Email service API key
+- ✅ `CONTACT_EMAIL` - Destination email for contact form
+- ✅ `NEXT_PUBLIC_SITE_URL` - Your production URL
+- ✅ `NEXT_PUBLIC_SITE_NAME` - Site name
+- ✅ `NODE_ENV=production` - Environment
+
+**Optional:**
+- ⚪ `NEXT_PUBLIC_SENTRY_DSN` - Error tracking
+- ⚪ `NEXT_PUBLIC_ANALYTICS_ID` - Google Analytics
+
+**Rate Limiting (Production Scale - see Rate Limiting section):**
+- ⚪ Rate limiting service credentials (if implementing T-016)
+
 ### 1. Content Review
 - [ ] All pages reviewed for typos and accuracy
 - [ ] Blog posts proofread and formatted correctly
@@ -15,10 +99,12 @@ Before deploying, ensure you've completed these steps:
 
 ### 2. Configuration
 - [ ] Update `NEXT_PUBLIC_SITE_URL` to production URL
-- [ ] Set production `RESEND_API_KEY`
+- [ ] Set production `RESEND_API_KEY` (see API Keys Setup below)
 - [ ] Verify `CONTACT_EMAIL` is correct
+- [ ] Set up `NEXT_PUBLIC_SENTRY_DSN` for error tracking (optional)
 - [ ] Update social media links in `app/layout.tsx`
 - [ ] Add real business address to structured data (if applicable)
+- [ ] Configure rate limiting for production (see Rate Limiting section below)
 
 ### 3. Assets
 - [ ] Create and add OG image at `public/og-image.jpg` (1200x630px)
@@ -346,6 +432,198 @@ npm install --legacy-peer-deps
 
 ## Security Best Practices
 
+### Rate Limiting Configuration (T-016)
+
+**Current Status:** In-memory rate limiting (sufficient for MVP)
+
+The contact form currently uses in-memory rate limiting:
+- **Limit:** 3 submissions per hour per email
+- **Storage:** In-memory Map (volatile)
+- **Scope:** Single server instance only
+
+**⚠️ Production Limitations:**
+- Does not persist across server restarts
+- Does not work across multiple serverless instances
+- Can be bypassed by changing email addresses
+- No IP-based limiting
+
+#### When to Upgrade Rate Limiting
+
+Implement distributed rate limiting when:
+1. Deploying to serverless/edge (multiple instances)
+2. Traffic exceeds 100 requests/day
+3. Experiencing spam or abuse
+4. High-value production deployment
+
+#### Option 1: Upstash Redis (Recommended for Serverless)
+
+**Best for:** Cloudflare Pages, Vercel, Netlify
+
+1. **Sign Up**
+   - Go to [upstash.com](https://upstash.com)
+   - Create free account (10,000 requests/day)
+
+2. **Create Redis Database**
+   - Click "Create Database"
+   - Choose region closest to your users
+   - Select "Global" for multi-region
+   - Copy connection details
+
+3. **Install Package**
+   ```bash
+   npm install @upstash/redis @upstash/ratelimit
+   ```
+
+4. **Update lib/actions.ts**
+   ```typescript
+   import { Ratelimit } from '@upstash/ratelimit'
+   import { Redis } from '@upstash/redis'
+
+   const redis = new Redis({
+     url: process.env.UPSTASH_REDIS_REST_URL!,
+     token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+   })
+
+   const ratelimit = new Ratelimit({
+     redis,
+     limiter: Ratelimit.slidingWindow(3, '1 h'),
+     analytics: true,
+   })
+
+   // In submitContactForm:
+   const identifier = `contact_${validatedData.email}`
+   const { success } = await ratelimit.limit(identifier)
+   if (!success) {
+     return {
+       success: false,
+       message: 'Too many submissions. Please try again later.',
+     }
+   }
+   ```
+
+5. **Environment Variables**
+   ```
+   UPSTASH_REDIS_REST_URL=https://xxxxx.upstash.io
+   UPSTASH_REDIS_REST_TOKEN=xxxxx
+   ```
+
+**Pros:**
+- ✅ Serverless-native
+- ✅ Global replication
+- ✅ Free tier sufficient for most use cases
+- ✅ Simple API
+
+**Cons:**
+- ❌ External service dependency
+- ❌ Slight latency (acceptable)
+
+#### Option 2: Vercel KV (If Deploying to Vercel)
+
+**Best for:** Vercel deployments only
+
+1. **Enable Vercel KV**
+   - In Vercel project settings
+   - Go to Storage tab
+   - Create new KV store
+
+2. **Install Package**
+   ```bash
+   npm install @vercel/kv
+   ```
+
+3. **Update lib/actions.ts**
+   ```typescript
+   import { kv } from '@vercel/kv'
+   import { Ratelimit } from '@upstash/ratelimit'
+
+   const ratelimit = new Ratelimit({
+     redis: kv,
+     limiter: Ratelimit.slidingWindow(3, '1 h'),
+   })
+   ```
+
+4. **Environment Variables**
+   - Automatically injected by Vercel
+   - No manual configuration needed
+
+**Pros:**
+- ✅ Seamless Vercel integration
+- ✅ Zero configuration
+- ✅ Fast (same region as functions)
+
+**Cons:**
+- ❌ Vercel-only (vendor lock-in)
+- ❌ Costs $1/GB (but minimal usage)
+
+#### Option 3: Arcjet (Advanced Protection)
+
+**Best for:** High-security requirements, bot protection
+
+1. **Sign Up**
+   - Go to [arcjet.com](https://arcjet.com)
+   - Create account
+
+2. **Install Package**
+   ```bash
+   npm install @arcjet/next
+   ```
+
+3. **Configure Protection**
+   ```typescript
+   import arcjet, { detectBot, shield, slidingWindow } from '@arcjet/next'
+
+   const aj = arcjet({
+     key: process.env.ARCJET_KEY!,
+     rules: [
+       shield({ mode: 'LIVE' }),
+       detectBot({ mode: 'LIVE' }),
+       slidingWindow({
+         mode: 'LIVE',
+         max: 3,
+         interval: '1h',
+       }),
+     ],
+   })
+   ```
+
+**Pros:**
+- ✅ Bot detection included
+- ✅ Shield against common attacks
+- ✅ Email validation
+- ✅ Analytics dashboard
+
+**Cons:**
+- ❌ Costs $29/month (after free tier)
+- ❌ More complex setup
+
+#### Migration Checklist
+
+When implementing distributed rate limiting:
+
+- [ ] Choose rate limiting solution (Upstash, Vercel KV, or Arcjet)
+- [ ] Sign up for service and get credentials
+- [ ] Install required packages
+- [ ] Update `lib/actions.ts` with new rate limiting logic
+- [ ] Add environment variables to deployment platform
+- [ ] Test rate limiting with multiple requests
+- [ ] Add IP-based limiting (in addition to email)
+- [ ] Set up monitoring/alerting
+- [ ] Update documentation
+- [ ] Deploy to staging first
+- [ ] Test in production
+- [ ] Remove old in-memory implementation
+
+**References:**
+- Current implementation: `lib/actions.ts` (in-memory Map)
+- Decision rationale: [DECISIONS.md - ADR-007](../../DECISIONS.md)
+- Task tracking: [TODO.md - T-016](../../TODO.md)
+
+---
+
+## Security Best Practices (Continued)
+
+### General Security
+
 1. **Environment Variables**
    - Never commit `.env.local`
    - Use platform-specific env vars in production
@@ -418,4 +696,6 @@ For deployment issues:
 
 ---
 
-Last updated: 2025-01-15
+**Last updated:** 2026-01-03  
+**Related Tasks:** T-015 (API Keys), T-016 (Rate Limiting)  
+**See Also:** [SECURITY.md](../../SECURITY.md), [DECISIONS.md](../../DECISIONS.md)
