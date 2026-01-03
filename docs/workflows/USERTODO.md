@@ -1,6 +1,33 @@
 # User TODO - Remaining Action Items
 
+> **⚠️ DEPRECATED:** This document has been consolidated into [TODO.md](../../TODO.md)  
+> **Active tasks:** See [TODO.md](../../TODO.md) for the current prioritized backlog  
+> **Last consolidated:** 2026-01-03 via CODE_AUDIT execution
+
 This document contains action items that require manual intervention, external service setup, or user decisions.
+
+**All actionable items from this document have been migrated to TODO.md with:**
+- Standard task format (T-### IDs)
+- Priority levels (P0/P1/P2)
+- Acceptance criteria
+- Effort estimates
+- File references
+
+**See TODO.md for:**
+- T-015: Configure Production API Keys (Items #3, #6, #7)
+- T-016: Implement Distributed Rate Limiting (Item #4)
+- T-014: Migrate or Remove Deprecated next-pwa (Item #5)
+- T-020: Add Lighthouse Performance Budgets (Item #8)
+- T-017: Increase Test Coverage (Item #9)
+- T-018: Add E2E Tests for Critical Flows (Item #10)
+- T-019: Optimize Bundle Size (Item #11)
+- T-021: Accessibility Audit (Item #12)
+- T-022: Add RSS Feed for Blog (Item #16)
+- T-023: Add Search Functionality (Item #17)
+
+---
+
+## Historical Reference (Kept for Context)
 
 ---
 
