@@ -134,7 +134,7 @@ export async function submitContactForm(data: ContactFormData) {
       return {
         success: false,
         message: 'Please check your form inputs and try again.',
-        errors: error.errors,
+        errors: error.issues,
       }
     }
 

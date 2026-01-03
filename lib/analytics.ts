@@ -85,7 +85,7 @@ export function trackFormSubmission(formName: string, success = true) {
 /**
  * Track button click
  */
-export function trackButtonClick(buttonName: string, location: string) {
+export function trackButtonClick(buttonName: string, _location: string) {
   trackEvent({
     action: 'button_click',
     category: 'engagement',
@@ -96,7 +96,7 @@ export function trackButtonClick(buttonName: string, location: string) {
 /**
  * Track CTA click
  */
-export function trackCTAClick(ctaText: string, destination: string) {
+export function trackCTAClick(ctaText: string, _destination: string) {
   trackEvent({
     action: 'cta_click',
     category: 'engagement',
