@@ -18,42 +18,43 @@ export function middleware(request: NextRequest) {
   // Security Headers
   const headers = response.headers
 
-  // Content Security Policy:
-  // - 'unsafe-inline' is required for Next.js runtime and Tailwind style injection.
-  // - 'unsafe-eval' is required for Next.js dev tooling (source maps) and some bundler eval usage.
-  // TODO: Tighten CSP with nonces/hashes when feasible.
+  // Content Security Policy (CSP)
+  // Note: Next.js runtime requires 'unsafe-inline' for scripts/styles and 'unsafe-eval'
+  // for certain tooling/dev scenarios. See SECURITY.md for rationale and hardening plan.
   headers.set(
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
-      "style-src 'self' 'unsafe-inline'",
+      process.env.NODE_ENV === 'development'
+        ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'" // Next.js runtime + dev tooling in development
+        : "script-src 'self' 'unsafe-inline'", // Avoid unsafe-eval in production
+      "style-src 'self' 'unsafe-inline'", // Tailwind injects styles at runtime
       "img-src 'self' data: https:",
       "font-src 'self' data:",
-      "connect-src 'self'",
-      "frame-ancestors 'none'",
+      "connect-src 'self'", // Block external data exfiltration by default
+      "frame-ancestors 'none'", // Disallow clickjacking via iframes
     ].join('; ')
   )
 
-  // Prevent clickjacking in iframes.
+  // Prevent clickjacking in legacy browsers that don't honor CSP frame-ancestors
   headers.set('X-Frame-Options', 'DENY')
 
-  // Prevent MIME sniffing (forces declared content types).
+  // Prevent MIME sniffing and content-type confusion
   headers.set('X-Content-Type-Options', 'nosniff')
 
-  // Enable XSS protection for legacy browsers.
+  // Enable XSS protection in legacy browsers (no effect in modern Chromium)
   headers.set('X-XSS-Protection', '1; mode=block')
 
-  // Reduce referrer leakage across origins.
+  // Limit referrer information to origin on cross-site navigations
   headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
 
-  // Disable unnecessary browser features (privacy hardening).
+  // Permissions policy (disable unnecessary browser features)
   headers.set(
     'Permissions-Policy',
     'camera=(), microphone=(), geolocation=(), interest-cohort=()'
   )
 
-  // Enforce HTTPS in production (HSTS).
+  // Strict Transport Security (HTTPS only) - enforce TLS in production
   if (process.env.NODE_ENV === 'production') {
     headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
   }

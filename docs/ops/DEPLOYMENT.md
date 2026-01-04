@@ -645,6 +645,7 @@ When implementing distributed rate limiting:
    - Content Security Policy (optional)
    - X-Frame-Options (set by Next.js)
    - X-Content-Type-Options (set by Next.js)
+   - Verify CSP/headers with `curl -I https://yourdomain.com`
 
 ## Rollback Procedure
 
@@ -698,6 +699,6 @@ For deployment issues:
 
 ---
 
-**Last updated:** 2026-01-03  
+**Last updated:** 2026-01-05  
 **Related Tasks:** T-015 (API Keys), T-016 (Rate Limiting)  
 **See Also:** [SECURITY.md](../../SECURITY.md), [DECISIONS.md](../../DECISIONS.md)
