@@ -101,8 +101,8 @@ export function logWarn(message: string, context?: LogContext) {
  */
 export function logError(message: string, error?: Error | unknown, context?: LogContext) {
   const sanitizedContext = sanitizeLogContext(context)
+  const sanitizedError = error instanceof Error ? error : sanitizeValue(error)
   if (isDevelopment() || isTest()) {
-    const sanitizedError = error instanceof Error ? error : sanitizeValue(error)
     console.error('[ERROR]', message, sanitizedError, sanitizedContext || '')
   } else if (isSentryAvailable()) {
     if (error instanceof Error) {
@@ -113,6 +113,8 @@ export function logError(message: string, error?: Error | unknown, context?: Log
         extra: { error: sanitizeValue(error), ...sanitizedContext },
       })
     }
+  } else {
+    console.error('[ERROR]', message, sanitizedError, sanitizedContext || '')
   }
 }
 

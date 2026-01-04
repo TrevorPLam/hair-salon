@@ -160,9 +160,11 @@ frame-ancestors 'none'
 ```
 
 **Notes:**
-- `'unsafe-inline'` is required for Next.js runtime and Tailwind CSS
-- `'unsafe-eval'` is required for Next.js development mode
-- Consider tightening CSP in the future with nonces or hashes
+- `'unsafe-inline'` is required for Next.js runtime scripts and Tailwind CSS injection
+- `'unsafe-eval'` is required for certain Next.js tooling and development mode
+- Plan: replace `'unsafe-inline'` with script/style nonces or hashes when feasible
+- Plan: remove `'unsafe-eval'` in production once compatible with build tooling
+- Implementation comments in `middleware.ts` document the trade-offs
 
 **Implementation:** `middleware.ts` lines 4-49
 
@@ -235,6 +237,25 @@ No secrets are committed to the repository:
 
 ---
 
+### Data Retention
+
+**Status:** Documented retention policy for PII and logs
+
+This application collects limited PII via the contact form (name, email, phone, company, message).
+Retention is defined to minimize exposure while supporting operational needs.
+
+#### Retention Periods
+- **Contact form submissions (email via Resend):** 12 months in the support mailbox, then deleted.
+- **Sentry error logs:** 90 days (Sentry default retention on free plans); adjust in Sentry settings if needed.
+- **Production console/runtime logs:** 30 days retention in hosting provider logs (Cloudflare/Vercel defaults).
+
+#### Data Handling Notes
+- The application does **not** persist contact form data to a database.
+- Emails are delivered via Resend and stored only in the receiving mailbox.
+- Log retention should follow provider policies and legal requirements for your jurisdiction.
+
+---
+
 ### Dependencies & Supply Chain
 
 **Status:** Automated monitoring
@@ -259,9 +280,10 @@ No secrets are committed to the repository:
 
 #### Logging Practices
 - Structured logs via `lib/logger.ts`
-- No sensitive data in logs
+- No sensitive data in logs (sanitized via `sanitizeLogContext`)
 - Error contexts sanitized
-- Production logs minimal
+- Production logs suppressed for info/warn; errors reported to Sentry or stderr only
+- Console logging in `lib/analytics.ts` is limited to development
 
 #### Sentry Configuration
 ```typescript
@@ -269,8 +291,6 @@ No secrets are committed to the repository:
 maskAllText: true        // Masks all text in replays
 blockAllMedia: true      // Blocks images/videos
 ```
-
-**Note:** Future enhancement T-001 will add explicit PII redaction in `beforeSend` hooks
 
 **Implementation:** `lib/logger.ts`, `sentry.*.config.ts`
 
@@ -282,13 +302,14 @@ blockAllMedia: true      // Blocks images/videos
 - [x] T-011: Fix Zod v4 API compatibility
 - [x] T-012: Fix ESLint unused parameter warnings
 - [x] T-013: Update eslint-config-next (security vulnerabilities)
+- [x] T-001: Enhance Sentry PII redaction
+- [x] T-002: Add request body sanitization to logger
+- [x] T-003: Document sensitive data retention policy
+- [x] T-005: Implement production console log suppression
+- [x] T-006: Document security headers rationale
 
 ### In Progress / Planned
-- [ ] T-004: CSRF documentation (this document) - **IN PROGRESS**
-- [ ] T-007: Rate limiting documentation and production plan
-- [ ] T-016: Implement distributed rate limiting for production
-- [ ] T-001: Enhance Sentry PII redaction (P2)
-- [ ] T-002: Add request body sanitization to logger (P2)
 - [ ] T-009: Add HTTP body size limits (P2)
+- [ ] T-010: Verify environment variable leakage prevention (P2)
 
 **Full backlog:** [TODO.md](TODO.md)

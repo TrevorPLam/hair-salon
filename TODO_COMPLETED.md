@@ -28,6 +28,68 @@ The logger utility needed explicit sanitization of sensitive fields to prevent a
 
 ---
 
+## Completed - 2026-01-05
+
+### T-003: Document Sensitive Data Retention Policy [P2] [SEC]
+**Type:** COMPLETE  
+**Priority:** P2  
+**Category:** SEC (Security Documentation)  
+**Completed:** 2026-01-05
+
+**Description:**  
+The application collects PII via the contact form and now includes a documented data retention policy for email submissions, error tracking, and logs.
+
+**Completed Actions:**
+- Documented retention periods for contact form emails, Sentry logs, and platform logs
+- Clarified that no database persistence is used for contact data
+
+**Files:**
+- `SECURITY.md`
+
+---
+
+### T-005: Implement Production Console Log Suppression [P2] [SEC]
+**Type:** ENHANCE  
+**Priority:** P2  
+**Category:** SEC (Security Hardening)  
+**Completed:** 2026-01-05
+
+**Description:**  
+Production logging is now limited to critical errors, with info/warn logs suppressed outside development and tests.
+
+**Completed Actions:**
+- Ensured production logging uses Sentry or stderr for errors only
+- Documented logging policy in SECURITY.md
+- Guarded optional build-time warnings to avoid production noise
+
+**Files:**
+- `lib/logger.ts`
+- `next.config.mjs`
+- `SECURITY.md`
+
+---
+
+### T-006: Add Security Headers Documentation [P2] [SEC]
+**Type:** COMPLETE  
+**Priority:** P2  
+**Category:** SEC (Security Documentation)  
+**Completed:** 2026-01-05
+
+**Description:**  
+Security headers rationale and CSP trade-offs are documented with actionable verification steps.
+
+**Completed Actions:**
+- Added rationale for `'unsafe-inline'` and `'unsafe-eval'` in CSP
+- Added inline comments in `middleware.ts` for each header
+- Added security header verification step to deployment checklist
+
+**Files:**
+- `middleware.ts`
+- `SECURITY.md`
+- `docs/ops/DEPLOYMENT.md`
+
+---
+
 ## Completed - 2026-01-03 (P0 Critical Fixes)
 
 ### T-011: Fix Zod v4 API Error in Contact Form [P0] [QUALITY]

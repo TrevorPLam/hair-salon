@@ -10,7 +10,9 @@ if (process.env.ANALYZE === 'true') {
     const bundleAnalyzer = (await import('@next/bundle-analyzer')).default
     withBundleAnalyzer = bundleAnalyzer({ enabled: true })
   } catch (error) {
-    console.warn('Bundle analyzer unavailable, skipping analysis', error)
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('Bundle analyzer unavailable, skipping analysis', error)
+    }
   }
 }
 

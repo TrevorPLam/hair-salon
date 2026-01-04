@@ -8,39 +8,41 @@ export function middleware(request: NextRequest) {
   // Security Headers
   const headers = response.headers
 
-  // Content Security Policy
+  // Content Security Policy (CSP)
+  // Note: Next.js runtime requires 'unsafe-inline' for scripts/styles and 'unsafe-eval'
+  // for certain tooling/dev scenarios. See SECURITY.md for rationale and hardening plan.
   headers.set(
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // unsafe-inline needed for Next.js
-      "style-src 'self' 'unsafe-inline'", // unsafe-inline needed for Tailwind
+      "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // Next.js runtime + dev tooling
+      "style-src 'self' 'unsafe-inline'", // Tailwind injects styles at runtime
       "img-src 'self' data: https:",
       "font-src 'self' data:",
-      "connect-src 'self'",
-      "frame-ancestors 'none'",
+      "connect-src 'self'", // Block external data exfiltration by default
+      "frame-ancestors 'none'", // Disallow clickjacking via iframes
     ].join('; ')
   )
 
-  // Prevent clickjacking
+  // Prevent clickjacking in legacy browsers that don't honor CSP frame-ancestors
   headers.set('X-Frame-Options', 'DENY')
 
-  // Prevent MIME sniffing
+  // Prevent MIME sniffing and content-type confusion
   headers.set('X-Content-Type-Options', 'nosniff')
 
-  // Enable XSS protection (legacy browsers)
+  // Enable XSS protection in legacy browsers (no effect in modern Chromium)
   headers.set('X-XSS-Protection', '1; mode=block')
 
-  // Referrer policy
+  // Limit referrer information to origin on cross-site navigations
   headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
 
-  // Permissions policy (disable unnecessary features)
+  // Permissions policy (disable unnecessary browser features)
   headers.set(
     'Permissions-Policy',
     'camera=(), microphone=(), geolocation=(), interest-cohort=()'
   )
 
-  // Strict Transport Security (HTTPS only)
+  // Strict Transport Security (HTTPS only) - enforce TLS in production
   if (process.env.NODE_ENV === 'production') {
     headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
   }
