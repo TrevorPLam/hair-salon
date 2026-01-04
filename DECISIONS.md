@@ -417,6 +417,40 @@ For now, the basic installable PWA is sufficient for our marketing use case.
 
 ---
 
+## ADR-009: Sanitize PII in Sentry Events
+
+**Status**: Accepted  
+**Date**: 2026-01-04
+
+### Context
+Sentry is configured for error tracking, but beforeSend hooks were not removing PII such as emails, phone numbers, or contact form fields. This risks leaking sensitive data into error contexts.
+
+### Decision
+Add a shared sanitization helper that redacts email addresses, phone numbers, and common contact form fields from Sentry events before they are sent.
+
+### Alternatives Considered
+1. **Rely on Sentry masking only**: Session replay masking does not cover error payloads.
+2. **Manual redaction per event**: Risky and inconsistent across the codebase.
+3. **Disable sending extra context**: Reduces debugging effectiveness too much.
+
+### Consequences
+
+#### Positive
+- ✅ Reduces chance of PII leakage in error payloads
+- ✅ Consistent sanitization across client and server events
+- ✅ Keeps useful metadata while masking sensitive fields
+
+#### Negative
+- ❌ Slight overhead from recursive sanitization
+- ❌ Potential redaction of benign strings that look like phone numbers
+
+### Implementation Notes
+- Added `lib/sentry-sanitize.ts` to redact email/phone patterns and common form keys.
+- Applied `sanitizeSentryEvent()` in both `sentry.client.config.ts` and `sentry.server.config.ts` beforeSend hooks.
+- Fields redacted by key include: name, email, phone, company, message, formData.
+
+---
+
 ## Template for New ADRs
 
 ```markdown
@@ -460,3 +494,4 @@ Technical details
 | 006 | CSRF Protection via Next.js Server Actions | Accepted | 2026-01-03 |
 | 007 | In-Memory Rate Limiting for MVP | Accepted | 2026-01-03 |
 | 008 | Remove Deprecated next-pwa Package | Accepted | 2026-01-03 |
+| 009 | Sanitize PII in Sentry Events | Accepted | 2026-01-04 |

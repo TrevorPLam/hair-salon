@@ -241,11 +241,12 @@ The current in-memory rate limiting won't work across serverless instances. For 
 
 ## P2 - Medium (Hardening, Polish, Documentation)
 
-### T-001: Enhance Sentry PII Redaction [P2] [SEC]
+### ~~T-001: Enhance Sentry PII Redaction [P2] [SEC]~~ ✅ COMPLETED
 **Type:** ENHANCE  
 **Priority:** P2  
 **Category:** SEC (Security Hardening)  
-**Effort:** M
+**Effort:** M  
+**Status:** ✅ Completed 2026-01-04
 
 **Context:**  
 While Sentry is configured with `maskAllText: true` and `blockAllMedia: true` for session replays, the `beforeSend` hooks in both client and server configurations don't explicitly sanitize or redact PII from error contexts.
@@ -262,6 +263,8 @@ While Sentry is configured with `maskAllText: true` and `blockAllMedia: true` fo
 - File: `lib/logger.ts` (ensure no sensitive data in context objects)
 
 **Dependencies:** None
+
+**Completion Notes:** Added shared Sentry event sanitization to redact emails, phone numbers, and common contact form fields. Applied sanitization in both client and server beforeSend hooks and documented the decision in ADR-009.
 
 ---
 

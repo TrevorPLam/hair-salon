@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/nextjs'
+import { sanitizeSentryEvent } from './lib/sentry-sanitize'
 
 const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN
 
@@ -64,6 +65,6 @@ Sentry.init({
       return null
     }
 
-    return event
+    return sanitizeSentryEvent(event)
   },
 })
