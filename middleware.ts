@@ -25,7 +25,9 @@ export function middleware(request: NextRequest) {
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // Next.js runtime + dev tooling
+      process.env.NODE_ENV === 'development'
+        ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'" // Next.js runtime + dev tooling in development
+        : "script-src 'self' 'unsafe-inline'", // Avoid unsafe-eval in production
       "style-src 'self' 'unsafe-inline'", // Tailwind injects styles at runtime
       "img-src 'self' data: https:",
       "font-src 'self' data:",
