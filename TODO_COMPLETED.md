@@ -6,6 +6,28 @@
 
 ---
 
+## Completed - 2026-01-04
+
+### T-002: Add Request Body Sanitization to Logger [P2] [SEC]
+**Type:** ENHANCE  
+**Priority:** P2  
+**Category:** SEC (Security Hardening)  
+**Completed:** 2026-01-04
+
+**Description:**  
+The logger utility needed explicit sanitization of sensitive fields to prevent accidental logging of secrets.
+
+**Completed Actions:**
+- Added sanitizeLogContext to redact sensitive fields before console or Sentry logging
+- Redacted password, token, authorization, cookie, api_key, and secret fields (including nested values)
+- Added unit tests for sanitization behavior
+
+**Files:**
+- `lib/logger.ts`
+- `__tests__/lib/logger.test.ts`
+
+---
+
 ## Completed - 2026-01-03 (P0 Critical Fixes)
 
 ### T-011: Fix Zod v4 API Error in Contact Form [P0] [QUALITY]

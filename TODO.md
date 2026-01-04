@@ -268,25 +268,28 @@ While Sentry is configured with `maskAllText: true` and `blockAllMedia: true` fo
 
 ---
 
-### T-002: Add Request Body Sanitization to Logger [P2] [SEC]
+### ~~T-002: Add Request Body Sanitization to Logger [P2] [SEC]~~ ✅ COMPLETED
 **Type:** ENHANCE  
 **Priority:** P2  
 **Category:** SEC (Security Hardening)  
-**Effort:** M
+**Effort:** M  
+**Status:** ✅ Completed 2026-01-04
 
 **Context:**  
 The logger utility doesn't explicitly prevent logging of sensitive fields from request bodies or headers. While the current code doesn't log request bodies, adding explicit sanitization provides defense-in-depth.
 
 **Acceptance Criteria:**
-- [ ] Add sanitization function to logger.ts that redacts common sensitive fields
-- [ ] Redact fields: password, token, authorization, cookie, api_key, secret
-- [ ] Apply sanitization to all context objects before logging
-- [ ] Add unit tests for sanitization function
+- [x] Add sanitization function to logger.ts that redacts common sensitive fields
+- [x] Redact fields: password, token, authorization, cookie, api_key, secret
+- [x] Apply sanitization to all context objects before logging
+- [x] Add unit tests for sanitization function
 
 **References:**
 - File: `lib/logger.ts`
 
 **Dependencies:** None
+
+**Completion Notes:** Added sanitizeLogContext to redact sensitive fields before console or Sentry logging, including nested values, with unit tests.
 
 ---
 

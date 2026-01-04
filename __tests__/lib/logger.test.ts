@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { logInfo, logWarn, logError } from '@/lib/logger'
+import { logInfo, logWarn, logError, sanitizeLogContext } from '@/lib/logger'
 
 describe('Logger', () => {
   let consoleInfoSpy: ReturnType<typeof vi.spyOn>
@@ -147,6 +147,54 @@ describe('Logger', () => {
 
       logInfo(specialMessage)
       expect(consoleInfoSpy).toHaveBeenCalledWith('[INFO]', specialMessage, '')
+    })
+  })
+
+  describe('sanitizeLogContext', () => {
+    it('should redact sensitive fields', () => {
+      const result = sanitizeLogContext({
+        password: 'supersecret',
+        token: 'token-value',
+        authorization: 'Bearer 123',
+        cookie: 'session=abc',
+        api_key: 'key-value',
+        secret: 'shh',
+        safe: 'value',
+      })
+
+      expect(result).toEqual({
+        password: '[REDACTED]',
+        token: '[REDACTED]',
+        authorization: '[REDACTED]',
+        cookie: '[REDACTED]',
+        api_key: '[REDACTED]',
+        secret: '[REDACTED]',
+        safe: 'value',
+      })
+    })
+
+    it('should redact nested sensitive fields', () => {
+      const result = sanitizeLogContext({
+        user: {
+          name: 'Jane',
+          apiKey: 'should-redact',
+          meta: {
+            token: 'nested-token',
+          },
+        },
+        items: [{ password: 'nested-pass' }],
+      })
+
+      expect(result).toEqual({
+        user: {
+          name: 'Jane',
+          apiKey: '[REDACTED]',
+          meta: {
+            token: '[REDACTED]',
+          },
+        },
+        items: [{ password: '[REDACTED]' }],
+      })
     })
   })
 })
