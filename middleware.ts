@@ -1,20 +1,33 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+const MAX_BODY_SIZE_BYTES = 1024 * 1024 // 1MB payload limit for POST requests
+
 export function middleware(request: NextRequest) {
   // Clone the response
   const response = NextResponse.next()
 
+  // Block oversized payloads early to reduce DoS risk.
+  if (request.method === 'POST') {
+    const contentLength = request.headers.get('content-length')
+    if (contentLength && Number(contentLength) > MAX_BODY_SIZE_BYTES) {
+      return new NextResponse('Payload too large', { status: 413 })
+    }
+  }
+
   // Security Headers
   const headers = response.headers
 
-  // Content Security Policy
+  // Content Security Policy:
+  // - 'unsafe-inline' is required for Next.js runtime and Tailwind style injection.
+  // - 'unsafe-eval' is required for Next.js dev tooling (source maps) and some bundler eval usage.
+  // TODO: Tighten CSP with nonces/hashes when feasible.
   headers.set(
     'Content-Security-Policy',
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // unsafe-inline needed for Next.js
-      "style-src 'self' 'unsafe-inline'", // unsafe-inline needed for Tailwind
+      "script-src 'self' 'unsafe-eval' 'unsafe-inline'",
+      "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https:",
       "font-src 'self' data:",
       "connect-src 'self'",
@@ -22,25 +35,25 @@ export function middleware(request: NextRequest) {
     ].join('; ')
   )
 
-  // Prevent clickjacking
+  // Prevent clickjacking in iframes.
   headers.set('X-Frame-Options', 'DENY')
 
-  // Prevent MIME sniffing
+  // Prevent MIME sniffing (forces declared content types).
   headers.set('X-Content-Type-Options', 'nosniff')
 
-  // Enable XSS protection (legacy browsers)
+  // Enable XSS protection for legacy browsers.
   headers.set('X-XSS-Protection', '1; mode=block')
 
-  // Referrer policy
+  // Reduce referrer leakage across origins.
   headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
 
-  // Permissions policy (disable unnecessary features)
+  // Disable unnecessary browser features (privacy hardening).
   headers.set(
     'Permissions-Policy',
     'camera=(), microphone=(), geolocation=(), interest-cohort=()'
   )
 
-  // Strict Transport Security (HTTPS only)
+  // Enforce HTTPS in production (HSTS).
   if (process.env.NODE_ENV === 'production') {
     headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
   }
@@ -53,11 +66,10 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
 }

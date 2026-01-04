@@ -151,8 +151,8 @@ All pages are served with security headers configured in `middleware.ts`:
 #### Content Security Policy Details
 ```
 default-src 'self'
-script-src 'self' 'unsafe-eval' 'unsafe-inline'  # Required for Next.js
-style-src 'self' 'unsafe-inline'                 # Required for Tailwind
+script-src 'self' 'unsafe-eval' 'unsafe-inline'  # Required for Next.js runtime/dev tooling
+style-src 'self' 'unsafe-inline'                 # Required for Tailwind/runtime styles
 img-src 'self' data: https:
 font-src 'self' data:
 connect-src 'self'
@@ -160,9 +160,11 @@ frame-ancestors 'none'
 ```
 
 **Notes:**
-- `'unsafe-inline'` is required for Next.js runtime and Tailwind CSS
-- `'unsafe-eval'` is required for Next.js development mode
-- Consider tightening CSP in the future with nonces or hashes
+- `'unsafe-inline'` is required for Next.js runtime and Tailwind CSS injection
+- `'unsafe-eval'` is required for Next.js development tooling and some bundler eval usage
+- Plan to tighten CSP in the future with nonces/hashes or strict-dynamic
+
+**Verification:** See deployment checklist (curl header checks) in `docs/ops/DEPLOYMENT.md`
 
 **Implementation:** `middleware.ts` lines 4-49
 
@@ -200,7 +202,37 @@ Message content is safely converted to HTML paragraphs:
 - Function: `textToHtmlParagraphs()` in `lib/sanitize.ts`
 - Escapes HTML, preserves line breaks
 
+#### 5. Payload Size Limits
+To reduce DoS risk from oversized requests:
+- POST payloads are limited to **1MB** via `middleware.ts`
+- Requests exceeding the limit return HTTP **413 Payload Too Large**
+
 **Implementation:** `lib/actions.ts` (validation), `lib/sanitize.ts` (sanitization)
+
+---
+
+### Data Retention & Deletion
+
+**Status:** Documented retention policy for sensitive data
+
+The contact form collects PII (name, email, phone, company, message). Retention is minimized:
+
+#### Contact Form Submissions (Email)
+- **Storage location:** Delivered via Resend to the configured inbox
+- **Retention period:** **90 days** in the inbox unless required longer for active client conversations
+- **Deletion:** Older messages are deleted or archived quarterly
+
+#### Sentry Error Logs
+- **Storage location:** Sentry (if enabled)
+- **Retention period:** **90 days** (configure in Sentry project settings based on plan limits)
+- **Review cadence:** Quarterly review for minimizing stored context
+
+#### Production Console Logs
+- **Storage location:** Hosting provider log system (Vercel/Cloudflare)
+- **Retention period:** **7–30 days**, depending on provider defaults
+- **Rotation policy:** Provider-managed; no PII should be emitted
+
+**Implementation notes:** Production logging is restricted to critical errors, with PII redaction enabled in `lib/logger.ts`.
 
 ---
 
@@ -240,9 +272,9 @@ No secrets are committed to the repository:
 **Status:** Automated monitoring
 
 #### Dependency Management
-- `npm audit` run regularly
+- `npm audit` run regularly (pre-deploy and/or CI)
 - Dependabot enabled for security updates
-- Dependencies pinned with caret ranges (`^`)
+- Security-critical deps pinned to exact versions
 - Security-critical deps reviewed before updates
 
 #### Recent Security Fixes
@@ -261,7 +293,8 @@ No secrets are committed to the repository:
 - Structured logs via `lib/logger.ts`
 - No sensitive data in logs
 - Error contexts sanitized
-- Production logs minimal
+- Production logs minimal (no console info/warn)
+- Critical errors only in production console output
 
 #### Sentry Configuration
 ```typescript
@@ -270,7 +303,7 @@ maskAllText: true        // Masks all text in replays
 blockAllMedia: true      // Blocks images/videos
 ```
 
-**Note:** Future enhancement T-001 will add explicit PII redaction in `beforeSend` hooks
+**Note:** Explicit PII redaction is implemented in `beforeSend` hooks for client/server configs.
 
 **Implementation:** `lib/logger.ts`, `sentry.*.config.ts`
 
@@ -282,13 +315,15 @@ blockAllMedia: true      // Blocks images/videos
 - [x] T-011: Fix Zod v4 API compatibility
 - [x] T-012: Fix ESLint unused parameter warnings
 - [x] T-013: Update eslint-config-next (security vulnerabilities)
+- [x] T-004: CSRF documentation (this document)
+- [x] T-003: Document sensitive data retention policy
+- [x] T-005: Implement production console log suppression
+- [x] T-006: Add security headers documentation
+- [x] T-008: Review and update dependencies (pin critical versions, dependabot, audit gate)
+- [x] T-009: Add HTTP body size limits
 
 ### In Progress / Planned
-- [ ] T-004: CSRF documentation (this document) - **IN PROGRESS**
 - [ ] T-007: Rate limiting documentation and production plan
 - [ ] T-016: Implement distributed rate limiting for production
-- [ ] T-001: Enhance Sentry PII redaction (P2)
-- [ ] T-002: Add request body sanitization to logger (P2)
-- [ ] T-009: Add HTTP body size limits (P2)
 
 **Full backlog:** [TODO.md](TODO.md)
