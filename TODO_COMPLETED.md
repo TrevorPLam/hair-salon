@@ -130,6 +130,73 @@ The logger utility needed explicit sanitization of sensitive fields to prevent a
 
 ---
 
+### T-001: Enhance Sentry PII Redaction [P2] [SEC]
+**Type:** ENHANCE  
+**Priority:** P2  
+**Category:** SEC (Security Hardening)  
+**Completed:** 2026-01-04
+
+**Description:**  
+Added shared Sentry event sanitization to redact emails, phone numbers, and contact form fields before events are sent.
+
+**Completed Actions:**
+- Added shared sanitization helper for Sentry events
+- Applied sanitization in both client and server Sentry beforeSend hooks
+- Documented the redaction approach in DECISIONS.md (ADR-009)
+
+**Files:**
+- `lib/sentry-sanitize.ts`
+- `sentry.client.config.ts`
+- `sentry.server.config.ts`
+- `DECISIONS.md`
+
+---
+
+### T-007: Enhance Rate Limiting Implementation [P1] [SEC]
+**Type:** ENHANCE  
+**Priority:** P1  
+**Category:** SEC (Security Enhancement)  
+**Completed:** 2026-01-04
+
+**Description:**  
+Documented and implemented production-ready rate limiting, including guidance for persistent storage.
+
+**Completed Actions:**
+- Documented rate limiting strategy and trade-offs in DECISIONS.md
+- Added deployment guidance for configuring rate limiting
+- Implemented Upstash-backed rate limiting with in-memory fallback
+
+**Files:**
+- `lib/actions.ts`
+- `DECISIONS.md`
+- `docs/ops/DEPLOYMENT.md`
+- `env.example`
+- `lib/env.ts`
+
+---
+
+### T-016: Implement Distributed Rate Limiting [P1] [ENHANCE]
+**Type:** ENHANCE  
+**Priority:** P1  
+**Category:** REL (Reliability)  
+**Completed:** 2026-01-04
+
+**Description:**  
+Replaced the single-instance limiter with a distributed limiter suitable for serverless deployments.
+
+**Completed Actions:**
+- Added Upstash Redis client and rate limiter integration
+- Implemented sliding window rate limiting with analytics logging
+- Added Upstash credentials to environment configuration
+
+**Files:**
+- `lib/actions.ts`
+- `env.example`
+- `lib/env.ts`
+- `package.json`
+
+---
+
 ## Completed - 2026-01-05
 
 ### T-010: Verify Environment Variable Leakage Prevention [P2] [SEC]
@@ -190,63 +257,66 @@ Implemented an RSS feed for blog posts, surfaced it in the header, and added it 
 - `app/feed.xml/route.ts`
 - `components/Navigation.tsx`
 - `app/sitemap.ts`
-### T-003: Document Sensitive Data Retention Policy [P2] [SEC]
+---
+
+## Completed - 2026-01-03 (P1/P2)
+
+### T-004: Add CSRF Token Support Documentation [P1] [SEC]
 **Type:** COMPLETE  
-**Priority:** P2  
-**Category:** SEC (Security Documentation)  
-**Completed:** 2026-01-05
+**Priority:** P1  
+**Category:** SEC (Security Enhancement)  
+**Completed:** 2026-01-03
 
 **Description:**  
-The application collects PII via the contact form and now includes a documented data retention policy for email submissions, error tracking, and logs.
+Documented Next.js Server Actions CSRF protections and related cookie considerations.
 
 **Completed Actions:**
-- Documented retention periods for contact form emails, Sentry logs, and platform logs
-- Clarified that no database persistence is used for contact data
+- Added CSRF protection documentation to SECURITY.md
+- Documented CSRF trade-offs and future considerations in DECISIONS.md (ADR-006)
 
 **Files:**
 - `SECURITY.md`
-
----
-
-### T-005: Implement Production Console Log Suppression [P2] [SEC]
-**Type:** ENHANCE  
-**Priority:** P2  
-**Category:** SEC (Security Hardening)  
-**Completed:** 2026-01-05
-
-**Description:**  
-Production logging is now limited to critical errors, with info/warn logs suppressed outside development and tests.
-
-**Completed Actions:**
-- Ensured production logging uses Sentry or stderr for errors only
-- Documented logging policy in SECURITY.md
-- Guarded optional build-time warnings to avoid production noise
-
-**Files:**
-- `lib/logger.ts`
-- `next.config.mjs`
-- `SECURITY.md`
-
----
-
-### T-006: Add Security Headers Documentation [P2] [SEC]
-**Type:** COMPLETE  
-**Priority:** P2  
-**Category:** SEC (Security Documentation)  
-**Completed:** 2026-01-05
-
-**Description:**  
-Security headers rationale and CSP trade-offs are documented with actionable verification steps.
-
-**Completed Actions:**
-- Added rationale for `'unsafe-inline'` and `'unsafe-eval'` in CSP
-- Added inline comments in `middleware.ts` for each header
-- Added security header verification step to deployment checklist
-
-**Files:**
+- `DECISIONS.md`
 - `middleware.ts`
-- `SECURITY.md`
+
+---
+
+### T-014: Migrate or Remove Deprecated next-pwa [P1] [QUALITY]
+**Type:** DEADCODE  
+**Priority:** P1  
+**Category:** DEP (Dependency Health)  
+**Completed:** 2026-01-03
+
+**Description:**  
+Removed deprecated next-pwa and retained only the basic installable PWA assets.
+
+**Completed Actions:**
+- Removed next-pwa dependency and withPWA wrapper
+- Preserved manifest and install prompt behavior
+- Documented decision in DECISIONS.md (ADR-008)
+
+**Files:**
+- `package.json`
+- `next.config.mjs`
+- `DECISIONS.md`
+
+---
+
+### T-015: Configure Production API Keys [P1] [COMPLETE]
+**Type:** COMPLETE  
+**Priority:** P1  
+**Completed:** 2026-01-03
+
+**Description:**  
+Documented production API key setup for Resend and Sentry.
+
+**Completed Actions:**
+- Added deployment checklist steps for Resend and Sentry configuration
+- Documented required environment variables and verification steps
+
+**Files:**
 - `docs/ops/DEPLOYMENT.md`
+- `env.example`
 
 ---
 
@@ -346,27 +416,5 @@ Executed complete CODE_AUDIT process following CODE_AUDIT.md phases 0-6:
 - `TODO.md` (completely restructured)
 - `TODO_COMPLETED.md` (this file, updated)
 - `docs/workflows/USERTODO.md` (reference document, kept for historical context)
-
----
-
-## Completed - 2026-01-03 (Partial Completion)
-
-### T-008: Review and Update Dependencies [P2] [SEC]
-**Type:** QUALITY  
-**Priority:** P2  
-**Category:** SEC (Supply Chain Security)  
-**Status:** Completed (Partial)  
-**Completed:** 2026-01-03
-
-**Description:**  
-Some dependencies are using caret (^) version ranges which could auto-update to versions with breaking changes or vulnerabilities. Consider more explicit version pinning for critical security dependencies.
-
-**Completed Acceptance Criteria:**
-- [x] Document dependency update cadence in DEPENDENCY_HEALTH.md
-
-**Notes:**  
-- Dependency health review completed on 2026-01-03
-- Update policy now documented in DEPENDENCY_HEALTH.md
-- Remaining items (version pinning, automated security updates) still pending in TODO.md
 
 ---

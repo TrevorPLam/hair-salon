@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2026.01.05] - 2026-01-05
+
+### Added
+- Added `/feed.xml` RSS feed generation, linked in the primary navigation, and surfaced in the sitemap
+- Added distributed rate limiting support with Upstash Redis and new environment configuration
+- Added a post-build client bundle scan to prevent accidental secret exposure
+- Added Lighthouse performance budgets configuration
+
+### Changed
+- Removed deprecated next-pwa integration while preserving basic PWA assets
+- Expanded deployment, security, and documentation guides to reflect the latest platform changes
+
+### Security
+- Added Sentry event sanitization and logger redaction for PII and sensitive fields
+- Enforced 1MB request payload limits in middleware and API configuration
+
+### Dependencies
+- Pinned security-critical dependencies (Next.js, Sentry, Resend, Zod)
+- Upgraded eslint-config-next and added Upstash rate limiting dependencies
+
 ## [2026.01.03] - 2026-01-03
 
 ### Documentation

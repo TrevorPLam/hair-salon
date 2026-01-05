@@ -8,200 +8,28 @@
 
 ## P0 - Critical (Correctness, Security, Blockers)
 
-### ~~T-011: Fix Zod v4 API Error in Contact Form [P0] [QUALITY]~~ ✅ COMPLETED
+### T-029: Complete Manual Smoke Tests in Preview Deployment [P0] [QUALITY]
 **Type:** QUALITY  
 **Priority:** P0  
-**Effort:** S  
-**Status:** ✅ Completed 2026-01-03
+**Category:** REL (Release Gate)  
+**Effort:** S
 
 **Context:**  
-TypeScript compilation fails in lib/actions.ts. Zod v4 changed the API from `error.errors` to `error.issues`. This breaks type checking and prevents successful builds.
+Release 2026.01.05 smoke tests could not fully complete in the local environment due to Playwright/browser instability and font fetch errors. Manual smoke verification is required in a stable Preview Deployment or live environment.
 
 **Acceptance Criteria:**
-- [x] Change `error.errors` to `error.issues` in lib/actions.ts line 137
-- [x] Verify type-check passes: `npm run type-check`
-- [x] Verify tests still pass if they exist
+- [ ] Verify Universal UI tests in Preview Deployment (app loads, nav works, happy path completes, error state triggers, mobile layout usable)
+- [ ] Verify contact form validation errors surface correctly when submitting invalid inputs
+- [ ] Record results in the next Release Record
 
 **References:**
-- File: `lib/actions.ts:137`
-- Error: `Property 'errors' does not exist on type 'ZodError<unknown>'`
+- Doc: `RELEASE_CHECKLIST.md`
 
 **Dependencies:** None
-
-**Completion Notes:** Fixed on 2026-01-03. Changed error.errors to error.issues. Type-check now passes.
-
----
-
-### ~~T-012: Fix ESLint Warnings for Unused Parameters [P0] [QUALITY]~~ ✅ COMPLETED
-**Type:** QUALITY  
-**Priority:** P0  
-**Effort:** S  
-**Status:** ✅ Completed 2026-01-03
-
-**Context:**  
-ESLint reports unused parameters in analytics.ts. Parameters `location` and `destination` are defined but never used. Functions are only used in tests, suggesting they may not be needed or the parameters should be prefixed with underscore.
-
-**Acceptance Criteria:**
-- [x] Prefix unused parameters with underscore: `_location`, `_destination`
-- [x] OR remove parameters if they're truly not needed
-- [x] Verify lint passes: `npm run lint`
-- [x] Update tests if parameter names change
-
-**References:**
-- File: `lib/analytics.ts:88` (trackButtonClick)
-- File: `lib/analytics.ts:99` (trackCTAClick)
-
-**Dependencies:** None
-
-**Completion Notes:** Fixed on 2026-01-03. Prefixed unused parameters with underscore. Lint now passes with no warnings.
-
----
-
-### ~~T-013: Update eslint-config-next to Fix Security Vulnerabilities [P0] [SEC]~~ ✅ COMPLETED
-**Type:** QUALITY  
-**Priority:** P0  
-**Category:** SEC (Supply Chain Security)  
-**Effort:** S  
-**Status:** ✅ Completed 2026-01-03
-
-**Context:**  
-npm audit reports 3 high severity vulnerabilities in glob dependency (versions 10.2.0-10.4.5) related to command injection via CLI. The vulnerable glob is pulled in through outdated eslint-config-next.
-
-**Acceptance Criteria:**
-- [x] Update eslint-config-next to latest compatible version (15.x for ESLint 8)
-- [x] Run `npm audit` and verify vulnerabilities are resolved
-- [x] Run `npm run lint` to verify eslint still works
-- [x] Update package-lock.json
-
-**References:**
-- Advisory: GHSA-5j98-mcp5-4vw2
-- File: `package.json` (eslint-config-next: updated from ^14.2.18 to ^15.5.9)
-
-**Dependencies:** None
-
-**Completion Notes:** Fixed on 2026-01-03. Updated eslint-config-next from 14.2.18 to 15.5.9. All npm audit vulnerabilities resolved (0 found).
 
 ---
 
 ## P1 - High (Reliability, Core UX, Maintainability)
-
-### ~~T-004: Add CSRF Token Support Documentation [P1] [SEC]~~ ✅ COMPLETED
-**Type:** COMPLETE
-**Priority:** P1
-**Category:** SEC (Security Enhancement)
-**Effort:** S
-**Status:** ✅ Completed 2026-01-03
-
-**Context:**
-The application uses Next.js server actions for form submission which provides some CSRF protection, but this isn't explicitly documented. The middleware sets security headers but doesn't include explicit CSRF token validation.
-
-**Acceptance Criteria:**
-- [x] Document Next.js server action CSRF protections in SECURITY.md
-- [x] Verify SameSite cookie settings are configured appropriately
-- [x] Consider adding explicit CSRF tokens for enhanced protection in production
-- [x] Document any CSRF risks and mitigations in DECISIONS.md
-
-**References:**
-- File: `SECURITY.md`
-- File: `DECISIONS.md`
-- File: `middleware.ts` (review and document cookie settings)
-
-**Dependencies:** None
-
-**Completion Notes:** Completed on 2026-01-03. Added comprehensive CSRF protection documentation to SECURITY.md (lines 58-91) and ADR-006 to DECISIONS.md (lines 192-239) documenting Next.js Server Actions built-in CSRF protection, cookie configuration, and future considerations.
-
----
-
-### ~~T-007: Enhance Rate Limiting Implementation [P1] [SEC]~~ ✅ COMPLETED
-**Type:** ENHANCE
-**Priority:** P1
-**Category:** SEC (Security Enhancement)
-**Effort:** M
-**Status:** ✅ Completed 2026-01-03 (Documentation), 2026-01-04 (Implementation)
-
-**Context:**
-The contact form uses in-memory rate limiting (3 submissions per hour per email) which resets on server restart and doesn't scale across multiple instances. This is acceptable for MVP but should be enhanced for production.
-
-**Acceptance Criteria:**
-- [x] Document current rate limiting approach in DECISIONS.md
-- [x] For production deployment, implement persistent rate limiting (Redis, Upstash, or similar)
-- [x] Add rate limiting per IP address in addition to email
-- [x] Add rate limiting monitoring/alerting
-- [x] Document rate limiting configuration in DEPLOYMENT.md
-
-**References:**
-- File: `lib/actions.ts` (in-memory rateLimitMap)
-- File: `DECISIONS.md`
-- Doc: `docs/workflows/USERTODO.md` (Item #4)
-
-**Dependencies:** None
-
-**Completion Notes:** Documentation completed 2026-01-03 with ADR-007 in DECISIONS.md (lines 242-326) and comprehensive deployment guide in DEPLOYMENT.md (lines 435-620). Implementation completed 2026-01-04 (see T-016 for full implementation details).
-
----
-
-### ~~T-014: Migrate or Remove Deprecated next-pwa [P1] [QUALITY]~~ ✅ COMPLETED
-**Type:** DEADCODE
-**Priority:** P1
-**Category:** DEP (Dependency Health)
-**Effort:** M
-**Status:** ✅ Completed 2026-01-03
-
-**Context:**
-The next-pwa@^5.6.0 package is outdated and no longer actively maintained. The last significant update was in 2022, and it may have compatibility issues with Next.js 14. PWA functionality is configured in next.config.mjs but may not be actively tested or used in production.
-
-**Acceptance Criteria:**
-- [x] Evaluate if PWA features are actively used and needed
-- [x] If PWA is needed: migrate to @ducanh2912/next-pwa (maintained fork) or alternative
-- [x] If PWA is not needed: remove next-pwa and related configuration from next.config.mjs
-- [x] Test PWA functionality if keeping it (service worker registration, offline caching)
-- [x] Update documentation to reflect PWA status
-- [x] Document decision in DECISIONS.md
-
-**References:**
-- File: `package.json` (next-pwa: ^5.6.0)
-- File: `next.config.mjs`
-- File: `DECISIONS.md`
-- Doc: `docs/workflows/USERTODO.md` (Item #5)
-- Original repo: https://github.com/shadowwalker/next-pwa (archived)
-- Maintained fork: https://github.com/DuCanh2k/next-pwa
-
-**Dependencies:** None
-
-**Completion Notes:** Completed on 2026-01-03. Removed deprecated next-pwa package from dependencies. Removed withPWA() wrapper from next.config.mjs. Kept basic PWA features: manifest.json, PWA icons (192x192, 512x512, apple-touch-icon), and InstallPrompt.tsx component. Documented decision in ADR-008 (DECISIONS.md lines 329-417). Marketing site doesn't require offline functionality - basic installable PWA is sufficient.
-
----
-
-### ~~T-015: Configure Production API Keys [P1] [COMPLETE]~~ ✅ COMPLETED
-**Type:** COMPLETE
-**Priority:** P1
-**Effort:** S
-**Status:** ✅ Completed 2026-01-03
-
-**Context:**
-The .env.local file has been created with development defaults, but production deployment requires actual API keys for Resend email service and Sentry error tracking.
-
-**Acceptance Criteria:**
-- [x] Sign up for Resend account and get API key
-- [x] Add RESEND_API_KEY to production environment
-- [x] Add CONTACT_EMAIL to production environment
-- [x] Sign up for Sentry and get DSN
-- [x] Add NEXT_PUBLIC_SENTRY_DSN to production environment
-- [x] Verify email delivery works in production
-- [x] Document setup in deployment checklist
-
-**References:**
-- File: `env.example`
-- File: `.env.local`
-- Doc: `docs/workflows/USERTODO.md` (Items #3, #6, #7)
-- Service: https://resend.com
-- Service: https://sentry.io
-
-**Dependencies:** None
-
-**Completion Notes:** Documentation completed on 2026-01-03. Comprehensive API key setup instructions added to DEPLOYMENT.md (lines 9-92) including Resend email service setup, Sentry error tracking setup, domain verification steps, and environment variables checklist. Actual production API keys must be configured by user during deployment.
-
----
 
 ### T-024: Add IP-Aware Rate Limiting for Contact Form [P1] [SEC]
 **Type:** ENHANCE  
@@ -228,152 +56,7 @@ Rate limiting currently keys solely on the submitted email address. Attackers ca
 
 ---
 
-### ~~T-016: Implement Distributed Rate Limiting [P1] [ENHANCE]~~ ✅ COMPLETED
-**Type:** ENHANCE
-**Priority:** P1
-**Category:** REL (Reliability)
-**Effort:** L
-**Status:** ✅ Completed 2026-01-04
-
-**Context:**
-The current in-memory rate limiting won't work across serverless instances. For production deployment on Vercel or Cloudflare, need persistent rate limiting solution.
-
-**Acceptance Criteria:**
-- [x] Choose rate limiting solution (Upstash Redis, Vercel KV, or Arcjet)
-- [x] Install and configure chosen solution
-- [x] Update lib/actions.ts to use persistent rate limiter
-- [x] Add environment variables for rate limiting service
-- [x] Test rate limiting across multiple requests
-- [x] Document configuration in DEPLOYMENT.md
-
-**References:**
-- File: `lib/actions.ts` (rateLimitMap)
-- Doc: `docs/workflows/USERTODO.md` (Item #4)
-- Service options: Upstash, Vercel KV, Arcjet
-
-**Dependencies:** T-015 (needs production environment)
-
-**Completion Notes:** Completed on 2026-01-04. Implemented hybrid distributed rate limiting with Upstash Redis and graceful fallback:
-- Installed `@upstash/redis` and `@upstash/ratelimit` packages
-- Updated `lib/actions.ts` with automatic Upstash detection and initialization
-- Added `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` to env.example and lib/env.ts
-- Implemented sliding window rate limiting (3 requests per hour) with analytics
-- Graceful fallback to in-memory rate limiting when Upstash not configured (development mode)
-- All TypeScript type-checks pass, ESLint clean
-- Ready for production deployment once Upstash credentials are configured
-
----
-
 ## P2 - Medium (Hardening, Polish, Documentation)
-
-### ~~T-001: Enhance Sentry PII Redaction [P2] [SEC]~~ ✅ COMPLETED
-**Type:** ENHANCE  
-**Priority:** P2  
-**Category:** SEC (Security Hardening)  
-**Effort:** M  
-**Status:** ✅ Completed 2026-01-04
-
-**Context:**  
-While Sentry is configured with `maskAllText: true` and `blockAllMedia: true` for session replays, the `beforeSend` hooks in both client and server configurations don't explicitly sanitize or redact PII from error contexts.
-
-**Acceptance Criteria:**
-- [ ] Add `beforeSend` sanitization to remove/redact email addresses from error contexts
-- [ ] Add `beforeSend` sanitization to remove/redact phone numbers from error contexts
-- [ ] Add `beforeSend` sanitization to remove/redact form data from error contexts
-- [ ] Document which fields are automatically redacted in DECISIONS.md
-
-**References:**
-- File: `sentry.client.config.ts`
-- File: `sentry.server.config.ts`
-- File: `lib/logger.ts` (ensure no sensitive data in context objects)
-
-**Dependencies:** None
-
-**Completion Notes:** Added shared Sentry event sanitization to redact emails, phone numbers, and common contact form fields. Applied sanitization in both client and server beforeSend hooks and documented the decision in ADR-009.
-
----
-
-### ~~T-002: Add Request Body Sanitization to Logger [P2] [SEC]~~ ✅ COMPLETED
-**Type:** ENHANCE  
-**Priority:** P2  
-**Category:** SEC (Security Hardening)  
-**Effort:** M  
-**Status:** ✅ Completed 2026-01-04
-
-**Context:**  
-The logger utility doesn't explicitly prevent logging of sensitive fields from request bodies or headers. While the current code doesn't log request bodies, adding explicit sanitization provides defense-in-depth.
-
-**Acceptance Criteria:**
-- [x] Add sanitization function to logger.ts that redacts common sensitive fields
-- [x] Redact fields: password, token, authorization, cookie, api_key, secret
-- [x] Apply sanitization to all context objects before logging
-- [x] Add unit tests for sanitization function
-
-**References:**
-- File: `lib/logger.ts`
-
-**Dependencies:** None
-
-**Completion Notes:** Added sanitizeLogContext to redact sensitive fields before console or Sentry logging, including nested values, with unit tests.
-
----
-
-
-### ~~T-008: Review and Update Dependencies [P2] [SEC]~~ ✅ COMPLETED
-**Type:** QUALITY  
-**Priority:** P2  
-**Category:** SEC (Supply Chain Security)  
-**Effort:** M
-**Status:** ✅ Completed 2026-01-04
-
-**Context:**  
-Some dependencies are using caret (^) version ranges which could auto-update to versions with breaking changes or vulnerabilities. Consider more explicit version pinning for critical security dependencies.
-
-**Acceptance Criteria:**
-- [x] Review security-critical dependencies: zod, @sentry/nextjs, resend, next
-- [x] Consider exact version pinning (no ^ or ~) for security-critical deps
-- [x] Document dependency update cadence in DEPENDENCY_HEALTH.md
-- [x] Set up Dependabot or Renovate for automated security updates
-- [x] Add "npm audit" to CI/CD or pre-deployment checklist
-
-**References:**
-- File: `package.json`
-- File: `DEPENDENCY_HEALTH.md`
-
-**Updates:**
-- 2026-01-03: Dependency health review completed. Update policy now documented in DEPENDENCY_HEALTH.md
-
-**Dependencies:** None
-
-**Completion Notes:** Pinned exact versions for security-critical dependencies and added npm audit to deployment/release gates.
-
----
-
-### ~~T-009: Add Input Size Limits Enforcement [P2] [SEC]~~ ✅ COMPLETED
-**Type:** ENHANCE  
-**Priority:** P2  
-**Category:** SEC (Security Hardening)  
-**Effort:** S
-**Status:** ✅ Completed 2026-01-04
-
-**Context:**  
-While Zod schema defines max lengths for form fields, there's no explicit payload size limit at the HTTP level. Large payloads could be used for DoS attacks.
-
-**Acceptance Criteria:**
-- [x] Add body size limit to API routes (e.g., 1MB max)
-- [x] Document size limits in API documentation
-- [x] Add proper error handling for oversized payloads
-- [ ] Test with large payload to verify rejection
-
-**References:**
-- File: `next.config.mjs` (add bodyParser size limit config)
-- File: `lib/actions.ts`
-
-**Dependencies:** None
-
-**Completion Notes:** Implemented 1MB payload limits in middleware and Next.js API config; manual oversized payload test still recommended.
-
----
 
 ### T-017: Increase Test Coverage [P2] [QUALITY]
 **Type:** ENHANCE  
@@ -567,6 +250,28 @@ Both package-lock.json and pnpm-lock.yaml are present. This can lead to drift an
 - File: `package-lock.json`
 - File: `pnpm-lock.yaml`
 - Doc: `READMEAI.md`
+
+**Dependencies:** None
+
+---
+
+### T-028: Remove Invalid next.config.mjs Keys [P2] [QUALITY]
+**Type:** QUALITY  
+**Priority:** P2  
+**Category:** REL (Reliability)  
+**Effort:** S
+
+**Context:**  
+Running Next.js dev server reports unrecognized `api` and `sentry` keys in next.config.mjs. These options are no longer supported and may indicate configuration drift or misplaced settings.
+
+**Acceptance Criteria:**
+- [ ] Identify the supported replacement for any needed settings (e.g., move to `sentry.server.config.ts` or middleware)
+- [ ] Remove unsupported keys from next.config.mjs
+- [ ] Confirm `next dev` starts without invalid config warnings
+- [ ] Document any configuration changes in DEPENDENCY_HEALTH.md or DECISIONS.md if behavior changes
+
+**References:**
+- File: `next.config.mjs`
 
 **Dependencies:** None
 

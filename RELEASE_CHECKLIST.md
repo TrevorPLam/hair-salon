@@ -374,6 +374,91 @@ Decision:
 
 ---
 
+# RELEASE RECORD - 2026.01.05
+
+**Release Version:** 2026.01.05  
+**Release Name:** Security Hardening + RSS Feed  
+**Release Date:** 2026-01-05
+
+## Scope Summary (5–15 bullets):
+
+1. Added RSS feed generation at `/feed.xml` and linked it in navigation + sitemap
+2. Implemented distributed rate limiting with Upstash Redis and environment configuration
+3. Added client bundle secret scanning after builds
+4. Hardened logging and Sentry error events with PII redaction
+5. Enforced 1MB request payload limits via middleware and API config
+6. Added Lighthouse performance budget configuration files
+7. Removed deprecated next-pwa integration while keeping installable PWA assets
+8. Expanded deployment, security, and documentation guides to reflect new behavior
+9. Pinned security-critical dependencies and upgraded eslint-config-next
+10. Added TODO hygiene updates and missing completion records
+
+Risk Review:
+
+* Potential breakages:
+  * Contact form submissions now enforce Upstash-backed rate limits and may reject rapid retries
+  * Request payloads over 1MB will now return errors instead of being processed
+  * next-pwa removal may impact offline caching if any user relies on it
+  * Client bundle secret scan can fail builds if server-only tokens leak into client bundles
+* Affected users/roles:
+  * Site visitors using the contact form (rate limiting, validation)
+  * Operators configuring Upstash, Resend, and Sentry for production
+  * Users expecting offline PWA caching
+* Rollback plan:
+  * Revert to previous deployment or git commit
+  * Disable the Upstash integration via env removal to fall back to in-memory limiting
+
+Secrets & Config:
+
+* Secrets check: PASS
+* Env updates documented: PASS
+* External config required: YES (Upstash Redis credentials; confirm Resend/Sentry production keys)
+
+Data & Migration (if applicable):
+
+* Data changes: NO
+* Recovery plan documented: N/A
+
+Manual Smoke Tests (record PASS/FAIL):
+
+* Universal UI: FAIL (Playwright/preview instability prevented completing error-state validation; see T-029)
+* Auth (if applicable): N/A
+* Payments (if applicable): N/A
+* CRUD/Data (if applicable): N/A
+* Integrations (if applicable): N/A
+
+Static Quality Gate:
+
+* Diff sanity: PASS
+* Error handling states: PASS (reviewed code paths for rate limiting and payload errors)
+* Accessibility basics: PASS (no regressions observed in static review)
+* npm audit: FAIL (registry returned 403 Forbidden)
+
+Docs:
+
+* CHANGELOG updated: YES
+* Docs updated where needed: YES
+
+Decision:
+
+* NO-GO
+* If NO-GO: list blockers as TODO.md tasks (T-###):
+  * T-029
+
+## Release Notes (final bullets to communicate):
+
+- Added RSS feed generation and surfaced it in navigation + sitemap
+- Implemented distributed rate limiting with Upstash and documented configuration
+- Added client bundle secret scanning after build to prevent env leaks
+- Sanitized Sentry events and logger contexts to redact PII
+- Enforced 1MB request payload limits for security hardening
+- Added Lighthouse performance budgets configuration
+- Removed deprecated next-pwa integration while keeping PWA assets
+- Pinned security-critical dependencies and upgraded eslint-config-next
+- Expanded deployment and security documentation for new operational requirements
+
+---
+
 # RELEASE RECORD - 2026.01.03
 
 **Release Version:** 2026.01.03  
