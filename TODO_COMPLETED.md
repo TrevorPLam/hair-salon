@@ -78,6 +78,46 @@ Ensured the npm registry diagnostics script points users at the completed task a
 
 ---
 
+## Completed - 2026-01-05
+
+### T-050: Align React DOM with React/Next.js Versions [P1] [QUALITY]
+**Type:** QUALITY
+**Priority:** P1
+**Category:** DEP (Dependency Health)
+**Completed:** 2026-01-05
+
+**Description:**
+Aligned `react-dom` and `@types/react-dom` with the React 18 major version supported by Next.js 14.
+
+**Completed Actions:**
+- Downgraded `react-dom` and `@types/react-dom` to React 18-compatible versions.
+- Updated the dependency lockfile to reflect the React 18 alignment.
+
+**Files:**
+- `package.json`
+- `package-lock.json`
+
+---
+
+### T-051: Remove Unused MDX Loader Dependencies [P2] [DEADCODE]
+**Type:** DEADCODE
+**Priority:** P2
+**Category:** DEP (Dependency Health)
+**Completed:** 2026-01-05
+
+**Description:**
+Removed unused direct dependencies for MDX loader packages to reduce install surface area.
+
+**Completed Actions:**
+- Removed `@mdx-js/loader` and `@mdx-js/react` from direct dependencies.
+- Cleaned up the lockfile to drop the unused loader entry.
+
+**Files:**
+- `package.json`
+- `package-lock.json`
+
+---
+
 ### T-044: Update Coverage Guard Script Guidance to TODO_COMPLETED [P2] [DX]
 **Type:** QUALITY
 **Priority:** P2
