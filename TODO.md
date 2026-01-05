@@ -502,6 +502,76 @@ No search functionality exists for blog posts or site content. Adding search imp
 
 ---
 
+### T-025: Align @next/mdx Version With Next.js [P2] [QUALITY]
+**Type:** QUALITY  
+**Priority:** P2  
+**Category:** DEP (Dependency Health)  
+**Effort:** S
+
+**Context:**  
+The repo uses next@14.2.18 with @next/mdx@^16.1.1. The major version gap may indicate incompatibility with the current Next.js line, risking MDX build issues.
+
+**Acceptance Criteria:**
+- [ ] Confirm the compatible @next/mdx major version for next@14.2.18
+- [ ] Update package.json to the compatible @next/mdx version
+- [ ] Update lockfiles accordingly
+- [ ] Run a build or MDX-related check to confirm no regressions
+- [ ] Document the decision in DEPENDENCY_HEALTH.md if any trade-offs exist
+
+**References:**
+- File: `package.json`
+- File: `next.config.mjs`
+- Doc: `DEPENDENCY_HEALTH.md`
+
+**Dependencies:** None
+
+---
+
+### T-026: Move @types/mdx to devDependencies [P2] [QUALITY]
+**Type:** QUALITY  
+**Priority:** P2  
+**Category:** DEP (Dependency Health)  
+**Effort:** S
+
+**Context:**  
+@types/mdx is listed under production dependencies even though it is only needed for TypeScript types. Keeping it in production dependencies increases install surface area without runtime value.
+
+**Acceptance Criteria:**
+- [ ] Move @types/mdx from dependencies to devDependencies
+- [ ] Update lockfiles to reflect the change
+- [ ] Confirm type-checking still passes (`npm run type-check`)
+
+**References:**
+- File: `package.json`
+
+**Dependencies:** None
+
+---
+
+### T-027: Consolidate to a Single Package Manager Lockfile [P2] [QUALITY]
+**Type:** QUALITY  
+**Priority:** P2  
+**Category:** DEP (Dependency Health)  
+**Effort:** S
+
+**Context:**  
+Both package-lock.json and pnpm-lock.yaml are present. This can lead to drift and inconsistent dependency resolution.
+
+**Acceptance Criteria:**
+- [ ] Decide on the canonical package manager (npm or pnpm)
+- [ ] Remove the unused lockfile
+- [ ] Update documentation (READMEAI.md or DEPLOYMENT.md) to reflect the chosen tool
+- [ ] Reinstall dependencies to regenerate the chosen lockfile if needed
+
+**References:**
+- File: `package-lock.json`
+- File: `pnpm-lock.yaml`
+- Doc: `READMEAI.md`
+
+**Dependencies:** None
+
+---
+
 ## Notes
 
 ### Task Hygiene Completed

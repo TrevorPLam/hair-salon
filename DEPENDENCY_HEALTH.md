@@ -335,3 +335,76 @@ This prevents future churn and re-arguing.
 - All security-critical operations (Sentry, Resend) use official SDKs from trusted vendors
 
 ---
+
+## Dependency Health Summary — 2026-01-05
+
+### Inventory:
+
+**Ecosystem(s):** JavaScript/TypeScript (npm/pnpm)
+
+**Total Dependencies:**
+- Production: 24 packages
+- Development: 18 packages
+- Total: 42 packages
+
+**Critical Dependencies:**
+- **Framework:** next@14.2.18, react@^18.3.1, react-dom@^18.3.1
+- **External Services:** @sentry/nextjs@10.32.1 (error tracking), resend@6.6.0 (email), @upstash/redis@^1.36.0 (rate limiting storage)
+- **Validation & Forms:** zod@4.2.1, react-hook-form@^7.54.2, @hookform/resolvers@^5.2.2
+- **Content Processing:** @next/mdx@^16.1.1, next-mdx-remote@^5.0.0, shiki@^3.20.0, gray-matter@^4.0.3
+- **Styling:** tailwindcss@^3.4.17, tailwind-merge@^2.6.0
+
+**Duplicates/Overlap Suspected:**
+- None observed in core categories (single validation stack, single styling stack).
+
+### Findings:
+
+**(P2) Next.js / MDX Version Alignment**
+- **Issue:** next@14.2.18 is paired with @next/mdx@^16.1.1, which may target a different Next.js major line. This could introduce build-time incompatibilities when Next.js updates.
+- **Risk:** Medium - potential MDX build failures or subtle incompatibilities after updates.
+- **Recommendation:** Verify @next/mdx compatibility with Next 14.2.18 and align to a matching major version if needed. Capture decision and update lockfiles.
+
+**(P2) Type-Only Dependency in Production**
+- **Issue:** @types/mdx is listed under production dependencies. Type packages are not needed at runtime and can be moved to devDependencies to keep production installs leaner.
+- **Risk:** Low - slightly larger production dependency tree.
+- **Recommendation:** Move @types/mdx to devDependencies and update lockfiles.
+
+**(P2) Dual Lockfiles Present**
+- **Issue:** Both package-lock.json and pnpm-lock.yaml exist. This can cause drift and ambiguity in dependency resolution.
+- **Risk:** Low-Medium - inconsistent installs across environments.
+- **Recommendation:** Decide on a single package manager (npm or pnpm), remove the other lockfile, and document the choice.
+
+### Positive Findings:
+
+- **Pinned Critical Versions:** next, zod, resend, and @sentry/nextjs are pinned to exact versions.
+- **No Obvious Dependency Overlap:** Dependencies are scoped to distinct responsibilities.
+- **Modern Tooling:** Testing and build tooling (Vitest, Playwright, TypeScript) are current and well-scoped.
+
+### Tasks Created:
+
+**T-025:** Align @next/mdx version with Next.js (documented in TODO.md)  
+**Priority:** P2  
+**Type:** QUALITY  
+
+**T-026:** Move @types/mdx to devDependencies (documented in TODO.md)  
+**Priority:** P2  
+**Type:** QUALITY  
+
+**T-027:** Consolidate lockfiles to a single package manager (documented in TODO.md)  
+**Priority:** P2  
+**Type:** QUALITY  
+
+### Recommended Actions:
+
+1. **Short-term (P2):**
+   - Verify @next/mdx compatibility and align versions (T-025)
+   - Move type-only deps to devDependencies (T-026)
+   - Decide on npm vs pnpm and remove the other lockfile (T-027)
+
+### Notes / Assumptions:
+
+- Analysis performed without running package managers (inspection only).
+- @next/mdx usage confirmed in next.config.mjs; version alignment should be validated with build tests.
+- Both npm and pnpm lockfiles present; decision needed to avoid drift.
+
+---
