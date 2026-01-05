@@ -11,37 +11,10 @@ Task truth source: TODO.md
 - _No active tasks_
 
 ## P1 - High (Reliability, Core UX, Maintainability)
-
-### T-050: Align React DOM with React/Next.js Versions
-**Priority:** P1
-**Type:** QUALITY
-**Description:**  
-`react-dom` and `@types/react-dom` are on 19.x while `react` and `@types/react` are on 18.x, which can introduce runtime and type-checking mismatches. Align the React DOM version and its types with the supported React major for Next.js 14.
-
-**Acceptance Criteria:**
-- `react`, `react-dom`, `@types/react`, and `@types/react-dom` use the same supported major version for Next.js 14 (18.x).
-- `package.json` and `package-lock.json` are updated accordingly.
-- `npm run build` (or equivalent build validation) completes without React version warnings or type errors.
-- `package-lock.json`
-**Dependencies:** None
-**Effort:** S
+- _No active tasks_
 
 ## P2 - Medium (Hardening, Polish, Documentation)
-
-### T-051: Remove Unused MDX Loader Dependencies
-**Priority:** P2
-**Type:** DEADCODE
-**Context:** `@mdx-js/loader` and `@mdx-js/react` are listed as dependencies but are not referenced in the codebase or Next.js configuration, increasing install surface area.
-**Acceptance Criteria:**
-- Confirm no imports/usages of `@mdx-js/loader` or `@mdx-js/react` in app code or build configuration.
-- Remove unused packages from `package.json` and `package-lock.json` if safe.
-- `npm run build` completes without MDX-related errors after removal.
-**References:**
-- `package.json`
-- `next.config.mjs`
-- `components/BlogPostContent.tsx`
-**Dependencies:** None
-**Effort:** S
+- _No active tasks_
 
 ---
 
