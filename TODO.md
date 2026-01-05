@@ -53,7 +53,7 @@ Current environment cannot reach the npm registry (`ENETUNREACH` even with proxy
 - [ ] Verify `npm run test:coverage` runs without prompting
 - [ ] Status note added if blocked due to registry access
 
-**Status:** Blocked in this environment (2026-01-05). Registry access fails with `ENETUNREACH` even after clearing HTTP(S)_PROXY/NO_PROXY via env overrides and forcing the registry during `npm install --package-lock-only` and `npm ping`. Retry once outbound connectivity is restored; confirm with `npm run check:npm-registry`.
+**Status:** Blocked in this environment (2026-01-05). Registry access fails with `ENETUNREACH`. This occurred even after clearing HTTP(S)_PROXY/NO_PROXY via env overrides and forcing the registry during `npm install --package-lock-only` and `npm ping`. Retry once outbound connectivity is restored; confirm with `npm run check:npm-registry`.
 
 **References:**
 - File: `package.json`
