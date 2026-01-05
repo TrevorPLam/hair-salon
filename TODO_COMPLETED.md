@@ -6,6 +6,95 @@
 
 ---
 
+## Completed - 2026-01-07
+
+### T-040: Refresh READMEAI Registry Troubleshooting References [P2] [DX]
+**Type:** QUALITY
+**Priority:** P2
+**Category:** DX (Developer Experience)
+**Completed:** 2026-01-07
+
+**Description:**
+Aligned READMEAI dependency troubleshooting guidance with the completed registry tasks so contributors follow the correct references.
+
+**Completed Actions:**
+- Updated the Common Issues registry note to reference TODO_COMPLETED entries T-030 and T-031.
+- Refreshed the READMEAI Last Updated date.
+
+**Files:**
+- `READMEAI.md`
+
+---
+
+### T-041: Mark Coverage Provider Follow-up as Completed in DEPENDENCY_HEALTH [P2] [DEP]
+**Type:** QUALITY
+**Priority:** P2
+**Category:** DEP (Dependency Health)
+**Completed:** 2026-01-07
+
+**Description:**
+Recorded that the coverage provider task has been completed and archived, while retaining the registry-blocked status note for future retries.
+
+**Completed Actions:**
+- Updated the Coverage Provider Dependency Missing status to reference TODO_COMPLETED T-031.
+
+**Files:**
+- `DEPENDENCY_HEALTH.md`
+
+---
+
+### T-042: Align DEPENDENCY_HEALTH Task References with TODO_COMPLETED [P2] [DEP]
+**Type:** QUALITY
+**Priority:** P2
+**Category:** DEP (Dependency Health)
+**Completed:** 2026-01-07
+
+**Description:**
+Removed stale TODO.md references by pointing the completed dependency tasks to TODO_COMPLETED and clarifying the follow-up guidance.
+
+**Completed Actions:**
+- Updated task references for T-030 and T-031 to TODO_COMPLETED.
+- Clarified recommended actions to follow TODO_COMPLETED notes when registry access returns.
+
+**Files:**
+- `DEPENDENCY_HEALTH.md`
+
+---
+
+### T-043: Update npm Registry Check Script Guidance to TODO_COMPLETED [P2] [DEP]
+**Type:** QUALITY
+**Priority:** P2
+**Category:** DEP (Dependency Health)
+**Completed:** 2026-01-07
+
+**Description:**
+Ensured the npm registry diagnostics script points users at the completed task archive for registry follow-ups.
+
+**Completed Actions:**
+- Updated the guidance message to reference TODO_COMPLETED tasks T-030 and T-031.
+
+**Files:**
+- `scripts/npm-registry-check.mjs`
+
+---
+
+### T-044: Update Coverage Guard Script Guidance to TODO_COMPLETED [P2] [DX]
+**Type:** QUALITY
+**Priority:** P2
+**Category:** DX (Developer Experience)
+**Completed:** 2026-01-07
+
+**Description:**
+Aligned the coverage guard script messaging with the archived registry task references.
+
+**Completed Actions:**
+- Updated the coverage dependency message to point to TODO_COMPLETED T-031.
+
+**Files:**
+- `scripts/ensure-vitest-coverage.mjs`
+
+---
+
 ## Completed - 2026-01-06
 
 ### T-035: Add Quick Command Cheatsheet to READMEAI [P2] [DX]

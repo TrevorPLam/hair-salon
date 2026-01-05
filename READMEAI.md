@@ -1,6 +1,6 @@
 # READMEAI - Repository Entrypoint
 
-> **Last Updated:** 2026-01-06
+> **Last Updated:** 2026-01-07
 > **Status:** Canonical  
 > **Purpose:** Primary navigation hub for developers and operators working in this repository
 
@@ -227,7 +227,7 @@ For complete documentation index: **[docs/DOCS_INDEX.md](docs/DOCS_INDEX.md)**
 ### Common Issues
 1. **Build errors:** Check [Project README - Troubleshooting](docs/start-here/README.md#troubleshooting)
 2. **ESLint warnings:** Review [CODE_AUDIT.md](CODE_AUDIT.md)
-3. **Dependency or npm registry issues:** Run `npm run check:npm-registry` to verify connectivity/proxy settings, then review [DEPENDENCY_HEALTH.md](DEPENDENCY_HEALTH.md) and TODO tasks (T-030, T-031) if connectivity errors (e.g., 403, `ENETUNREACH`) persist.
+3. **Dependency or npm registry issues:** Run `npm run check:npm-registry` to verify connectivity/proxy settings, then review [DEPENDENCY_HEALTH.md](DEPENDENCY_HEALTH.md) and TODO_COMPLETED entries (T-030, T-031) if connectivity errors (e.g., 403, `ENETUNREACH`) persist.
 4. **Security concerns:** Follow [SECURITY.md](SECURITY.md) reporting process
 
 ### Support

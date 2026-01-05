@@ -115,7 +115,7 @@ const printFailures = (results) => {
       '\nSuggested steps:',
       '- Clear proxy variables (HTTP_PROXY/HTTPS_PROXY/NO_PROXY) or point them to a working proxy.',
       '- Set registry explicitly: npm config set registry https://registry.npmjs.org/',
-      '- Retry in an environment with outbound access (see TODO.md tasks T-030, T-031).',
+      '- Retry in an environment with outbound access (see TODO_COMPLETED.md tasks T-030, T-031).',
       '- See docs/workflows/SETUP.md common issues for additional guidance.',
     ].join('\n'),
   )
