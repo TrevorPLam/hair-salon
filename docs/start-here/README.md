@@ -292,7 +292,7 @@ Run from the repository root:
 npm test
 
 # Coverage (requires @vitest/coverage-v8)
-npm install -D @vitest/coverage-v8   # only if not already installed
+npm install -D @vitest/coverage-v8   # only if not already installed; may fail if registry is blocked
 npm run test:coverage                # writes to coverage/
 
 # Linting and type-checking
