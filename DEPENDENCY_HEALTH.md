@@ -430,3 +430,64 @@ This prevents future churn and re-arguing.
 - npm is the canonical package manager (package-lock.json present).
 
 ---
+
+## Dependency Health Summary — 2026-01-05
+
+### Inventory:
+
+**Ecosystem(s):** JavaScript/TypeScript (npm)
+
+**Total Dependencies:**
+- Production: 23 packages
+- Development: 19 packages
+- Total: 42 packages
+
+**Critical Dependencies:**
+- **Framework:** next@14.2.18, react@^18.3.1, react-dom@^19.2.3
+- **External Services:** @sentry/nextjs@10.32.1, resend@6.6.0, @upstash/redis@^1.36.0, @upstash/ratelimit@^2.0.7
+- **Validation & Forms:** zod@4.3.5, react-hook-form@^7.54.2, @hookform/resolvers@^5.2.2
+- **Content Processing:** @next/mdx@^14.2.18, next-mdx-remote@^5.0.0, shiki@^3.20.0, gray-matter@^4.0.3
+- **Styling:** tailwindcss@^3.4.17, tailwind-merge@^2.6.0
+
+**Duplicates/Overlap Suspected:**
+- None observed in core categories.
+
+### Findings:
+
+**(P1) React/React DOM Version Mismatch**
+- **Issue:** `react` and `@types/react` are on 18.x while `react-dom` and `@types/react-dom` are on 19.x. Next.js 14 expects React 18.x, so mismatched majors can cause runtime, build, or type-checking issues.
+- **Risk:** Medium-High - potential runtime warnings or incompatibilities in rendering behavior.
+- **Recommendation:** Align `react-dom` to the same supported major as `react` (18.x) and validate builds.
+- **Status:** Not started (see T-050 in TODO.md)
+
+**(P2) Unused MDX Loader Dependencies**
+- **Issue:** `@mdx-js/loader` and `@mdx-js/react` are listed but not referenced in the codebase or Next.js config.
+- **Risk:** Low - adds unused install surface and potential future maintenance overhead.
+- **Recommendation:** Confirm they are not required by the current MDX setup and remove if unused.
+- **Status:** Not started (see T-051 in TODO.md)
+
+### Positive Findings:
+
+- **No Dependency Overlap:** Single libraries per major responsibility (validation, styling, MDX).
+- **Pinned Critical Versions:** Next.js, Zod, Resend, and Sentry remain pinned or tightly scoped.
+- **Modern Tooling:** Vitest, Playwright, and TypeScript are current.
+
+### Tasks Created:
+
+**T-050:** Align React DOM with React/Next.js Versions  
+**Priority:** P1  
+**Type:** QUALITY  
+
+**T-051:** Remove Unused MDX Loader Dependencies  
+**Priority:** P2  
+**Type:** DEADCODE  
+
+### Recommended Actions:
+
+1. **Short-term (P1):** Align `react-dom` to the React 18 line used by Next.js 14 and validate builds.
+2. **Short-term (P2):** Remove unused MDX loader dependencies once confirmed safe.
+
+### Notes / Assumptions:
+
+- Analysis performed without running package managers (inspection only).
+- Usage checks performed via source search for MDX loader imports.
