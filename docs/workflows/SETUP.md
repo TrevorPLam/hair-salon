@@ -61,8 +61,8 @@ npm run dev
 **Problem**: Contact form doesn't send emails  
 **Solution**: Verify RESEND_API_KEY is set correctly in .env
 
-**Problem**: `npm install` returns 403 or registry access errors  
-**Solution**: Run `npm run check:npm-registry` to confirm registry reachability and detect proxy variables. Ensure proxy variables are unset (`HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`) or pointed at a working proxy, set registry explicitly (`npm config set registry https://registry.npmjs.org/`), and retry. If network egress is blocked in the current environment, rerun dependency commands where the npm registry is reachable (see TODO.md tasks T-030 and T-031).
+**Problem**: `npm install` returns 403 or registry access errors
+**Solution**: Run `npm run check:npm-registry` to confirm registry reachability and detect proxy variables. Ensure proxy variables are unset (`HTTP_PROXY`, `HTTPS_PROXY`, `NO_PROXY`) or pointed at a working proxy, set registry explicitly (`npm config set registry https://registry.npmjs.org/`), and retry. The current sandbox returns HTTP 403 for `npm ping`, indicating blocked egress; rerun dependency commands where the npm registry is reachable (see `DEPENDENCY_HEALTH.md` for details) and record status codes for follow-ups.
 
 ## Additional Tools
 - **Formatting (write)**: `npm run format`

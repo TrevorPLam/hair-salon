@@ -156,7 +156,7 @@ Deprecated documentation retained for history:
 
 ### Unit Tests (`/__tests__`)
 - **Vitest**: Component and utility testing
-- **Coverage**: Maintained for critical paths
+- **Coverage**: Maintained for critical paths (requires `@vitest/coverage-v8` for `npm run test:coverage`)
 - **Location**: Mirrors source structure
 
 ### E2E Tests (`/tests/e2e`)

@@ -76,8 +76,9 @@ npm run format
 
 **Coverage guidance**
 - Requires the dev dependency `@vitest/coverage-v8`
+- If missing, install with `npm install -D @vitest/coverage-v8` before running coverage
 - Coverage reports are written to `coverage/` (open `coverage/index.html` for HTML output)
-- `npm run test:coverage` fails fast with guidance if the provider is missing (see TODO.md task T-031)
+- `npm run test:coverage` fails fast with guidance if the provider is missing (see `DEPENDENCY_HEALTH.md` for current registry status)
 
 ## Before Submitting PR
 1. Rebase on latest `main`

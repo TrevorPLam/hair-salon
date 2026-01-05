@@ -413,10 +413,15 @@ This prevents future churn and re-arguing.
 **Priority:** P2  
 **Type:** QUALITY  
 
+### Registry Diagnostics (2026-01-05):
+- `npm ping` returns **403 Forbidden** to https://registry.npmjs.org/-/ping in this environment.
+- Proxy variables are currently unset; failure is likely due to restricted egress.
+- Use `npm run check:npm-registry` before attempting lockfile regeneration and capture the exact status codes.
+
 ### Recommended Actions:
 
 1. **Short-term (P2):**
-   - Add `@vitest/coverage-v8` and regenerate `package-lock.json` when registry access is available (T-031, T-030). Run `npm run check:npm-registry` before retrying. The last attempt on 2026-01-05 failed with `ENETUNREACH` even after clearing HTTP(S)_PROXY/NO_PROXY.
+   - Add `@vitest/coverage-v8` and regenerate `package-lock.json` when registry access is available (T-031, T-030). Run `npm run check:npm-registry` before retrying. The last attempt on 2026-01-05 failed with HTTP 403 even with proxy variables cleared.
 
 ### Notes / Assumptions:
 

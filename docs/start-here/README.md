@@ -283,6 +283,25 @@ colors: {
 - [ ] Sitemap accessible at `/sitemap.xml`
 - [ ] Robots.txt accessible at `/robots.txt`
 
+### Automated Testing
+
+Run from the repository root:
+
+```bash
+# Unit tests
+npm test
+
+# Coverage (requires @vitest/coverage-v8)
+npm install -D @vitest/coverage-v8   # only if not already installed; may fail if registry is blocked
+npm run test:coverage                # writes to coverage/
+
+# Linting and type-checking
+npm run lint
+npm run type-check
+```
+
+> `npm run test:coverage` calls `scripts/ensure-vitest-coverage.mjs`, which fails fast with guidance if the coverage provider is missing.
+
 ## 📈 Performance
 
 Current Lighthouse scores (target):

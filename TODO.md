@@ -7,61 +7,13 @@
 ---
 
 ## P0 - Critical (Correctness, Security, Blockers)
+- _No active tasks_
 
 ## P1 - High (Reliability, Core UX, Maintainability)
+- _No active tasks_
 
 ## P2 - Medium (Hardening, Polish, Documentation)
-
-### T-030: Regenerate package-lock.json for @next/mdx Alignment [P2] [QUALITY]
-**Type:** QUALITY  
-**Priority:** P2  
-**Category:** DEP (Dependency Health)  
-**Effort:** S
-
-**Context:**  
-Registry access was blocked during the @next/mdx alignment, so the lockfile needs regeneration in an environment with npm registry access to restore the correct integrity metadata.
-Current environment cannot reach the npm registry (`ENETUNREACH` even with proxy vars cleared); rerun where registry access is permitted.
-
-**Acceptance Criteria:**
-- [ ] Run `npm install --package-lock-only` in an environment with registry access
-- [ ] Ensure @next/mdx resolves to 14.2.18 with valid integrity data
-- [ ] Confirm no other dependency drift is introduced
-- [ ] Status note added if blocked due to registry access
-
-**Status:** Blocked in this environment (2026-01-05). Registry calls return `ENETUNREACH`. This occurred even after clearing HTTP(S)_PROXY/NO_PROXY via env overrides and forcing the registry during `npm install --package-lock-only` and `npm ping`. Retry when outbound access is available; run `npm run check:npm-registry` first.
-
-**References:**
-- File: `package-lock.json`
-
-**Dependencies:** None
-
----
-
-### T-031: Add Vitest Coverage Dependency [P2] [QUALITY]
-**Type:** QUALITY  
-**Priority:** P2  
-**Category:** DX (Developer Experience)  
-**Effort:** S
-
-**Context:**  
-Running `npm run test:coverage` prompts for `@vitest/coverage-v8`, indicating the coverage provider is missing.
-Current environment cannot reach the npm registry (`ENETUNREACH` even with proxy vars cleared); add the dependency and regenerate the lockfile where registry access is permitted.
-
-**Acceptance Criteria:**
-- [ ] Add `@vitest/coverage-v8` as a dev dependency
-- [ ] Update `package-lock.json` with registry-backed integrity data
-- [ ] Verify `npm run test:coverage` runs without prompting
-- [ ] Status note added if blocked due to registry access
-
-**Status:** Blocked in this environment (2026-01-05). Registry access fails with `ENETUNREACH`. This occurred even after clearing HTTP(S)_PROXY/NO_PROXY via env overrides and forcing the registry during `npm install --package-lock-only` and `npm ping`. Retry once outbound connectivity is restored; confirm with `npm run check:npm-registry`.
-
-**References:**
-- File: `package.json`
-- Config: `vitest.config.ts`
-
-**Dependencies:** None
-
----
+- _No active tasks_
 
 ## References
 
