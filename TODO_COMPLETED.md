@@ -83,7 +83,7 @@ Ensured the npm registry diagnostics script points users at the completed task a
 ### T-050: Align React DOM with React/Next.js Versions [P1] [QUALITY]
 **Type:** QUALITY
 **Priority:** P1
-**Category:** QUALITY
+**Category:** DEP (Dependency Health)
 **Completed:** 2026-01-05
 
 **Description:**
@@ -102,7 +102,7 @@ Aligned `react-dom` and `@types/react-dom` with the React 18 major version suppo
 ### T-051: Remove Unused MDX Loader Dependencies [P2] [DEADCODE]
 **Type:** DEADCODE
 **Priority:** P2
-**Category:** DEADCODE
+**Category:** DEP (Dependency Health)
 **Completed:** 2026-01-05
 
 **Description:**
