@@ -318,10 +318,10 @@ For support, email contact@yourdedicatedmarketer.com or visit our [contact page]
 ## 📚 Additional Resources
 
 ### Documentation
-- [Documentation Index](docs/DOCS_INDEX.md) - Complete documentation navigation
-- [Repository Map](docs/REPO_MAP.md) - Repository structure overview
-- [Contributing Guide](docs/workflows/CONTRIBUTING.md) - Contribution guidelines
-- [Setup Guide](docs/workflows/SETUP.md) - Detailed setup instructions
+- [Documentation Index](../DOCS_INDEX.md) - Complete documentation navigation
+- [Repository Map](../REPO_MAP.md) - Repository structure overview
+- [Contributing Guide](../workflows/CONTRIBUTING.md) - Contribution guidelines
+- [Setup Guide](../workflows/SETUP.md) - Detailed setup instructions
 
 ### External Resources
 - [Next.js Documentation](https://nextjs.org/docs)

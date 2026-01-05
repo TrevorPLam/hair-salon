@@ -1,6 +1,6 @@
 # Repository Map
 
-> Last Updated: 2026-01-03  
+> Last Updated: 2026-01-05  
 > Canonical Status: Canonical  
 > Purpose: High-level overview of repository structure and file organization
 
@@ -8,6 +8,12 @@
 
 ```
 Your-Dedicated-Marketer/
+├── READMEAI.md              # Documentation entrypoint
+├── DOCS_ROOT.md             # Documentation governance
+├── TODO.md                  # Task backlog
+├── TODO_COMPLETED.md        # Completed tasks
+├── DECISIONS.md             # Architectural decisions
+├── SECURITY.md              # Security policy
 ├── app/                     # Next.js 14 App Router pages
 │   ├── about/              # About page
 │   ├── api/                # API routes (contact form, etc.)
@@ -40,6 +46,8 @@ Your-Dedicated-Marketer/
 │   └── e2e/                # Playwright E2E tests
 │
 └── docs/                   # Documentation (organized by category)
+    ├── start-here/         # Project README and onboarding
+    │   └── README.md
     ├── architecture/       # Architecture and design docs
     │   ├── ARCHITECTURE.md
     │   ├── CONTEXT.md
@@ -51,6 +59,7 @@ Your-Dedicated-Marketer/
     │   ├── CONTENT-STRATEGY.md
     │   └── DEVELOPMENT-ROADMAP.md
     ├── ops/                # Operations and deployment docs
+    │   ├── CODE_AUDIT_SUMMARY.md
     │   ├── DEPLOYMENT.md
     │   └── IMPROVEMENTS-SUMMARY.md
     ├── workflows/          # Workflow and process docs
@@ -58,6 +67,8 @@ Your-Dedicated-Marketer/
     │   ├── CONTRIBUTING.md
     │   └── SETUP.md
     ├── ARCHIVE/            # Deprecated documentation
+    │   ├── 2026/
+    │   │   └── TODO-SECURITY-REVIEW.md
     │   └── README-OLD.md
     ├── DOCS_INDEX.md       # Documentation navigation hub
     ├── REPO_MAP.md         # This file
@@ -70,10 +81,11 @@ Your-Dedicated-Marketer/
 
 Control plane and essential operator docs (see [DOCS_ROOT.md](../DOCS_ROOT.md) for governance):
 
-- **README.md** - Project overview and getting started
+- **READMEAI.md** - Documentation entrypoint
 - **DOCS_ROOT.md** - Documentation organization rules
 - **CODE_AUDIT.md** - Code audit pipeline
 - **TODO.md** - Current tasks and priorities
+- **TODO_COMPLETED.md** - Completed task archive
 - **CHANGELOG.md** - Version history
 - **DECISIONS.md** - Architectural decisions
 - **SECURITY.md** - Security policy
@@ -82,6 +94,10 @@ Control plane and essential operator docs (see [DOCS_ROOT.md](../DOCS_ROOT.md) f
 - **RELEASE_CHECKLIST.md** - Release procedures
 
 ## 🗂️ Documentation Categories
+
+### `/docs/start-here/`
+User-facing entrypoints and onboarding:
+- README.md - Project overview, setup, and troubleshooting (canonical)
 
 ### `/docs/architecture/`
 Technical architecture, system design, and component specifications:
@@ -101,12 +117,18 @@ Product strategy, planning, and service definitions:
 Operations, deployment, and maintenance:
 - DEPLOYMENT.md - Deployment procedures
 - IMPROVEMENTS-SUMMARY.md - System improvements and enhancements
+- CODE_AUDIT_SUMMARY.md - Results from the latest CODE_AUDIT execution
 
 ### `/docs/workflows/`
 Process documentation and workflow guides:
 - USERTODO.md - User workflow tasks
 - CONTRIBUTING.md - Contribution guidelines
 - SETUP.md - Local development setup
+
+### `/docs/ARCHIVE/`
+Deprecated documentation retained for history:
+- README-OLD.md - Deprecated README replaced by Project README
+- 2026/TODO-SECURITY-REVIEW.md - Deprecated security task list consolidated into TODO.md
 
 ## 🏗️ Key Technical Directories
 
@@ -162,12 +184,6 @@ Root level configuration:
 3. **For tests**: Check `/__tests__` (unit) or `/tests` (E2E)
 4. **For docs**: Check [docs/DOCS_INDEX.md](./DOCS_INDEX.md)
 5. **For tasks**: Check [TODO.md](../TODO.md)
-
-## 📊 Metrics
-
-- **Total Directories**: 27 main directories
-- **Documentation Categories**: 5 organized categories
-- **Root Control Docs**: 10 essential files
 
 ---
 

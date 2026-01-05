@@ -1,6 +1,6 @@
 # Documentation Index
 
-> Last Updated: 2026-01-03  
+> Last Updated: 2026-01-05  
 > Canonical Status: Canonical  
 > Purpose: Central navigation hub for all repository documentation
 
@@ -8,15 +8,16 @@
 
 New to the project? Start with these essential documents:
 
-1. **[README.md](../README.md)** - Project overview, features, and getting started
+1. **[Project README](./start-here/README.md)** - Project overview, features, and getting started
 2. **[DOCS_ROOT.md](../DOCS_ROOT.md)** - Documentation organization and governance
 3. **[TODO.md](../TODO.md)** - Current tasks and priorities
 4. **[REPO_MAP.md](./REPO_MAP.md)** - Repository structure and organization
+5. **[READMEAI.md](../READMEAI.md)** - Documentation entrypoint and navigation
 
 ## 📋 By Task
 
 ### Setting Up & Running
-- [README.md](../README.md) - Installation and setup instructions
+- [Project README](./start-here/README.md) - Installation and setup instructions
 - [DEPLOYMENT.md](./ops/DEPLOYMENT.md) - Deployment procedures
 
 ### Development
@@ -46,6 +47,7 @@ New to the project? Start with these essential documents:
 ### Operations & Deployment
 - [DEPLOYMENT.md](./ops/DEPLOYMENT.md) - Deployment guide
 - [IMPROVEMENTS-SUMMARY.md](./ops/IMPROVEMENTS-SUMMARY.md) - System improvements
+- [CODE_AUDIT_SUMMARY.md](./ops/CODE_AUDIT_SUMMARY.md) - Latest code audit results
 - [RELEASE_CHECKLIST.md](../RELEASE_CHECKLIST.md) - Release checklist
 
 ### Technical Guides
@@ -57,11 +59,12 @@ New to the project? Start with these essential documents:
 - [USERTODO.md](./workflows/USERTODO.md) - User workflow tasks
 - [CONTRIBUTING.md](./workflows/CONTRIBUTING.md) - Contribution guidelines
 - [SETUP.md](./workflows/SETUP.md) - Local development setup
+- [READMEAI.md](../READMEAI.md) - Repository entrypoint and navigation
 
 ## 👥 By Role
 
 ### For Developers
-- [README.md](../README.md) - Getting started
+- [Project README](./start-here/README.md) - Getting started
 - [SETUP.md](./workflows/SETUP.md) - Local development setup
 - [CONTRIBUTING.md](./workflows/CONTRIBUTING.md) - Development workflow
 - [CODEBASE-ANALYSIS.md](./architecture/CODEBASE-ANALYSIS.md) - Code structure
@@ -80,7 +83,7 @@ New to the project? Start with these essential documents:
 These are the single source of truth for their respective topics:
 
 ### Root Level (Control Plane)
-- **[README.md](../README.md)** - Project entrypoint
+- **[READMEAI.md](../READMEAI.md)** - Documentation entrypoint
 - **[DOCS_ROOT.md](../DOCS_ROOT.md)** - Documentation governance
 - **[CODE_AUDIT.md](../CODE_AUDIT.md)** - Code audit pipeline
 - **[TODO.md](../TODO.md)** - Task tracking
@@ -111,11 +114,13 @@ These are the single source of truth for their respective topics:
 - **[USERTODO.md](./workflows/USERTODO.md)** - User workflows
 - **[CONTRIBUTING.md](./workflows/CONTRIBUTING.md)** - Contribution guidelines
 - **[SETUP.md](./workflows/SETUP.md)** - Development setup
+- **[Project README](./start-here/README.md)** - User-facing overview and setup
 
 ## 📦 Archive
 
 Deprecated documentation is stored in `docs/ARCHIVE/`:
-- [README-OLD.md](./ARCHIVE/README-OLD.md) - Deprecated: Replaced by current README.md
+- [README-OLD.md](./ARCHIVE/README-OLD.md) - Deprecated: Replaced by Project README
+- [TODO-SECURITY-REVIEW.md](./ARCHIVE/2026/TODO-SECURITY-REVIEW.md) - Deprecated: superseded by TODO.md
 
 ---
 
@@ -134,4 +139,4 @@ This index should be updated whenever:
 - Documentation is deprecated or archived
 - New categories are created
 
-Last reviewed: 2026-01-03
+Last reviewed: 2026-01-05

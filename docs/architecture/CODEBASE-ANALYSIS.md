@@ -447,7 +447,7 @@ npm install --save-dev @playwright/test
 
 ### 8.1 Documentation Strengths ✅
 
-✅ **Excellent README.md**: Comprehensive setup guide
+✅ **Excellent Project README**: Comprehensive setup guide (docs/start-here/README.md)
 ✅ **Detailed DEPLOYMENT.md**: Step-by-step deployment
 ✅ **.env.example**: Well documented
 ✅ **Architecture docs**: ADR format used

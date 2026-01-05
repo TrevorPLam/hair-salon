@@ -268,7 +268,7 @@ No secrets are committed to the repository:
 #### Development
 - Example file: `env.example` (no actual secrets)
 - Local config: `.env.local` (gitignored)
-- Required variables documented in README.md
+- Required variables documented in docs/start-here/README.md
 
 #### Production
 - Secrets stored in deployment platform (Cloudflare/Vercel)

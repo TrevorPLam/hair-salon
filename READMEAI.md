@@ -10,7 +10,7 @@
 
 **New to this repository?** Start here:
 
-1. **[README.md](README.md)** - Project overview, setup instructions, and features
+1. **[Project README](docs/start-here/README.md)** - Overview, setup instructions, and features
 2. **[docs/DOCS_INDEX.md](docs/DOCS_INDEX.md)** - Complete documentation navigation
 3. **[docs/REPO_MAP.md](docs/REPO_MAP.md)** - Repository structure overview
 4. **[TODO.md](TODO.md)** - Current task backlog and priorities
@@ -45,22 +45,24 @@
 ```
 Your-Dedicated-Marketer/
 ├── READMEAI.md              ← You are here (entrypoint)
-├── README.md                 ← User-facing project documentation
-├── TODO.md                   ← Task backlog
-├── DECISIONS.md              ← Architecture decisions
-├── SECURITY.md               ← Security policy
+├── DOCS_ROOT.md             ← Documentation governance
+├── TODO.md                  ← Task backlog
+├── TODO_COMPLETED.md        ← Completed tasks
+├── DECISIONS.md             ← Architecture decisions
+├── SECURITY.md              ← Security policy
 ├── docs/
-│   ├── DOCS_INDEX.md         ← Documentation navigation hub
-│   ├── REPO_MAP.md           ← Repository structure guide
-│   ├── workflows/            ← Development workflows
-│   ├── architecture/         ← System design documents
-│   ├── ops/                  ← Operations and deployment
-│   ├── product/              ← Product documentation
-│   └── ARCHIVE/              ← Deprecated documentation
-├── app/                      ← Next.js app router pages
-├── components/               ← React components
-├── lib/                      ← Utilities and business logic
-└── content/                  ← Blog posts and content
+│   ├── start-here/          ← User-facing README + onboarding
+│   ├── DOCS_INDEX.md        ← Documentation navigation hub
+│   ├── REPO_MAP.md          ← Repository structure guide
+│   ├── workflows/           ← Development workflows
+│   ├── architecture/        ← System design documents
+│   ├── ops/                 ← Operations and deployment
+│   ├── product/             ← Product documentation
+│   └── ARCHIVE/             ← Deprecated documentation
+├── app/                     ← Next.js app router pages
+├── components/              ← React components
+├── lib/                     ← Utilities and business logic
+└── content/                 ← Blog posts and content
 ```
 
 ---
@@ -79,7 +81,7 @@ cp env.example .env.local
 npm run dev
 ```
 
-**More details:** [README.md - Getting Started](README.md#getting-started)
+**More details:** [Project README - Getting Started](docs/start-here/README.md#getting-started)
 
 ### Running Quality Checks
 ```bash
@@ -105,7 +107,7 @@ npm run build
 npm run start
 ```
 
-**More details:** [README.md - Deployment](README.md#deployment)
+**More details:** [Project README - Deployment](docs/start-here/README.md#deployment)
 
 ---
 
@@ -156,14 +158,14 @@ This project uses Next.js 14 with the App Router, featuring:
 - Case studies: Data in `lib/case-studies.ts`
 - Static pages: React components in `app/`
 
-**More details:** [README.md - Content Management](README.md#content-management)
+**More details:** [Project README - Content Management](docs/start-here/README.md#content-management)
 
 ---
 
 ## 🔍 Finding Information
 
 ### By Topic
-- **Setup & Installation:** [README.md](README.md)
+- **Setup & Installation:** [Project README](docs/start-here/README.md)
 - **Architecture Decisions:** [DECISIONS.md](DECISIONS.md)
 - **Security Practices:** [SECURITY.md](SECURITY.md)
 - **Code Standards:** [CODE_AUDIT.md](CODE_AUDIT.md)
@@ -171,7 +173,7 @@ This project uses Next.js 14 with the App Router, featuring:
 - **Deployment:** [docs/ops/](docs/ops/)
 
 ### By Role
-- **Developer:** Start with [README.md](README.md) → [docs/REPO_MAP.md](docs/REPO_MAP.md)
+- **Developer:** Start with [Project README](docs/start-here/README.md) → [docs/REPO_MAP.md](docs/REPO_MAP.md)
 - **Operator/Maintainer:** Review [TODO.md](TODO.md) → [SECURITY_REVIEW.md](SECURITY_REVIEW.md)
 - **Contributor:** Read [docs/workflows/CONTRIBUTING.md](docs/workflows/CONTRIBUTING.md)
 
@@ -183,7 +185,7 @@ For complete documentation index: **[docs/DOCS_INDEX.md](docs/DOCS_INDEX.md)**
 ## 🆘 Getting Help
 
 ### Common Issues
-1. **Build errors:** Check [README.md - Troubleshooting](README.md#troubleshooting)
+1. **Build errors:** Check [Project README - Troubleshooting](docs/start-here/README.md#troubleshooting)
 2. **ESLint warnings:** Review [CODE_AUDIT.md](CODE_AUDIT.md)
 3. **Dependency issues:** See [DEPENDENCY_HEALTH.md](DEPENDENCY_HEALTH.md)
 4. **Security concerns:** Follow [SECURITY.md](SECURITY.md) reporting process

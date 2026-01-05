@@ -3,7 +3,7 @@
 > **Last Updated:** 2026-01-03  
 > **Canonical Status:** Canonical  
 > **Purpose:** Step-by-step local development setup guide  
-> **See Also:** [README.md](../../README.md), [CONTRIBUTING.md](./CONTRIBUTING.md), [DOCS_INDEX.md](../DOCS_INDEX.md)
+> **See Also:** [Project README](../start-here/README.md), [CONTRIBUTING.md](./CONTRIBUTING.md), [DOCS_INDEX.md](../DOCS_INDEX.md)
 
 ## Prerequisites
 - Node.js 20.x LTS or higher
