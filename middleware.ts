@@ -50,6 +50,10 @@ const MAX_BODY_SIZE_BYTES = 1024 * 1024 // 1MB payload limit for POST requests
  * 3. Apply security headers (CSP, X-Frame-Options, etc.)
  * 4. Return response with security headers
  * 
+ * **Environment Differences:**
+ * - Development: CSP allows `unsafe-eval` for Fast Refresh
+ * - Production: CSP removes `unsafe-eval` and enables HSTS
+ * 
  * @param request - Next.js request object
  * @returns Response with security headers applied
  */

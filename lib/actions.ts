@@ -25,6 +25,7 @@
 'use server'
 import { createHash } from 'crypto'
 import { headers } from 'next/headers'
+import { z } from 'zod'
 import { logError, logWarn, logInfo } from './logger'
 import { escapeHtml, sanitizeEmailSubject, textToHtmlParagraphs } from './sanitize'
 import { validatedEnv } from './env'
@@ -181,7 +182,21 @@ function checkRateLimitInMemory(identifier: string): boolean {
     rateLimitMap.delete(identifier)
   }
 
- **
+  const existing = rateLimitMap.get(identifier)
+  if (!existing) {
+    rateLimitMap.set(identifier, { count: 1, resetAt: now + 60 * 60 * 1000 }) // 1 hour
+    return true
+  }
+
+  if (existing.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return false
+  }
+
+  existing.count++
+  return true
+}
+
+/**
  * Check rate limits for both email and IP address.
  * 
  * **Dual Rate Limiting:**
@@ -196,22 +211,7 @@ function checkRateLimitInMemory(identifier: string): boolean {
  * @param email - User's email address (not hashed for email-based limiting)
  * @param clientIp - Client IP address (hashed before storage)
  * @returns true if both limits pass, false if either limit exceeded
- */p.get(identifier)
-
-  if (!existing) {
-    rateLimitMap.set(identifier, { count: 1, resetAt: now + 60 * 60 * 1000 }) // 1 hour
-    return true
-  }
-
-  if (existing.count >= RATE_LIMIT_MAX_REQUESTS) {
-    return false
-  }
-
-  existing.count++
-  return true
-}
-
-// Unified rate limiting check
+ */
 async function checkRateLimit(email: string, clientIp: string): Promise<boolean> {
   const limiter = await getRateLimiter()
   const emailIdentifier = `email:${email}`
@@ -222,6 +222,21 @@ async function checkRateLimit(email: string, clientIp: string): Promise<boolean>
     const emailLimit = await limiter.limit(emailIdentifier)
     if (!emailLimit.success) {
       return false
+    }
+
+    const ipLimit = await limiter.limit(ipIdentifier)
+    return ipLimit.success
+  } else {
+    // Fall back to in-memory rate limiting
+    const emailAllowed = checkRateLimitInMemory(emailIdentifier)
+    if (!emailAllowed) {
+      return false
+    }
+
+    return checkRateLimitInMemory(ipIdentifier)
+  }
+}
+
 /**
  * Submit contact form with validation, rate limiting, sanitization, and email delivery.
  * 
@@ -282,27 +297,20 @@ async function checkRateLimit(email: string, clientIp: string): Promise<boolean>
  * }
  * ```
  */
-    }
-
-    const ipLimit = await limiter.limit(ipIdentifier)
-    return ipLimit.success
-  } else {
-    // Fall back to in-memory rate limiting
-    const emailAllowed = checkRateLimitInMemory(emailIdentifier)
-    if (!emailAllowed) {
-      return false
-    }
-
-    return checkRateLimitInMemory(ipIdentifier)
-  }
-}
-
 export async function submitContactForm(data: ContactFormData) {
   try {
     // Validate the data
     const validatedData = contactFormSchema.parse(data)
     const clientIp = getClientIp()
     const hashedIp = hashIdentifier(clientIp)
+
+    if (validatedData.website && validatedData.website.length > 0) {
+      logWarn('Honeypot field triggered for contact form submission')
+      return {
+        success: false,
+        message: 'Unable to submit your message. Please try again.',
+      }
+    }
 
     // Rate limiting check
     const rateLimitPassed = await checkRateLimit(validatedData.email, clientIp)

@@ -33,56 +33,17 @@ This file is the single source of truth for actionable work. If another document
 ## 🔴 PHASE 0: Build Blockers (P0)
 > These MUST be fixed before any other work. Build is currently broken.
 
-### T-001: Fix corrupted JSDoc and syntax in lib/actions.ts
-Priority: P0
-Type: BUG
-Owner: AGENT
-Status: READY
-Context:
-- **BUILD BLOCKER**: `lib/actions.ts` has corrupted JSDoc comments breaking TypeScript compilation
-- Line 184: ` **` should be `/**` (missing opening slash)
-- Line 200: `*/p.get(identifier)` — comment end merged with code `rateLimitMap.get(identifier)`
-- Missing function body for `checkRateLimitInMemory` (last ~10 lines got overwritten by JSDoc)
-- Discovered during deep-dive audit 2026-01-06
-Acceptance Criteria:
-- [ ] T-001.1: Fix line 184 JSDoc opening (`/**` not ` **`)
-- [ ] T-001.2: Restore line 200 — separate `*/` from `rateLimitMap.get(identifier)`
-- [ ] T-001.3: Restore missing function body for `checkRateLimitInMemory`
-- [ ] T-001.4: Run `npm run type-check` — must pass with 0 errors
-- [ ] T-001.5: Run `npm run build` — must succeed
-References:
-- `/lib/actions.ts` (lines 175-215)
-Dependencies: None
-Effort: S
-
-### T-002: Add missing Zod import to lib/actions.ts
-Priority: P0
-Type: BUG
-Owner: AGENT
-Status: READY
-Context:
-- **BUILD BLOCKER**: `z.ZodError` used on line 390 but `z` is not imported
-- Only `contactFormSchema` is imported from `@/lib/contact-form-schema`
-- Causes TypeScript error: `Cannot find name 'z'`
-Acceptance Criteria:
-- [ ] T-002.1: Add `import { z } from 'zod'` to imports section
-- [ ] T-002.2: Verify no other unresolved references
-- [ ] T-002.3: Run `npm run type-check` — must pass
-References:
-- `/lib/actions.ts` (line 390)
-Dependencies: T-001
-Effort: XS
-
 ### T-003: Verify and fix React/React-DOM version mismatch
 Priority: P0
 Type: DEPENDENCY
 Owner: AGENT
-Status: READY
+Status: BLOCKED
 Context:
 - `react: ^19.2.3` but `react-dom: ^18.3.1` — major version mismatch
 - `@types/react: ^19.2.7` but `@types/react-dom: ^18.3.17` — type mismatch
 - May cause runtime hydration errors or undefined behavior
 - Should be same major version
+- Blocked: `npm install` failed with 403 for `@types/react-dom` (registry access)
 Acceptance Criteria:
 - [ ] T-003.1: Update `react-dom` to `^19.x` to match `react`
 - [ ] T-003.2: Update `@types/react-dom` to match React 19
@@ -91,8 +52,27 @@ Acceptance Criteria:
 - [ ] T-003.5: Run `npm run test` — existing tests must pass
 References:
 - `/package.json` (lines 36-37, 55-56)
-Dependencies: T-001, T-002
+Dependencies: T-001, T-002, T-046
 Effort: S
+
+### T-046: Unblock npm registry access for React 19 dependencies
+Priority: P0
+Type: DEPENDENCY
+Owner: Trevor
+Status: READY
+Context:
+- `npm install` returned 403 when fetching `@types/react-dom`
+- Blocks T-003 dependency alignment work
+- Must resolve registry access or allowlist packages
+Acceptance Criteria:
+- [ ] T-046.1: Provide registry access or credentials that allow downloading `@types/react-dom`
+- [ ] T-046.2: Run `npm install` without 403 errors
+- [ ] T-046.3: Confirm `package-lock.json` updates for React 19 alignment
+References:
+- `/package.json`
+- npm debug log in `/root/.npm/_logs/2026-01-06T03_29_03_879Z-debug-0.log`
+Dependencies: None
+Effort: XS
 
 ---
 
@@ -119,29 +99,6 @@ References:
 - `/app/api/og/route.tsx`
 - `/lib/sanitize.ts`
 Dependencies: T-001, T-002, T-003
-Effort: S
-
-### T-005: Add honeypot field for spam prevention
-Priority: P1
-Type: SECURITY
-Owner: AGENT
-Status: READY
-Context:
-- Rate limiting exists but honeypot provides zero-cost spam reduction
-- Hidden field that bots fill but humans don't see
-- Industry standard anti-spam technique
-Acceptance Criteria:
-- [ ] T-005.1: Add hidden `website` field to contact form schema (must be empty)
-- [ ] T-005.2: Add visually hidden input to ContactForm component
-- [ ] T-005.3: Reject submissions where honeypot is filled in `lib/actions.ts`
-- [ ] T-005.4: Add unit test for honeypot rejection
-- [ ] T-005.5: Document in SECURITY.md
-References:
-- `/components/ContactForm.tsx`
-- `/lib/contact-form-schema.ts`
-- `/lib/actions.ts`
-- `/SECURITY.md`
-Dependencies: T-001, T-002
 Effort: S
 
 ### T-006: Implement comprehensive accessibility audit
@@ -495,62 +452,6 @@ Acceptance Criteria:
 References:
 - `/lib/actions.ts`
 Dependencies: T-001, T-002
-Effort: S
-
-### T-023: Document middleware.ts security headers
-Priority: P1
-Type: DOCS
-Owner: AGENT
-Status: READY
-Context:
-- Security perimeter with minimal documentation
-- CSP rules need rationale explanation
-- 'unsafe-inline' needs justification
-Acceptance Criteria:
-- [ ] T-023.1: Add JSDoc to middleware function
-- [ ] T-023.2: Document each security header's purpose
-- [ ] T-023.3: Explain CSP directives (why unsafe-inline)
-- [ ] T-023.4: Document production vs development differences
-- [ ] T-023.5: Add future hardening notes (nonce-based CSP)
-References:
-- `/middleware.ts`
-Dependencies: None
-Effort: S
-
-### T-024: Enhance lib/sanitize.ts security docs
-Priority: P1
-Type: DOCS
-Owner: AGENT
-Status: READY
-Context:
-- Security-critical XSS prevention code
-- Missing attack examples and usage scenarios
-Acceptance Criteria:
-- [ ] T-024.1: Add XSS attack examples to escapeHtml JSDoc
-- [ ] T-024.2: Document HTML entity encoding specifics
-- [ ] T-024.3: Add references to OWASP guidelines
-- [ ] T-024.4: Document when to use each function
-References:
-- `/lib/sanitize.ts`
-Dependencies: None
-Effort: S
-
-### T-025: Add JSDoc to lib/env.ts
-Priority: P1
-Type: DOCS
-Owner: AGENT
-Status: READY
-Context:
-- Environment validation is critical for deployment
-- Helper functions lack usage docs
-Acceptance Criteria:
-- [ ] T-025.1: Document env schema validation rules
-- [ ] T-025.2: Document behavior on validation failure
-- [ ] T-025.3: Add JSDoc to getBaseUrl and other helpers
-- [ ] T-025.4: Add examples for different environments
-References:
-- `/lib/env.ts`
-Dependencies: None
 Effort: S
 
 ### T-026: Add JSDoc to ContactForm component
@@ -919,26 +820,25 @@ Effort: L
 
 | Phase | Priority | Count | Focus |
 |-------|----------|-------|-------|
-| 0 | P0 | 3 | Build blockers — MUST FIX FIRST |
-| 1 | P1 | 6 | Security & stability |
+| 0 | P0 | 2 | Build blockers — MUST FIX FIRST |
+| 1 | P1 | 5 | Security & stability |
 | 2 | P2 | 12 | Quality & testing |
-| 3 | P1-P2 | 10 | Documentation |
+| 3 | P1-P2 | 7 | Documentation |
 | 4 | P3 | 14 | Enhancements |
-| **Total** | | **45** | |
+| **Total** | | **40** | |
 
 ### Critical Path
 ```
-T-001 (fix actions.ts syntax)
-  └→ T-002 (add zod import)
-      └→ T-003 (fix react-dom version)
-          └→ T-004+ (all other tasks)
+T-046 (unblock npm registry access)
+  └→ T-003 (fix react-dom version)
+      └→ T-004+ (all other tasks)
 ```
 
 ### Owner Summary
 | Owner | Count | Notes |
 |-------|-------|-------|
-| AGENT | 42 | Codex/Claude Code/Copilot executable |
-| Trevor | 3 | T-009, T-020 (external setup required) |
+| AGENT | 36 | Codex/Claude Code/Copilot executable |
+| Trevor | 4 | T-009, T-020, T-046 (external setup required) |
 
 ---
 
@@ -946,4 +846,3 @@ T-001 (fix actions.ts syntax)
 - Authority order: `CODEBASECONSTITUTION.md` > `READMEAI.md` > `TODO.md`
 - No automation may rewrite this file; scripts may generate `TODO.generated.md` (informational only)
 - When completing tasks, move to `TODOCOMPLETED.md` with completion date
-

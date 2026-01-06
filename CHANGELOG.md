@@ -9,9 +9,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added `npm run check:npm-registry` to diagnose registry connectivity and proxy issues before running dependency commands
+- Added a contact form honeypot field to block bot submissions
 
 ### Security
 - Added hashed IP + email rate limiting for contact form submissions
+
+### Fixed
+- Restored in-memory rate limiting logic and JSDoc formatting in `lib/actions.ts`
+
+### Documentation
+- Expanded middleware security header docs and environment helper documentation
+- Clarified sanitize utility usage guidance
 
 ### Changed
 - Removed deprecated `api` and `sentry` keys from `next.config.mjs`

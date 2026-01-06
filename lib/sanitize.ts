@@ -183,6 +183,11 @@ export function textToHtmlParagraphs(text: string): string {
  * 
  * **Note:** This does NOT validate email format (use Zod schema for that)
  * 
+ * **When to use:**
+ * - Normalizing emails before storage or comparison
+ * - Lowercasing emails for lookup keys
+ * - Enforcing max length to avoid payload abuse
+ * 
  * @param email - Email address to sanitize
  * @returns Normalized email address
  */
@@ -208,6 +213,11 @@ export function sanitizeEmail(email: string): string {
  * - International characters: José García, 李明, Мария Петрова
  * - Hyphenated names: Jean-Luc Picard
  * - Apostrophes: O'Brien, D'Angelo
+ * 
+ * **When to use:**
+ * - Displaying user-provided names in HTML or emails
+ * - Logging names (after sanitization) for support contexts
+ * - Rendering names in confirmation messages
  * 
  * @param name - User name to sanitize
  * @returns Sanitized name (safe for display)

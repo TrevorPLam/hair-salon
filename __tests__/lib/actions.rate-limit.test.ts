@@ -17,6 +17,7 @@ vi.mock('next/headers', () => ({
 const buildPayload = (email: string) => ({
   name: 'Test User',
   email,
+  website: '',
   message: 'This is a sufficiently long message for validation.',
 })
 
@@ -52,5 +53,14 @@ describe('contact form rate limiting', () => {
     const next = await submitContactForm(buildPayload('fresh@example.com'))
 
     expect(next.success).toBe(true)
+  })
+
+  it('rejects submissions when the honeypot is filled', async () => {
+    const response = await submitContactForm({
+      ...buildPayload('bot@example.com'),
+      website: 'https://spam.example.com',
+    })
+
+    expect(response.success).toBe(false)
   })
 })
