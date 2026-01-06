@@ -39,6 +39,7 @@
  */
 
 import { isDevelopment, isTest } from './env'
+import { logInfo } from './logger'
 
 /**
  * Analytics event structure following GA4 conventions.
@@ -61,7 +62,7 @@ interface AnalyticsEvent {
  */
 export function trackEvent({ action, category, label, value }: AnalyticsEvent) {
   if (isDevelopment() || isTest()) {
-    console.log('[Analytics]', { action, category, label, value })
+    logInfo('Analytics event', { action, category, label, value })
     return
   }
 
@@ -95,7 +96,7 @@ export function trackEvent({ action, category, label, value }: AnalyticsEvent) {
  */
 export function trackPageView(url: string) {
   if (isDevelopment() || isTest()) {
-    console.log('[Analytics] Page view:', url)
+    logInfo('Analytics page view', { url })
     return
   }
 
