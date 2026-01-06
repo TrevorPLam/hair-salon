@@ -1,38 +1,59 @@
-# DOCSAUDIT.md — Documentation Audit
+# DOCSAUDIT.md — Docs Audit (Findability & Truth)
 
 Document Type: Audit Runbook
-Last Updated: 2026-01-07
+Last Updated: 2026-01-05
 Precedence: `CODEBASECONSTITUTION.md` → `READMEAI.md` → `TODO.md` → this document
 Owner: AGENT
 
-Purpose: Keep docs accurate, discoverable, and aligned to governance without losing historical context.
+Purpose: Keep documentation searchable, consistent, and non-contradictory so agents can operate with less context load.
 
 ## AGENT execution (runbook)
 Inputs to inspect:
-- `READMEAI.md` and `DOCS_ROOT.md`
-- `docs/` tree (including ARCHIVE/)
-- `TODO.md / TODOCOMPLETED.md`
-- `specs/` (non-binding notes)
+- `docs/ directory`
+- `Root docs`
+- `specs/ (non-binding notes)`
+- `repo.manifest.yaml`
 
 Execution steps:
-1) Identify stale or conflicting docs; mark **UNKNOWN** if unverifiable and create tasks.
-2) Ensure navigation files (READMEAI, docs/DOCS_INDEX.md, docs/REPO_MAP.md) link to new/changed docs.
-3) Move actionable items into TODO.md; replace in-doc tasks with task IDs.
-4) Confirm archived materials stay under `docs/ARCHIVE/` with links updated.
+1) Ensure docs do not contradict the Constitution, READMEAI, or TODO truth model.
+2) Create/refresh docs index so an agent can find what it needs quickly.
+3) Remove/convert task leakage from docs into TODO.md tasks, leaving references behind.
+4) Archive outdated docs instead of deleting when uncertain.
 
 Stop conditions:
-- If doc changes imply behavior changes without validation, create tasks instead of editing blindly.
+- If a doc’s truth cannot be verified, mark UNKNOWN and create a task to verify rather than guessing.
 
 Required outputs:
 - Update/create tasks in TODO.md.
 - Append a run summary to this document.
+
+## Task writing rules
+- Tasks must be created/updated in `TODO.md` using the required schema.
+- If a task is ambiguous, set **Status: BLOCKED** and add a question in the task Context.
+- Do not invent repo facts. If evidence is missing, write **UNKNOWN** and cite what you checked.
 
 ---
 
 ## Summary (append-only)
 > Append a dated summary after each run. Do not delete old summaries.
 
-### 2026-01-07 — Summary
+### 2026-01-06 — Summary
+- Agent: AGENT (GitHub Copilot)
+- Scope: docs/, root docs, specs/, repo.manifest.yaml
+- Findings:
+  - ✅ docs/DOCS_INDEX.md exists and provides correct reading order
+  - ✅ No contradictions found between Constitution, READMEAI, and TODO
+  - ⚠️ docs/DEPLOYMENT.md is a template placeholder - needs production details
+  - ⚠️ docs/ARCHIVE/ contains old audit files without explanation (may confuse agents)
+  - ✅ No task leakage from docs into code
+  - ✅ specs/ properly separated as non-binding notes
+- Tasks created/updated:
+  - T-002: Document production deployment details (P1, DOCS, Owner: Trevor)
+  - T-004: Add README to ARCHIVE explaining archived files (P3, DOCS)
+- Questions for Trevor:
+  - What is the production Vercel URL and domain configuration?
+
+### 2026-01-05 — Summary
 - Agent: AGENT
 - Scope: UNKNOWN (not yet run)
 - Findings:
@@ -41,8 +62,3 @@ Required outputs:
   - (none)
 - Questions for Trevor:
   - (none)
-
----
-
-## Legacy guidance (preserved)
-- Documentation governance and navigation rules remain in `DOCS_ROOT.md`; consult it for deeper policy details.

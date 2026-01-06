@@ -1,42 +1,62 @@
-# RELEASEAUDIT.md — Release Audit & Checklist
+# RELEASEAUDIT.md — Release Audit (No-CI Deployment Readiness)
 
 Document Type: Audit Runbook
-Last Updated: 2026-01-07
+Last Updated: 2026-01-05
 Precedence: `CODEBASECONSTITUTION.md` → `READMEAI.md` → `TODO.md` → this document
 Owner: AGENT
 
-Purpose: Ship changes safely and repeatably without relying on CI/GitHub Actions.
+Purpose: Provide a deterministic release checklist and a release record that works even when CI/CD is disabled.
 
 ## AGENT execution (runbook)
 Inputs to inspect:
-- `TODO.md / TODOCOMPLETED.md`
-- `CHANGELOG.md`
-- `Deployment configs (env.example, next.config.mjs, middleware, etc.)`
-- `docs/ops/ and docs/workflows/ references`
+- `README / deployment notes`
+- `package.json scripts (if present)`
+- `Any deployment configs`
+- `Vercel settings docs (if present)`
 
 Execution steps:
-1) Define release scope and version (SemVer or date-based) with explicit inclusions/exclusions.
-2) Perform backlog hygiene: completed tasks moved, no task leakage in docs/config.
-3) Run risk review: list potential breakpoints, affected roles, rollback plan.
-4) Confirm secrets/config safety: no secrets committed; env changes documented.
-5) Validate data/migration impacts (if applicable) and outline recovery.
-6) Conduct manual smoke tests aligned to scope (UI/API flows) and document results.
-7) Update CHANGELOG.md and append a release record summary here.
+1) List the minimum commands to verify locally (build/test/lint) based on what exists in the repo (do not invent commands).
+2) Define a manual smoke test checklist for critical flows (mobile-first).
+3) Define a rollback plan (provider-level + git-level).
+4) Create tasks for any missing release essentials (env docs, error pages, monitoring hooks).
 
 Stop conditions:
-- If any P0 blocker is found, stop and write a “BLOCKED” release record with required fixes as P0 tasks.
+- If a release requires an external action (DNS, provider settings, secret rotation), create Owner: Trevor task and mark BLOCKED until done.
 
 Required outputs:
-- Release record appended to this document.
-- CHANGELOG.md updated with scope and risks.
-- Tasks added/updated in TODO.md for any gaps.
+- Update/create tasks in TODO.md.
+- Append a run summary to this document.
+
+## Task writing rules
+- Tasks must be created/updated in `TODO.md` using the required schema.
+- If a task is ambiguous, set **Status: BLOCKED** and add a question in the task Context.
+- Do not invent repo facts. If evidence is missing, write **UNKNOWN** and cite what you checked.
 
 ---
 
 ## Summary (append-only)
 > Append a dated summary after each run. Do not delete old summaries.
 
-### 2026-01-07 — Summary
+### 2026-01-06 — Summary
+- Agent: AGENT (GitHub Copilot)
+- Scope: package.json scripts, deployment docs, Vercel config
+- Findings:
+  - ✅ Build command exists: npm run build
+  - ✅ Test command exists: npm run test, npm run test:coverage
+  - ✅ Lint command exists: npm run lint
+  - ✅ Type-check exists: npm run type-check
+  - ✅ Format check exists: npm run format:check
+  - ✅ Postbuild security check: check-client-secrets.mjs
+  - ⚠️ No documented smoke test checklist for mobile-first verification
+  - ⚠️ No documented rollback plan (DEPLOYMENT.md is template)
+  - ✅ Vercel deployment implied but not documented
+- Tasks created/updated:
+  - T-003: Create mobile-first smoke test checklist (P1, RELEASE)
+  - T-002: Document production deployment details (P1, DOCS) - includes rollback plan
+- Questions for Trevor:
+  - What is the Vercel project name/URL for rollback instructions?
+
+### 2026-01-05 — Summary
 - Agent: AGENT
 - Scope: UNKNOWN (not yet run)
 - Findings:
@@ -45,8 +65,3 @@ Required outputs:
   - (none)
 - Questions for Trevor:
   - (none)
-
----
-
-## Legacy guidance (preserved)
-- The previous RELEASE_CHECKLIST.md remains available with detailed phased steps and should be consulted alongside this runbook.

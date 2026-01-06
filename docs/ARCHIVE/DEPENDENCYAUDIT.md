@@ -1,7 +1,7 @@
 # DEPENDENCYAUDIT.md — Dependency Audit (Health & Minimalism)
 
 Document Type: Audit Runbook
-Last Updated: 2026-01-05
+Last Updated: 2026-01-07
 Precedence: `CODEBASECONSTITUTION.md` → `READMEAI.md` → `TODO.md` → this document
 Owner: AGENT
 
@@ -47,3 +47,8 @@ Required outputs:
   - (none)
 - Questions for Trevor:
   - (none)
+
+---
+
+## Legacy guidance (preserved)
+- The prior DEPENDENCY_HEALTH.md remains available for detailed policies, checklists, and historical notes.

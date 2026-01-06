@@ -1,7 +1,7 @@
 # CODEAUDIT.md — Code Audit (Task Factory)
 
 Document Type: Audit Runbook
-Last Updated: 2026-01-05
+Last Updated: 2026-01-07
 Precedence: `CODEBASECONSTITUTION.md` → `READMEAI.md` → `TODO.md` → this document
 Owner: AGENT
 
@@ -46,3 +46,8 @@ Required outputs:
   - (none)
 - Questions for Trevor:
   - (none)
+
+---
+
+## Legacy guidance (preserved)
+- The prior CODE_AUDIT.md remains in the repository for historical context and expanded checklists; consult it for additional guidance that predates this runbook.

@@ -1,7 +1,7 @@
 # SECURITYAUDIT.md — Security Audit (Budget-Constrained Hardening)
 
 Document Type: Audit Runbook
-Last Updated: 2026-01-07
+Last Updated: 2026-01-05
 Precedence: `CODEBASECONSTITUTION.md` → `READMEAI.md` → `TODO.md` → this document
 Owner: AGENT
 
@@ -41,6 +41,23 @@ Required outputs:
 ## Summary (append-only)
 > Append a dated summary after each run. Do not delete old summaries.
 
+### 2026-01-06 — Summary
+- Agent: AGENT (GitHub Copilot)
+- Scope: .env files, .gitignore, API routes, input handling, auth patterns
+- Findings:
+  - ✅ No secrets found in repo (checked .gitignore, env.example, code files)
+  - ✅ Input validation using Zod schemas with max lengths
+  - ✅ Sanitization implemented: escapeHtml, sanitizeEmailSubject, textToHtmlParagraphs
+  - ✅ Rate limiting: Both Upstash Redis (distributed) and in-memory fallback
+  - ✅ IP hashing: Client IPs hashed with salt before storage
+  - ✅ Server action properly secured with 'use server' directive
+  - ⚠️ OG image route (/app/api/og/route.tsx) lacks input validation on query params (low risk)
+  - ✅ No auth needed by design (public marketing site)
+- Tasks created/updated:
+  - T-001: Add input validation to OG image route (P2, SECURITY)
+- Questions for Trevor:
+  - (none)
+
 ### 2026-01-05 — Summary
 - Agent: AGENT
 - Scope: UNKNOWN (not yet run)
@@ -50,8 +67,3 @@ Required outputs:
   - (none)
 - Questions for Trevor:
   - (none)
-
----
-
-## Legacy guidance (preserved)
-- Security policy and reviews remain in `SECURITY.md` and `SECURITY_REVIEW.md`; consult them for detailed requirements and prior findings.
