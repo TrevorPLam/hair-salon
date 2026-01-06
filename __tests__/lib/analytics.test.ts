@@ -82,7 +82,7 @@ describe('Analytics', () => {
 
     it('should not track in development mode', () => {
       process.env.NODE_ENV = 'development'
-      const consoleSpy = vi.spyOn(console, 'log')
+      const consoleSpy = vi.spyOn(console, 'info')
 
       trackEvent({
         action: 'click',
@@ -112,7 +112,7 @@ describe('Analytics', () => {
 
     it('should not track in development mode', () => {
       process.env.NODE_ENV = 'development'
-      const consoleSpy = vi.spyOn(console, 'log')
+      const consoleSpy = vi.spyOn(console, 'info')
 
       trackPageView('/about')
 
