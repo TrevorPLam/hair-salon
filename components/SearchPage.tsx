@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { Search } from 'lucide-react'
 import type { SearchItem } from '@/lib/search'
 
@@ -10,8 +11,10 @@ interface SearchPageProps {
   initialQuery?: string
 }
 
-export default function SearchPage({ items, initialQuery = '' }: SearchPageProps) {
-  const [query, setQuery] = useState(initialQuery)
+export default function SearchPage({ items }: SearchPageProps) {
+  const searchParams = useSearchParams()
+  const defaultQuery = searchParams.get('q') ?? ''
+  const [query, setQuery] = useState(defaultQuery)
 
   const filteredItems = useMemo(() => {
     const normalized = query.trim().toLowerCase()

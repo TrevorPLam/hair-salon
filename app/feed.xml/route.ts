@@ -1,6 +1,8 @@
 import { getAllPosts } from '@/lib/blog'
 import { validatedEnv } from '@/lib/env'
 
+export const dynamic = 'force-static'
+
 const escapeXml = (value: string | null | undefined) =>
   (value ?? '')
     .replaceAll('&', '&amp;')

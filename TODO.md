@@ -86,14 +86,15 @@ Effort: XS
 Priority: P0
 Type: RELEASE
 Owner: AGENT
-Status: READY
+Status: DONE
 Context:
 - Hosting target is Cloudflare Pages via GitHub integration
 - Next.js App Router requires Cloudflare-compatible build output
+- **Implementation Note**: Downgraded to Next.js 15.5.2 and ESLint 9 compatible config to ensure stability with `@cloudflare/next-on-pages`.
 Acceptance Criteria:
-- [ ] T-052.1: Add Cloudflare Pages build instructions to `/docs/DEPLOYMENT.md`
-- [ ] T-052.2: Configure repo for Cloudflare Pages Next.js deployment (documented + reproducible)
-- [ ] T-052.3: Produce a successful Cloudflare Pages preview build (no runtime errors)
+- [x] T-052.1: Add Cloudflare Pages build instructions to `/docs/DEPLOYMENT.md`
+- [x] T-052.2: Configure repo for Cloudflare Pages Next.js deployment (documented + reproducible)
+- [x] T-052.3: Produce a successful Cloudflare Pages preview build (no runtime errors)
 References:
 - /docs/DEPLOYMENT.md
 - /next.config.mjs
