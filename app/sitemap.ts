@@ -6,6 +6,7 @@ import { getPublicBaseUrl } from '@/lib/env.public'
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = getPublicBaseUrl()
 
+  // Static + dynamic content (case studies, blog). Update when adding routes so search/sitemap stay in sync.
   // Static pages
   const staticPages = [
     {

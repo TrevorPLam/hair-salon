@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight, Home, Search, HelpCircle } from 'lucide-react'
 
+// Friendly 404 with quick links back to primary conversion paths
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center px-4">

@@ -2,6 +2,7 @@ import React, { useId } from 'react'
 import { cn } from '@/lib/utils'
 import { CheckCircle2 } from 'lucide-react'
 
+// Textarea sibling to Input with identical validation/success affordances for multi-line fields
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string
   error?: string

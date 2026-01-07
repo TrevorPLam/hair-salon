@@ -18,6 +18,7 @@ export default function SearchDialog({ items, variant = 'desktop' }: SearchDialo
   const [query, setQuery] = useState('')
   const inputRef = useRef<HTMLInputElement | null>(null)
 
+  // Case-insensitive substring match across title/description/tags; default to a small sample when empty to avoid overwhelming the dialog
   const filteredItems = useMemo(() => {
     const normalized = query.trim().toLowerCase()
     if (!normalized) {
@@ -33,6 +34,7 @@ export default function SearchDialog({ items, variant = 'desktop' }: SearchDialo
   }, [items, query])
 
   useEffect(() => {
+    // Allow Cmd/Ctrl+K to open and Escape to close so the dialog matches site-wide shortcut expectations
     const onKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault()

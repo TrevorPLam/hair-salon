@@ -7,6 +7,7 @@ export const contactFormSchema = z.object({
   company: z.string().max(200).optional(),
   phone: z.string().max(50).optional(),
   marketingSpend: z.string().max(50).optional(),
+  // Honeypot trap: bots that fill this get blocked upstream in submitContactForm
   website: z.string().max(0, 'Honeypot must be empty').optional(),
   message: z.string().min(10, 'Message must be at least 10 characters').max(5000),
   hearAboutUs: z.string().max(100).optional(),

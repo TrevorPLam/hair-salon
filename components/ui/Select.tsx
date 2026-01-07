@@ -1,6 +1,7 @@
 import React, { useId } from 'react'
 import { cn } from '@/lib/utils'
 
+// Labeled select with error styling; keeps forms consistent with Input/Textarea
 export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string
   error?: string

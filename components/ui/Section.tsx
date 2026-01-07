@@ -1,6 +1,7 @@
 import React from 'react'
 import { cn } from '@/lib/utils'
 
+// Section shell that standardizes vertical rhythm across pages
 export interface SectionProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode
 }

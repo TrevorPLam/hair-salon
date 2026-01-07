@@ -27,4 +27,5 @@ if (!publicEnv.success) {
 
 export const validatedPublicEnv = publicEnv.data
 
+// Base URL helper for metadata/routes; stays public-only to avoid leaking secrets into client bundles
 export const getPublicBaseUrl = () => validatedPublicEnv.NEXT_PUBLIC_SITE_URL

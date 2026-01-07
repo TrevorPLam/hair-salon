@@ -2,6 +2,7 @@ import React, { useId } from 'react'
 import { cn } from '@/lib/utils'
 import { CheckCircle2 } from 'lucide-react'
 
+// Labeled input with optional validation state and success icon for form UX consistency
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string
   error?: string

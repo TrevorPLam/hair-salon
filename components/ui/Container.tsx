@@ -1,6 +1,7 @@
 import React from 'react'
 import { cn } from '@/lib/utils'
 
+// Max-width wrapper to align page content with consistent horizontal padding
 export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
 }

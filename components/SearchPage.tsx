@@ -16,6 +16,7 @@ export default function SearchPage({ items }: SearchPageProps) {
   const defaultQuery = searchParams.get('q') ?? ''
   const [query, setQuery] = useState(defaultQuery)
 
+  // Same substring search semantics as SearchDialog to keep results consistent between dialog and full page
   const filteredItems = useMemo(() => {
     const normalized = query.trim().toLowerCase()
     if (!normalized) {

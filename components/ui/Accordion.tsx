@@ -4,6 +4,7 @@ import React, { useId, useState } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+// Simple accessible accordion; single-item open state keyed for FAQ blocks
 export interface AccordionItem {
   question: string
   answer: string
