@@ -1,7 +1,55 @@
 /**
- * Centralized logging utility
- * Integrates with Sentry for production error tracking and monitoring
- * Works on both server and client side
+ * Centralized logging utility with Sentry integration.
+ *
+ * @module lib/logger
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: Centralized logging with automatic Sentry integration.
+ * All console logging should go through this module for consistent behavior.
+ *
+ * **SECURITY CRITICAL**: Automatically sanitizes sensitive data.
+ * - Passwords, tokens, API keys → [REDACTED]
+ * - See SENSITIVE_KEYS constant for full list
+ *
+ * **BEHAVIOR BY ENVIRONMENT**:
+ * | Env | Info | Warn | Error |
+ * |-----|------|------|-------|
+ * | development | console.info | console.warn | console.error |
+ * | test | console.info | console.warn | console.error |
+ * | production | Sentry message | Sentry warning | Sentry exception |
+ *
+ * **USAGE**:
+ * ```typescript
+ * import { logInfo, logWarn, logError } from '@/lib/logger'
+ *
+ * logInfo('User signed up', { email: user.email })
+ * logWarn('Rate limit approached', { remaining: 2 })
+ * logError('Payment failed', error, { orderId: '123' })
+ * ```
+ *
+ * **AI ITERATION HINTS**:
+ * - Adding sensitive field? Add to SENSITIVE_KEYS Set
+ * - Never use console.log/error directly — use logger functions
+ * - Context objects are sanitized automatically
+ * - Error objects preserved for Sentry stack traces
+ *
+ * **SENTRY INTEGRATION**:
+ * - Requires NEXT_PUBLIC_SENTRY_DSN env var
+ * - Without DSN: falls back to console in all environments
+ * - Errors captured with full context in Sentry dashboard
+ *
+ * **POTENTIAL IMPROVEMENTS**:
+ * - [ ] Add structured logging format (JSON) for log aggregation
+ * - [ ] Add request ID correlation
+ * - [ ] Add performance timing helpers
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * Integrates with Sentry for production error tracking and monitoring.
+ * Works on both server and client side.
  */
 
 import * as Sentry from '@sentry/nextjs'

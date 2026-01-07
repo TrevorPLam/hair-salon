@@ -1,12 +1,72 @@
 /**
  * Root layout component for the entire application.
- * 
+ *
+ * @module app/layout
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: Root layout wrapping ALL pages. Defines HTML structure,
+ * global metadata, fonts, navigation, and footer. Changes here affect
+ * every page on the site.
+ *
+ * **RENDERING**: Server component (no 'use client'). Children rendered
+ * inside Providers wrapper which IS a client component.
+ *
+ * **COMPONENT HIERARCHY**:
+ * ```
+ * <html>
+ *   <head>  ← metadata export handles this
+ *   <body>
+ *     <SkipToContent />     ← a11y jump link
+ *     <Navigation />         ← sticky header (client)
+ *     <Providers>            ← ErrorBoundary + Breadcrumbs (client)
+ *       <main>{children}</main>
+ *     </Providers>
+ *     <Footer />             ← site footer (server)
+ *     <InstallPrompt />      ← PWA install (client)
+ *   </body>
+ * </html>
+ * ```
+ *
+ * **METADATA**:
+ * - Default title with template: "%s | Your Dedicated Marketer"
+ * - Child pages override with their own metadata export
+ * - OG image generated via /api/og route
+ * - Structured data: Organization + WebSite schemas in <head>
+ *
+ * **FONTS** (Google Fonts via next/font):
+ * - Inter: --font-inter (body text, sans-serif default)
+ * - IBM Plex Sans: --font-plex (headings, .font-authority class)
+ *
+ * **AI ITERATION HINTS**:
+ * - Adding global script? Add to <head> section
+ * - Changing fonts? Update font imports and CSS variables
+ * - Changing nav links? Edit Navigation.tsx navLinks array
+ * - Adding global provider? Wrap in Providers component
+ *
+ * **PWA CONFIG**:
+ * - manifest.json linked in metadata
+ * - Apple touch icons in metadata
+ * - Theme color: #0ea5e9
+ * - InstallPrompt handles A2HS flow
+ *
+ * **SEARCH**: getSearchIndex() called at layout level,
+ * passed to Navigation for SearchDialog.
+ *
+ * **KNOWN ISSUES**:
+ * - [ ] No skip link target (#main-content) on some pages
+ * - [ ] Structured data URLs hardcoded (should use env)
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * **Purpose:**
  * - Defines the HTML document structure
  * - Provides global metadata for SEO
  * - Wraps all pages with Navigation, Footer, and Providers
  * - Configures fonts, PWA settings, and structured data
- * 
+ *
  * **Component Hierarchy:**
  * ```
  * <html>
@@ -22,26 +82,26 @@
  *   </body>
  * </html>
  * ```
- * 
+ *
  * **SEO Configuration:**
  * - Default title with template for child pages
  * - OpenGraph and Twitter card metadata
  * - Organization and WebSite structured data
  * - Robots directives for search engines
- * 
+ *
  * **Fonts:**
  * - Inter: Primary sans-serif (body text)
  * - IBM Plex Sans: Authority font (headings, emphasis)
- * 
+ *
  * **PWA:**
  * - Manifest linked for installability
  * - Apple touch icons configured
  * - Theme color set
- * 
+ *
  * **Dynamic Imports:**
  * - Providers: Client-side only (ErrorBoundary needs browser)
  * - InstallPrompt: Client-side only (PWA API)
- * 
+ *
  * @see app/AGENTS.md for page conventions
  * @see tailwind.config.ts for theme customization
  */

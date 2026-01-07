@@ -1,32 +1,84 @@
 /**
  * Site navigation component with responsive mobile menu.
- * 
+ *
+ * @component Navigation
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: Global site navigation. Renders in root layout on ALL pages.
+ * Handles desktop nav, mobile hamburger menu, and search integration.
+ *
+ * **RENDERING**: Client component ('use client') for mobile menu state.
+ *
+ * **MODIFYING NAV LINKS**:
+ * Edit the `navLinks` array (line ~45). Changes auto-apply to both
+ * desktop and mobile menus. Format: { href: '/path', label: 'Label' }
+ *
+ * **LAYOUT STRUCTURE**:
+ * ```
+ * <nav sticky>
+ *   <Logo>                          |
+ *   <DesktopLinks> (hidden md:flex) | md+ viewport
+ *   <SearchDialog> <CTA Button>     |
+ *   -----------------------------------
+ *   <MobileSearch> <Hamburger>      | < md viewport
+ *   <MobileMenu if open>            |
+ * </nav>
+ * ```
+ *
+ * **ACCESSIBILITY**:
+ * - Escape key closes mobile menu
+ * - aria-expanded on hamburger button
+ * - aria-label on mobile menu container
+ * - focus-visible outlines on all interactive elements
+ *
+ * **AI ITERATION HINTS**:
+ * - Adding nav link? Add to navLinks array, update sitemap.ts
+ * - Changing logo? Update Link content around line 85
+ * - Mobile menu: controlled by isMobileMenuOpen state
+ * - Search: SearchDialog component handles its own state
+ *
+ * **PROPS**:
+ * - searchItems: SearchItem[] — passed from layout.tsx via getSearchIndex()
+ *
+ * **STYLING NOTES**:
+ * - bg-charcoal: dark header background
+ * - sticky top-0 z-50: fixed header behavior
+ * - Breakpoint: md (768px) for desktop/mobile switch
+ *
+ * **POTENTIAL ISSUES**:
+ * - [ ] Mobile menu doesn't trap focus (a11y improvement)
+ * - [ ] No active link highlighting
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * **Features:**
  * - Sticky header with dark charcoal background
  * - Desktop: Horizontal nav links with search and CTA
  * - Mobile: Hamburger menu with slide-down panel
  * - Keyboard accessible (Escape closes mobile menu)
- * 
+ *
  * **Behavior:**
  * - Mobile menu closes on link click
  * - Mobile menu closes on Escape key
  * - Search dialog integrated for both desktop and mobile
- * 
+ *
  * **Usage:**
  * ```tsx
  * // In layout.tsx
  * import Navigation from '@/components/Navigation'
  * import { getSearchIndex } from '@/lib/search'
- * 
+ *
  * const searchItems = getSearchIndex()
  * <Navigation searchItems={searchItems} />
  * ```
- * 
+ *
  * **Modifying Navigation Links:**
  * Edit the `navLinks` array below. Changes apply to both
  * desktop and mobile menus automatically.
- * 
- * @component
+ *
  * @see components/SearchDialog for search functionality
  */
 

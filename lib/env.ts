@@ -1,32 +1,75 @@
 /**
  * Environment variable validation and type-safe access.
- * 
+ *
+ * @module lib/env
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: Server-only environment validation. This file MUST import
+ * 'server-only' to prevent accidental client-side bundling of secrets.
+ *
+ * **SECURITY CRITICAL**: This file handles API keys and secrets.
+ * - NEVER expose non-NEXT_PUBLIC_ vars to client
+ * - NEVER log secret values
+ * - ALL secrets validated at startup (fail-fast)
+ *
+ * **COUNTERPART**: `lib/env.public.ts` for browser-safe NEXT_PUBLIC_* vars
+ *
+ * **ADDING NEW ENV VARS**:
+ * 1. Add to envSchema with Zod validation
+ * 2. Add to env.safeParse() call below
+ * 3. Add to env.example with placeholder
+ * 4. Update scripts/check-client-secrets.mjs forbiddenTokens array
+ * 5. Update docs/DEPLOYMENT.md env var list
+ *
+ * **AI ITERATION HINTS**:
+ * - T-053 will add SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, HUBSPOT_PRIVATE_APP_TOKEN
+ * - Keep server vars here, public vars in env.public.ts (twin pattern)
+ * - Use .optional() for vars with graceful fallback, no modifier for required
+ *
+ * **CURRENT VARS**:
+ * | Var | Type | Required | Notes |
+ * |-----|------|----------|-------|
+ * | NEXT_PUBLIC_SITE_URL | url | defaults | Base URL for meta tags |
+ * | NEXT_PUBLIC_SITE_NAME | string | defaults | Site name for branding |
+ * | NEXT_PUBLIC_ANALYTICS_ID | string | optional | GA4/Plausible ID |
+ * | RESEND_API_KEY | string | optional | Email delivery (T-053: removing) |
+ * | CONTACT_EMAIL | email | defaults | Form submission recipient |
+ * | UPSTASH_REDIS_REST_URL | string | optional | Rate limiting |
+ * | UPSTASH_REDIS_REST_TOKEN | string | optional | Rate limiting |
+ *
+ * **KNOWN ISSUES**:
+ * - [ ] T-053: Add Supabase + HubSpot vars when implementing lead pipeline
+ * - [ ] No runtime validation for env changes (restart required)
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * **Purpose:**
  * - Validate environment variables at startup
  * - Provide type-safe access to env vars
  * - Fail fast with clear error messages
  * - Document required vs optional variables
- * 
+ *
  * **Validation:**
  * - Uses Zod for runtime type checking
  * - Validates URLs, emails, enums
  * - Provides defaults for optional variables
  * - Throws on missing required variables
- * 
+ *
  * **Usage:**
  * ```typescript
  * import { validatedEnv } from './env'
- * 
+ *
  * // Type-safe access with autocomplete
  * const apiKey = validatedEnv.RESEND_API_KEY // string | undefined
  * const siteUrl = validatedEnv.NEXT_PUBLIC_SITE_URL // string (required)
  * ```
- * 
+ *
  * **Variable Categories:**
  * - **Public:** NEXT_PUBLIC_* (exposed to browser, use for non-sensitive config)
  * - **Server-only:** All others (never sent to browser, use for API keys/secrets)
- * 
- * @module lib/env
  */
 
 import 'server-only'

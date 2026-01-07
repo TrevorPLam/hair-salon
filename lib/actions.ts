@@ -1,25 +1,73 @@
 /**
  * Server actions for contact form submission with rate limiting and email delivery.
- * 
+ *
+ * @module lib/actions
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: Core server action for contact form. Single entry point for
+ * all form submissions. Handles validation → rate-limiting → persistence/email.
+ *
+ * **ARCHITECTURE PATTERN**: Server Action (Next.js 14+ pattern)
+ * - Called directly from ContactForm.tsx via `submitContactForm(data)`
+ * - Runs server-side only (no API route needed)
+ * - Returns { success, message, errors? } response object
+ *
+ * **CURRENT STATE (as of T-053)**: Email-based. TODO: Migrate to Supabase+HubSpot
+ * - RESEND_API_KEY present → sends email
+ * - RESEND_API_KEY absent → logs only (dev mode)
+ *
+ * **KEY DEPENDENCIES**:
+ * - `./sanitize.ts` — XSS prevention (escapeHtml, sanitizeEmailSubject)
+ * - `./env.ts` — Server-only env validation (validatedEnv)
+ * - `./contact-form-schema.ts` — Zod schema (contactFormSchema)
+ * - `@upstash/ratelimit` — Distributed rate limiting (optional)
+ *
+ * **RATE LIMIT DESIGN**:
+ * - Dual limiting: per-email AND per-IP (both must pass)
+ * - 3 requests/hour per identifier
+ * - IP hashed with SHA-256 before storage (privacy)
+ * - Falls back to in-memory Map when Upstash not configured
+ *
+ * **AI ITERATION HINTS**:
+ * 1. To add Supabase: Insert between rate-limit check and email send (line ~320)
+ * 2. To add HubSpot: After Supabase insert, wrap in try/catch for best-effort
+ * 3. Schema changes: Update contact-form-schema.ts first, then this file
+ * 4. New fields: Add to safeName/safeEmail pattern (sanitize ALL inputs)
+ * 5. Testing: See __tests__/lib/actions.rate-limit.test.ts for mocking pattern
+ *
+ * **SECURITY CHECKLIST** (verify after any changes):
+ * - [ ] All user inputs pass through escapeHtml() before HTML context
+ * - [ ] Email subject uses sanitizeEmailSubject()
+ * - [ ] No raw IP addresses logged (use hashedIp)
+ * - [ ] Errors return generic messages (no internal details)
+ *
+ * **KNOWN ISSUES / TECH DEBT**:
+ * - [ ] T-053: Email flow to be replaced with Supabase+HubSpot
+ * - [ ] In-memory rate limiter not suitable for multi-instance production
+ * - [ ] No retry logic for email delivery failures
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * **Features:**
  * - Distributed rate limiting via Upstash Redis (production) or in-memory fallback (development)
  * - Input sanitization to prevent XSS and email header injection attacks
  * - IP address hashing for privacy (SHA-256)
  * - Email delivery via Resend API with graceful fallback
- * 
+ *
  * **Security:**
  * - All user inputs sanitized with escapeHtml() before use
  * - Email subjects sanitized to prevent header injection
  * - IP addresses hashed before storage (never logged in plain text)
  * - Rate limits enforced per email address AND per IP address
  * - Payload size limited by middleware (1MB max)
- * 
+ *
  * **Error Handling:**
  * - Validation errors return user-friendly messages
  * - Rate limit errors return "try again later" message
  * - Network/API errors logged to Sentry, return generic error message
- * 
- * @module lib/actions
  */
 
 'use server'

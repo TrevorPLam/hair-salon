@@ -459,3 +459,153 @@ References:
 - /package.json
 Dependencies: None
 Effort: S
+
+---
+
+## 🟣 PHASE 4: AI Deep Dive Findings (Discovered 2026-01-07)
+> Tasks discovered during comprehensive codebase analysis. See docs/AI_DEEP_DIVE_FINDINGS.md for details.
+
+### T-071: Fix hardcoded URLs in structured data
+Priority: P1
+Type: BUG
+Owner: AGENT
+Status: READY
+Context:
+- Breadcrumbs.tsx and blog/[slug]/page.tsx use hardcoded "yourdedicatedmarketer.com" in schema.org data
+- Should use getPublicBaseUrl() for environment-aware URLs
+- Affects SEO structured data accuracy
+Acceptance Criteria:
+- [ ] T-071.1: Update Breadcrumbs.tsx to use getPublicBaseUrl() in structuredData
+- [ ] T-071.2: Update blog/[slug]/page.tsx articleStructuredData to use getPublicBaseUrl()
+- [ ] T-071.3: Verify structured data renders correctly with Rich Results Test
+References:
+- /components/Breadcrumbs.tsx
+- /app/blog/[slug]/page.tsx
+- /lib/env.public.ts
+Dependencies: None
+Effort: XS
+
+### T-072: Create missing legal pages (privacy, terms)
+Priority: P2
+Type: FEATURE
+Owner: Trevor
+Status: READY
+Context:
+- Footer links to /privacy and /terms pages that don't exist
+- Required for legal compliance and user trust
+- Alternatively, remove links until content is ready
+Acceptance Criteria:
+- [ ] T-072.1: Decide: create pages or remove links
+- [ ] T-072.2: If creating: provide privacy policy content
+- [ ] T-072.3: If creating: provide terms of service content
+- [ ] T-072.4: Create app/privacy/page.tsx and app/terms/page.tsx (if proceeding)
+References:
+- /components/Footer.tsx
+- /app/
+Dependencies: None
+Effort: M
+
+### T-073: Handle support services "coming soon" pages
+Priority: P2
+Type: BUG
+Owner: AGENT
+Status: READY
+Context:
+- Services page links to /services/strategy, /services/crm, /services/funnel, /services/reporting
+- These routes don't exist (404)
+- Options: create pages, show "coming soon", or remove links
+Acceptance Criteria:
+- [ ] T-073.1: Create placeholder pages with "coming soon" content, OR
+- [ ] T-073.2: Remove supportServices links from services page
+References:
+- /app/services/page.tsx
+Dependencies: None
+Effort: S
+
+### T-074: Add active link highlighting to Navigation
+Priority: P3
+Type: FEATURE
+Owner: AGENT
+Status: READY
+Context:
+- Navigation links don't indicate current page
+- Improves UX by showing user where they are
+Acceptance Criteria:
+- [ ] T-074.1: Use usePathname() to detect current route
+- [ ] T-074.2: Add active styles to matching nav link
+- [ ] T-074.3: Test on all pages
+References:
+- /components/Navigation.tsx
+Dependencies: None
+Effort: XS
+
+### T-075: Add case studies to search index
+Priority: P3
+Type: FEATURE
+Owner: AGENT
+Status: READY
+Context:
+- Search includes blog posts and static pages but not case studies
+- Easy enhancement to improve site search
+Acceptance Criteria:
+- [ ] T-075.1: Import caseStudies from lib/case-studies.ts
+- [ ] T-075.2: Map case studies to SearchItem format
+- [ ] T-075.3: Include in getSearchIndex() return
+References:
+- /lib/search.ts
+- /lib/case-studies.ts
+Dependencies: None
+Effort: XS
+
+### T-076: Fix honeypot logging as error
+Priority: P2
+Type: BUG
+Owner: AGENT
+Status: READY
+Context:
+- Honeypot field triggers ZodError which logs as error in actions.ts
+- Should be handled as spam detection (warn level), not error
+- Creates noise in error monitoring
+Acceptance Criteria:
+- [ ] T-076.1: Move honeypot check before Zod parse, OR
+- [ ] T-076.2: Catch honeypot ZodError specifically and log as warn
+- [ ] T-076.3: Add test for honeypot logging behavior
+References:
+- /lib/actions.ts
+- /__tests__/lib/actions.rate-limit.test.ts
+Dependencies: None
+Effort: XS
+
+### T-077: Add focus trap to mobile navigation menu
+Priority: P3
+Type: QUALITY
+Owner: AGENT
+Status: READY
+Context:
+- Mobile menu doesn't trap focus (accessibility gap)
+- Users can tab to elements behind the menu overlay
+Acceptance Criteria:
+- [ ] T-077.1: Implement focus trap when mobile menu is open
+- [ ] T-077.2: Focus first focusable element when menu opens
+- [ ] T-077.3: Return focus to hamburger button when menu closes
+References:
+- /components/Navigation.tsx
+Dependencies: None
+Effort: S
+
+### T-078: Delete backup and unused files
+Priority: P3
+Type: CHORE
+Owner: AGENT
+Status: READY
+Context:
+- eslint.config.mjs.bak is a backup file from ESLint migration
+- Clean up to reduce repo clutter
+Acceptance Criteria:
+- [ ] T-078.1: Delete eslint.config.mjs.bak
+- [ ] T-078.2: Verify pre-commit-config.yaml is in use or delete it
+References:
+- /eslint.config.mjs.bak
+- /pre-commit-config.yaml
+Dependencies: None
+Effort: XS

@@ -1,6 +1,6 @@
 # docs/DOCS_INDEX.md — Documentation Index
 
-Last Updated: 2026-01-05
+Last Updated: 2026-01-07
 
 ## Read order (agents)
 1) `../CODEBASECONSTITUTION.md`
@@ -18,6 +18,9 @@ Last Updated: 2026-01-05
 ## Repo maps
 - `REPO_MAP.md`
 - `CONTEXT_MAP.md`
+
+## Analysis & Findings
+- `AI_DEEP_DIVE_FINDINGS.md` (Comprehensive codebase analysis with issues, debt, and enhancements)
 
 ## Ops & Deployment
 - `docs/ops/DEPLOYMENT.md` (Detailed Guide)

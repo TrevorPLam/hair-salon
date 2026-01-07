@@ -1,41 +1,85 @@
 /**
  * Analytics event tracking abstraction layer.
- * 
+ *
+ * @module lib/analytics
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: Provider-agnostic analytics tracking. Wraps multiple
+ * analytics providers (GA4, Plausible) with unified API.
+ *
+ * **CURRENT STATE**: T-064 pending - analytics provider not selected yet.
+ * - NEXT_PUBLIC_ANALYTICS_ID not set → events log to console
+ * - GA4 gtag present → sends to Google Analytics
+ * - Plausible window.plausible present → sends to Plausible
+ *
+ * **USAGE**:
+ * ```typescript
+ * import { trackEvent, trackFormSubmission, trackCTAClick } from '@/lib/analytics'
+ *
+ * // Custom event
+ * trackEvent({ action: 'signup_click', category: 'conversion', label: 'hero' })
+ *
+ * // Helper functions
+ * trackFormSubmission('contact', true)  // form name, success boolean
+ * trackCTAClick('homepage', 'hero')     // page, location
+ * ```
+ *
+ * **AI ITERATION HINTS**:
+ * - Adding new provider? Add check in trackEvent after Plausible block
+ * - Follow pattern: check for window object existence first
+ * - Use consistent event naming: snake_case for actions
+ * - Dev mode always logs to console (via logInfo)
+ *
+ * **EVENT NAMING CONVENTION**:
+ * - action: verb_noun (e.g., form_submit, cta_click, page_view)
+ * - category: conversion | engagement | navigation | error
+ * - label: optional context (e.g., button location, form name)
+ *
+ * **HELPER FUNCTIONS AVAILABLE**:
+ * - trackFormSubmission(formName, success) - contact form tracking
+ * - trackCTAClick(page, location) - CTA button tracking
+ * - trackPageView() - manual page view (auto-handled by providers usually)
+ *
+ * **DEPENDS ON**: T-064 for provider selection
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * **Purpose:**
  * - Provide unified API for analytics tracking
  * - Support multiple providers (GA4, Plausible) transparently
  * - Console logging in development for debugging
- * 
+ *
  * **Supported Providers:**
  * - Google Analytics 4 (via gtag.js)
  * - Plausible Analytics
  * - Extensible for others
- * 
+ *
  * **Configuration:**
  * - GA4: Set NEXT_PUBLIC_ANALYTICS_ID in env
  * - Plausible: Include script in layout
  * - No config needed for dev logging
- * 
+ *
  * **Usage:**
  * ```typescript
  * import { trackEvent, trackFormSubmission } from '@/lib/analytics'
- * 
+ *
  * // Track custom event
  * trackEvent({
  *   action: 'signup_click',
  *   category: 'conversion',
  *   label: 'homepage_hero'
  * })
- * 
+ *
  * // Track form submission
  * trackFormSubmission('contact', true)
  * ```
- * 
+ *
  * **Development Behavior:**
  * - Events logged to console instead of sent to providers
  * - Prefix: [Analytics]
- * 
- * @module lib/analytics
  */
 
 import { logInfo } from './logger'

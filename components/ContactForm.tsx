@@ -1,6 +1,61 @@
 /**
  * Contact form component with validation and submission handling.
- * 
+ *
+ * @component ContactForm
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: Primary lead capture form. Critical conversion component.
+ * Handles client-side validation → server action submission → feedback display.
+ *
+ * **RENDERING**: Client component ('use client') for form interactivity.
+ *
+ * **FORM FLOW**:
+ * 1. User fills form (validated on blur via react-hook-form)
+ * 2. Submit triggers onSubmit handler
+ * 3. Calls submitContactForm server action (lib/actions.ts)
+ * 4. Displays success/error message based on response
+ *
+ * **HONEYPOT FIELD**: Hidden 'website' field catches bots.
+ * - Rendered as sr-only, tabIndex=-1, autoComplete=off
+ * - Server rejects if filled (lib/actions.ts)
+ *
+ * **FORM FIELDS** (current schema from contact-form-schema.ts):
+ * | Field | Required | Notes |
+ * |-------|----------|-------|
+ * | name | ✅ | min 2 chars |
+ * | email | ✅ | valid email |
+ * | company | ❌ | optional |
+ * | phone | ❌ | optional (T-053 will make required) |
+ * | marketingSpend | ❌ | dropdown |
+ * | message | ✅ | min 10 chars |
+ * | hearAboutUs | ❌ | dropdown |
+ *
+ * **AI ITERATION HINTS**:
+ * - Adding field? Update contact-form-schema.ts FIRST, then add Input here
+ * - T-053 changes: name/email/phone will all be required
+ * - Use same pattern: register() + error display + isValid green check
+ * - Test with __tests__/components/ContactForm.test.tsx
+ *
+ * **DEPENDENCIES**:
+ * - lib/actions.ts — submitContactForm server action
+ * - lib/contact-form-schema.ts — Zod validation schema
+ * - components/ui/Input, Select, Textarea, Button — form primitives
+ * - lib/sentry-client.ts — Sentry context on successful submit
+ *
+ * **VALIDATION MODES**:
+ * - mode: 'onBlur' — validates when field loses focus
+ * - reValidateMode: 'onChange' — re-validates while typing after first error
+ * - delayError: 500 — debounces error display for smoother UX
+ *
+ * **POTENTIAL ISSUES**:
+ * - [ ] No analytics tracking on form submission (T-064)
+ * - [ ] Success message disappears on page navigation
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * **Features:**
  * - Client-side validation with Zod schema
  * - Server action submission (no API route needed)
@@ -8,7 +63,7 @@
  * - Success/error state feedback
  * - Loading state with spinner
  * - Sentry context for error tracking
- * 
+ *
  * **Form Fields:**
  * - Name (required)
  * - Email (required, validated)
@@ -17,26 +72,25 @@
  * - Marketing Spend (dropdown)
  * - Message (required)
  * - How did you hear about us (dropdown)
- * 
+ *
  * **Validation:**
  * - Mode: onBlur (validates when field loses focus)
  * - ReValidateMode: onChange (re-validates as user types after first error)
  * - Error delay: 500ms debounce
- * 
+ *
  * **Security:**
  * - All inputs sanitized server-side in lib/actions.ts
  * - Rate limited per email and IP address
  * - No sensitive data logged
- * 
+ *
  * **Usage:**
  * ```tsx
  * import ContactForm from '@/components/ContactForm'
- * 
+ *
  * // In contact page
  * <ContactForm />
  * ```
- * 
- * @component
+ *
  * @see lib/actions.ts for server-side handling
  * @see lib/contact-form-schema.ts for validation schema
  */

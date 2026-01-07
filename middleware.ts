@@ -1,12 +1,65 @@
 /**
  * Next.js middleware for security headers and request validation.
- * 
+ *
+ * @module middleware
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: Security middleware. Runs on EVERY request except static assets.
+ * Applies security headers + validates request sizes. CRITICAL for production.
+ *
+ * **RUNS ON**: All routes except:
+ * - /_next/static/* (JS/CSS bundles)
+ * - /_next/image/* (optimized images)
+ * - /favicon.ico
+ * See `matcher` config at bottom of file.
+ *
+ * **SECURITY LAYERS**:
+ * 1. **DoS prevention**: Blocks POST > 1MB before parsing
+ * 2. **CSP**: Restricts script/style/image sources
+ * 3. **Clickjacking**: X-Frame-Options: DENY
+ * 4. **MIME sniffing**: X-Content-Type-Options: nosniff
+ * 5. **XSS filter**: X-XSS-Protection (legacy browsers)
+ * 6. **HTTPS**: HSTS in production
+ * 7. **Referrer**: Controlled leak prevention
+ *
+ * **CSP NOTES** (Content Security Policy):
+ * - 'unsafe-inline' required: Next.js hydration scripts + Tailwind
+ * - 'unsafe-eval' in dev only: Next.js Fast Refresh/HMR
+ * - Production removes 'unsafe-eval' for better security
+ * - Future: nonce-based CSP (requires SSR changes)
+ *
+ * **AI ITERATION HINTS**:
+ * - Adding external script? Add domain to script-src
+ * - Adding external image? Add domain to img-src
+ * - Adding external API? Add domain to connect-src
+ * - Test CSP changes in browser console for violations
+ *
+ * **ENV DIFFERENCES**:
+ * | Header | Dev | Prod |
+ * |--------|-----|------|
+ * | CSP script-src | includes 'unsafe-eval' | no 'unsafe-eval' |
+ * | HSTS | not set | max-age=31536000 |
+ *
+ * **PAYLOAD SIZE LIMIT**: 1MB (MAX_BODY_SIZE_BYTES)
+ * - Contact form is ~1KB typical
+ * - Prevents memory exhaustion attacks
+ * - Returns 413 early (before body parse)
+ *
+ * **POTENTIAL ISSUES**:
+ * - [ ] CSP may break third-party embeds (add domains as needed)
+ * - [ ] No rate limiting at middleware level (handled in actions.ts)
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * **Purpose:**
  * - Apply security headers to all responses
  * - Block oversized payloads to prevent DoS
  * - Enforce HTTPS in production
  * - Prevent common web vulnerabilities
- * 
+ *
  * **Security Layers:**
  * 1. Payload size limiting (DoS prevention)
  * 2. Content Security Policy (XSS prevention)
@@ -14,10 +67,9 @@
  * 4. MIME sniffing prevention (X-Content-Type-Options)
  * 5. HTTPS enforcement (Strict-Transport-Security)
  * 6. Feature policy (Permissions-Policy)
- * 
+ *
  * **Runs on:** All routes except _next/static, _next/image, favicon.ico
- * 
- * @module middleware
+ *
  * @see {@link https://nextjs.org/docs/app/building-your-application/routing/middleware Next.js Middleware}
  * @see {@link https://owasp.org/www-project-secure-headers/ OWASP Secure Headers}
  */

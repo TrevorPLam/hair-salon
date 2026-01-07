@@ -1,22 +1,61 @@
 /**
  * Sanitization utilities to prevent XSS and injection attacks.
- * 
+ *
+ * @module lib/sanitize
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: Security-critical sanitization utilities. Use these functions
+ * BEFORE any user input is rendered in HTML or used in email headers.
+ *
+ * **SECURITY CRITICAL**: Changes here affect XSS protection site-wide.
+ * - Run full test suite after any modifications
+ * - See __tests__/lib/sanitize.test.ts for coverage
+ *
+ * **FUNCTION MATRIX**:
+ * | Function | Use Case | Context |
+ * |----------|----------|----------|
+ * | escapeHtml() | User text → HTML | Any user input displayed |
+ * | sanitizeEmailSubject() | User text → email subject | Prevents header injection |
+ * | textToHtmlParagraphs() | Multi-line text → HTML | Message body in emails |
+ * | sanitizeEmail() | Email validation+clean | Contact form emails |
+ * | sanitizeName() | Name validation+clean | Contact form names |
+ *
+ * **AI ITERATION HINTS**:
+ * - Adding new sanitizer? Follow escapeHtml pattern (pure function, no side effects)
+ * - Update __tests__/lib/sanitize.test.ts with attack vectors
+ * - Consider OWASP cheatsheet for edge cases
+ *
+ * **USAGE RULE**: Call sanitization functions AT THE BOUNDARY
+ * - ✅ Sanitize right before rendering/sending
+ * - ❌ Don't sanitize at form submission (validation only)
+ * - ✅ Keep raw data in state, sanitize on output
+ *
+ * **KNOWN COVERAGE**:
+ * - [x] HTML special chars (&<>"'/)
+ * - [x] Email header injection (\r\n)
+ * - [x] Subject length limits (200 chars)
+ * - [ ] TODO: Add URL sanitization for future link inputs
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * **Purpose:**
  * - Prevent Cross-Site Scripting (XSS) attacks
  * - Prevent email header injection attacks
  * - Safely handle user input in HTML context
- * 
+ *
  * **Usage Context:**
  * - All user-generated content displayed in HTML
  * - Email subjects and bodies
  * - Form inputs that appear in emails
- * 
+ *
  * **Security Model:**
  * - Input sanitization (escape dangerous characters)
  * - No HTML allowed in user input (all HTML tags escaped)
  * - Output encoding for different contexts (HTML, email)
- * 
- * @module lib/sanitize
+ *
  * @see {@link https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html OWASP XSS Prevention}
  */
 

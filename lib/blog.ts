@@ -1,17 +1,66 @@
 /**
  * Blog post management module.
- * 
+ *
+ * @module lib/blog
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: File-based blog CMS. Reads MDX files from content/blog/
+ * at build time (SSG). No runtime filesystem access in production.
+ *
+ * **EDGE RUNTIME WARNING**: This file uses Node.js `fs` module.
+ * Routes using this MUST set `export const dynamic = 'force-static'`
+ * or will fail on Cloudflare Pages edge runtime.
+ *
+ * **DATA FLOW**:
+ * ```
+ * content/blog/*.mdx → getAllPosts() → BlogPost[]
+ *                   → getPostBySlug(slug) → BlogPost | undefined
+ * ```
+ *
+ * **FRONTMATTER SCHEMA** (see content/AGENTS.md for details):
+ * ```yaml
+ * title: string        # Required
+ * description: string  # Required, used for SEO meta
+ * date: YYYY-MM-DD     # Required, used for sorting
+ * author: string       # Optional, defaults to team name
+ * category: string     # Optional, defaults to "Marketing"
+ * featured: boolean    # Optional, shows on homepage
+ * ```
+ *
+ * **AI ITERATION HINTS**:
+ * - Adding frontmatter field? Update BlogPost interface AND content/AGENTS.md
+ * - Posts sorted by date descending (newest first)
+ * - Featured posts: filter with `posts.filter(p => p.featured)`
+ * - Empty blog/ folder returns [] (doesn't throw)
+ *
+ * **CONSUMERS**:
+ * - app/blog/page.tsx — listing page
+ * - app/blog/[slug]/page.tsx — individual post
+ * - app/feed.xml/route.ts — RSS feed
+ * - app/sitemap.ts — sitemap generation
+ * - lib/search.ts — search index
+ *
+ * **POTENTIAL IMPROVEMENTS**:
+ * - [ ] Add caching layer for dev mode (re-reads on every request)
+ * - [ ] Add frontmatter validation with Zod
+ * - [ ] Add prev/next post navigation helpers
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * **Purpose:**
  * - Parse MDX blog posts from the filesystem
  * - Extract frontmatter metadata
  * - Calculate reading time
  * - Provide sorted, filtered access to posts
- * 
+ *
  * **Data Source:**
  * - Location: `content/blog/*.mdx`
  * - Format: MDX files with YAML frontmatter
  * - Parsed at: Build time (SSG)
- * 
+ *
  * **Frontmatter Schema:**
  * ```yaml
  * ---
@@ -23,19 +72,18 @@
  * featured: boolean    # Optional: Defaults to false
  * ---
  * ```
- * 
+ *
  * **Usage:**
  * ```typescript
  * import { getAllPosts, getPostBySlug } from '@/lib/blog'
- * 
+ *
  * // Get all posts sorted by date
  * const posts = getAllPosts()
- * 
+ *
  * // Get single post
  * const post = getPostBySlug('my-post-slug')
  * ```
- * 
- * @module lib/blog
+ *
  * @see content/AGENTS.md for content authoring guidelines
  */
 

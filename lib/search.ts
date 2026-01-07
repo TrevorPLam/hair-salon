@@ -1,29 +1,68 @@
 /**
  * Search index generation for site-wide search.
- * 
+ *
+ * @module lib/search
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: Build-time search index generation. Combines static pages
+ * and blog posts into a searchable array for client-side filtering.
+ *
+ * **ARCHITECTURE**:
+ * - Static pages: HARDCODED in `staticPages` array (manual update required!)
+ * - Blog posts: Dynamic from lib/blog.ts
+ * - Consumed by: SearchDialog, SearchPage components
+ *
+ * **MAINTENANCE CRITICAL**: When adding new pages:
+ * 1. Add entry to `staticPages` array in this file
+ * 2. Update app/sitemap.ts
+ * 3. Test search functionality
+ *
+ * **AI ITERATION HINTS**:
+ * - Adding a page? Add to staticPages array with id, title, description, href, type, tags
+ * - Tags improve search relevance (include keywords users might search for)
+ * - type: 'Page' for static pages, 'Blog' for posts
+ * - Blog posts auto-included via getAllPosts()
+ *
+ * **SEARCH ALGORITHM** (client-side in SearchDialog):
+ * - Searches: title + description + tags (case-insensitive)
+ * - No fuzzy matching (exact substring only)
+ * - Results limited to 6 when no query, unlimited with query
+ *
+ * **POTENTIAL IMPROVEMENTS**:
+ * - [ ] Generate staticPages from app/ filesystem scan
+ * - [ ] Add fuzzy search (Fuse.js or similar)
+ * - [ ] Add search analytics tracking
+ * - [ ] Add case studies to search index
+ *
+ * **EDGE RUNTIME**: Uses fs via lib/blog.ts.
+ * Routes consuming this MUST be force-static.
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
  * **Purpose:**
  * - Combine static pages and blog posts into searchable index
  * - Provide structured data for SearchDialog component
  * - Enable client-side filtering by title, description, tags
- * 
+ *
  * **Architecture:**
  * - Static pages: Hardcoded in this file (update when adding pages)
  * - Blog posts: Dynamically loaded from lib/blog.ts
  * - Generated at: Build time (SSG)
- * 
+ *
  * **Usage:**
  * ```typescript
  * import { getSearchIndex } from '@/lib/search'
- * 
+ *
  * const items = getSearchIndex()
  * // Pass to SearchDialog component
  * ```
- * 
+ *
  * **When to Update:**
  * - Add to `staticPages` array when creating new static pages
  * - Blog posts are automatically included
- * 
- * @module lib/search
  */
 
 import { getAllPosts } from '@/lib/blog'
