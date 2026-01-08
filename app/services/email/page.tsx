@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Mail } from 'lucide-react'
 import ServiceDetailLayout from '@/components/ServiceDetailLayout'
+import { getPublicBaseUrl } from '@/lib/env.public'
 
 export const metadata: Metadata = {
   title: 'Email Marketing Services | Your Dedicated Marketer',
@@ -8,12 +9,14 @@ export const metadata: Metadata = {
 }
 
 export default function EmailMarketingPage() {
+  const baseUrl = getPublicBaseUrl().replace(/\/$/, '')
+
   return (
     <ServiceDetailLayout
       icon={Mail}
       title="Email Marketing"
       description="Nurture leads and drive conversions with targeted email campaigns. We create strategic email programs that build relationships with your audience and turn subscribers into customers."
-      serviceUrl="https://yourdedicatedmarketer.com/services/email"
+      serviceUrl={`${baseUrl}/services/email`}
       included={[
         'Email campaign strategy and planning',
         'Professional email copywriting',

@@ -51,6 +51,7 @@ import Section from '@/components/ui/Section'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Accordion, { AccordionItem } from '@/components/ui/Accordion'
+import { getPublicBaseUrl } from '@/lib/env.public'
 
 /**
  * Process step data structure.
@@ -106,6 +107,9 @@ export default function ServiceDetailLayout({
   faqs,
   serviceUrl,
 }: ServiceDetailProps) {
+  const baseUrl = getPublicBaseUrl().replace(/\/$/, '')
+  const resolvedServiceUrl = serviceUrl ?? `${baseUrl}/services`
+
   // Structured data for Service
   const serviceStructuredData = {
     '@context': 'https://schema.org',
@@ -115,9 +119,9 @@ export default function ServiceDetailLayout({
     provider: {
       '@type': 'Organization',
       name: 'Your Dedicated Marketer',
-      url: 'https://yourdedicatedmarketer.com',
+      url: baseUrl,
     },
-    url: serviceUrl || `https://yourdedicatedmarketer.com/services`,
+    url: resolvedServiceUrl,
     serviceType: title,
     areaServed: {
       '@type': 'Country',
@@ -127,7 +131,7 @@ export default function ServiceDetailLayout({
       '@type': 'Offer',
       name: `${title} - ${tier.tier}`,
       description: tier.description,
-      url: `https://yourdedicatedmarketer.com${tier.href}`,
+      url: `${baseUrl}${tier.href}`,
     })),
   }
 

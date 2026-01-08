@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Search } from 'lucide-react'
 import ServiceDetailLayout from '@/components/ServiceDetailLayout'
+import { getPublicBaseUrl } from '@/lib/env.public'
 
 export const metadata: Metadata = {
   title: 'SEO Services | Your Dedicated Marketer',
@@ -8,12 +9,14 @@ export const metadata: Metadata = {
 }
 
 export default function SEOServicesPage() {
+  const baseUrl = getPublicBaseUrl().replace(/\/$/, '')
+
   return (
     <ServiceDetailLayout
       icon={Search}
       title="SEO Services"
       description="Get found by customers actively searching for your services. Our comprehensive SEO approach combines technical expertise with strategic content optimization to improve your search rankings and drive qualified traffic."
-      serviceUrl="https://yourdedicatedmarketer.com/services/seo"
+      serviceUrl={`${baseUrl}/services/seo`}
       included={[
         'Comprehensive technical SEO audit',
         'On-page optimization for all key pages',
