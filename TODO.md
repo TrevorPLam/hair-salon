@@ -1,4 +1,3 @@
-
 # TODO.md — Repository Task List
 
 Document Type: Workflow
@@ -24,6 +23,7 @@ This file is the single source of truth for actionable work. If another document
 - **Type**: `SECURITY | RELEASE | DEPENDENCY | DOCS | QUALITY | BUG | FEATURE | CHORE`
 - **Owner**: `AGENT | Trevor`
 - **Status**: `READY | BLOCKED | IN-PROGRESS | IN-REVIEW | DONE`
+- **Blockers**: `None` or a short description of what prevents progress
 - **Context**: why the task exists (1–5 bullets)
 - **Acceptance Criteria**: verifiable checklist (broken into subtasks T-###.#)
 - **References**: file paths and/or links inside this repo
@@ -42,104 +42,40 @@ This file is the single source of truth for actionable work. If another document
 
 ---
 
-## 🔴 PHASE 0: Build & Deploy Blockers (P0)
-> These MUST be fixed before feature work, otherwise Cloudflare deploys will fail.
+## 🔴 PHASE 0: Build & Security Blockers (P0)
+> These MUST be fixed before feature work.
 
-### T-050: Restore green local install/build/test
+### T-069: Update Next.js to fix critical vulnerabilities
 Priority: P0
-Type: DEPENDENCY
+Type: SECURITY
 Owner: AGENT
-Status: DONE
+Status: READY
+Blockers: None
 Context:
-- In this workspace, `npm run lint` failed with `next: not found` (suggests deps not installed)
-- Need a known-good baseline before Cloudflare Pages integration
+- npm audit reports critical CVEs in next@15.5.2 (RCE, Source Exposure).
+- Must update to >=15.5.9.
+- Constraint: Must stay on Next.js 15.x for Cloudflare Pages compatibility (do not upgrade to 16.x yet).
 Acceptance Criteria:
-- [x] T-050.1: Run `npm install` successfully (no registry 403)
-- [x] T-050.2: Run `npm run build` successfully
-- [x] T-050.3: Run `npm run test` successfully
-- [x] T-050.4: Run `npm run type-check` successfully
-- [x] T-050.5: Run `npm run lint` successfully
+- [ ] T-069.1: Update `package.json` to use `next@15.5.9` (or latest 15.x patch)
+- [ ] T-069.2: Run `npm install`
+- [ ] T-069.3: Run `npm audit` to verify criticals are gone
+- [ ] T-069.4: Run `npm run build` to verify Cloudflare compatibility
 References:
 - /package.json
 Dependencies: None
 Effort: S
-
-### T-051: Unblock npm registry access (if installs fail)
-Priority: P0
-Type: DEPENDENCY
-Owner: Trevor
-Status: DONE
-Context:
-- Earlier repo history reported `npm install` returning 403 for type packages
-- Cloudflare Pages builds will also fail if registry access is blocked
-- **Verification**: `npm-registry-check.mjs` passes and `npm install` works locally.
-Acceptance Criteria:
-- [x] T-051.1: Provide registry/proxy credentials or allowlist so `npm install` succeeds
-- [x] T-051.2: Confirm `npm install` works locally and in Cloudflare Pages build logs
-References:
-- /scripts/npm-registry-check.mjs
-- /package.json
-Dependencies: None
-Effort: XS
-
-### T-052: Enable Cloudflare Pages build (GitHub integration)
-Priority: P0
-Type: RELEASE
-Owner: AGENT
-Status: DONE
-Context:
-- Hosting target is Cloudflare Pages via GitHub integration
-- Next.js App Router requires Cloudflare-compatible build output
-- **Implementation Note**: Downgraded to Next.js 15.5.2 and ESLint 9 compatible config to ensure stability with `@cloudflare/next-on-pages`.
-Acceptance Criteria:
-- [x] T-052.1: Add Cloudflare Pages build instructions to `/docs/DEPLOYMENT.md`
-- [x] T-052.2: Configure repo for Cloudflare Pages Next.js deployment (documented + reproducible)
-- [x] T-052.3: Produce a successful Cloudflare Pages preview build (no runtime errors)
-References:
-- /docs/DEPLOYMENT.md
-- /next.config.mjs
-- /middleware.ts
-Dependencies: T-050
-Effort: M
 
 ---
 
 ## 🟠 PHASE 1: Lead Capture Pipeline (Supabase + HubSpot) (P1)
 > Replace email delivery with DB + CRM while preserving spam controls.
 
-### T-053: Migrate contact form pipeline to Supabase (DB) + HubSpot (CRM)
-Priority: P1
-Type: FEATURE
-Owner: AGENT
-Status: BLOCKED
-Context:
-- Chat decision: no email; save lead to Supabase (server-only) and sync to HubSpot CRM
-- Must preserve current UX contract (success/error messages) in `submitContactForm`
-- Save suspicious submissions but flag them (suspicious = too many requests)
-Acceptance Criteria:
-- [ ] T-053.1: Update schema so Name/Email/Phone are required (keep message required)
-- [ ] T-053.2: Add env validation for Supabase + HubSpot server-only secrets
-- [ ] T-053.3: Insert lead into Supabase with `is_suspicious` + `suspicion_reason`
-- [ ] T-053.4: Upsert HubSpot contact by email; store HubSpot IDs + sync status in Supabase
-- [ ] T-053.5: If HubSpot fails, return success and mark lead `hubspot_sync_status = 'needs_sync'`
-- [ ] T-053.6: Update `scripts/check-client-secrets.mjs` to forbid new secret env names
-- [ ] T-053.7: Remove email-send behavior from `lib/actions.ts` and remove unused Resend config/deps
-- [ ] T-053.8: Add unit test(s) for: rate-limit flagged lead saved; HubSpot failure still returns success
-References:
-- /lib/actions.ts
-- /lib/contact-form-schema.ts
-- /components/ContactForm.tsx
-- /lib/env.ts
-- /env.example
-- /scripts/check-client-secrets.mjs
-Dependencies: T-054, T-055, T-050
-Effort: L
-
 ### T-054: Provision Supabase project + provide server credentials
 Priority: P1
 Type: RELEASE
 Owner: Trevor
 Status: READY
+Blockers: None
 Context:
 - Supabase will store leads (server-only access)
 - Requires Supabase project + keys configured in Cloudflare Pages environment variables
@@ -159,6 +95,7 @@ Priority: P1
 Type: RELEASE
 Owner: Trevor
 Status: READY
+Blockers: None
 Context:
 - HubSpot is the CRM target; contact records should be created/updated on submission
 - Requires a private app token stored as a Cloudflare Pages server-only env var
@@ -172,6 +109,92 @@ References:
 Dependencies: None
 Effort: XS
 
+### T-079: Update contact form requirements + env validation for Supabase/HubSpot
+Priority: P1
+Type: FEATURE
+Owner: AGENT
+Status: READY
+Blockers: None
+Context:
+- Pipeline shifts to Supabase + HubSpot, so form validation must align with required fields
+- Server-only secrets must be validated and blocked from client exposure
+Acceptance Criteria:
+- [ ] T-079.1: Update contact form schema so Name/Email/Phone are required (keep message required)
+- [ ] T-079.2: Update `ContactForm` UI to match required fields and error messaging
+- [ ] T-079.3: Add env validation for `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `HUBSPOT_PRIVATE_APP_TOKEN`
+- [ ] T-079.4: Update `scripts/check-client-secrets.mjs` to forbid new server-only env names
+- [ ] T-079.5: Update `/env.example` with the new server-only env vars and notes
+References:
+- /lib/contact-form-schema.ts
+- /components/ContactForm.tsx
+- /lib/env.ts
+- /scripts/check-client-secrets.mjs
+- /env.example
+Dependencies: None
+Effort: S
+
+### T-080: Store leads in Supabase with suspicion metadata
+Priority: P1
+Type: FEATURE
+Owner: AGENT
+Status: BLOCKED
+Blockers: Supabase project/table + credentials needed (T-054).
+Context:
+- Replace email delivery with Supabase lead storage
+- Must preserve current UX contract in `submitContactForm`
+- Save suspicious submissions but flag them for later review
+Acceptance Criteria:
+- [ ] T-080.1: Insert lead into Supabase with `is_suspicious` + `suspicion_reason`
+- [ ] T-080.2: Store submission metadata needed for downstream HubSpot sync
+- [ ] T-080.3: Preserve current `submitContactForm` success/error UX contract
+References:
+- /lib/actions.ts
+- /lib/env.ts
+- /docs/DEPLOYMENT.md
+Dependencies: T-054, T-079
+Effort: M
+
+### T-081: Sync leads to HubSpot and record sync status
+Priority: P1
+Type: FEATURE
+Owner: AGENT
+Status: BLOCKED
+Blockers: HubSpot token required (T-055) and Supabase storage (T-080).
+Context:
+- Lead submissions should upsert into HubSpot CRM by email
+- HubSpot failures must not break UX; retry should be possible
+Acceptance Criteria:
+- [ ] T-081.1: Upsert HubSpot contact by email and store HubSpot IDs in Supabase
+- [ ] T-081.2: If HubSpot fails, return success and mark lead `hubspot_sync_status = 'needs_sync'`
+- [ ] T-081.3: Store HubSpot sync attempt metadata for observability
+References:
+- /lib/actions.ts
+- /lib/env.ts
+Dependencies: T-055, T-080
+Effort: M
+
+### T-082: Remove email pipeline and add tests for new lead flow
+Priority: P1
+Type: FEATURE
+Owner: AGENT
+Status: BLOCKED
+Blockers: Supabase + HubSpot flow required first (T-080, T-081).
+Context:
+- Email sending is no longer part of the contact pipeline
+- New flow needs tests for suspicious handling + HubSpot failure behavior
+Acceptance Criteria:
+- [ ] T-082.1: Remove email-send behavior from `lib/actions.ts`
+- [ ] T-082.2: Remove unused Resend config/deps
+- [ ] T-082.3: Add unit test(s) for: rate-limit flagged lead saved; HubSpot failure still returns success
+References:
+- /lib/actions.ts
+- /__tests__/lib/actions.rate-limit.test.ts
+- /package.json
+Dependencies: T-080, T-081
+Effort: S
+
+---
+
 ## 🟡 PHASE 2: Diamond Standard Quality (P2)
 > Accessibility, performance, observability, and testing.
 
@@ -180,10 +203,10 @@ Priority: P2
 Type: QUALITY
 Owner: AGENT
 Status: BLOCKED
+Blockers: Lighthouse CLI not installed (install globally or set `LIGHTHOUSE_BIN`).
 Context:
 - Diamond Standard requires strong Core Web Vitals
 - Need baseline measurements before setting strict budgets
-- Blocked: Lighthouse CLI unavailable in sandbox (npm registry 403 on install)
 Acceptance Criteria:
 - [x] T-058.1: Add a local Lighthouse config and script
 - [ ] T-058.2: Capture baseline metrics for mobile (home/services/pricing/contact)
@@ -192,26 +215,7 @@ Acceptance Criteria:
 References:
 - /docs/OBSERVABILITY.md
 - /package.json
-Dependencies: T-050
-Effort: M
-
-### T-062: Structured data for SEO (Article/Service/Breadcrumb)
-Priority: P2
-Type: QUALITY
-Owner: AGENT
-Status: READY
-Context:
-- Diamond Standard SEO: structured data improves rich results + clarity
-Acceptance Criteria:
-- [ ] T-062.1: Add Article schema to blog posts
-- [ ] T-062.2: Add Service schema to service pages
-- [ ] T-062.3: Add BreadcrumbList schema where breadcrumbs exist
-- [ ] T-062.4: Validate via Google Rich Results Test
-References:
-- /app/blog/
-- /app/services/
-- /components/Breadcrumbs.tsx
-Dependencies: T-050
+Dependencies: None
 Effort: M
 
 ### T-063: Image optimization audit (next/image)
@@ -219,6 +223,7 @@ Priority: P2
 Type: QUALITY
 Owner: AGENT
 Status: READY
+Blockers: None
 Context:
 - Images are a common performance bottleneck
 Acceptance Criteria:
@@ -229,7 +234,7 @@ References:
 - /components/
 - /app/
 - /docs/UI_DESIGN_SYSTEM.md
-Dependencies: T-050
+Dependencies: None
 Effort: M
 
 ### T-064: Analytics provider selection and rollout
@@ -237,6 +242,7 @@ Priority: P2
 Type: QUALITY
 Owner: Trevor
 Status: READY
+Blockers: None
 Context:
 - Diamond Standard marketing site should have conversion tracking
 - Provider choice required (GA4/Plausible/etc.)
@@ -250,40 +256,16 @@ References:
 Dependencies: None
 Effort: XS
 
----
-
-## 🟦 PHASE 3: Release Hygiene (P2)
-> Make releases repeatable and safe.
-
-### T-069: Update Next.js to fix critical vulnerabilities
-Priority: P0
-Type: SECURITY
-Owner: AGENT
-Status: READY
-Context:
-- npm audit reports critical CVEs in next@15.5.2 (RCE, Source Exposure).
-- Must update to >=15.5.9.
-- Constraint: Must stay on Next.js 15.x for Cloudflare Pages compatibility (do not upgrade to 16.x yet).
-Acceptance Criteria:
-- [ ] T-069.1: Update `package.json` to use `next@15.5.9` (or latest 15.x patch)
-- [ ] T-069.2: Run `npm install`
-- [ ] T-069.3: Run `npm audit` to verify criticals are gone
-- [ ] T-069.4: Run `npm run build` to verify Cloudflare compatibility
-References:
-- /package.json
-Dependencies: None
-Effort: S
-
 ### T-070: Monitor and fix transitive build-tool vulnerabilities
 Priority: P2
 Type: DEPENDENCY
 Owner: AGENT
 Status: BLOCKED
+Blockers: Await upstream fixes in `@cloudflare/next-on-pages` or Cloudflare runtime updates.
 Context:
 - npm audit reports High/Moderate issues in `path-to-regexp`, `esbuild`, `undici`.
 - These are pulled in by `@cloudflare/next-on-pages`.
 - Currently on latest adapter version (1.13.16).
-- Need to wait for Cloudflare execution environment updates or adapter updates.
 Acceptance Criteria:
 - [ ] T-070.1: Check for updates to `@cloudflare/next-on-pages`
 - [ ] T-070.2: Attempt `npm update` of transitive deps if possible
@@ -292,35 +274,12 @@ References:
 Dependencies: None
 Effort: S
 
----
-
-## 🟣 PHASE 4: AI Deep Dive Findings (Discovered 2026-01-07)
-> Tasks discovered during comprehensive codebase analysis. See docs/AI_DEEP_DIVE_FINDINGS.md for details.
-
-### T-071: Fix hardcoded URLs in structured data
-Priority: P1
-Type: BUG
-Owner: AGENT
-Status: READY
-Context:
-- Breadcrumbs.tsx and blog/[slug]/page.tsx use hardcoded "yourdedicatedmarketer.com" in schema.org data
-- Should use getPublicBaseUrl() for environment-aware URLs
-- Affects SEO structured data accuracy
-Acceptance Criteria:
-- [ ] T-071.1: Update Breadcrumbs.tsx to use getPublicBaseUrl() in structuredData
-- [ ] T-071.2: Update blog/[slug]/page.tsx articleStructuredData to use getPublicBaseUrl()
-- [ ] T-071.3: Verify structured data renders correctly with Rich Results Test
-References:
-- /components/Breadcrumbs.tsx
-- /app/blog/[slug]/page.tsx
-- /lib/env.public.ts
-Dependencies: None
-Effort: XS
 ### T-072: Create missing legal pages (privacy, terms)
 Priority: P2
 Type: FEATURE
 Owner: Trevor
 Status: READY
+Blockers: None
 Context:
 - Footer links to /privacy and /terms pages that don't exist
 - Required for legal compliance and user trust
@@ -341,23 +300,51 @@ Priority: P2
 Type: BUG
 Owner: AGENT
 Status: READY
+Blockers: None
 Context:
 - Services page links to /services/strategy, /services/crm, /services/funnel, /services/reporting
 - These routes don't exist (404)
 - Options: create pages, show "coming soon", or remove links
 Acceptance Criteria:
-- [ ] T-073.1: Create placeholder pages with "coming soon" content, OR
-- [ ] T-073.2: Remove supportServices links from services page
+- [ ] T-073.1: Decide approach (placeholder pages vs remove links) and record the decision
+- [ ] T-073.2: If creating pages, add placeholder routes for strategy/crm/funnel/reporting
+- [ ] T-073.3: If removing links, remove supportServices links from services page
 References:
 - /app/services/page.tsx
 Dependencies: None
 Effort: S
+
+### T-076: Fix honeypot logging as error
+Priority: P2
+Type: BUG
+Owner: AGENT
+Status: READY
+Blockers: None
+Context:
+- Honeypot field triggers ZodError which logs as error in actions.ts
+- Should be handled as spam detection (warn level), not error
+- Creates noise in error monitoring
+Acceptance Criteria:
+- [ ] T-076.1: Move honeypot check before Zod parse, OR
+- [ ] T-076.2: Catch honeypot ZodError specifically and log as warn
+- [ ] T-076.3: Add test for honeypot logging behavior
+References:
+- /lib/actions.ts
+- /__tests__/lib/actions.rate-limit.test.ts
+Dependencies: None
+Effort: XS
+
+---
+
+## 🟦 PHASE 3: Enhancements (P3)
+> Nice-to-have improvements for Diamond Standard.
 
 ### T-074: Add active link highlighting to Navigation
 Priority: P3
 Type: FEATURE
 Owner: AGENT
 Status: READY
+Blockers: None
 Context:
 - Navigation links don't indicate current page
 - Improves UX by showing user where they are
@@ -375,6 +362,7 @@ Priority: P3
 Type: FEATURE
 Owner: AGENT
 Status: READY
+Blockers: None
 Context:
 - Search includes blog posts and static pages but not case studies
 - Easy enhancement to improve site search
@@ -388,30 +376,12 @@ References:
 Dependencies: None
 Effort: XS
 
-### T-076: Fix honeypot logging as error
-Priority: P2
-Type: BUG
-Owner: AGENT
-Status: READY
-Context:
-- Honeypot field triggers ZodError which logs as error in actions.ts
-- Should be handled as spam detection (warn level), not error
-- Creates noise in error monitoring
-Acceptance Criteria:
-- [ ] T-076.1: Move honeypot check before Zod parse, OR
-- [ ] T-076.2: Catch honeypot ZodError specifically and log as warn
-- [ ] T-076.3: Add test for honeypot logging behavior
-References:
-- /lib/actions.ts
-- /__tests__/lib/actions.rate-limit.test.ts
-Dependencies: None
-Effort: XS
-
 ### T-077: Add focus trap to mobile navigation menu
 Priority: P3
 Type: QUALITY
 Owner: AGENT
 Status: READY
+Blockers: None
 Context:
 - Mobile menu doesn't trap focus (accessibility gap)
 - Users can tab to elements behind the menu overlay
@@ -429,6 +399,7 @@ Priority: P3
 Type: CHORE
 Owner: AGENT
 Status: READY
+Blockers: None
 Context:
 - eslint.config.mjs.bak is a backup file from ESLint migration
 - Clean up to reduce repo clutter
