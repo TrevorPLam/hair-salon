@@ -36,8 +36,8 @@ All secrets must be configured in Cloudflare Pages → Settings → Environment 
 ### Server-only (secrets)
 | Variable | Required | Description |
 | --- | --- | --- |
-| `RESEND_API_KEY` | ✅ (current) | Required for email-based contact flow. |
-| `CONTACT_EMAIL` | ✅ (current) | Destination for contact form submissions. |
+| `RESEND_API_KEY` | ✅ | Required for the current email-based contact flow. Will be removed after T-053. |
+| `CONTACT_EMAIL` | ✅ | Destination for contact form submissions. Will be removed after T-053. |
 | `UPSTASH_REDIS_REST_URL` | ⚪ | Distributed rate limiting (recommended for production). |
 | `UPSTASH_REDIS_REST_TOKEN` | ⚪ | Distributed rate limiting (recommended for production). |
 | `SENTRY_AUTH_TOKEN` | ⚪ | Required if uploading source maps/releases. |
