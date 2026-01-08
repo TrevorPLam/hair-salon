@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `npm run check:npm-registry` to diagnose registry connectivity and proxy issues before running dependency commands
 - Added a contact form honeypot field to block bot submissions
 - Added repeatable accessibility and Lighthouse audit scripts for local QA
+- Added Playwright coverage for contact submission success, rate limiting, and search empty states
+- Added unit tests for Hero, ValueProps, ServicesOverview, and SocialProof sections
 
 ### Security
 - Added hashed IP + email rate limiting for contact form submissions
@@ -23,12 +25,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Expanded middleware security header docs and environment helper documentation
 - Clarified sanitize utility usage guidance
 - Documented accessibility standards, Lighthouse baselines, and Sentry performance instrumentation
+- Documented Vitest coverage threshold expectations in the testing strategy
 
 ### Changed
 - Removed deprecated `api` and `sentry` keys from `next.config.mjs`
 - Documented npm as the canonical package manager and lockfile
 - Updated pre-commit TypeScript hook to use npm instead of pnpm
 - Hardened Sentry source map handling for production builds
+- Added Vitest coverage thresholds to enforce minimum unit coverage
 
 ### Dependencies
 - Aligned `@next/mdx` to the Next.js 14.x line

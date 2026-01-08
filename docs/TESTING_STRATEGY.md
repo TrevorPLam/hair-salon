@@ -17,6 +17,10 @@ This is a template testing strategy. Real projects should extend it.
 - Governance + security + best-effort checks: `make ci`
 - Repo-specific checks: define in `repo.manifest.yaml` under `commands.*`
 
+## Coverage expectations
+- Coverage thresholds are enforced in `vitest.config.ts` when running `npm run test:coverage`.
+- Adjust thresholds only via TODO.md task with documented rationale.
+
 ## Minimum acceptable verification per change
 - A runnable command (tests, lint, build, or a smoke check)
 - Evidence in the session output (commands + results)

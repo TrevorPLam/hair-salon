@@ -83,7 +83,8 @@ This document defines what "best practices," "diamond standard," and "perfect co
 - ✅ Unit tests for lib/ functions (14 test files)
 - ✅ E2E tests for critical flows
 - ✅ Vitest + Playwright configured
-- ⚠️ Missing: Error state tests, visual regression, coverage enforcement
+- ✅ Coverage thresholds configured in Vitest
+- ⚠️ Missing: Error state tests, visual regression
 
 **Target State**: Comprehensive coverage (A+)
 - 80%+ unit test coverage on critical paths

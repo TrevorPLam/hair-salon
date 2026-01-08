@@ -56,6 +56,44 @@ Effort: XS
 Notes:
 - Verification blocked: dependencies missing because `npm install` failed with 403 (see T-046)
 
+### T-060: E2E tests for critical user journeys
+Priority: P2
+Type: QUALITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-08
+Context:
+- Diamond Standard requires confidence in core flows
+- Contact flow is security + lead-critical; search/404 are UX-critical
+Acceptance Criteria:
+- [x] T-060.1: Add E2E test for contact submission success
+- [x] T-060.2: Add E2E test for rate limiting behavior (suspicious flag path)
+- [x] T-060.3: Add E2E test for 404 page
+- [x] T-060.4: Add E2E test for search with no results
+References:
+- /tests/
+- /components/ContactForm.tsx
+Dependencies: T-053
+Effort: M
+
+### T-061: Unit test coverage threshold for critical paths
+Priority: P2
+Type: QUALITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-08
+Context:
+- Diamond Standard expects meaningful unit coverage on critical components
+Acceptance Criteria:
+- [x] T-061.1: Set coverage thresholds in `/vitest.config.ts`
+- [x] T-061.2: Add unit tests for key components (Hero, ValueProps, ServicesOverview, SocialProof)
+References:
+- /vitest.config.ts
+- /__tests__/components/
+- /components/
+Dependencies: T-050
+Effort: L
+
 ### T-005: Add honeypot field for spam prevention
 Priority: P1
 Type: SECURITY
