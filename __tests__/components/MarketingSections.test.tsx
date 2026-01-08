@@ -29,7 +29,7 @@ describe('Marketing sections', () => {
     expect(
       screen.getByRole('heading', { name: /marketing services that drive growth/i })
     ).toBeInTheDocument()
-    expect(screen.getByText(/seo services/i)).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 3, name: /seo services/i })).toBeInTheDocument()
     expect(screen.getAllByRole('link', { name: /learn more/i })).toHaveLength(4)
   })
 
