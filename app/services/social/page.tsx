@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Share2 } from 'lucide-react'
 import ServiceDetailLayout from '@/components/ServiceDetailLayout'
-import { getPublicBaseUrl } from '@/lib/env.public'
 
 export const metadata: Metadata = {
   title: 'Social Media Management | Your Dedicated Marketer',
@@ -9,14 +8,12 @@ export const metadata: Metadata = {
 }
 
 export default function SocialMediaPage() {
-  const baseUrl = getPublicBaseUrl().replace(/\/$/, '')
-
   return (
     <ServiceDetailLayout
       icon={Share2}
       title="Social Media Management"
       description="Build community and brand awareness across social platforms. We handle strategy, content creation, posting, and engagement so you can focus on running your business while maintaining an active social presence."
-      serviceUrl={`${baseUrl}/services/social`}
+      serviceSlug="social"
       included={[
         'Platform strategy development',
         'Monthly content calendar creation',

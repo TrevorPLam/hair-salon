@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { FileText } from 'lucide-react'
 import ServiceDetailLayout from '@/components/ServiceDetailLayout'
-import { getPublicBaseUrl } from '@/lib/env.public'
 
 export const metadata: Metadata = {
   title: 'Content Marketing Services | Your Dedicated Marketer',
@@ -9,14 +8,12 @@ export const metadata: Metadata = {
 }
 
 export default function ContentMarketingPage() {
-  const baseUrl = getPublicBaseUrl().replace(/\/$/, '')
-
   return (
     <ServiceDetailLayout
       icon={FileText}
       title="Content Marketing"
       description="Attract and engage your audience with strategic, high-quality content. We handle everything from planning to publishing, creating content that educates, converts, and builds your brand authority."
-      serviceUrl={`${baseUrl}/services/content`}
+      serviceSlug="content"
       included={[
         'Monthly content calendar planning',
         'Blog post creation (SEO-optimized)',

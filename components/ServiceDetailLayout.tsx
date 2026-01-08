@@ -88,8 +88,8 @@ export interface ServiceDetailProps {
   }[]
   /** FAQ items for accordion */
   faqs: AccordionItem[]
-  /** Optional canonical URL for structured data */
-  serviceUrl?: string
+  /** Optional service slug for structured data */
+  serviceSlug?: string
 }
 
 /**
@@ -105,10 +105,12 @@ export default function ServiceDetailLayout({
   whoItsFor,
   pricing,
   faqs,
-  serviceUrl,
+  serviceSlug,
 }: ServiceDetailProps) {
   const baseUrl = getPublicBaseUrl().replace(/\/$/, '')
-  const resolvedServiceUrl = serviceUrl ?? `${baseUrl}/services`
+  const resolvedServiceUrl = serviceSlug
+    ? `${baseUrl}/services/${serviceSlug}`
+    : `${baseUrl}/services`
 
   // Structured data for Service
   const serviceStructuredData = {
