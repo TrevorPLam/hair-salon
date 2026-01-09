@@ -199,6 +199,26 @@ Effort: S
 Notes:
 - Verified with `npm test -- __tests__/app/og-route.test.ts`
 
+### T-069: Update Next.js to fix critical vulnerabilities
+Priority: P0
+Type: SECURITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-09
+Context:
+- npm audit reports critical CVEs in next@15.5.2 (RCE, Source Exposure).
+- Must update to >=15.5.9.
+- Constraint: Must stay on Next.js 15.x for Cloudflare Pages compatibility (do not upgrade to 16.x yet).
+Acceptance Criteria:
+- [x] T-069.1: Update `package.json` to use `next@15.5.9` (or latest 15.x patch)
+- [x] T-069.2: Run `npm install`
+- [x] T-069.3: Run `npm audit` to verify criticals are gone
+- [x] T-069.4: Run `npm run build` to verify Cloudflare compatibility
+References:
+- /package.json
+Dependencies: None
+Effort: S
+
 ### T-062: Structured data for SEO (Article/Service/Breadcrumb)
 Priority: P2
 Type: QUALITY

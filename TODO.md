@@ -45,26 +45,6 @@ This file is the single source of truth for actionable work. If another document
 ## 🔴 PHASE 0: Build & Security Blockers (P0)
 > These MUST be fixed before feature work.
 
-### T-069: Update Next.js to fix critical vulnerabilities
-Priority: P0
-Type: SECURITY
-Owner: AGENT
-Status: READY
-Blockers: None
-Context:
-- npm audit reports critical CVEs in next@15.5.2 (RCE, Source Exposure).
-- Must update to >=15.5.9.
-- Constraint: Must stay on Next.js 15.x for Cloudflare Pages compatibility (do not upgrade to 16.x yet).
-Acceptance Criteria:
-- [ ] T-069.1: Update `package.json` to use `next@15.5.9` (or latest 15.x patch)
-- [ ] T-069.2: Run `npm install`
-- [ ] T-069.3: Run `npm audit` to verify criticals are gone
-- [ ] T-069.4: Run `npm run build` to verify Cloudflare compatibility
-References:
-- /package.json
-Dependencies: None
-Effort: S
-
 ---
 
 ## 🟠 PHASE 1: Lead Capture Pipeline (Supabase + HubSpot) (P1)

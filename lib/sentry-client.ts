@@ -1,4 +1,6 @@
 let sentryPromise: Promise<typeof import('@sentry/nextjs')> | null = null
+export type SpanAttributeValue = string | number | boolean;
+export type SpanAttributes = Record<string, SpanAttributeValue | undefined>;
 
 function loadSentry() {
   if (!sentryPromise) {
@@ -24,7 +26,7 @@ export async function setSentryContext(name: string, context: Record<string, unk
 }
 
 export async function withSentrySpan<T>(
-  options: { name: string; op?: string; attributes?: Record<string, unknown> },
+  options: { name: string; op?: string; attributes?: SpanAttributes },
   callback: () => Promise<T>,
 ): Promise<T> {
   if (typeof window === 'undefined' || !process.env.NEXT_PUBLIC_SENTRY_DSN) {
