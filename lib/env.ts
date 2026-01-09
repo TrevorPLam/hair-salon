@@ -174,7 +174,7 @@ const envSchema = z.object({
    * 
    * @example 'https://xyzcompany.supabase.co'
    */
-  SUPABASE_URL: z.string().url(),
+  SUPABASE_URL: z.string().trim().url(),
 
   /**
    * Supabase service role key (required, server-only).
