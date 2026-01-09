@@ -325,9 +325,9 @@ Context:
 - Should be handled as spam detection (warn level), not error
 - Creates noise in error monitoring
 Acceptance Criteria:
-- [ ] T-076.1: Move honeypot check before Zod parse, OR
-- [ ] T-076.2: Catch honeypot ZodError specifically and log as warn
-- [ ] T-076.3: Add test for honeypot logging behavior
+- [ ] T-076.1: Decide on implementation path (pre-Zod check or specific error catch).
+- [ ] T-076.2: Implement the chosen solution to ensure honeypot submissions are logged as warnings.
+- [ ] T-076.3: Add a unit test to verify the new logging behavior.
 References:
 - /lib/actions.ts
 - /__tests__/lib/actions.rate-limit.test.ts
