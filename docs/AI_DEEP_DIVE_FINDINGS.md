@@ -117,18 +117,6 @@ This document captures findings from a comprehensive codebase analysis. The repo
 
 ## 🔵 Potential Dead Code
 
-### Dead Code: eslint.config.mjs.bak
-- **Location:** [eslint.config.mjs.bak](eslint.config.mjs.bak)
-- **Details:** Backup file from ESLint migration. Safe to delete.
-- **Action:** Delete file
-- **Effort:** XS
-
-### Potentially Unused: pre-commit-config.yaml
-- **Location:** [pre-commit-config.yaml](pre-commit-config.yaml)
-- **Details:** Pre-commit config but no .pre-commit-hooks.yaml or evidence it's active
-- **Action:** Verify if pre-commit is used; if not, delete
-- **Effort:** XS
-
 ### Unused Import Pattern: Dynamic Import in OG Route
 - **Location:** [app/api/og/route.tsx](app/api/og/route.tsx)
 - **Details:** Good - no issues found, but verify edge runtime compatibility
