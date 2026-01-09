@@ -360,3 +360,69 @@ References:
 - /docs/product/DEVELOPMENT-ROADMAP.md
 Dependencies: None
 Effort: XS
+
+### T-050: Restore green local install/build/test
+Priority: P0
+Type: DEPENDENCY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-08
+Context:
+- In this workspace, `npm run lint` failed with `next: not found` (suggests deps not installed)
+- Need a known-good baseline before Cloudflare Pages integration
+Acceptance Criteria:
+- [x] T-050.1: Run `npm install` successfully (no registry 403)
+- [x] T-050.2: Run `npm run build` successfully
+- [x] T-050.3: Run `npm run test` successfully
+- [x] T-050.4: Run `npm run type-check` successfully
+- [x] T-050.5: Run `npm run lint` successfully
+References:
+- /package.json
+Dependencies: None
+Effort: S
+Notes:
+- Moved from TODO.md; completion date not recorded in task history.
+
+### T-051: Unblock npm registry access (if installs fail)
+Priority: P0
+Type: DEPENDENCY
+Owner: Trevor
+Status: DONE
+Completed: 2026-01-08
+Context:
+- Earlier repo history reported `npm install` returning 403 for type packages
+- Cloudflare Pages builds will also fail if registry access is blocked
+- **Verification**: `npm-registry-check.mjs` passes and `npm install` works locally.
+Acceptance Criteria:
+- [x] T-051.1: Provide registry/proxy credentials or allowlist so `npm install` succeeds
+- [x] T-051.2: Confirm `npm install` works locally and in Cloudflare Pages build logs
+References:
+- /scripts/npm-registry-check.mjs
+- /package.json
+Dependencies: None
+Effort: XS
+Notes:
+- Moved from TODO.md; completion date not recorded in task history.
+
+### T-052: Enable Cloudflare Pages build (GitHub integration)
+Priority: P0
+Type: RELEASE
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-08
+Context:
+- Hosting target is Cloudflare Pages via GitHub integration
+- Next.js App Router requires Cloudflare-compatible build output
+- **Implementation Note**: Downgraded to Next.js 15.5.2 and ESLint 9 compatible config to ensure stability with `@cloudflare/next-on-pages`.
+Acceptance Criteria:
+- [x] T-052.1: Add Cloudflare Pages build instructions to `/docs/DEPLOYMENT.md`
+- [x] T-052.2: Configure repo for Cloudflare Pages Next.js deployment (documented + reproducible)
+- [x] T-052.3: Produce a successful Cloudflare Pages preview build (no runtime errors)
+References:
+- /docs/DEPLOYMENT.md
+- /next.config.mjs
+- /middleware.ts
+Dependencies: T-050
+Effort: M
+Notes:
+- Moved from TODO.md; completion date not recorded in task history.
