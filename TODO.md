@@ -1,7 +1,7 @@
 # TODO.md — Repository Task List
 
 Document Type: Workflow
-Last Updated: 2026-01-09
+Last Updated: 2026-01-10
 Task Truth Source: **TODO.md**
 
 This file is the single source of truth for actionable work. If another document disagrees, the task record in this file wins (unless the Constitution overrides).
@@ -231,25 +231,6 @@ References:
 - /app/
 Dependencies: None
 Effort: M
-
-### T-073: Handle support services "coming soon" pages
-Priority: P2
-Type: BUG
-Owner: AGENT
-Status: READY
-Blockers: None
-Context:
-- Services page links to /services/strategy, /services/crm, /services/funnel, /services/reporting
-- These routes don't exist (404)
-- Options: create pages, show "coming soon", or remove links
-Acceptance Criteria:
-- [ ] T-073.1: Decide approach (placeholder pages vs remove links) and record the decision
-- [ ] T-073.2: If creating pages, add placeholder routes for strategy/crm/funnel/reporting
-- [ ] T-073.3: If removing links, remove supportServices links from services page
-References:
-- /app/services/page.tsx
-Dependencies: None
-Effort: S
 
 ### T-076: Fix honeypot logging as error
 Priority: P2

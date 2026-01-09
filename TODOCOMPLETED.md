@@ -1,7 +1,7 @@
 # TODOCOMPLETED.md — Completed Tasks Archive
 
 Document Type: Workflow
-Last Updated: 2026-01-09
+Last Updated: 2026-01-10
 Source: Completed tasks moved from `TODO.md`
 
 This file stores completed work in the same schema as `TODO.md`.
@@ -117,6 +117,27 @@ References:
 - `/SECURITY.md`
 Dependencies: T-001, T-002
 Effort: S
+
+### T-073: Handle support services "coming soon" pages
+Priority: P2
+Type: BUG
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-10
+Context:
+- Services page links to /services/strategy, /services/crm, /services/funnel, /services/reporting
+- These routes don't exist (404)
+- Options: create pages, show "coming soon", or remove links
+Acceptance Criteria:
+- [x] T-073.1: Decide approach (placeholder pages vs remove links) and record the decision
+- [x] T-073.2: If creating pages, add placeholder routes for strategy/crm/funnel/reporting
+- [x] T-073.3: If removing links, remove supportServices links from services page (N/A; links retained)
+References:
+- /app/services/page.tsx
+Dependencies: None
+Effort: S
+Notes:
+- Decision: added placeholder “Coming Soon” pages for strategy, CRM, funnel, and reporting services to avoid 404s while keeping links intact.
 
 ### T-023: Document middleware.ts security headers
 Priority: P1
