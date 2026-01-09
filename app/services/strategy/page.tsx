@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { TrendingUp } from 'lucide-react'
 import Container from '@/components/ui/Container'
 import Section from '@/components/ui/Section'
 import Card from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
-import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Marketing Strategy | Your Dedicated Marketer',
