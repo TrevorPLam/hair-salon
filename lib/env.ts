@@ -180,13 +180,13 @@ const envSchema = z.object({
    * Supabase service role key (required, server-only).
    * Grants elevated access; never expose to the client.
    */
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().trim().min(1),
 
   /**
    * HubSpot private app token (required, server-only).
    * Used for CRM sync.
    */
-  HUBSPOT_PRIVATE_APP_TOKEN: z.string().min(1),
+  HUBSPOT_PRIVATE_APP_TOKEN: z.string().trim().min(1),
 })
 
 /**
