@@ -109,8 +109,9 @@ npm run pages:build
 **Output Directory:** `.vercel/output/static`
 
 **Environment Variables:**
-*   `NODE_VERSION`: `20`
-*   Other secrets as defined in `.env.example`
+*   See [`env.example`](env.example) for all available variables
+*   Most variables have defaults and are optional
+*   Set `NEXT_PUBLIC_SITE_URL` to your production domain
 
 See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for detailed deployment instructions.
 

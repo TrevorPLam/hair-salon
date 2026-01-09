@@ -110,16 +110,16 @@ Effort: XS
 Priority: P0
 Type: RELEASE
 Owner: AGENT
-Status: READY
+Status: DONE
 Blockers: None
 Context:
 - Prevent startup failures caused by mismatched env requirements
 - Ensure new deploys only need required vars
 Acceptance Criteria:
-- [ ] T-087.1: Align env validation (required vs optional) with current runtime behavior
-- [ ] T-087.2: Update /env.example to include every required variable
-- [ ] T-087.3: Annotate each env var in /env.example as required/optional/future
-- [ ] T-087.4: Verify a fresh deploy with only required vars starts successfully
+- [x] T-087.1: Align env validation (required vs optional) with current runtime behavior
+- [x] T-087.2: Update /env.example to include every required variable
+- [x] T-087.3: Annotate each env var in /env.example as required/optional/future
+- [x] T-087.4: Verify a fresh deploy with only required vars starts successfully
 References:
 - /lib/env.ts
 - /env.example
@@ -315,15 +315,15 @@ Effort: S
 Priority: P1
 Type: QUALITY
 Owner: AGENT
-Status: READY
+Status: DONE
 Blockers: None
 Context:
 - CI should run on PR + main to catch lint/test/build failures
 - GitHub Actions are off by default; workflows must live in /githubactions/
 Acceptance Criteria:
-- [ ] T-090.1: Add CI workflow file under /githubactions/ that runs install, lint, test, build
-- [ ] T-090.2: Document enable/disable steps in /githubactions/README.md
-- [ ] T-090.3: Ensure the workflow fails on typecheck/lint/test errors
+- [x] T-090.1: Add CI workflow file under /githubactions/ that runs install, lint, test, build
+- [x] T-090.2: Document enable/disable steps in /githubactions/README.md
+- [x] T-090.3: Ensure the workflow fails on typecheck/lint/test errors
 References:
 - /githubactions/README.md
 - /package.json
@@ -560,15 +560,15 @@ Effort: XS
 Priority: P2
 Type: DOCS
 Owner: AGENT
-Status: READY
+Status: DONE
 Blockers: None
 Context:
 - Reduce confusion between docs and actual deployment behavior
 - Remove or clarify unused or misleading documentation
 Acceptance Criteria:
-- [ ] T-099.1: Identify misleading/duplicate docs and remove or update them
-- [ ] T-099.2: Ensure README + env docs match actual deployment behavior
-- [ ] T-099.3: Remove unused features/routes that increase confusion or risk
+- [x] T-099.1: Identify misleading/duplicate docs and remove or update them
+- [x] T-099.2: Ensure README + env docs match actual deployment behavior
+- [x] T-099.3: Remove unused features/routes that increase confusion or risk
 References:
 - /README.md
 - /docs/

@@ -28,22 +28,24 @@ All secrets must be configured in Cloudflare Pages → Settings → Environment 
 ### Public (client-exposed)
 | Variable | Required | Description |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | ✅ | Canonical base URL used in metadata. |
-| `NEXT_PUBLIC_SITE_NAME` | ✅ | Brand name used in titles/metadata. |
-| `NEXT_PUBLIC_ANALYTICS_ID` | ⚪ | Analytics provider ID (if configured). |
-| `NEXT_PUBLIC_SENTRY_DSN` | ⚪ | Sentry public DSN (optional). |
+| `NEXT_PUBLIC_SITE_URL` | ⚪ | Base URL for metadata, sitemap, OG tags. Defaults to `http://localhost:3000` if not set. **Set in production** to your actual domain. |
+| `NEXT_PUBLIC_SITE_NAME` | ⚪ | Brand name used in titles/metadata. Defaults to `"Your Dedicated Marketer"` if not set. |
+| `NEXT_PUBLIC_ANALYTICS_ID` | ⚪ | Analytics provider ID (if configured). If not set, analytics tracking is disabled. |
+| `NEXT_PUBLIC_SENTRY_DSN` | ⚪ | Sentry public DSN (optional). If not set, Sentry error tracking is disabled. **Note:** Not validated in `lib/env.ts` (used directly in Sentry config files). |
+| `NEXT_PUBLIC_SENTRY_DEBUG` | ⚪ | Enable Sentry in development (defaults to disabled). **Note:** Not validated in `lib/env.ts`. |
 
 ### Server-only (secrets)
 | Variable | Required | Description |
 | --- | --- | --- |
-| `RESEND_API_KEY` | ⚪ | Optional: Resend API key for email delivery. If not set, contact form logs to console (development mode). |
-| `CONTACT_EMAIL` | ✅ | Required: Destination for contact form submissions. Defaults to `contact@yourdedicatedmarketer.com` if not set. |
-| `UPSTASH_REDIS_REST_URL` | ⚪ | Optional: Distributed rate limiting (recommended for production). Falls back to in-memory if not set. |
-| `UPSTASH_REDIS_REST_TOKEN` | ⚪ | Optional: Distributed rate limiting (recommended for production). Must be set with `UPSTASH_REDIS_REST_URL`. |
-| `SENTRY_AUTH_TOKEN` | ⚪ | Optional: Required only if uploading source maps/releases. |
-| `SENTRY_ORG` | ⚪ | Optional: Required only if uploading source maps/releases. |
-| `SENTRY_PROJECT` | ⚪ | Optional: Required only if uploading source maps/releases. |
-| `SENTRY_ENVIRONMENT` | ⚪ | Optional: Environment label for Sentry. |
+| `RESEND_API_KEY` | ⚪ | Resend API key for email delivery. If not set, contact form logs to console and returns success. |
+| `CONTACT_EMAIL` | ⚪ | Destination for contact form submissions. Defaults to `contact@yourdedicatedmarketer.com` if not set. |
+| `UPSTASH_REDIS_REST_URL` | ⚪ | Distributed rate limiting (recommended for production). Falls back to in-memory if not set. Must be set together with `UPSTASH_REDIS_REST_TOKEN`. |
+| `UPSTASH_REDIS_REST_TOKEN` | ⚪ | Distributed rate limiting (recommended for production). Must be set together with `UPSTASH_REDIS_REST_URL`. |
+| `NODE_ENV` | ⚪ | Node environment (`development`, `production`, `test`). Defaults to `development` if not set. Usually set automatically by deployment platform. |
+| `SENTRY_AUTH_TOKEN` | ⚪ | Sentry auth token (for source maps/releases only). **Note:** Not validated in `lib/env.ts` (used by build scripts only). |
+| `SENTRY_ORG` | ⚪ | Sentry organization slug (for source maps/releases only). **Note:** Not validated in `lib/env.ts`. |
+| `SENTRY_PROJECT` | ⚪ | Sentry project slug (for source maps/releases only). **Note:** Not validated in `lib/env.ts`. |
+| `SENTRY_ENVIRONMENT` | ⚪ | Sentry environment label. **Note:** Not validated in `lib/env.ts` (used by Sentry config files). |
 
 ### Lead capture pipeline (future - T-080/T-081)
 These are currently optional and will become required when the Supabase + HubSpot pipeline is implemented:
@@ -56,8 +58,10 @@ These are currently optional and will become required when the Supabase + HubSpo
 
 ## Pre-deploy checklist
 - [ ] Confirm `npm run build` completes locally.
-- [ ] Ensure all required env vars are set in Cloudflare Pages.
-- [ ] Validate rate limiting configuration for production traffic.
+- [ ] Set `NEXT_PUBLIC_SITE_URL` to your production domain in Cloudflare Pages.
+- [ ] Set `NEXT_PUBLIC_SITE_NAME` if different from default.
+- [ ] Configure optional integrations (analytics, Sentry, rate limiting) as needed.
+- [ ] Validate rate limiting configuration for production traffic (recommended: set Upstash Redis vars).
 - [ ] Confirm Sentry DSN (if enabled) is correct.
 
 ## DNS / custom domain checklist
