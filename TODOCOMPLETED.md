@@ -1,7 +1,7 @@
 # TODOCOMPLETED.md — Completed Tasks Archive
 
 Document Type: Workflow
-Last Updated: 2026-01-09
+Last Updated: 2026-01-10
 Source: Completed tasks moved from `TODO.md`
 
 This file stores completed work in the same schema as `TODO.md`.
@@ -9,6 +9,25 @@ Move tasks here when Acceptance Criteria are met.
 
 ## Completed tasks
 <!-- Append completed tasks below. Preserve the original record for auditability. -->
+
+### T-103: Expand tests for critical paths
+Priority: P3
+Type: QUALITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-10
+Context:
+- Expand coverage for lead pipeline, rate limiting, and contact flow
+Acceptance Criteria:
+- [x] T-103.1: Add unit tests for lead pipeline integrations
+- [x] T-103.2: Add an E2E test for contact submit on preview deploy
+- [x] T-103.3: Add rate limit test coverage for Upstash path
+References:
+- /__tests__/lib/actions.rate-limit.test.ts
+- /lib/actions.ts
+- /tests/
+Dependencies: T-085, T-097
+Effort: M
 
 ### T-076: Fix honeypot logging as error
 Priority: P2
