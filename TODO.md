@@ -1,7 +1,7 @@
 # TODO.md — Repository Task List
 
 Document Type: Workflow
-Last Updated: 2026-01-09
+Last Updated: 2026-01-10
 Task Truth Source: **TODO.md**
 
 This file is the single source of truth for actionable work. If another document disagrees, the task record in this file wins (unless the Constitution overrides).
