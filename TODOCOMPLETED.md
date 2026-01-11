@@ -1,7 +1,7 @@
 # TODOCOMPLETED.md — Completed Tasks Archive
 
 Document Type: Workflow
-Last Updated: 2026-01-10
+Last Updated: 2026-01-11
 Source: Completed tasks moved from `TODO.md`
 
 This file stores completed work in the same schema as `TODO.md`.
@@ -9,6 +9,344 @@ Move tasks here when Acceptance Criteria are met.
 
 ## Completed tasks
 <!-- Append completed tasks below. Preserve the original record for auditability. -->
+
+### T-084: Define v1 launch scope and lead capture definition
+Priority: P0
+Type: RELEASE
+Owner: Trevor
+Status: DONE
+Completed: 2026-01-11
+Context:
+- Prevent scope creep before launch
+- Aligns lead capture expectations with the implementation plan
+Acceptance Criteria:
+- [x] T-084.1: Decide what "lead capture" means for v1 (email-only vs Supabase + HubSpot)
+- [x] T-084.2: Decide whether analytics is required at launch
+- [x] T-084.3: Write a 5-line "Launch Scope v1" note in /docs/LAUNCH-SCOPE-V1.md
+- [x] T-084.4: Confirm the scope note answers "If this fails on launch day, what breaks the business?"
+References:
+- /docs/LAUNCH-SCOPE-V1.md
+- /TODO.md
+Dependencies: None
+Effort: XS
+
+### T-087: Align env validation and env.example with production reality
+Priority: P0
+Type: RELEASE
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-10
+Context:
+- Prevent startup failures caused by mismatched env requirements
+- Ensure new deploys only need required vars
+Acceptance Criteria:
+- [x] T-087.1: Align env validation (required vs optional) with current runtime behavior
+- [x] T-087.2: Update /env.example to include every required variable
+- [x] T-087.3: Annotate each env var in /env.example as required/optional/future
+- [x] T-087.4: Verify a fresh deploy with only required vars starts successfully
+References:
+- /lib/env.ts
+- /env.example
+Dependencies: None
+Effort: S
+
+### T-054: Provision Supabase project + provide server credentials
+Priority: P1
+Type: RELEASE
+Owner: Trevor
+Status: DONE
+Completed: 2026-01-11
+Context:
+- Supabase will store leads (server-only access)
+- Requires Supabase project + keys configured in Cloudflare Pages environment variables
+Acceptance Criteria:
+- [x] T-054.1: Create Supabase project
+- [x] T-054.2: Provide `SUPABASE_URL`
+- [x] T-054.3: Provide `SUPABASE_SERVICE_ROLE_KEY` (server-only)
+- [x] T-054.4: Create `leads` table (run SQL from /docs/SUPABASE_SETUP.md)
+References:
+- /env.example
+- /docs/SUPABASE_SETUP.md
+- /.env.local
+Dependencies: None
+Effort: S
+
+### T-055: Provision HubSpot private app token + field mapping
+Priority: P1
+Type: RELEASE
+Owner: Trevor
+Status: DONE
+Completed: 2026-01-11
+Context:
+- HubSpot is the CRM target; contact records should be created/updated on submission
+- Requires a private app token stored as a Cloudflare Pages server-only env var
+Acceptance Criteria:
+- [x] T-055.1: Create HubSpot private app
+- [x] T-055.2: Provide `HUBSPOT_PRIVATE_APP_TOKEN` (server-only)
+- [x] T-055.3: Confirm mapping for required fields: Name, Email, Phone
+References:
+- /docs/HUBSPOT_SETUP.md
+- /.env.local
+Dependencies: None
+Effort: XS
+
+### T-072: Create missing legal pages (privacy, terms)
+Priority: P1
+Type: FEATURE
+Owner: Trevor
+Status: DONE
+Completed: 2026-01-11
+Context:
+- Footer links to /privacy and /terms pages that don't exist
+- Required for legal compliance and user trust
+- Using placeholder templates that must be customized before launch
+Acceptance Criteria:
+- [x] T-072.1: Decide: create pages or remove links (decided: create with templates)
+- [x] T-072.2: If creating: provide privacy policy content (placeholder created)
+- [x] T-072.3: If creating: provide terms of service content (placeholder created)
+References:
+- /components/Footer.tsx
+- /app/
+- /docs/PRIVACY_POLICY_TEMPLATE.md
+- /docs/TERMS_OF_SERVICE_TEMPLATE.md
+Dependencies: None
+Effort: M
+
+### T-090: Add GitHub Actions CI workflow (stored under githubactions/)
+Priority: P1
+Type: QUALITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-10
+Context:
+- CI should run on PR + main to catch lint/test/build failures
+- GitHub Actions are off by default; workflows must live in /githubactions/
+Acceptance Criteria:
+- [x] T-090.1: Add CI workflow file under /githubactions/ that runs install, lint, test, build
+- [x] T-090.2: Document enable/disable steps in /githubactions/README.md
+- [x] T-090.3: Ensure the workflow fails on typecheck/lint/test errors
+References:
+- /githubactions/README.md
+- /package.json
+Dependencies: None
+Effort: S
+
+### T-091: Enforce branch protection rules in GitHub
+Priority: P1
+Type: RELEASE
+Owner: Trevor
+Status: CANCELLED
+Completed: 2026-01-11
+Context:
+- User decision: Not implementing branch protection at this time
+Acceptance Criteria:
+- [x] Decision made to skip this task
+References:
+- /githubactions/README.md
+Dependencies: T-090
+Effort: XS
+
+### T-092: Create launch smoke test checklist
+Priority: P1
+Type: RELEASE
+Owner: Trevor
+Status: DONE
+Completed: 2026-01-11
+Context:
+- Launch should have a quick, repeatable verification list
+Acceptance Criteria:
+- [x] T-092.1: Create /docs/LAUNCH-SMOKE-TEST.md with page, nav, forms, perf, and 404 checks
+- [x] T-092.2: Ensure the checklist can be completed in <10 minutes
+References:
+- /docs/LAUNCH-SMOKE-TEST.md
+Dependencies: None
+Effort: XS
+
+### T-093: Document rollback procedure
+Priority: P1
+Type: RELEASE
+Owner: Trevor
+Status: DONE
+Completed: 2026-01-11
+Context:
+- Rollbacks should be fast and deterministic
+Acceptance Criteria:
+- [x] T-093.1: Create /docs/ROLLBACK.md with Cloudflare Pages rollback steps
+- [x] T-093.2: Include verification steps for confirming rollback success
+- [x] T-093.3: Optional dry run on a preview branch
+References:
+- /docs/ROLLBACK.md
+Dependencies: None
+Effort: XS
+
+### T-094: Decide on Sentry usage and configure production env
+Priority: P1
+Type: QUALITY
+Owner: Trevor
+Status: DONE
+Completed: 2026-01-11
+Context:
+- Monitoring must be intentional before launch
+Acceptance Criteria:
+- [x] T-094.1: Decide to enable Sentry now or disable until later
+- [x] T-094.2: If enabling, confirm Sentry project + DSN
+- [x] T-094.3: Set required Sentry env vars in production
+References:
+- /sentry.client.config.ts
+- /sentry.server.config.ts
+- /sentry.edge.config.ts
+- /lib/logger.ts
+Dependencies: None
+Effort: XS
+
+### T-095: Validate monitoring captures production errors
+Priority: P1
+Type: QUALITY
+Owner: Trevor
+Status: DONE
+Completed: 2026-01-11
+Context:
+- Need proof that errors are visible during launch
+Acceptance Criteria:
+- [x] T-095.1: Trigger a controlled error (visited /api/test-sentry endpoint)
+- [x] T-095.2: Confirm the error appears in Sentry dashboard (error sent successfully)
+- [x] T-095.3: Remove test route after verification (test route deleted)
+References:
+- /lib/logger.ts
+Dependencies: T-094
+Effort: XS
+
+### T-096: Provision Upstash Redis for rate limiting
+Priority: P1
+Type: RELEASE
+Owner: Trevor
+Status: DONE
+Completed: 2026-01-11
+Context:
+- Distributed rate limiting prevents spam in production
+Acceptance Criteria:
+- [x] T-096.1: Create Upstash Redis instance
+- [x] T-096.2: Provide UPSTASH_REDIS_REST_URL
+- [x] T-096.3: Provide UPSTASH_REDIS_REST_TOKEN
+References:
+- /env.example
+- /lib/env.ts
+Dependencies: None
+Effort: XS
+
+### T-064: Analytics provider selection and rollout
+Priority: P1
+Type: QUALITY
+Owner: Trevor
+Status: DONE
+Completed: 2026-01-11
+Context:
+- Diamond Standard marketing site should have conversion tracking
+- Provider choice required (GA4/Plausible/etc.)
+Acceptance Criteria:
+- [x] T-064.1: Choose analytics provider (Google Analytics 4 selected)
+- [x] T-064.2: Provide `NEXT_PUBLIC_ANALYTICS_ID` (G-JY4DRX7FVC)
+- [x] T-064.3: Confirm which events/conversions to track (contact submit, CTA clicks)
+References:
+- /lib/analytics.ts
+- /lib/env.ts
+Dependencies: None
+Effort: XS
+
+### T-083: Add URL sanitization helper for user-provided links
+Priority: P2
+Type: QUALITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-10
+Context:
+- Prevent unsafe URL schemes in future link inputs
+- Remove inline TODO in lib/sanitize.ts by implementing the helper
+Acceptance Criteria:
+- [x] T-083.1: Add sanitizeUrl() in lib/sanitize.ts with http/https allowlist
+- [x] T-083.2: Add unit tests for sanitizeUrl() edge cases
+- [x] T-083.3: Update sanitize.ts coverage checklist to reflect completion
+References:
+- /lib/sanitize.ts
+- /__tests__/lib/sanitize.test.ts
+Dependencies: None
+Effort: XS
+
+### T-099: Documentation vs reality cleanup
+Priority: P2
+Type: DOCS
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-10
+Context:
+- Reduce confusion between docs and actual deployment behavior
+- Remove or clarify unused or misleading documentation
+Acceptance Criteria:
+- [x] T-099.1: Identify misleading/duplicate docs and remove or update them
+- [x] T-099.2: Ensure README + env docs match actual deployment behavior
+- [x] T-099.3: Remove unused features/routes that increase confusion or risk
+References:
+- /README.md
+- /docs/
+- /app/
+Dependencies: None
+Effort: M
+
+### T-100: Security cleanup after launch integrations
+Priority: P2
+Type: SECURITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-10
+Context:
+- Ensure CSP and routes remain tight after analytics and other integrations
+Acceptance Criteria:
+- [x] T-100.1: Review OG image route and harden/remove if unnecessary
+- [x] T-100.2: Re-check CSP after analytics integration
+- [x] T-100.3: Remove overly-broad CSP allowances
+References:
+- /middleware.ts
+- /next.config.mjs
+- /lib/analytics.ts
+- /docs/SECURITY-CSP-ANALYTICS.md
+Dependencies: T-098
+Effort: S
+
+### T-077: Add focus trap to mobile navigation menu
+Priority: P3
+Type: QUALITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-10
+Context:
+- Mobile menu doesn't trap focus (accessibility gap)
+- Users can tab to elements behind the menu overlay
+Acceptance Criteria:
+- [x] T-077.1: Implement focus trap when mobile menu is open
+- [x] T-077.2: Focus first focusable element when menu opens
+- [x] T-077.3: Return focus to hamburger button when menu closes
+References:
+- /components/Navigation.tsx
+Dependencies: None
+Effort: S
+
+### T-078: Delete backup and unused files
+Priority: P3
+Type: CHORE
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-10
+Context:
+- eslint.config.mjs.bak is a backup file from ESLint migration
+- Clean up to reduce repo clutter
+Acceptance Criteria:
+- [x] T-078.1: Delete eslint.config.mjs.bak
+- [x] T-078.2: Verify pre-commit-config.yaml is in use or delete it
+References:
+- /eslint.config.mjs.bak
+- /pre-commit-config.yaml
+Dependencies: None
+Effort: XS
 
 ### T-103: Expand tests for critical paths
 Priority: P3
@@ -28,6 +366,42 @@ References:
 - /tests/
 Dependencies: T-085, T-097
 Effort: M
+
+### T-104: Dependency hygiene and audit cadence
+Priority: P3
+Type: DEPENDENCY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-10
+Context:
+- Keep dependencies healthy and update-ready
+Acceptance Criteria:
+- [x] T-104.1: Add npm audit to CI pipeline
+- [x] T-104.2: Document monthly dependency review process
+References:
+- /package.json
+- /githubactions/
+- /docs/DEPENDENCIES.md
+Dependencies: T-090
+Effort: S
+
+### T-105: Governance automation (optional)
+Priority: P3
+Type: QUALITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-10
+Context:
+- Automate governance checks to reduce drift
+Acceptance Criteria:
+- [x] T-105.1: Add CI rule to flag TODO comments if policy requires it
+- [x] T-105.2: Document optional pre-commit hooks for lint/formatting
+References:
+- /githubactions/
+- /docs/CONTRIBUTING.md
+- /scripts/check-todo-comments.mjs
+Dependencies: T-090
+Effort: S
 
 ### T-076: Fix honeypot logging as error
 Priority: P2
