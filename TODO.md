@@ -108,8 +108,8 @@ Effort: XS
 Priority: P0
 Type: RELEASE
 Owner: Trevor
-Status: READY
-Blockers: Launch tasks must be completed.
+Status: BLOCKED
+Blockers: T-086 (contact form verification) and T-089 (privacy/terms pages) must be completed first.
 Context:
 - Final gate to confirm launch readiness
 Acceptance Criteria:
@@ -298,8 +298,8 @@ Effort: S
 Priority: P2
 Type: QUALITY
 Owner: Trevor
-Status: READY
-Blockers: Lighthouse setup in T-058.
+Status: BLOCKED
+Blockers: T-058 is BLOCKED (Lighthouse CLI not installed).
 Context:
 - Capture baseline metrics for key pages
 Acceptance Criteria:
