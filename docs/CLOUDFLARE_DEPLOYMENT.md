@@ -29,6 +29,7 @@ This Next.js application is configured to deploy to Cloudflare Pages using the `
    - **Framework preset**: Next.js
    - **Build command**: `npm run pages:build`
    - **Build output directory**: `.vercel/output/static`
+   - **Deploy command**: `echo "Build complete"` (if required by UI, use this no-op command)
    - **Root directory**: `/` (leave empty if repo root)
    - **Node version**: `20` (set in Environment Variables: `NODE_VERSION=20`)
 
