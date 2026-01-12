@@ -3,7 +3,6 @@ import path from 'path'
 
 const clientBundleDir = path.join(process.cwd(), '.next', 'static', 'chunks')
 const forbiddenTokens = [
-  'RESEND_API_KEY',
   'CONTACT_EMAIL',
   'UPSTASH_REDIS_REST_URL',
   'UPSTASH_REDIS_REST_TOKEN',

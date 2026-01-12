@@ -200,28 +200,6 @@ References:
 Dependencies: T-055, T-080
 Effort: M
 
-### T-082: Remove email pipeline and add tests for new lead flow
-Priority: P1
-Type: FEATURE
-Owner: AGENT
-Status: READY
-Blockers: None
-Context:
-- Email sending is no longer part of the contact pipeline
-- New flow needs tests for suspicious handling + HubSpot failure behavior
-Acceptance Criteria:
-- [ ] T-082.1: Remove email-send behavior from `lib/actions.ts`
-- [ ] T-082.2: Remove unused Resend config/deps
-- [ ] T-082.3: Add unit test(s) for: rate-limit flagged lead saved; HubSpot failure still returns success
-References:
-- /lib/actions.ts
-- /__tests__/lib/actions.rate-limit.test.ts
-- /package.json
-Dependencies: T-080, T-081
-Effort: S
-
----
-
 ### T-089: Implement privacy + terms pages and footer links
 Priority: P1
 Type: FEATURE
