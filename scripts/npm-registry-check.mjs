@@ -1,5 +1,12 @@
 import { execSync } from 'node:child_process'
 
+/**
+ * npm Registry Connectivity Check
+ * - Purpose: verify npm registry reachability for dependency operations.
+ * - Supports: general registry health + targeted package metadata checks.
+ * - Related Task: TODO.md T-070 (Cloudflare adapter dependency monitoring).
+ */
+
 const DEFAULT_REGISTRY = 'https://registry.npmjs.org'
 const PROXY_ENV_VARS = [
   'HTTP_PROXY',
@@ -84,6 +91,8 @@ const checkEndpoint = async (path, label) => {
 const checks = [
   { path: '/-/ping', label: 'Registry ping' },
   { path: '/next', label: 'Package metadata (next)' },
+  // Track adapter metadata reachability for T-070 dependency monitoring.
+  { path: '/@cloudflare%2fnext-on-pages', label: 'Package metadata (@cloudflare/next-on-pages)' },
 ]
 
 const printProxyInfo = () => {

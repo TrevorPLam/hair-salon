@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added `npm run check:npm-registry` to diagnose registry connectivity and proxy issues before running dependency commands
+- Added registry reachability checks for `@cloudflare/next-on-pages` metadata to support dependency monitoring
 - Added a contact form honeypot field to block bot submissions
 - Added repeatable accessibility and Lighthouse audit scripts for local QA
 - Added Playwright coverage for contact submission success, rate limiting, and search empty states
@@ -27,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 - Expanded middleware security header docs and environment helper documentation
+- Noted npm registry access blockers for dependency monitoring task T-070
 - Clarified sanitize utility usage guidance
 - Documented accessibility standards, Lighthouse baselines, and Sentry performance instrumentation
 - Documented Vitest coverage threshold expectations in the testing strategy

@@ -230,7 +230,7 @@ Priority: P2
 Type: DEPENDENCY
 Owner: AGENT
 Status: BLOCKED
-Blockers: Await upstream fixes in `@cloudflare/next-on-pages` or Cloudflare runtime updates.
+Blockers: Await upstream fixes in `@cloudflare/next-on-pages` or Cloudflare runtime updates; npm registry access fails behind configured proxy variables in the current environment (see T-070.3).
 Context:
 - npm audit reports High/Moderate issues in `path-to-regexp`, `esbuild`, `undici`.
 - These are pulled in by `@cloudflare/next-on-pages`.
@@ -238,6 +238,7 @@ Context:
 Acceptance Criteria:
 - [ ] T-070.1: Check for updates to `@cloudflare/next-on-pages`
 - [ ] T-070.2: Attempt `npm update` of transitive deps if possible
+- [x] T-070.3: Run `npm run check:npm-registry` and record the registry access result
 References:
 - /package.json
 Dependencies: None
