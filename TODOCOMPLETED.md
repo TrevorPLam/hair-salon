@@ -10,6 +10,23 @@ Move tasks here when Acceptance Criteria are met.
 ## Completed tasks
 <!-- Append completed tasks below. Preserve the original record for auditability. -->
 
+### T-108: Expand E2E coverage for contact phone validation
+Priority: P2
+Type: QUALITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-20
+Context:
+- Contact form requires phone input per v1 lead capture requirements
+- Existing validation E2E checks did not assert the phone error state
+Acceptance Criteria:
+- [x] T-108.1: Add Playwright validation coverage for missing phone input
+- [x] T-108.2: Annotate E2E test with AI notes for future iteration
+References:
+- /tests/e2e/critical-flows.spec.ts
+Dependencies: None
+Effort: XS
+
 ### T-098: Install analytics provider and track conversions
 Priority: P1
 Type: QUALITY

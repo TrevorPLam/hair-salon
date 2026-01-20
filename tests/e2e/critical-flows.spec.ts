@@ -1,3 +1,10 @@
+/**
+ * Critical flow Playwright coverage for high-priority user journeys.
+ *
+ * AI notes:
+ * - Keep selectors user-facing (role/label) to mirror accessibility behavior.
+ * - Extend validation checks here when form requirements change.
+ */
 import { test, expect, type Page } from '@playwright/test'
 
 async function submitContactForm(
@@ -57,8 +64,10 @@ test('contact form validation', async ({ page }) => {
 
   await page.getByRole('button', { name: /send message/i }).click()
 
+  // Required field validation should surface for all mandatory inputs.
   await expect(page.getByText(/name must be at least 2 characters/i)).toBeVisible()
   await expect(page.getByText(/invalid email address/i)).toBeVisible()
+  await expect(page.getByText(/phone number is required/i)).toBeVisible()
   await expect(page.getByText(/message must be at least 10 characters/i)).toBeVisible()
 })
 
