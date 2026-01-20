@@ -1,3 +1,10 @@
+/**
+ * Critical flow Playwright coverage for high-priority user journeys.
+ *
+ * AI notes:
+ * - Keep selectors user-facing (role/label) to mirror accessibility behavior.
+ * - Extend validation checks here when form requirements change.
+ */
 import { test, expect, type Page } from '@playwright/test'
 
 async function submitContactForm(
@@ -5,15 +12,18 @@ async function submitContactForm(
   {
     name,
     email,
+    phone,
     message,
   }: {
     name: string
     email: string
+    phone: string
     message: string
   }
 ) {
   await page.getByLabel('Name').fill(name)
   await page.getByLabel('Email').fill(email)
+  await page.getByLabel('Phone').fill(phone)
   await page.getByLabel('Message').fill(message)
   await page.getByRole('button', { name: /send message/i }).click()
 }
@@ -57,8 +67,10 @@ test('contact form validation', async ({ page }) => {
 
   await page.getByRole('button', { name: /send message/i }).click()
 
+  // Required field validation should surface for all mandatory inputs.
   await expect(page.getByText(/name must be at least 2 characters/i)).toBeVisible()
   await expect(page.getByText(/invalid email address/i)).toBeVisible()
+  await expect(page.getByText(/phone number is required/i)).toBeVisible()
   await expect(page.getByText(/message must be at least 10 characters/i)).toBeVisible()
 })
 
@@ -69,6 +81,7 @@ test('contact form submission success', async ({ page }) => {
   await submitContactForm(page, {
     name: 'Jamie Test',
     email: `jamie.${Date.now()}@example.com`,
+    phone: '(555) 010-1000',
     message: 'Looking for marketing strategy support for Q2 growth.',
   })
 
@@ -85,6 +98,7 @@ test('contact form rate limiting', async ({ page }) => {
     await submitContactForm(page, {
       name: `Rate Limit ${attempt + 1}`,
       email,
+      phone: '(555) 010-2000',
       message: `Submission attempt ${attempt + 1} to validate rate limiting.`,
     })
     await expect(page.getByRole('alert')).toContainText(/thank you for your message/i)
@@ -93,6 +107,7 @@ test('contact form rate limiting', async ({ page }) => {
   await submitContactForm(page, {
     name: 'Rate Limit 4',
     email,
+    phone: '(555) 010-2000',
     message: 'Submission attempt 4 should trigger rate limiting.',
   })
 
