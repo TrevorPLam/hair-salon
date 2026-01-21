@@ -28,7 +28,7 @@ This repository adheres to a strict "Diamond Standard" of engineering excellence
 *   **Performance First**: 
     *   Tailwind CSS for zero-runtime styling.
     *   Automatic image optimization.
-    *   Static Site Generation (SSG) for core pages.
+    *   Static content with per-request CSP nonce injection for security headers.
 *   **Developer Experience**:
     *   Vitest for unit testing.
     *   Playwright for E2E testing.

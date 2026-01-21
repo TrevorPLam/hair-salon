@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Added hashed IP + email rate limiting for contact form submissions
+- Added CSP nonces for inline scripts and removed `unsafe-inline` from script sources
 
 ### Fixed
 - Restored in-memory rate limiting logic and JSDoc formatting in `lib/actions.ts`
@@ -44,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documented GA4 analytics configuration, conversion events, and CSP allowlists
 - Documented correlation ID propagation and JSON log fields for observability
 - Documented server tracing spans and bundle size regression checks in observability guides
+- Documented CSP nonce flow for analytics scripts and structured data
 
 ### Changed
 - Removed deprecated `api` and `sentry` keys from `next.config.mjs`

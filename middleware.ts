@@ -26,10 +26,10 @@
  * 7. **Referrer**: Controlled leak prevention
  *
  * **CSP NOTES** (Content Security Policy):
- * - 'unsafe-inline' required: Next.js hydration scripts + Tailwind
+ * - CSP uses per-request nonces for inline scripts (JSON-LD, GA4 init)
  * - 'unsafe-eval' in dev only: Next.js Fast Refresh/HMR
  * - Production removes 'unsafe-eval' for better security
- * - Future: nonce-based CSP (requires SSR changes)
+ * - Tailwind still requires 'unsafe-inline' for styles
  *
    * **AI ITERATION HINTS**:
    * - GA4 is enabled; keep Google Analytics domains in script-src/connect-src
@@ -77,6 +77,11 @@
 
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import {
+  buildContentSecurityPolicy,
+  createCspNonce,
+  CSP_NONCE_HEADER,
+} from '@/lib/csp'
 
 const CORRELATION_ID_HEADER = 'x-correlation-id'
 
@@ -101,9 +106,14 @@ function getCorrelationId(request: NextRequest): string {
   return existingId || crypto.randomUUID()
 }
 
-function buildRequestHeaders(request: NextRequest, correlationId: string): Headers {
+function buildRequestHeaders(
+  request: NextRequest,
+  correlationId: string,
+  cspNonce: string
+): Headers {
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set(CORRELATION_ID_HEADER, correlationId)
+  requestHeaders.set(CSP_NONCE_HEADER, cspNonce)
   return requestHeaders
 }
 
@@ -125,9 +135,11 @@ function buildRequestHeaders(request: NextRequest, correlationId: string): Heade
  */
 export function middleware(request: NextRequest) {
   const correlationId = getCorrelationId(request)
-  const requestHeaders = buildRequestHeaders(request, correlationId)
+  const cspNonce = createCspNonce()
+  const requestHeaders = buildRequestHeaders(request, correlationId, cspNonce)
   const response = NextResponse.next({ request: { headers: requestHeaders } })
   response.headers.set(CORRELATION_ID_HEADER, correlationId)
+  response.headers.set(CSP_NONCE_HEADER, cspNonce)
 
   // Block oversized payloads early to reduce DoS risk.
   if (request.method === 'POST') {
@@ -150,7 +162,7 @@ export function middleware(request: NextRequest) {
    * 
    * **Directives:**
    * - `default-src 'self'` - Only load resources from same origin by default
-   * - `script-src 'self' 'unsafe-inline'` - Allow inline scripts (required for Next.js)
+   * - `script-src 'self' 'nonce-<value>'` - Allow inline scripts with nonce
    * - `script-src ... 'unsafe-eval'` - Allow eval in dev (Next.js Fast Refresh/HMR)
    * - `style-src 'self' 'unsafe-inline'` - Allow inline styles (required for Tailwind)
    * - `img-src 'self' data: https:` - Allow images from same origin, data URIs, HTTPS
@@ -158,14 +170,13 @@ export function middleware(request: NextRequest) {
    * - `connect-src 'self'` - Block external API calls (prevents data exfiltration)
    * - `frame-ancestors 'none'` - Prevent embedding in iframes (clickjacking)
    * 
-   * **Why 'unsafe-inline' and 'unsafe-eval':**
-   * - Next.js injects inline scripts for hydration and routing
-   * - Tailwind injects inline styles at runtime
+   * **Why nonces and 'unsafe-eval':**
+   * - Nonces allow trusted inline scripts (JSON-LD + GA4 init)
+   * - Tailwind injects inline styles at runtime (style-src keeps 'unsafe-inline')
    * - 'unsafe-eval' needed in development for Fast Refresh (HMR)
    * - Production avoids 'unsafe-eval' for better security
    * 
    * **Future Hardening (v2):**
-   * - Use nonce-based CSP for inline scripts (requires SSR changes)
    * - Extract Tailwind styles to static CSS (build-time)
    * - See SECURITY.md for hardening roadmap
    * 
@@ -178,18 +189,10 @@ export function middleware(request: NextRequest) {
    */
   headers.set(
     'Content-Security-Policy',
-    [
-      "default-src 'self'",
-      process.env.NODE_ENV === 'development'
-        ? "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com" // Next.js runtime + dev tooling in development
-        : "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com", // Avoid unsafe-eval in production
-      "style-src 'self' 'unsafe-inline'", // Tailwind injects styles at runtime
-      "img-src 'self' data: https:", // Allow same-origin, data URIs, and HTTPS images
-      // TODO: Tighten to specific domains when external image sources are identified
-      "font-src 'self' data:",
-      "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com", // Allow GA4 data collection
-      "frame-ancestors 'none'", // Disallow clickjacking via iframes
-    ].join('; ')
+    buildContentSecurityPolicy({
+      nonce: cspNonce,
+      isDevelopment: process.env.NODE_ENV === 'development',
+    })
   )
 
   /**

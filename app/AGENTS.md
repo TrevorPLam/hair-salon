@@ -6,13 +6,13 @@ Applies To: Any agent working in app/
 **Quick Reference:** See `/BESTPR.md` for comprehensive repo standards.
 
 ## Purpose
-This folder contains all pages and routes using Next.js 14 App Router. The site uses **Static Site Generation (SSG)** — all pages are pre-rendered at build time.
+This folder contains all pages and routes using Next.js 14 App Router. The site remains primarily static, but the root layout reads request headers to apply CSP nonces.
 
 ---
 
 ## Architecture
 
-**Deployment Model:** Static Site Generation (SSG)
+**Deployment Model:** Static rendering with per-request CSP nonces (layout reads request headers)
 **Hosting:** Cloudflare Pages with global CDN
 **Runtime:** Edge (for API routes only)
 

@@ -18,6 +18,7 @@ import {
 
 interface AnalyticsConsentBannerProps {
   analyticsId?: string
+  nonce?: string
 }
 
 function shouldRenderBanner(consent: AnalyticsConsentState, isReady: boolean): boolean {
@@ -28,15 +29,27 @@ function shouldLoadAnalytics(consent: AnalyticsConsentState, analyticsId?: strin
   return consent === 'granted' && Boolean(analyticsId)
 }
 
-function AnalyticsScriptLoader({ analyticsId, enabled }: { analyticsId: string; enabled: boolean }) {
+function AnalyticsScriptLoader({
+  analyticsId,
+  enabled,
+  nonce,
+}: {
+  analyticsId: string
+  enabled: boolean
+  nonce?: string
+}) {
   if (!enabled) {
     return null
   }
 
   return (
     <>
-      <Script src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`} strategy="afterInteractive" />
-      <Script id="ga4-init" strategy="afterInteractive">
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`}
+        strategy="afterInteractive"
+        nonce={nonce}
+      />
+      <Script id="ga4-init" strategy="afterInteractive" nonce={nonce}>
         {`
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
@@ -80,7 +93,7 @@ function ConsentPrompt({
   )
 }
 
-export default function AnalyticsConsentBanner({ analyticsId }: AnalyticsConsentBannerProps) {
+export default function AnalyticsConsentBanner({ analyticsId, nonce }: AnalyticsConsentBannerProps) {
   const [consent, setConsent] = useState<AnalyticsConsentState>('unknown')
   const [isReady, setIsReady] = useState(false)
 
@@ -97,7 +110,7 @@ export default function AnalyticsConsentBanner({ analyticsId }: AnalyticsConsent
 
   return (
     <>
-      <AnalyticsScriptLoader analyticsId={analyticsId} enabled={canLoadAnalytics} />
+      <AnalyticsScriptLoader analyticsId={analyticsId} enabled={canLoadAnalytics} nonce={nonce} />
       {shouldRenderBanner(consent, isReady) ? (
         <ConsentPrompt
           onAccept={() => {

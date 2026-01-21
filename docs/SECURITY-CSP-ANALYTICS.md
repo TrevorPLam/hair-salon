@@ -13,7 +13,7 @@ Google Analytics script and connect domains.
 
 The current CSP blocks external connections:
 - `connect-src 'self'` - Only allows same-origin API calls
-- `script-src 'self' 'unsafe-inline'` - Only allows same-origin scripts
+- `script-src 'self' 'nonce-<value>'` - Only allows same-origin scripts with a nonce
 
 ## Required CSP Updates
 
@@ -22,7 +22,7 @@ The current CSP blocks external connections:
 GA4 CSP allowlist now includes:
 
 ```typescript
-"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com",
+"script-src 'self' 'nonce-<value>' https://www.googletagmanager.com",
 "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com",
 ```
 
@@ -36,7 +36,7 @@ If using Plausible, add to CSP:
 
 ```typescript
 // In middleware.ts, update CSP:
-"script-src 'self' 'unsafe-inline' https://plausible.io",
+"script-src 'self' 'nonce-<value>' https://plausible.io",
 "connect-src 'self' https://plausible.io",
 ```
 
@@ -48,8 +48,9 @@ If using Plausible, add to CSP:
 1. ✅ **Choose analytics provider** (T-064 complete)
 2. ✅ **Install analytics** (T-098 complete)
 3. ✅ **Update CSP in middleware.ts** with GA4 domains
-4. **Test CSP** - Check browser console for violations
-5. **Verify analytics tracking** works correctly
+4. ✅ **Add per-request CSP nonces** for inline scripts
+5. **Test CSP** - Check browser console for violations
+6. **Verify analytics tracking** works correctly
 
 ## Testing CSP Changes
 
@@ -65,7 +66,15 @@ After updating CSP:
 - Only add specific domains (not wildcards like `https://*`)
 - Test in production-like environment before deploying
 - Monitor CSP violations in Sentry (if enabled)
-- Consider using nonce-based CSP in future (requires SSR changes)
+- CSP nonces are generated per request in `middleware.ts` and passed to `app/layout.tsx`
+- Inline scripts (JSON-LD + GA4 init) must include the `nonce` attribute
+
+## Nonce Flow (Current)
+
+1. `middleware.ts` generates a nonce and sets the `x-csp-nonce` request header.
+2. `app/layout.tsx` reads the nonce via `headers()` and assigns it to inline scripts.
+3. `components/AnalyticsConsentBanner.tsx` receives the nonce and applies it to GA4 scripts.
+4. `Content-Security-Policy` header includes the matching `nonce-<value>` source.
 
 ## References
 

@@ -10,6 +10,28 @@ Move tasks here when Acceptance Criteria are met.
 ## Completed tasks
 <!-- Append completed tasks below. Preserve the original record for auditability. -->
 
+### T-112: Harden CSP with nonce-based script handling
+Priority: P1
+Type: SECURITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-21
+Context:
+- Current CSP uses `unsafe-inline` for scripts; nonces strengthen XSS protection
+- Aligns with security best practices for modern Next.js apps
+- Reduces reliance on broad CSP exceptions
+Acceptance Criteria:
+- [x] T-112.1: Implement CSP nonces in `middleware.ts` (or equivalent Next.js configuration)
+- [x] T-112.2: Remove `unsafe-inline` for scripts once nonces are in place
+- [x] T-112.3: Ensure GA4 scripts still load without CSP violations
+- [x] T-112.4: Document nonce usage and testing steps in `/docs/SECURITY-CSP-ANALYTICS.md`
+References:
+- /middleware.ts
+- /app/layout.tsx
+- /docs/SECURITY-CSP-ANALYTICS.md
+Dependencies: None
+Effort: L
+
 ### T-114: Add retry policy + idempotency for HubSpot sync
 Priority: P1
 Type: FEATURE
