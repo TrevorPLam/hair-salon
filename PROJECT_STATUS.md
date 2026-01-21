@@ -8,7 +8,7 @@ Last Updated: 2026-01-21
 
 ## Purpose
 A lightweight place to record the current state of the project, major decisions, and open questions.
-This is not a task list; tasks belong in `TODO.md`.
+This is not a task list; tasks belong in `P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md`.
 
 ## Current snapshot
 - Phase: Phase 0 Complete / Ready for Phase 1 (Lead Capture)
@@ -31,7 +31,7 @@ Use this format:
   - Why: `@cloudflare/next-on-pages` adapter did not strictly support Next.js 16, causing peer dependency install failures and runtime build issues.
   - Alternatives considered: Forcing peer deps (failed at runtime), Custom build adapter (too high effort).
   - Trade-offs: Cannot use Next.js 16 features until Cloudflare adapter updates.
-  - Follow-up (task IDs in TODO.md): None immediately, but monitor Cloudflare updates.
+  - Follow-up (task IDs in P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md): None immediately, but monitor Cloudflare updates.
 
 - Date: 2026-01-07
   - Decision: Use manual `archive/eslint.config.mjs` style configuration.
@@ -42,10 +42,11 @@ Use this format:
 - Date: 2026-01-07
   - Decision: Mark `feed.xml` and `search` routes as `dynamic = 'force-static'`.
   - Why: They use `fs` (via `lib/blog.ts`) which is not available in the Cloudflare Edge Runtime unless pre-rendered at build time.
-  - Follow-up (task IDs in TODO.md): N/A
+  - Follow-up (task IDs in P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md): N/A
 
 ## Open questions
 - Q:
   - Context:
   - Needed input:
   - Task (BLOCKED) ID:
+

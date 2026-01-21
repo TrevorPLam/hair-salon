@@ -4,7 +4,7 @@ import { execSync } from 'node:child_process'
  * npm Registry Connectivity Check
  * - Purpose: verify npm registry reachability for dependency operations.
  * - Scope: health ping + representative package metadata probes.
- * - Related Task: TODO.md T-070 (Cloudflare adapter dependency monitoring).
+ * - Related Task: P2TODO.md T-070 (Cloudflare adapter dependency monitoring).
  * - Output: human-readable diagnostics with actionable next steps.
  */
 

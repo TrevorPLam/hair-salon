@@ -222,7 +222,7 @@ npm run test:e2e -- --grep accessibility
 ### Sign-Off
 - [ ] Tester confirms all critical tests pass
 - [ ] Any blocking issues documented with follow-up tasks
-- [ ] Task T-102 marked DONE in TODO.md
+- [ ] Task T-102 marked DONE in P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md
 
 ---
 
@@ -236,4 +236,5 @@ npm run test:e2e -- --grep accessibility
   - `aria-label` on mobile menu container
   - Escape key handler for mobile menu
   - Focus management in dialogs (search)
+
 

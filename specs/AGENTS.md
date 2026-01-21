@@ -6,7 +6,7 @@ Applies To: Any agent working in specs/
 **Quick Reference:** See `/BESTPR.md` for comprehensive repo standards.
 
 ## Purpose
-This folder contains non-binding specifications, design ideas, and exploratory documents. **Nothing here is authoritative** until converted into a task in `TODO.md`.
+This folder contains non-binding specifications, design ideas, and exploratory documents. **Nothing here is authoritative** until converted into a task in `P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md`.
 
 ---
 
@@ -15,14 +15,14 @@ This folder contains non-binding specifications, design ideas, and exploratory d
 **Files in this folder are NOT actionable.**
 
 - Specs here are ideas, proposals, or historical context
-- To make something actionable, create a task in `/TODO.md`
+- To make something actionable, create a task in `/P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md`
 - Do not assume specs reflect current implementation
 - Always verify against actual code
 
 ### Authority Hierarchy
 1. `/CODEBASECONSTITUTION.md` (supreme)
 2. `/AGENTS.md` + `/READMEAI.md`
-3. `/TODO.md` (task truth source)
+3. `/P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md` (task truth source)
 4. Audit runbooks
 5. `/BESTPR.md`
 6. **`/specs/` ← You are here (non-binding)**
@@ -47,7 +47,7 @@ specs/
 ### Feature Proposals
 - **Purpose:** Describe potential new features
 - **Status:** Exploratory (not approved)
-- **Next step:** Create task in TODO.md to implement
+- **Next step:** Create task in P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md to implement
 
 ### Architecture Explorations
 - **Purpose:** Explore design alternatives
@@ -57,7 +57,7 @@ specs/
 ### Research Notes
 - **Purpose:** Gather information on technologies, patterns
 - **Status:** Raw notes, not vetted
-- **Next step:** Extract actionable items into TODO.md
+- **Next step:** Extract actionable items into P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md
 
 ---
 
@@ -88,7 +88,7 @@ What else was explored?
 What needs to be decided?
 
 ## Next Steps
-- [ ] Convert to tasks in TODO.md
+- [ ] Convert to tasks in P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md
 - [ ] Get owner approval
 - [ ] Document in architecture/
 ```
@@ -110,7 +110,7 @@ What needs to be decided?
 When a spec is approved:
 
 1. **Break down:** Identify discrete work items
-2. **Create tasks:** Add to `/TODO.md` with proper schema
+2. **Create tasks:** Add to `/P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md` with proper schema
 3. **Reference spec:** Link back to spec in task context
 4. **Update spec status:** Mark as "Approved" and link to tasks
 
@@ -136,7 +136,7 @@ When a spec is no longer relevant:
 
 ## Don't
 
-- ❌ Treat specs as authoritative (only TODO.md is)
+- ❌ Treat specs as authoritative (only P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md is)
 - ❌ Implement features directly from specs (create tasks first)
 - ❌ Assume specs reflect reality (verify against code)
 - ❌ Commit specs without status field
@@ -145,5 +145,6 @@ When a spec is no longer relevant:
 
 **See also:** 
 - `/BESTPR.md` for complete best practices guide
-- `/TODO.md` for actionable work items
+- `/P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md` for actionable work items
 - `/CODEBASECONSTITUTION.md` for supreme authority
+

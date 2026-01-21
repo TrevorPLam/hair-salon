@@ -39,7 +39,7 @@ These files are the supreme authority for how the repo operates.
 | `/AGENTS.md` | How agents must behave |
 | `/READMEAI.md` | Operating console, start here |
 | `/BESTPR.md` | Technical best practices |
-| `/TODO.md` | Task truth source |
+| `/P0TODO.md`, `/P1TODO.md`, `/P2TODO.md`, `/P3TODO.md` | Task truth sources |
 | `/PROJECT_STATUS.md` | Current state + next step |
 
 ### Architecture
@@ -168,7 +168,7 @@ These are procedural guides for specific audit types:
 ### Status Files (Root)
 - `PROJECT_STATUS.md` — Current state + next immediate step
 - `CHANGELOG.md` — Historical changes to the repo
-- `TODO.md` — Task truth source
+- `P0TODO.md`, `P1TODO.md`, `P2TODO.md`, `P3TODO.md` — Task truth sources
 
 ---
 
@@ -229,3 +229,4 @@ How to prevent this in the future...
 ---
 
 **See also:** `/BESTPR.md` for complete best practices guide.
+

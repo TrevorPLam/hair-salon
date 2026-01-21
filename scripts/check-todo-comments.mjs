@@ -36,7 +36,8 @@ const IGNORE_PATTERNS = [
   /^\.github/,
   /^githubactions/,
   /^docs\/ARCHIVE/,
-  /^TODO\.md$/, // TODO.md itself is allowed
+  /^P[0-3]TODO\.md$/, // Priority task files are allowed
+  /^TODO_ARCHIVE_.*\.md$/,
   /^TODOCOMPLETED\.md$/,
   /^CHANGELOG\.md$/,
   /^package-lock\.json$/,
@@ -151,7 +152,7 @@ function main() {
   }
 
   console.log(
-    '💡 Consider moving actionable items to TODO.md or creating tasks for them.\n'
+    '💡 Consider moving actionable items to P0TODO.md, P1TODO.md, P2TODO.md, or P3TODO.md.\n'
   )
   console.log(
     '   Note: This is a warning, not an error. Some TODO comments may be intentional.'

@@ -2,9 +2,9 @@
 
 Document Type: Workflow
 Last Updated: 2026-01-21
-Source: Completed tasks moved from `TODO.md`
+Source: Completed tasks moved from `P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md`
 
-This file stores completed work in the same schema as `TODO.md`.
+This file stores completed work in the same schema as `P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md`.
 Move tasks here when Acceptance Criteria are met.
 
 ## Completed tasks
@@ -424,7 +424,7 @@ Acceptance Criteria:
 - [x] T-084.4: Confirm the scope note answers "If this fails on launch day, what breaks the business?"
 References:
 - /docs/LAUNCH-SCOPE-V1.md
-- /TODO.md
+- /P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md
 Dependencies: None
 Effort: XS
 
@@ -1233,7 +1233,7 @@ References:
 Dependencies: None
 Effort: S
 Notes:
-- Moved from TODO.md; completion date not recorded in task history.
+- Moved from P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md; completion date not recorded in task history.
 
 ### T-079: Update contact form requirements + env validation for Supabase/HubSpot
 Priority: P1
@@ -1297,7 +1297,7 @@ References:
 Dependencies: None
 Effort: XS
 Notes:
-- Moved from TODO.md; completion date not recorded in task history.
+- Moved from P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md; completion date not recorded in task history.
 
 ### T-074: Add active link highlighting to Navigation
 Priority: P3
@@ -1338,7 +1338,7 @@ References:
 Dependencies: T-050
 Effort: M
 Notes:
-- Moved from TODO.md; completion date not recorded in task history.
+- Moved from P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md; completion date not recorded in task history.
 
 ### T-110: Add Sentry tracing spans for server actions + external calls
 Priority: P1
@@ -1420,3 +1420,4 @@ References:
 - /WRONG.md
 Dependencies: None
 Effort: XS
+

@@ -321,8 +321,8 @@ Before high-traffic launch, rate limiting must:
 **References:**
 - Implementation: `lib/actions.ts` lines 21-48
 - Documentation: `SECURITY.md` (Rate Limiting section)
-- Migration task: `TODO.md` - T-016
-- Production planning: `TODO.md` - T-007
+- Migration task: `P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md` - T-016
+- Production planning: `P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md` - T-007
 
 ---
 
@@ -495,3 +495,4 @@ Technical details
 | 007 | In-Memory Rate Limiting for MVP | Accepted | 2026-01-03 |
 | 008 | Remove Deprecated next-pwa Package | Accepted | 2026-01-03 |
 | 009 | Sanitize PII in Sentry Events | Accepted | 2026-01-04 |
+

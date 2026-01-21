@@ -18,7 +18,10 @@ required=(
   "CODEBASECONSTITUTION.md"
   "PROJECT_STATUS.md"
   "repo.manifest.yaml"
-  "TODO.md"
+  "P0TODO.md"
+  "P1TODO.md"
+  "P2TODO.md"
+  "P3TODO.md"
   "TODOCOMPLETED.md"
   "CODEAUDIT.md"
   "SECURITYAUDIT.md"
@@ -64,10 +67,12 @@ if missing:
 PY
 fi
 
-# 3) TODO.md must declare it is the task truth source
-if [[ -f "TODO.md" ]]; then
-  grep -qE '^Task Truth Source:' TODO.md || log_violation "TODO.md missing 'Task Truth Source:' line"
-fi
+# 3) Priority task files must declare they are task truth sources
+for tasks_file in P0TODO.md P1TODO.md P2TODO.md P3TODO.md; do
+  if [[ -f "$tasks_file" ]]; then
+    grep -qE '^Task Truth Source:' "$tasks_file" || log_violation "$tasks_file missing 'Task Truth Source:' line"
+  fi
+done
 
 # 4) Tasks file must contain at least one task and Verification blocks
 fi

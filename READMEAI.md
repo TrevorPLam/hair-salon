@@ -10,7 +10,7 @@ Purpose: Make work in this repo deterministic, auditable, and agent-executable w
 ## Start here (required read order)
 1) `CODEBASECONSTITUTION.md` (non-negotiable rules)
 2) `AGENTS.md` (how agents must behave)
-3) `TODO.md` (task truth source)
+3) `P0TODO.md`, `P1TODO.md`, `P2TODO.md`, `P3TODO.md` (task truth sources)
 4) `BESTPR.md` (technical standards and best practices)
 5) Runbooks (use when instructed):
    - `CODEAUDIT.md`
@@ -22,7 +22,7 @@ Purpose: Make work in this repo deterministic, auditable, and agent-executable w
 7) `PROJECT_STATUS.md` (current state + next step)
 
 ## Task truth model
-- **Authoritative**: `TODO.md`
+- **Authoritative**: `P0TODO.md`, `P1TODO.md`, `P2TODO.md`, `P3TODO.md`
 - **Archive**: `TODOCOMPLETED.md`
 - **Non-binding notes**: `specs/` (may contain ideas; must be converted into tasks to be actionable)
 - Optional helper: `scripts/sync-todo.sh` generates `TODO.generated.md` (informational only)
@@ -45,3 +45,4 @@ See `githubactions/README.md` to enable/disable.
 
 ## Documentation rule
 If you change behavior, update the relevant docs and/or tasks so agents don’t drift.
+

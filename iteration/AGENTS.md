@@ -19,7 +19,7 @@ This folder contains temporary working drafts, iterations, and exploratory docum
 - Move finalized content to appropriate locations:
   - Features → `/specs/features/`
   - Documentation → `/docs/`
-  - Tasks → `/TODO.md`
+  - Tasks → `/P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md`
 - Clean up when iteration is complete
 
 ---
@@ -46,7 +46,7 @@ Share with team/owner for feedback.
 Move to permanent location:
 - Specs → `/specs/`
 - Docs → `/docs/`
-- Tasks → `/TODO.md`
+- Tasks → `/P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md`
 - Content → `/content/`
 
 ### 4. Cleanup Phase
@@ -102,3 +102,4 @@ Delete or archive completed iterations.
 - `/BESTPR.md` for complete best practices guide
 - `/specs/AGENTS.md` for non-binding specifications
 - `/docs/AGENTS.md` for documentation guidelines
+

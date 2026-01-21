@@ -621,7 +621,7 @@ When implementing distributed rate limiting:
 **References:**
 - Current implementation: `lib/actions.ts` (in-memory Map)
 - Decision rationale: [DECISIONS.md - ADR-007](../../../DECISIONS.md)
-- Task tracking: [TODO.md - T-016](../../../TODO.md)
+- Task tracking: T-016 in [`P0TODO.md`](../../../P0TODO.md), [`P1TODO.md`](../../../P1TODO.md), [`P2TODO.md`](../../../P2TODO.md), [`P3TODO.md`](../../../P3TODO.md)
 
 ---
 
@@ -705,3 +705,4 @@ For deployment issues:
 **Last updated:** 2026-01-05  
 **Related Tasks:** T-015 (API Keys), T-016 (Rate Limiting)  
 **See Also:** [SECURITY.md](../../../SECURITY.md), [DECISIONS.md](../../../DECISIONS.md)
+

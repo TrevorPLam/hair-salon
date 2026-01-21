@@ -136,9 +136,9 @@ If you are an AI coding assistant working on this repo, **YOU MUST READ**:
 
 1.  [`AGENTS.md`](AGENTS.md) - Operational guidelines and cost control.
 2.  [`CODEBASECONSTITUTION.md`](CODEBASECONSTITUTION.md) - The supreme laws of the repo.
-3.  [`TODO.md`](TODO.md) - The single source of truth for tasks.
+3.  [`P0TODO.md`](P0TODO.md), [`P1TODO.md`](P1TODO.md), [`P2TODO.md`](P2TODO.md), [`P3TODO.md`](P3TODO.md) - The sources of truth for tasks.
 
-**Do not deviate from `TODO.md` without human approval.**
+**Do not deviate from `P0TODO.md`, `P1TODO.md`, `P2TODO.md`, or `P3TODO.md` without human approval.**
 
 ## 📜 License
 
@@ -147,3 +147,4 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
 ---
 
 *maintained by Your Dedicated Marketer Team*
+

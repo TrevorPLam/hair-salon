@@ -17,7 +17,7 @@ Token-optimized, repo-specific guide for shipping quality code consistently. Thi
 **Stack:** Next.js 15 (App Router) + React 19 + TypeScript 5 + Tailwind CSS + Vitest + Playwright
 **Hosting:** Cloudflare Pages (SSG)
 **Integrations:** Sentry, Supabase, HubSpot, Upstash Redis
-**Key Files:** `CODEBASECONSTITUTION.md` → `AGENTS.md` → `TODO.md` → `BESTPR.md`
+**Key Files:** `CODEBASECONSTITUTION.md` → `AGENTS.md` → `P0TODO.md`, `P1TODO.md`, `P2TODO.md`, `P3TODO.md` → `BESTPR.md`
 
 ---
 
@@ -468,7 +468,7 @@ npm run audit:a11y    # Automated axe-core checks
 ### Governance Hierarchy
 1. `CODEBASECONSTITUTION.md` (supreme authority)
 2. `AGENTS.md` (root) + `READMEAI.md`
-3. `TODO.md` (task truth source)
+3. `P0TODO.md`, `P1TODO.md`, `P2TODO.md`, `P3TODO.md` (task truth sources)
 4. Audit runbooks (`CODEAUDIT.md`, `SECURITYAUDIT.md`)
 5. `BESTPR.md` (this document)
 6. `specs/` (non-binding notes)
@@ -537,11 +537,11 @@ npm run audit:a11y    # Automated axe-core checks
 
 ## 14. When in Doubt
 
-1. **Check governance:** `CODEBASECONSTITUTION.md` → `AGENTS.md` → `TODO.md`
+1. **Check governance:** `CODEBASECONSTITUTION.md` → `AGENTS.md` → `P0TODO.md`, `P1TODO.md`, `P2TODO.md`, `P3TODO.md`
 2. **Find examples:** Search codebase for similar patterns
 3. **Use explore agent:** Ask questions about existing code
 4. **Mark UNKNOWN:** If you can't verify, document uncertainty
-5. **Create a task:** If scope is large, propose in `TODO.md`
+5. **Create a task:** If scope is large, propose in `P0TODO.md`, `P1TODO.md`, `P2TODO.md`, or `P3TODO.md`
 
 ---
 
@@ -925,7 +925,7 @@ if (!redis) {
 | `CODEBASECONSTITUTION.md` | Supreme authority, non-negotiable rules |
 | `AGENTS.md` | Agent behavior rules |
 | `READMEAI.md` | Operating console, start here |
-| `TODO.md` | Task truth source |
+| `P0TODO.md`, `P1TODO.md`, `P2TODO.md`, `P3TODO.md` | Task truth sources |
 | `BESTPR.md` | This document (technical standards) |
 | `PROJECT_STATUS.md` | Current state + next step |
 | `CHANGELOG.md` | Historical changes |
@@ -945,3 +945,4 @@ if (!redis) {
 
 **1.1.0** (2026-01-21): Added AI METACODE documentation, rate limiting details, form validation patterns, analytics consent, PWA patterns, Edge runtime, CSP details, environment validation patterns
 **1.0.0** (2026-01-21): Initial release
+

@@ -30,7 +30,7 @@ Hierarchy (what to read first):
 - `BOOTSTRAP_GUIDE.md` → how to start (human + AI)
 - `PROJECT_STATUS.md` → current truth + next step
 - `repo.manifest.yaml` → how to run/verify/ship (machine-readable)
-- `TODO.md` → derived board (generated)
+- `P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md` → derived board (generated)
 - `SECURITY.md` → reporting + baseline expectations
 - `CHANGELOG.md` + `VERSION` → release hygiene
 
@@ -57,7 +57,7 @@ Hierarchy (what to read first):
 
 ## 5) scripts/
 - `scripts/bootstrap.sh` → initialize hooks + regenerate TODO
-- `scripts/sync-todo.sh` → derive TODO.md from tasks
+- `scripts/sync-todo.sh` → derive P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md from tasks
 - `scripts/ai-audit.sh` → governance gate
 - `scripts/security-scan.sh` → secrets hygiene
 - `scripts/check.sh` → best-effort checks
@@ -77,3 +77,4 @@ Hierarchy (what to read first):
 ## 7) CI + hooks
 - Local: `.githooks/pre-commit`
 - CI: `githubactions/workflows (disabled by default)/governance-ci.yml`
+
