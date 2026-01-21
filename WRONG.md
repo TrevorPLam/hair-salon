@@ -1,9 +1,9 @@
 # Codebase Audit Report
 
-**Last Updated:** 2026-01-21 05:30
+**Last Updated:** 2026-01-21 06:00
 **Current Phase:** [Phase 1] - Bugs & Defects
-**Files Analyzed:** 22 / 104 total files
-**Total Issues:** 11 (Critical: 1 | High: 3 | Medium: 4 | Low: 3)
+**Files Analyzed:** 40 / 104 total files
+**Total Issues:** 16 (Critical: 2 | High: 3 | Medium: 7 | Low: 4)
 
 ---
 
@@ -11,10 +11,10 @@
 
 | Metric | Count |
 |--------|-------|
-| Critical Issues | 1 |
+| Critical Issues | 2 |
 | High Priority | 3 |
-| Medium Priority | 4 |
-| Low Priority | 3 |
+| Medium Priority | 7 |
+| Low Priority | 4 |
 | Dead Code (LOC) | TBD |
 | Test Coverage | TBD |
 | Outdated Dependencies | TBD |
@@ -23,7 +23,7 @@
 
 ## Phase Progress
 
-- [x] Phase 1: Bugs & Defects - IN PROGRESS (21%)
+- [x] Phase 1: Bugs & Defects - IN PROGRESS (38%)
 - [ ] Phase 2: Code Quality Issues
 - [ ] Phase 3: Dead & Unused Code
 - [ ] Phase 4: Incomplete & Broken Features
@@ -63,11 +63,44 @@ onClick={() => {
 
 ---
 
+#### #014 - [Severity: CRITICAL] Missing CSP Nonce Error Crashes App
+
+**Location:** `app/layout.tsx:211-213`
+**Type:** Runtime Error / Error Handling Gap
+**Description:** RootLayout throws an error if CSP nonce is missing from headers, causing entire app to crash. No fallback or graceful degradation
+**Impact:** 
+- If middleware fails to set nonce, entire app becomes inaccessible
+- No error boundary at root level to catch this
+- Users see white screen with no recovery
+**Code Snippet:**
+```typescript
+if (!cspNonce) {
+  throw new Error('CSP nonce missing from request headers.')
+}
+```
+
+**Root Cause:** Overly strict validation without fallback. While CSP nonce SHOULD always be present, throwing crashes the app if middleware has any issues
+**Recommended Fix:** 
+1. Log error to Sentry instead of throwing
+2. Generate fallback nonce or skip CSP-dependent features
+3. Allow app to render with degraded security rather than crash
+```typescript
+if (!cspNonce) {
+  logError('CSP nonce missing from request headers', new Error('CSP nonce missing'))
+  // Generate fallback or render without nonce-dependent features
+}
+```
+**Effort:** 1 hour
+**Priority Justification:** CRITICAL - Complete app failure if middleware has issues. Should fail gracefully, not catastrophically
+**Related Issues:** Related to middleware.ts CSP implementation
+
+---
+
 ## Phase 1: Bugs & Defects
 
-**Status:** In Progress (21% complete)
-**Files Analyzed:** 22/104
-**Issues Found:** 11 (Critical: 1 | High: 3 | Medium: 4 | Low: 3)
+**Status:** In Progress (38% complete)
+**Files Analyzed:** 40/104
+**Issues Found:** 16 (Critical: 2 | High: 3 | Medium: 7 | Low: 4)
 
 ### High Priority Issues
 
@@ -357,6 +390,134 @@ And:
 
 ---
 
+#### #015 - [Severity: MEDIUM] Footer Social Links Point to Placeholder URLs
+
+**Location:** `components/Footer.tsx:27-32`
+**Type:** Dead Links / Configuration Error
+**Description:** All social media links in footer point to '#' (placeholder), not actual social media profiles
+**Impact:**
+- Users clicking social links go nowhere (hash anchor)
+- Looks unprofessional / incomplete
+- Lost opportunity for social media engagement
+- Broken user expectation
+**Code Snippet:**
+```typescript
+const socialLinks = [
+  { href: '#', icon: Facebook, label: 'Facebook' },
+  { href: '#', icon: Twitter, label: 'Twitter' },
+  { href: '#', icon: Linkedin, label: 'LinkedIn' },
+  { href: '#', icon: Instagram, label: 'Instagram' },
+]
+```
+
+**Root Cause:** Placeholder values never replaced with actual social media URLs
+**Recommended Fix:** 
+1. Replace with actual social URLs or
+2. Conditionally render only if URLs are configured in env
+3. Add visual indicator if not configured in development mode
+**Effort:** 15 minutes
+**Priority Justification:** Medium - Functional issue visible to all users, but not breaking core functionality
+**Related Issues:** Same placeholders in app/layout.tsx structured data (lines 244-248)
+
+---
+
+#### #016 - [Severity: MEDIUM] Unsafe Key Generation in Accordion
+
+**Location:** `components/ui/Accordion.tsx:29-34`
+**Type:** Potential Key Collision / Runtime Error
+**Description:** Accordion generates keys by truncating question text to 50 chars and replacing non-alphanumeric. Can cause React key collisions if questions start with same 50 chars
+**Impact:**
+- If two FAQs start with identical text, same key generated
+- React key collision causes component state bugs
+- Items may not expand/collapse correctly
+- Difficult to debug when it happens
+**Code Snippet:**
+```typescript
+{items.map((item, index) => {
+  // Use question as stable key (unique identifier)
+  const itemKey = item.question.slice(0, 50).replace(/[^a-zA-Z0-9]/g, '-')
+  
+  return (
+  <div
+    key={itemKey}
+```
+
+**Root Cause:** Attempt to create "stable" keys from content rather than using index or unique ID. Truncation makes collisions likely
+**Recommended Fix:** 
+1. Use index as key (safe for static lists): `key={index}`
+2. Or combine with index: `key={`${index}-${itemKey}`}`
+3. Or hash full question for stable key: `key={hashString(item.question)}`
+**Effort:** 15 minutes
+**Priority Justification:** Medium - Can cause subtle UI bugs. Likely to happen with similarly-worded FAQ questions
+**Related Issues:** None
+
+---
+
+#### #017 - [Severity: MEDIUM] Duplicate "Contact" Link in Footer Legal Section
+
+**Location:** `components/Footer.tsx:21-25`
+**Type:** UI Duplication / Confusion
+**Description:** Footer legal section includes "Contact" link, but company section also has "Contact" link. Duplicate navigation is confusing
+**Impact:**
+- Redundant link in same footer (appears twice)
+- User confusion about which to click
+- Inconsistent UX (why is Contact in Legal?)
+- Suggests incomplete thought process
+**Code Snippet:**
+```typescript
+const legal = [
+  { href: '/privacy', label: 'Privacy Policy' },
+  { href: '/terms', label: 'Terms of Service' },
+  { href: '/contact', label: 'Contact' },  // <-- Also in company array
+]
+
+const company = [
+  { href: '/about', label: 'About' },
+  { href: '/blog', label: 'Blog' },
+  { href: '/contact', label: 'Contact' },  // <-- Duplicate
+]
+```
+
+**Root Cause:** Copy-paste error or unclear information architecture
+**Recommended Fix:** Remove from legal section (Contact is not a legal page)
+**Effort:** 2 minutes
+**Priority Justification:** Medium - Minor UX issue, but visible to all users and looks unprofessional
+**Related Issues:** None
+
+---
+
+#### #018 - [Severity: MEDIUM] SearchPage Ignores initialQuery Prop
+
+**Location:** `components/SearchPage.tsx:14`
+**Type:** Unused Prop / Logic Error
+**Description:** SearchPage component accepts `initialQuery` prop but never uses it. Always reads from URL searchParams instead
+**Impact:**
+- Dead code suggests incomplete implementation
+- Callers might pass initialQuery expecting it to work
+- API confusion for component consumers
+**Code Snippet:**
+```typescript
+interface SearchPageProps {
+  items: SearchItem[]
+  initialQuery?: string  // <-- Defined but never used
+}
+
+export default function SearchPage({ items }: SearchPageProps) {
+  const searchParams = useSearchParams()
+  const defaultQuery = searchParams.get('q') ?? ''  // <-- Always reads from URL
+  const [query, setQuery] = useState(defaultQuery)
+```
+
+**Root Cause:** Either prop was planned but not implemented, or refactored to always use URL params
+**Recommended Fix:** 
+1. Remove `initialQuery` from interface if not needed
+2. Or use it as fallback: `useState(initialQuery || searchParams.get('q') || '')`
+**Effort:** 5 minutes
+**Priority Justification:** Medium - Dead code that could confuse developers. Not causing runtime issues but suggests incomplete implementation
+**Related Issues:** None
+
+---
+
 ### Low Priority Issues
 
 #### #005 - [Severity: LOW] Missing Error Context in Blog Functions
@@ -457,25 +618,64 @@ export type SpanAttributes = Record<string, SpanAttributeValue | undefined>
 
 ---
 
+#### #019 - [Severity: LOW] Hardcoded Twitter Handle May Be Incorrect
+
+**Location:** `app/layout.tsx:198`
+**Type:** Configuration Issue
+**Description:** Twitter creator handle `@yourdedicatedmarketer` is hardcoded in metadata but may not match actual Twitter account
+**Impact:**
+- Twitter card attribution may be incorrect
+- Potential missed social media traffic
+- Need to verify account exists and is correct
+**Code Snippet:**
+```typescript
+twitter: {
+  card: 'summary_large_image',
+  title: 'Your Dedicated Marketer | Digital Marketing Services That Drive Results',
+  description:
+    'Expert digital marketing services for businesses that want to grow. SEO, content, social media, and email marketing that delivers ROI.',
+  images: [ogImageUrl],
+  creator: '@yourdedicatedmarketer',  // <-- Needs verification
+},
+```
+
+**Root Cause:** Hardcoded value without verification of actual social media presence
+**Recommended Fix:** 
+1. Verify Twitter account exists
+2. Move to environment variable if account is different per deployment
+3. Remove if no Twitter account exists
+**Effort:** 5 minutes
+**Priority Justification:** Low - Only affects Twitter card attribution. Not breaking functionality
+**Related Issues:** #015 (related to social media configuration)
+
+---
+
 ## Pattern Analysis
 
 ### Recurring Issues
 
 1. **Unused Function Parameters** - Found in 2 locations in analytics.ts
 2. **Missing Input Validation** - Blog posts lack frontmatter validation
-3. **Inconsistent Error Handling** - Some functions log errors, others silently catch (found in 3 locations)
+3. **Inconsistent Error Handling** - Some functions log errors, others silently catch (found in 5+ locations)
 4. **Event Listener Leaks** - Multiple components register global event listeners without proper cleanup
 5. **localStorage Access Without Error Handling** - Found in 2 locations (1 fixed, 1 not)
+6. **Placeholder/Dead Links** - Social media links point to '#', not real URLs (2 locations)
+7. **Unused Props** - Component interfaces define props that are never used (SearchPage.initialQuery)
+8. **Key Generation Issues** - Using truncated content for React keys can cause collisions
 
 ### Hotspots (Files with Most Issues)
 
 1. `components/ErrorBoundary.tsx` - 1 critical issue (infinite loop)
-2. `components/Navigation.tsx` - 1 high issue (memory leak potential)
-3. `components/AnalyticsConsentBanner.tsx` - 1 high issue (race condition)
-4. `components/SearchDialog.tsx` - 1 medium issue (duplicate handlers)
-5. `lib/analytics.ts` - 2 issues (1 high, 1 medium)
-6. `lib/blog.ts` - 2 issues (2 medium)
-7. `lib/logger.ts` - 1 issue (1 medium)
+2. `app/layout.tsx` - 1 critical issue (CSP nonce crash), 1 low issue (Twitter handle)
+3. `components/Footer.tsx` - 2 medium issues (dead social links, duplicate Contact)
+4. `components/Navigation.tsx` - 1 high issue (memory leak potential)
+5. `components/AnalyticsConsentBanner.tsx` - 1 high issue (race condition)
+6. `components/SearchDialog.tsx` - 1 medium issue (duplicate handlers)
+7. `components/SearchPage.tsx` - 1 medium issue (unused prop)
+8. `components/ui/Accordion.tsx` - 1 medium issue (key collisions)
+9. `lib/analytics.ts` - 2 issues (1 high, 1 medium)
+10. `lib/blog.ts` - 2 issues (2 medium)
+11. `lib/logger.ts` - 1 issue (1 medium)
 
 ---
 
@@ -484,27 +684,33 @@ export type SpanAttributes = Record<string, SpanAttributeValue | undefined>
 ### Immediate (This Week)
 
 1. **FIX #006** - Fix ErrorBoundary infinite loop (use router navigation instead of reload)
-2. **FIX #001** - Remove or implement unused analytics parameters
-3. **FIX #002** - Fix inconsistent return in logger.ts
-4. **FIX #010** - Add error handling to InstallPrompt localStorage access
+2. **FIX #014** - Add graceful fallback for missing CSP nonce in layout
+3. **FIX #001** - Remove or implement unused analytics parameters
+4. **FIX #002** - Fix inconsistent return in logger.ts
+5. **FIX #010** - Add error handling to InstallPrompt localStorage access
+6. **FIX #015** - Update Footer social links (real URLs or conditional render)
+7. **FIX #017** - Remove duplicate Contact link from Footer legal section
 
 ### Short-term (1-4 Weeks)
 
 1. **FIX #007** - Add cross-tab synchronization for analytics consent
 2. **FIX #008** - Review and fix event listener cleanup in Navigation
 3. **FIX #009** - Refactor SearchDialog keyboard shortcut handling
-4. Add Zod validation for blog post frontmatter (#004)
-5. Add comprehensive error logging in blog.ts functions (#005)
-6. Validate NEXT_PUBLIC_ANALYTICS_ID before use in analytics (#003)
+4. **FIX #016** - Fix Accordion key generation to prevent collisions
+5. **FIX #018** - Remove unused initialQuery prop from SearchPage or implement it
+6. Add Zod validation for blog post frontmatter (#004)
+7. Add comprehensive error logging in blog.ts functions (#005)
+8. Validate NEXT_PUBLIC_ANALYTICS_ID before use in analytics (#003)
 
 ### Long-term (1-6 Months)
 
 1. **FIX #011** - Document CSP trade-offs in SECURITY.md, plan Tailwind migration
 2. **FIX #013** - Consolidate duplicate Sentry types
 3. **FIX #012** - Standardize error logging patterns across components
-4. Implement comprehensive input validation across all modules
-5. Standardize error handling patterns across codebase
-6. Add runtime validation for all external data sources
+4. **FIX #019** - Verify and configure Twitter handle in environment
+5. Implement comprehensive input validation across all modules
+6. Standardize error handling patterns across codebase
+7. Add runtime validation for all external data sources
 
 ---
 
@@ -515,12 +721,17 @@ export type SpanAttributes = Record<string, SpanAttributeValue | undefined>
 - Good: Security-conscious with sanitization utilities
 - Good: Proper CSP implementation with nonces
 - Good: Client/server code separation (request-context pattern)
+- Good: Component composition and reusability (ServiceDetailLayout, ui components)
+- Good: Accessibility features (skip links, ARIA labels, breadcrumbs)
 - Concern: Some functions have unused parameters suggesting incomplete implementations
 - Concern: Validation gaps in blog content parsing
 - Concern: Event listener management inconsistent across components
 - Concern: Error handling patterns vary (some log, some don't)
 - Concern: localStorage access sometimes lacks error handling
 - Concern: Global event listeners registered by multiple component instances
+- Concern: Placeholder/incomplete configuration (social links, Twitter handle)
+- Concern: CSP nonce handling is too strict (throws instead of degrading gracefully)
+- Concern: Some component props defined but never used (API confusion)
 
 **Context:**
 - Next.js 15.5.2 with TypeScript
@@ -529,12 +740,13 @@ export type SpanAttributes = Record<string, SpanAttributeValue | undefined>
 - File-based blog with MDX
 - PWA features (service worker, install prompt)
 - Analytics consent management for GDPR compliance
+- Reusable component library with consistent design system
 
 **Next Steps:**
-- Continue Phase 1: Analyze remaining components/ files (~18 files left)
-- Continue Phase 1: Analyze app/ directory (~30 files)
+- Continue Phase 1: Analyze remaining app/ directory files (~20 files)
 - Continue Phase 1: Analyze __tests__/ directory
 - Continue Phase 1: Analyze remaining config files
+- Continue Phase 1: Review API routes in app/api/
 
 **Files Analyzed So Far:**
 1. lib/analytics.ts ✓
@@ -561,3 +773,25 @@ export type SpanAttributes = Record<string, SpanAttributeValue | undefined>
 22. components/AnalyticsConsentBanner.tsx ✓
 23. components/Navigation.tsx ✓
 24. components/InstallPrompt.tsx ✓
+25. components/Hero.tsx ✓
+26. components/Footer.tsx ✓
+27. components/ServicesOverview.tsx ✓
+28. components/CTASection.tsx ✓
+29. components/FinalCTA.tsx ✓
+30. components/SocialProof.tsx ✓
+31. components/ValueProps.tsx ✓
+32. components/ServiceDetailLayout.tsx ✓
+33. components/SearchPage.tsx ✓
+34. components/BlogPostContent.tsx ✓
+35. components/Breadcrumbs.tsx ✓
+36. components/SkipToContent.tsx ✓
+37. components/ui/Button.tsx ✓
+38. components/ui/Card.tsx ✓
+39. components/ui/Input.tsx ✓
+40. components/ui/Accordion.tsx ✓
+41. components/ui/Select.tsx ✓
+42. app/layout.tsx ✓
+43. app/page.tsx ✓
+44. app/providers.tsx ✓
+45. app/not-found.tsx ✓
+46. app/loading.tsx ✓
