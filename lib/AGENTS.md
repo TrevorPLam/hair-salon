@@ -1,7 +1,9 @@
 # lib/AGENTS.md — Shared Utilities
 
-Last Updated: 2026-01-06
+Last Updated: 2026-01-21
 Applies To: Any agent working in lib/
+
+**Quick Reference:** See `/BESTPR.md` for comprehensive repo standards.
 
 ## Purpose
 This folder contains all shared utility modules for the application. Many modules are **security-critical** and handle user input, secrets, or error reporting.

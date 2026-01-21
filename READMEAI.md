@@ -11,14 +11,15 @@ Purpose: Make work in this repo deterministic, auditable, and agent-executable w
 1) `CODEBASECONSTITUTION.md` (non-negotiable rules)
 2) `AGENTS.md` (how agents must behave)
 3) `TODO.md` (task truth source)
-4) Runbooks (use when instructed):
+4) `BESTPR.md` (technical standards and best practices)
+5) Runbooks (use when instructed):
    - `CODEAUDIT.md`
    - `SECURITYAUDIT.md`
    - `DEPENDENCYAUDIT.md`
    - `RELEASEAUDIT.md`
    - `DOCSAUDIT.md`
-5) `repo.manifest.yaml` (how to run/verify this repo)
-6) `PROJECT_STATUS.md` (current state + next step)
+6) `repo.manifest.yaml` (how to run/verify this repo)
+7) `PROJECT_STATUS.md` (current state + next step)
 
 ## Task truth model
 - **Authoritative**: `TODO.md`

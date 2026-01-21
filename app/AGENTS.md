@@ -1,7 +1,9 @@
 # app/AGENTS.md — Next.js App Router Pages
 
-Last Updated: 2026-01-06
+Last Updated: 2026-01-21
 Applies To: Any agent working in app/
+
+**Quick Reference:** See `/BESTPR.md` for comprehensive repo standards.
 
 ## Purpose
 This folder contains all pages and routes using Next.js 14 App Router. The site uses **Static Site Generation (SSG)** — all pages are pre-rendered at build time.
