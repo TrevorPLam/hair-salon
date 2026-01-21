@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added request correlation IDs to middleware responses and server-side logs
 - Added server-side Sentry spans for contact form submissions and external sync calls
 - Added `npm run check:bundle-size` to enforce bundle size regression checks
+- Added analytics consent gating with banner-based preference storage for GA4 loading
 
 ### Security
 - Added hashed IP + email rate limiting for contact form submissions

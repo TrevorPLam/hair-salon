@@ -11,7 +11,7 @@
  * analytics providers (GA4, Plausible) with unified API.
  *
  * **CURRENT STATE**: GA4 selected (T-064 complete); Plausible optional.
- * - NEXT_PUBLIC_ANALYTICS_ID set → GA4 gtag is loaded in app/layout.tsx
+ * - NEXT_PUBLIC_ANALYTICS_ID set → GA4 gtag loads after user consent
  * - Missing NEXT_PUBLIC_ANALYTICS_ID → events log to console
  * - Plausible window.plausible present → sends to Plausible (optional)
  *
@@ -83,6 +83,7 @@
  */
 
 import { logInfo } from './logger'
+import { hasAnalyticsConsent } from './analytics-consent'
 
 function isDevelopment(): boolean {
   return process.env.NODE_ENV === 'development'
@@ -112,6 +113,10 @@ interface AnalyticsEvent {
  * Supports Google Analytics, Plausible, or custom analytics
  */
 export function trackEvent({ action, category, label, value }: AnalyticsEvent) {
+  if (!hasAnalyticsConsent()) {
+    return
+  }
+
   if (isDevelopment() || isTest()) {
     logInfo('Analytics event', { action, category, label, value })
     return
@@ -146,6 +151,10 @@ export function trackEvent({ action, category, label, value }: AnalyticsEvent) {
  * Track page view
  */
 export function trackPageView(url: string) {
+  if (!hasAnalyticsConsent()) {
+    return
+  }
+
   if (isDevelopment() || isTest()) {
     logInfo('Analytics page view', { url })
     return

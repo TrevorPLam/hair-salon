@@ -98,7 +98,7 @@ We use cookies and similar technologies to:
 - Analyze website traffic
 - Improve user experience
 
-You can control cookies through your browser settings.
+Analytics cookies are only set after you grant consent through the on-site analytics banner. You can update your preferences by clearing cookies/localStorage or adjusting your browser settings.
 
 ---
 

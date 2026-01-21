@@ -304,29 +304,6 @@ References:
 Dependencies: None
 Effort: L
 
-### T-113: Add analytics consent gating (privacy compliance)
-Priority: P2
-Type: FEATURE
-Owner: AGENT
-Status: READY
-Blockers: None
-Context:
-- Analytics should honor consent requirements (GDPR/CCPA-ready)
-- Provides opt-in control without breaking existing tracking
-- Improves transparency for end users
-Acceptance Criteria:
-- [ ] T-113.1: Add consent state handling in client-side analytics init
-- [ ] T-113.2: Update `app/layout.tsx` to conditionally load GA4 based on consent
-- [ ] T-113.3: Provide UI or cookie-based preference storage for consent
-- [ ] T-113.4: Document consent behavior in `/docs/OBSERVABILITY.md` and `/docs/PRIVACY_POLICY_TEMPLATE.md`
-References:
-- /app/layout.tsx
-- /lib/analytics.ts
-- /docs/OBSERVABILITY.md
-- /docs/PRIVACY_POLICY_TEMPLATE.md
-Dependencies: None
-Effort: M
-
 ### T-114: Add retry policy + idempotency for HubSpot sync
 Priority: P1
 Type: FEATURE
