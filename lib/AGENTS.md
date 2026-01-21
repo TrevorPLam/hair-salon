@@ -42,6 +42,7 @@ This folder contains all shared utility modules for the application. Many module
 |--------|---------|
 | `utils.ts` | Generic utilities (cn for classnames) |
 | `analytics.ts` | Analytics event tracking abstraction |
+| `analytics-consent.ts` | Analytics consent storage helpers |
 | `contact-form-schema.ts` | Zod schema for contact form validation |
 | `sentry-client.ts` | Client-side Sentry helpers |
 | `sentry-server.ts` | Server-side Sentry span helper |

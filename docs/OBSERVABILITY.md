@@ -46,14 +46,16 @@ for consistent tracing across logs and Sentry events.
 ## Analytics (GA4)
 
 GA4 is the selected analytics provider (see T-064). Tracking is enabled when `NEXT_PUBLIC_ANALYTICS_ID`
-is set in the environment and the GA4 script is injected in `app/layout.tsx`.
+is set and the visitor grants analytics consent. Consent is stored in a `ydm_analytics_consent`
+cookie + localStorage entry, and GA4 scripts are only injected after consent is granted.
 
 **Tracked conversions/events:**
 - `contact_submit` (conversion) — emitted by `trackFormSubmission('contact', true)` on successful contact form submission.
 - `contact_submit` (error) — emitted by `trackFormSubmission('contact', false)` when the submit fails.
 
 **Implementation notes:**
-- Conversion tracking is wired in `components/ContactForm.tsx` via `lib/analytics.ts`.
+- Conversion tracking is wired in `components/ContactForm.tsx` via `lib/analytics.ts` and is gated on consent.
+- GA4 scripts are injected by `components/AnalyticsConsentBanner.tsx` after consent is granted.
 - GA4 network calls require CSP allowlisting for `googletagmanager.com` + `google-analytics.com` in `middleware.ts`.
 
 ## Performance baselines (Lighthouse)

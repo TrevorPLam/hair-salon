@@ -8,6 +8,7 @@ import {
   trackOutboundLink,
   trackDownload,
 } from '@/lib/analytics'
+import { setAnalyticsConsent } from '@/lib/analytics-consent'
 
 describe('Analytics', () => {
   let gtagMock: ReturnType<typeof vi.fn>
@@ -37,6 +38,8 @@ describe('Analytics', () => {
       writable: true,
       configurable: true,
     })
+
+    setAnalyticsConsent('granted')
   })
 
   afterEach(() => {
@@ -45,10 +48,12 @@ describe('Analytics', () => {
 
     // Clean up mocks
     vi.clearAllMocks()
+    window.localStorage.removeItem('ydm_analytics_consent')
+    document.cookie = 'ydm_analytics_consent=; Max-Age=0; Path=/'
   })
 
   describe('trackEvent', () => {
-    it('should call gtag with correct parameters', () => {
+    it('test_calls_gtag_with_correct_parameters', () => {
       trackEvent({
         action: 'click',
         category: 'button',
@@ -63,7 +68,7 @@ describe('Analytics', () => {
       })
     })
 
-    it('should call plausible with correct parameters', () => {
+    it('test_calls_plausible_with_correct_parameters', () => {
       trackEvent({
         action: 'click',
         category: 'button',
@@ -80,7 +85,7 @@ describe('Analytics', () => {
       })
     })
 
-    it('should not track in development mode', () => {
+    it('test_skips_tracking_in_development_mode', () => {
       process.env.NODE_ENV = 'development'
       const consoleSpy = vi.spyOn(console, 'info')
 
@@ -95,10 +100,22 @@ describe('Analytics', () => {
 
       consoleSpy.mockRestore()
     })
+
+    it('test_skips_tracking_when_consent_denied', () => {
+      setAnalyticsConsent('denied')
+
+      trackEvent({
+        action: 'click',
+        category: 'button',
+      })
+
+      expect(gtagMock).not.toHaveBeenCalled()
+      expect(plausibleMock).not.toHaveBeenCalled()
+    })
   })
 
   describe('trackPageView', () => {
-    it('should call gtag config with page path', () => {
+    it('test_calls_gtag_config_with_page_path', () => {
       trackPageView('/about')
 
       expect(gtagMock).toHaveBeenCalledWith(
@@ -110,7 +127,7 @@ describe('Analytics', () => {
       )
     })
 
-    it('should not track in development mode', () => {
+    it('test_skips_pageview_tracking_in_development', () => {
       process.env.NODE_ENV = 'development'
       const consoleSpy = vi.spyOn(console, 'info')
 
@@ -124,19 +141,19 @@ describe('Analytics', () => {
   })
 
   describe('trackFormSubmission', () => {
-    it('should track form submission event', () => {
+    it('test_tracks_form_submission_conversion', () => {
       trackFormSubmission('contact')
 
-      expect(gtagMock).toHaveBeenCalledWith('event', 'form_submission', {
-        event_category: 'form',
+      expect(gtagMock).toHaveBeenCalledWith('event', 'contact_submit', {
+        event_category: 'conversion',
         event_label: 'contact',
-        value: undefined,
+        value: 1,
       })
     })
   })
 
   describe('trackCTAClick', () => {
-    it('should track CTA click event', () => {
+    it('test_tracks_cta_click_event', () => {
       trackCTAClick('Get Started', '/contact')
 
       expect(gtagMock).toHaveBeenCalledWith('event', 'cta_click', {
@@ -148,7 +165,7 @@ describe('Analytics', () => {
   })
 
   describe('trackButtonClick', () => {
-    it('should track button click event', () => {
+    it('test_tracks_button_click_event', () => {
       trackButtonClick('Submit', '/form')
 
       expect(gtagMock).toHaveBeenCalledWith('event', 'button_click', {
@@ -160,7 +177,7 @@ describe('Analytics', () => {
   })
 
   describe('trackOutboundLink', () => {
-    it('should track outbound link click', () => {
+    it('test_tracks_outbound_link_click', () => {
       trackOutboundLink('https://example.com')
 
       expect(gtagMock).toHaveBeenCalledWith('event', 'outbound_link', {
@@ -172,8 +189,8 @@ describe('Analytics', () => {
   })
 
   describe('trackDownload', () => {
-    it('should track file download', () => {
-      trackDownload('guide.pdf', 'pdf')
+    it('test_tracks_file_download', () => {
+      trackDownload('guide.pdf')
 
       expect(gtagMock).toHaveBeenCalledWith('event', 'download', {
         event_category: 'engagement',
@@ -184,7 +201,7 @@ describe('Analytics', () => {
   })
 
   describe('Error handling', () => {
-    it('should not throw error if gtag is not available', () => {
+    it('test_handles_missing_gtag', () => {
       // @ts-ignore
       delete window.gtag
 
@@ -196,7 +213,7 @@ describe('Analytics', () => {
       }).not.toThrow()
     })
 
-    it('should not throw error if plausible is not available', () => {
+    it('test_handles_missing_plausible', () => {
       // @ts-ignore
       delete window.plausible
 

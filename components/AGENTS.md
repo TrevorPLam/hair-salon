@@ -43,6 +43,7 @@ components/
 | `ValueProps.tsx` | Value propositions grid | Server |
 | `ErrorBoundary.tsx` | Error handling wrapper | Client |
 | `InstallPrompt.tsx` | PWA install prompt | Client |
+| `AnalyticsConsentBanner.tsx` | Analytics consent prompt + script gate | Client |
 | `SkipToContent.tsx` | Accessibility skip link | Server |
 
 ### UI Primitives (`ui/`)
@@ -64,7 +65,7 @@ See `components/ui/AGENTS.md` for detailed documentation.
 **Client Components:**
 - Must have `'use client'` at top of file
 - Required for: Forms, state, event handlers, browser APIs
-- Current client components: Navigation, ContactForm, SearchDialog, Breadcrumbs, ErrorBoundary, InstallPrompt
+- Current client components: Navigation, ContactForm, SearchDialog, Breadcrumbs, ErrorBoundary, InstallPrompt, AnalyticsConsentBanner
 
 ### Props Pattern
 

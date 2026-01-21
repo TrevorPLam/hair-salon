@@ -42,7 +42,7 @@
  *
  * **AI ITERATION HINTS**:
  * - Adding global script? Add to <head> section
- * - GA4 script is conditionally injected when NEXT_PUBLIC_ANALYTICS_ID is set
+ * - GA4 script is injected after consent when NEXT_PUBLIC_ANALYTICS_ID is set
  * - Changing fonts? Update font imports and CSS variables
  * - Changing nav links? Edit Navigation.tsx navLinks array
  * - Adding global provider? Wrap in Providers component
@@ -108,12 +108,12 @@
  */
 
 import type { Metadata } from 'next'
-import Script from 'next/script'
 import { IBM_Plex_Sans, Inter } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
 import Footer from '@/components/Footer'
 import SkipToContent from '@/components/SkipToContent'
+import AnalyticsConsentBanner from '@/components/AnalyticsConsentBanner'
 import Providers from '@/app/providers'
 import InstallPrompt from '@/components/InstallPrompt'
 import { getPublicBaseUrl, validatedPublicEnv } from '@/lib/env.public'
@@ -217,20 +217,6 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
         <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />
 
-        {analyticsId ? (
-          <>
-            <Script src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`} strategy="afterInteractive" />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${analyticsId}');
-              `}
-            </Script>
-          </>
-        ) : null}
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -291,6 +277,7 @@ export default function RootLayout({
         </Providers>
         <Footer />
         <InstallPrompt />
+        <AnalyticsConsentBanner analyticsId={analyticsId} />
       </body>
     </html>
   )
