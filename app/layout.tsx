@@ -108,6 +108,7 @@
  */
 
 import type { Metadata } from 'next'
+import { headers } from 'next/headers'
 import { IBM_Plex_Sans, Inter } from 'next/font/google'
 import './globals.css'
 import Navigation from '@/components/Navigation'
@@ -116,6 +117,7 @@ import SkipToContent from '@/components/SkipToContent'
 import AnalyticsConsentBanner from '@/components/AnalyticsConsentBanner'
 import Providers from '@/app/providers'
 import InstallPrompt from '@/components/InstallPrompt'
+import { CSP_NONCE_HEADER } from '@/lib/csp'
 import { getPublicBaseUrl, validatedPublicEnv } from '@/lib/env.public'
 import { getSearchIndex } from '@/lib/search'
 
@@ -203,6 +205,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const searchItems = getSearchIndex()
+  const requestHeaders = headers()
+  const cspNonce = requestHeaders.get(CSP_NONCE_HEADER)
+
+  if (!cspNonce) {
+    throw new Error('CSP nonce missing from request headers.')
+  }
 
   return (
     <html lang="en" className={`${inter.variable} ${plexSans.variable}`}>
@@ -219,6 +227,7 @@ export default function RootLayout({
 
         <script
           type="application/ld+json"
+          nonce={cspNonce}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
@@ -252,6 +261,7 @@ export default function RootLayout({
         />
         <script
           type="application/ld+json"
+          nonce={cspNonce}
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               '@context': 'https://schema.org',
@@ -277,7 +287,7 @@ export default function RootLayout({
         </Providers>
         <Footer />
         <InstallPrompt />
-        <AnalyticsConsentBanner analyticsId={analyticsId} />
+        <AnalyticsConsentBanner analyticsId={analyticsId} nonce={cspNonce} />
       </body>
     </html>
   )

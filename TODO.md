@@ -280,26 +280,5 @@ References:
 Dependencies: None
 Effort: XS
 
+_Completed (moved to TODOCOMPLETED.md on 2026-01-21): T-112._
 _Completed (moved to TODOCOMPLETED.md on 2026-01-20): T-108, T-109._
-
-### T-112: Harden CSP with nonce-based script handling
-Priority: P1
-Type: SECURITY
-Owner: AGENT
-Status: READY
-Blockers: None
-Context:
-- Current CSP uses `unsafe-inline` for scripts; nonces strengthen XSS protection
-- Aligns with security best practices for modern Next.js apps
-- Reduces reliance on broad CSP exceptions
-Acceptance Criteria:
-- [ ] T-112.1: Implement CSP nonces in `middleware.ts` (or equivalent Next.js configuration)
-- [ ] T-112.2: Remove `unsafe-inline` for scripts once nonces are in place
-- [ ] T-112.3: Ensure GA4 scripts still load without CSP violations
-- [ ] T-112.4: Document nonce usage and testing steps in `/docs/SECURITY-CSP-ANALYTICS.md`
-References:
-- /middleware.ts
-- /app/layout.tsx
-- /docs/SECURITY-CSP-ANALYTICS.md
-Dependencies: None
-Effort: L
