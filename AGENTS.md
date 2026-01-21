@@ -1,14 +1,17 @@
 # AGENTS.md — Agent Instructions (Root)
 
-Last Updated: 2026-01-05
+Last Updated: 2026-01-21
 Applies To: Any coding/documentation agent operating in this repo
+
+**Quick Reference:** See `/BESTPR.md` for comprehensive technical standards and best practices.
 
 ## Authority order
 1) `CODEBASECONSTITUTION.md`
 2) `READMEAI.md`
 3) `TODO.md`
-4) Audit runbooks (`CODEAUDIT.md`, `SECURITYAUDIT.md`, etc.)
-5) `specs/` (non-binding notes)
+4) `BESTPR.md` (technical standards and best practices)
+5) Audit runbooks (`CODEAUDIT.md`, `SECURITYAUDIT.md`, etc.)
+6) `specs/` (non-binding notes)
 
 ## Non-negotiables
 - Do not invent facts about the repo. Use **UNKNOWN** + cite what you checked.

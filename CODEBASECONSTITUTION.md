@@ -39,6 +39,8 @@ This repo must be:
 ## 6) Documentation expectations
 - Docs must reflect reality.
 - If a doc’s truth cannot be verified, mark **UNKNOWN** and create a verification task.
+- Technical standards and best practices are documented in `BESTPR.md`.
+- Folder-specific conventions are documented in `AGENTS.md` files within each directory.
 
 ## 7) Amendment protocol
 Constitution changes require:

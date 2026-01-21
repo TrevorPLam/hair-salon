@@ -1,7 +1,9 @@
 # components/ui/AGENTS.md — Design System Primitives
 
-Last Updated: 2026-01-06
+Last Updated: 2026-01-21
 Applies To: Any agent working in components/ui/
+
+**Quick Reference:** See `/BESTPR.md` for comprehensive repo standards.
 
 ## Purpose
 This folder contains the core design system primitives. These are the "Lego blocks" used to build all UI across the application. **Consistency is critical** — do NOT create ad-hoc styling.

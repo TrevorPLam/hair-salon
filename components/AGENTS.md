@@ -1,7 +1,9 @@
 # components/AGENTS.md — React Components
 
-Last Updated: 2026-01-06
+Last Updated: 2026-01-21
 Applies To: Any agent working in components/
+
+**Quick Reference:** See `/BESTPR.md` for comprehensive repo standards.
 
 ## Purpose
 This folder contains all React components for the marketing website. Components are organized into page-level components (root) and primitive UI components (`ui/`).
