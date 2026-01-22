@@ -1462,3 +1462,22 @@ Dependencies: None
 Effort: XS
 Notes:
 - sanitizeLogContext is currently only referenced in /__tests__/lib/logger.test.ts; keeping export with documented intent for test/consumer reuse.
+
+### T-117: Harden HubSpot + Supabase response validation
+Priority: P1
+Type: BUG
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-21
+Context:
+- Audit BUG-006/007 shows array access and ID validation gaps in external responses.
+- Invalid responses should be handled gracefully with explicit errors.
+Acceptance Criteria:
+- [x] T-117.1: Verify HubSpot search responses are arrays before indexing.
+- [x] T-117.2: Validate Supabase insert responses to ensure IDs are valid strings.
+- [x] T-117.3: Add tests for malformed HubSpot/Supabase responses.
+References:
+- /lib/actions.ts
+- /WRONG.md
+Dependencies: None
+Effort: S

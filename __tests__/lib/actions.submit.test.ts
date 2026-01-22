@@ -68,6 +68,8 @@ const getHubSpotUpsertCalls = () =>
 
 describe('contact form lead pipeline', () => {
   beforeEach(() => {
+    // WHY: Reset module state so in-memory rate limiter doesn't leak between tests.
+    vi.resetModules()
     vi.resetAllMocks()
     fetchMock.mockImplementation(async (input: RequestInfo) => {
       const url = typeof input === 'string' ? input : input.toString()
@@ -189,5 +191,51 @@ describe('contact form lead pipeline', () => {
     const secondHeaders = upsertCalls[1]?.[1]?.headers as Record<string, string>
     expect(firstHeaders['Idempotency-Key']).toBeDefined()
     expect(firstHeaders['Idempotency-Key']).toBe(secondHeaders['Idempotency-Key'])
+  })
+
+  it('treats malformed HubSpot search responses as sync failures', async () => {
+    fetchMock.mockImplementation(async (input: RequestInfo) => {
+      const url = typeof input === 'string' ? input : input.toString()
+      const supabaseRestUrl = `${supabaseUrl}/rest/v1/leads`
+
+      if (url === supabaseRestUrl) {
+        return buildResponse([{ id: 'lead-999' }])
+      }
+
+      if (url.startsWith(`${supabaseRestUrl}?id=eq.`)) {
+        return buildResponse([])
+      }
+
+      if (url.endsWith('/crm/v3/objects/contacts/search')) {
+        return buildResponse({ total: 1, results: null })
+      }
+
+      return buildResponse({ message: 'not found' }, false, 404)
+    })
+
+    const { submitContactForm } = await import('@/lib/actions')
+    const response = await submitContactForm(buildPayload('malformed@example.com'))
+
+    expect(response.success).toBe(true)
+    expect(logError).toHaveBeenCalledWith('HubSpot sync failed', expect.any(Error))
+  })
+
+  it('returns an error when Supabase insert responses are malformed', async () => {
+    fetchMock.mockImplementation(async (input: RequestInfo) => {
+      const url = typeof input === 'string' ? input : input.toString()
+      const supabaseRestUrl = `${supabaseUrl}/rest/v1/leads`
+
+      if (url === supabaseRestUrl) {
+        return buildResponse([{ id: 123 }])
+      }
+
+      return buildResponse({ message: 'not found' }, false, 404)
+    })
+
+    const { submitContactForm } = await import('@/lib/actions')
+    const response = await submitContactForm(buildPayload('bad-id@example.com'))
+
+    expect(response.success).toBe(false)
+    expect(logError).toHaveBeenCalledWith('Contact form submission error', expect.any(Error))
   })
 })
