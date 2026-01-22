@@ -257,25 +257,6 @@ References:
 Dependencies: None
 Effort: M
 
-### T-125: Refactor middleware for clarity and guardrails
-Priority: P1
-Type: QUALITY
-Owner: AGENT
-Status: READY
-Blockers: None
-Context:
-- Audit flags middleware size, magic numbers, and NaN content-length handling.
-- Middleware should be simpler and safer.
-Acceptance Criteria:
-- [ ] T-125.1: Extract security header configuration into helper(s).
-- [ ] T-125.2: Guard against NaN content-length values in size checks.
-- [ ] T-125.3: Replace magic numbers with named constants and update docs/tests.
-References:
-- /middleware.ts
-- /WRONG.md
-Dependencies: None
-Effort: M
-
 ### T-126: Streamline environment validation structure
 Priority: P1
 Type: QUALITY

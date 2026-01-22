@@ -84,6 +84,58 @@ import {
 } from '@/lib/csp'
 
 const CORRELATION_ID_HEADER = 'x-correlation-id'
+/**
+ * Strict-Transport-Security (HSTS)
+ *
+ * **Purpose:** Force HTTPS in production without breaking local development.
+ */
+const HSTS_MAX_AGE_SECONDS = 31_536_000
+const HSTS_HEADER_VALUE = `max-age=${HSTS_MAX_AGE_SECONDS}; includeSubDomains; preload`
+
+/**
+ * Permissions-Policy
+ *
+ * **Purpose:** Disable unnecessary browser features.
+ * **Benefit:** Reduce attack surface and prevent privacy-unfriendly APIs.
+ */
+const PERMISSIONS_POLICY_VALUE =
+  'camera=(), microphone=(), geolocation=(), interest-cohort=()'
+
+/**
+ * Referrer-Policy: strict-origin-when-cross-origin
+ *
+ * **Purpose:** Limit referrer leakage on cross-origin requests.
+ */
+const REFERRER_POLICY_VALUE = 'strict-origin-when-cross-origin'
+
+/**
+ * X-Frame-Options: DENY
+ *
+ * **Purpose:** Prevent clickjacking in legacy browsers.
+ */
+const X_FRAME_OPTIONS_VALUE = 'DENY'
+
+/**
+ * X-Content-Type-Options: nosniff
+ *
+ * **Purpose:** Prevent MIME sniffing attacks.
+ */
+const X_CONTENT_TYPE_OPTIONS_VALUE = 'nosniff'
+
+/**
+ * X-XSS-Protection: 1; mode=block
+ *
+ * **Purpose:** Defense-in-depth for legacy browsers.
+ */
+const X_XSS_PROTECTION_VALUE = '1; mode=block'
+
+const BASE_SECURITY_HEADERS: Record<string, string> = {
+  'X-Frame-Options': X_FRAME_OPTIONS_VALUE,
+  'X-Content-Type-Options': X_CONTENT_TYPE_OPTIONS_VALUE,
+  'X-XSS-Protection': X_XSS_PROTECTION_VALUE,
+  'Referrer-Policy': REFERRER_POLICY_VALUE,
+  'Permissions-Policy': PERMISSIONS_POLICY_VALUE,
+}
 
 /**
  * Maximum allowed payload size for POST requests (1MB).
@@ -99,11 +151,32 @@ const CORRELATION_ID_HEADER = 'x-correlation-id'
  * - Memory exhaustion attacks
  * - Zip bomb attacks (if file uploads added later)
  */
-const MAX_BODY_SIZE_BYTES = 1024 * 1024 // 1MB payload limit for POST requests
+const BYTES_PER_MEGABYTE = 1024 * 1024
+const MAX_BODY_SIZE_BYTES = BYTES_PER_MEGABYTE // 1MB payload limit for POST requests
 
 function getCorrelationId(request: NextRequest): string {
   const existingId = request.headers.get(CORRELATION_ID_HEADER)
   return existingId || crypto.randomUUID()
+}
+
+export function parseContentLength(headerValue: string | null): number | null {
+  if (!headerValue) {
+    // Missing header: skip size checks rather than guessing at length.
+    return null
+  }
+
+  const parsed = Number(headerValue)
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    // Invalid header: ignore to avoid blocking valid requests on bad input.
+    return null
+  }
+
+  return parsed
+}
+
+export function isPayloadTooLarge(contentLength: number | null): boolean {
+  // Explicit null handling keeps the call site simple and predictable.
+  return contentLength !== null && contentLength > MAX_BODY_SIZE_BYTES
 }
 
 function buildRequestHeaders(
@@ -115,6 +188,41 @@ function buildRequestHeaders(
   requestHeaders.set(CORRELATION_ID_HEADER, correlationId)
   requestHeaders.set(CSP_NONCE_HEADER, cspNonce)
   return requestHeaders
+}
+
+interface SecurityHeaderOptions {
+  cspNonce: string
+  isDevelopment: boolean
+  isProduction: boolean
+}
+
+function applySecurityHeaders(
+  headers: Headers,
+  { cspNonce, isDevelopment, isProduction }: SecurityHeaderOptions
+) {
+  headers.set(
+    'Content-Security-Policy',
+    buildContentSecurityPolicy({
+      nonce: cspNonce,
+      isDevelopment,
+    })
+  )
+
+  // Base headers are centralized to avoid drift and magic string repetition.
+  for (const [header, value] of Object.entries(BASE_SECURITY_HEADERS)) {
+    headers.set(header, value)
+  }
+
+  if (isProduction) {
+    headers.set('Strict-Transport-Security', HSTS_HEADER_VALUE)
+  }
+}
+
+function buildPayloadTooLargeResponse(correlationId: string) {
+  return new NextResponse('Payload too large', {
+    status: 413,
+    headers: new Headers({ [CORRELATION_ID_HEADER]: correlationId }),
+  })
 }
 
 /**
@@ -143,12 +251,11 @@ export function middleware(request: NextRequest) {
 
   // Block oversized payloads early to reduce DoS risk.
   if (request.method === 'POST') {
-    const contentLength = request.headers.get('content-length')
-    if (contentLength && Number(contentLength) > MAX_BODY_SIZE_BYTES) {
-      return new NextResponse('Payload too large', {
-        status: 413,
-        headers: new Headers({ [CORRELATION_ID_HEADER]: correlationId }),
-      })
+    const contentLength = parseContentLength(
+      request.headers.get('content-length')
+    )
+    if (isPayloadTooLarge(contentLength)) {
+      return buildPayloadTooLargeResponse(correlationId)
     }
   }
 
@@ -187,116 +294,11 @@ export function middleware(request: NextRequest) {
    * 
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP MDN CSP Guide}
    */
-  headers.set(
-    'Content-Security-Policy',
-    buildContentSecurityPolicy({
-      nonce: cspNonce,
-      isDevelopment: process.env.NODE_ENV === 'development',
-    })
-  )
-
-  /**
-   * X-Frame-Options: DENY
-   * 
-   * **Purpose:** Prevent clickjacking attacks in legacy browsers.
-   * 
-   * Modern browsers use CSP `frame-ancestors` directive instead.
-   * This header provides defense-in-depth for older browsers.
-   * 
-   * **Attack Prevention:**
-   * - Clickjacking (tricking users to click hidden iframes)
-   * - UI redressing attacks
-   * 
-   * @see {@link https://owasp.org/www-community/attacks/Clickjacking OWASP Clickjacking}
-   */
-  headers.set('X-Frame-Options', 'DENY')
-
-  /**
-   * X-Content-Type-Options: nosniff
-   * 
-   * **Purpose:** Prevent MIME type sniffing attacks.
-   * 
-   * Forces browsers to respect declared Content-Type headers.
-   * Prevents execution of scripts disguised as images, etc.
-   * 
-   * **Attack Prevention:**
-   * - XSS via polyglot files (files that are both image and script)
-   * - MIME confusion attacks
-   */
-  headers.set('X-Content-Type-Options', 'nosniff')
-
-  /**
-   * X-XSS-Protection: 1; mode=block
-   * 
-   * **Purpose:** Enable XSS filter in legacy browsers (IE, old Safari).
-   * 
-   * Modern browsers (Chrome, Firefox, Edge) have removed this feature.
-   * Included for defense-in-depth on older browser versions.
-   * 
-   * **Mode:** block - Stop page rendering if XSS detected
-   * 
-   * @deprecated Modern browsers don't use this (rely on CSP instead)
-   */
-  headers.set('X-XSS-Protection', '1; mode=block')
-
-  /**
-   * Referrer-Policy: strict-origin-when-cross-origin
-   * 
-   * **Purpose:** Control how much referrer information is sent.
-   * 
-   * - Same-origin: Full URL sent
-   * - Cross-origin HTTPS→HTTPS: Only origin sent (no path/query)
-   * - Cross-origin HTTPS→HTTP: No referrer sent (downgrade)
-   * 
-   * **Privacy Benefit:**
-   * - Prevents leaking sensitive URL parameters to third parties
-   * - Prevents leaking internal URL structure
-   */
-  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
-
-  /**
-   * Permissions-Policy
-   * 
-   * **Purpose:** Disable unnecessary browser features.
-   * 
-   * - `camera=()` - Disable camera access
-   * - `microphone=()` - Disable microphone access
-   * - `geolocation=()` - Disable geolocation
-   * - `interest-cohort=()` - Disable FLoC tracking (privacy)
-   * 
-   * **Benefit:**
-   * - Reduces attack surface (can't request camera/mic)
-   * - Privacy protection (no FLoC tracking)
-   * - Clear signal that these features aren't used
-   */
-  headers.set(
-    'Permissions-Policy',
-    'camera=(), microphone=(), geolocation=(), interest-cohort=()'
-  )
-
-  /**
-   * Strict-Transport-Security (HSTS)
-   * 
-   * **Purpose:** Force HTTPS for all future requests.
-   * 
-   * - `max-age=31536000` - Remember for 1 year
-   * - `includeSubDomains` - Apply to all subdomains
-   * - `preload` - Eligible for browser HSTS preload list
-   * 
-   * **Security Benefit:**
-   * - Prevents SSL stripping attacks
-   * - Ensures all traffic is encrypted
-   * - Even if user types http://, browser upgrades to https://
-   * 
-   * **Production Only:**
-   * - Not set in development (localhost uses HTTP)
-   * - Would break local development if enabled
-   * 
-   * @see {@link https://hstspreload.org/ HSTS Preload List}
-   */
-  if (process.env.NODE_ENV === 'production') {
-    headers.set('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload')
-  }
+  applySecurityHeaders(headers, {
+    cspNonce,
+    isDevelopment: process.env.NODE_ENV === 'development',
+    isProduction: process.env.NODE_ENV === 'production',
+  })
 
   return response
 }

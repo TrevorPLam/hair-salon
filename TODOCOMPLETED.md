@@ -10,6 +10,27 @@ Move tasks here when Acceptance Criteria are met.
 ## Completed tasks
 <!-- Append completed tasks below. Preserve the original record for auditability. -->
 
+### T-125: Refactor middleware for clarity and guardrails
+Priority: P1
+Type: QUALITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-22
+Context:
+- Audit flags middleware size, magic numbers, and NaN content-length handling.
+- Middleware should be simpler and safer.
+Acceptance Criteria:
+- [x] T-125.1: Extract security header configuration into helper(s).
+- [x] T-125.2: Guard against NaN content-length values in size checks.
+- [x] T-125.3: Replace magic numbers with named constants and update docs/tests.
+References:
+- /middleware.ts
+- /__tests__/middleware.test.ts
+- /CHANGELOG.md
+- /WRONG.md
+Dependencies: None
+Effort: M
+
 ### T-124: Refactor logger sanitization and record building
 Priority: P1
 Type: QUALITY
