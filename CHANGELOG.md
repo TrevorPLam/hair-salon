@@ -37,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Guarded GA4 tracking against non-function `window.gtag` values to prevent runtime errors
 - Added a CSP nonce fallback in the root layout to avoid crashes when the nonce header is missing
 - Validated blog frontmatter and dates to prevent invalid entries from crashing sorting or rendering
+- Fixed blog article structured data image URLs to avoid referencing missing assets
 
 ### Documentation
 - Expanded middleware security header docs and environment helper documentation

@@ -10,6 +10,24 @@ Move tasks here when Acceptance Criteria are met.
 ## Completed tasks
 <!-- Append completed tasks below. Preserve the original record for auditability. -->
 
+### T-130: Fix blog structured data image references
+Priority: P2
+Type: BUG
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-22
+Context:
+- Audit BUG-016 indicates structured data points to non-existent images.
+- Invalid image URLs reduce SEO quality.
+Acceptance Criteria:
+- [x] T-130.1: Ensure structured data uses existing image assets or omit image when unavailable.
+- [x] T-130.2: Add tests or build checks to catch missing image references.
+References:
+- /components/BlogPostContent.tsx
+- /WRONG.md
+Dependencies: None
+Effort: S
+
 ### T-127: Stabilize SearchDialog focus and tag rendering
 Priority: P2
 Type: BUG

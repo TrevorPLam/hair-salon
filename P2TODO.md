@@ -148,24 +148,6 @@ References:
 Dependencies: None
 Effort: XS
 
-### T-130: Fix blog structured data image references
-Priority: P2
-Type: BUG
-Owner: AGENT
-Status: READY
-Blockers: None
-Context:
-- Audit BUG-016 indicates structured data points to non-existent images.
-- Invalid image URLs reduce SEO quality.
-Acceptance Criteria:
-- [ ] T-130.1: Ensure structured data uses existing image assets or omit image when unavailable.
-- [ ] T-130.2: Add tests or build checks to catch missing image references.
-References:
-- /components/BlogPostContent.tsx
-- /WRONG.md
-Dependencies: None
-Effort: S
-
 ### T-131: Correct IP hashing + empty IP handling
 Priority: P2
 Type: BUG
@@ -204,5 +186,6 @@ References:
 Dependencies: T-118
 Effort: S
 
+_Completed (moved to TODOCOMPLETED.md on 2026-01-22): T-130._
 _Completed (moved to TODOCOMPLETED.md on 2026-01-21): T-112, T-128, T-129, T-133._
 _Completed (moved to TODOCOMPLETED.md on 2026-01-20): T-108, T-109._
