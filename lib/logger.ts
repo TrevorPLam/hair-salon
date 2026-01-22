@@ -178,10 +178,14 @@ function sanitizeArray(values: unknown[]): unknown[] {
 
 function sanitizeObject(value: Record<string, unknown>): Record<string, unknown> {
   // Treat every key as potentially sensitive to avoid leaking secrets.
-  return Object.entries(value).reduce<Record<string, unknown>>((acc, [key, entryValue]) => {
-    acc[key] = isSensitiveKey(key) ? '[REDACTED]' : sanitizeValue(entryValue)
-    return acc
-  }, {})
+  // Use a null-prototype object to avoid prototype pollution from keys like "__proto__".
+  return Object.entries(value).reduce<Record<string, unknown>>(
+    (acc, [key, entryValue]) => {
+      acc[key] = isSensitiveKey(key) ? '[REDACTED]' : sanitizeValue(entryValue)
+      return acc
+    },
+    Object.create(null) as Record<string, unknown>,
+  )
 }
 
 function sanitizeValue(value: unknown): unknown {
