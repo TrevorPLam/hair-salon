@@ -80,14 +80,15 @@
 import { createHash } from 'crypto'
 import { headers } from 'next/headers'
 import { z } from 'zod'
+import { contactFormSchema, type ContactFormData } from '@/lib/contact-form-schema'
 import { logError, logWarn, logInfo } from './logger'
 import { escapeHtml, sanitizeEmail, sanitizeName } from './sanitize'
-import { validatedEnv } from './env'
-import { contactFormSchema, type ContactFormData } from '@/lib/contact-form-schema'
 import { runWithRequestId } from './request-context.server'
 import { withServerSpan, type SpanAttributes } from './sentry-server'
 import { checkRateLimit } from './rate-limit'
 import { getValidatedClientIp, validateOrigin } from './request-validation'
+import { searchHubSpotContact, upsertHubSpotContact, type HubSpotContactResponse } from './hubspot-client'
+import { insertSupabaseLead, updateSupabaseLead, type SupabaseLeadRow } from './supabase-leads'
 
 const CORRELATION_ID_HEADER = 'x-correlation-id'
 
@@ -142,23 +143,9 @@ function buildLeadSpanAttributes(leadId: string, emailHash: string): SpanAttribu
   }
 }
 
-const HUBSPOT_API_BASE_URL = 'https://api.hubapi.com'
 const HUBSPOT_MAX_RETRIES = 3
 const HUBSPOT_RETRY_BASE_DELAY_MS = 250
 const HUBSPOT_RETRY_MAX_DELAY_MS = 2000
-
-type SupabaseLeadRow = {
-  id: string
-}
-
-type HubSpotSearchResponse = {
-  total: number
-  results: Array<{ id: string }>
-}
-
-type HubSpotContactResponse = {
-  id: string
-}
 
 type SanitizedContactData = {
   safeEmail: string
@@ -168,23 +155,6 @@ type SanitizedContactData = {
   emailHash: string
   hashedIp: string
   contactSpanAttributes: SpanAttributes
-}
-
-type HubSpotUpsertTarget = {
-  url: string
-  method: 'PATCH' | 'POST'
-}
-
-function getSupabaseRestUrl() {
-  return `${validatedEnv.SUPABASE_URL}/rest/v1/leads`
-}
-
-function getSupabaseHeaders() {
-  return {
-    apikey: validatedEnv.SUPABASE_SERVICE_ROLE_KEY,
-    Authorization: `Bearer ${validatedEnv.SUPABASE_SERVICE_ROLE_KEY}`,
-    'Content-Type': 'application/json',
-  }
 }
 
 function splitName(fullName: string) {
@@ -198,85 +168,8 @@ function splitName(fullName: string) {
   }
 }
 
-function getHubSpotHeaders() {
-  return {
-    Authorization: `Bearer ${validatedEnv.HUBSPOT_PRIVATE_APP_TOKEN}`,
-    'Content-Type': 'application/json',
-  }
-}
-
-function getHubSpotHeadersWithIdempotency(idempotencyKey: string | undefined) {
-  if (!idempotencyKey) {
-    return getHubSpotHeaders()
-  }
-
-  return {
-    ...getHubSpotHeaders(),
-    'Idempotency-Key': idempotencyKey,
-  }
-}
-
-function buildHubSpotSearchPayload(email: string) {
-  return {
-    filterGroups: [
-      {
-        filters: [
-          {
-            propertyName: 'email',
-            operator: 'EQ',
-            value: email,
-          },
-        ],
-      },
-    ],
-    properties: ['email'],
-    limit: 1,
-  }
-}
-
-async function searchHubSpotContact(email: string, emailHash: string): Promise<string | undefined> {
-  const response = await withServerSpan(
-    {
-      name: 'hubspot.search',
-      op: 'http.client',
-      attributes: { email_hash: emailHash },
-    },
-    () =>
-      fetch(`${HUBSPOT_API_BASE_URL}/crm/v3/objects/contacts/search`, {
-        method: 'POST',
-        headers: getHubSpotHeaders(),
-        body: JSON.stringify(buildHubSpotSearchPayload(email)),
-      }),
-  )
-
-  if (!response.ok) {
-    throw new Error(`HubSpot search failed with status ${response.status}`)
-  }
-
-  const searchData = (await response.json()) as HubSpotSearchResponse
-  if (!Array.isArray(searchData.results)) {
-    // WHY: HubSpot responses can be malformed; avoid unsafe indexing on non-arrays.
-    throw new Error('HubSpot search response missing results array')
-  }
-  return searchData.results[0]?.id
-}
-
 function buildHubSpotIdempotencyKey(leadId: string, emailHash: string) {
   return hashSpanValue(`${leadId}:${emailHash}`)
-}
-
-function getHubSpotUpsertTarget(existingId?: string): HubSpotUpsertTarget {
-  if (existingId) {
-    return {
-      url: `${HUBSPOT_API_BASE_URL}/crm/v3/objects/contacts/${existingId}`,
-      method: 'PATCH',
-    }
-  }
-
-  return {
-    url: `${HUBSPOT_API_BASE_URL}/crm/v3/objects/contacts`,
-    method: 'POST',
-  }
 }
 
 function getRetryDelayMs(attempt: number) {
@@ -293,43 +186,6 @@ function normalizeError(error: unknown) {
 
 function waitForRetry(delayMs: number) {
   return new Promise((resolve) => setTimeout(resolve, delayMs))
-}
-
-async function insertLead(payload: Record<string, unknown>): Promise<SupabaseLeadRow> {
-  const response = await fetch(getSupabaseRestUrl(), {
-    method: 'POST',
-    headers: {
-      ...getSupabaseHeaders(),
-      Prefer: 'return=representation',
-    },
-    body: JSON.stringify([payload]),
-  })
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Supabase insert failed with status ${response.status}: ${errorText}`)
-  }
-
-  const data = (await response.json()) as SupabaseLeadRow[]
-  const lead = Array.isArray(data) ? data[0] : undefined
-  if (!lead || typeof lead.id !== 'string' || lead.id.trim() === '') {
-    // WHY: downstream sync requires a stable string ID; reject malformed responses early.
-    throw new Error('Supabase insert returned invalid lead ID')
-  }
-
-  return lead
-}
-
-async function updateLead(leadId: string, updates: Record<string, unknown>) {
-  const response = await fetch(`${getSupabaseRestUrl()}?id=eq.${leadId}`, {
-    method: 'PATCH',
-    headers: getSupabaseHeaders(),
-    body: JSON.stringify(updates),
-  })
-
-  if (!response.ok) {
-    throw new Error(`Supabase update failed with status ${response.status}`)
-  }
 }
 
 function getBlockedSubmissionResponse(requestHeaders: Headers, data: ContactFormData) {
@@ -388,7 +244,7 @@ async function insertLeadWithSpan(
       },
     },
     () =>
-      insertLead({
+      insertSupabaseLead({
         name: sanitized.safeName,
         email: sanitized.safeEmail,
         phone: sanitized.safePhone,
@@ -436,7 +292,7 @@ async function updateLeadWithSpan(leadId: string, emailHash: string, updates: Re
       op: 'db.supabase',
       attributes: buildLeadSpanAttributes(leadId, emailHash),
     },
-    () => updateLead(leadId, updates),
+    () => updateSupabaseLead(leadId, updates),
   )
 }
 
@@ -484,7 +340,7 @@ async function retryHubSpotUpsert(
 
   for (let attempt = 1; attempt <= HUBSPOT_MAX_RETRIES; attempt++) {
     try {
-      const contact = await upsertHubSpotContact(properties, idempotencyKey, emailHash)
+      const contact = await upsertHubSpotContactWithSpan(properties, idempotencyKey, emailHash)
       return { contact, attempts: attempt }
     } catch (error) {
       lastError = normalizeError(error)
@@ -498,37 +354,43 @@ async function retryHubSpotUpsert(
   return { attempts: HUBSPOT_MAX_RETRIES, error: lastError }
 }
 
-async function upsertHubSpotContact(
+async function searchHubSpotContactId(email: string, emailHash: string): Promise<string | undefined> {
+  // WHY: Keep spans in the action layer so adapters stay fetch-focused and reusable.
+  return withServerSpan(
+    {
+      name: 'hubspot.search',
+      op: 'http.client',
+      attributes: { email_hash: emailHash },
+    },
+    () => searchHubSpotContact(email),
+  )
+}
+
+async function upsertHubSpotContactWithSpan(
   properties: Record<string, string>,
   idempotencyKey: string,
   emailHash: string,
-) {
-  const existingId = await searchHubSpotContact(properties.email, emailHash)
-  const { url, method } = getHubSpotUpsertTarget(existingId)
+): Promise<HubSpotContactResponse> {
+  const existingId = await searchHubSpotContactId(properties.email, emailHash)
+  const existingIdHash = existingId ? hashSpanValue(existingId) : undefined
 
-  const contactResponse = await withServerSpan(
+  // WHY: Search + upsert share hashed context for traceability without exposing PII.
+  return withServerSpan(
     {
       name: 'hubspot.upsert',
       op: 'http.client',
       attributes: {
         email_hash: emailHash,
-        hubspot_contact_id_hash: existingId ? hashSpanValue(existingId) : undefined,
+        hubspot_contact_id_hash: existingIdHash,
       },
     },
     () =>
-      fetch(url, {
-        method,
-        headers: getHubSpotHeadersWithIdempotency(idempotencyKey),
-        body: JSON.stringify({ properties }),
+      upsertHubSpotContact({
+        properties,
+        idempotencyKey,
+        existingId,
       }),
   )
-
-  if (!contactResponse.ok) {
-    const errorText = await contactResponse.text();
-    throw new Error(`HubSpot upsert failed with status ${contactResponse.status}: ${errorText}`)
-  }
-
-  return (await contactResponse.json()) as HubSpotContactResponse
 }
 
 async function handleContactFormSubmission(data: ContactFormData, requestHeaders: Headers) {
