@@ -32,6 +32,7 @@ This folder contains all shared utility modules for the application. Many module
 | Module | Purpose | Data Source |
 |--------|---------|-------------|
 | `blog.ts` | Blog post parsing | MDX files in `content/blog/` |
+| `blog-images.ts` | Resolve blog structured data image URLs | Public assets in `public/` |
 | `search.ts` | Search index generation | Static pages + blog posts |
 
 **Pattern:** All data is loaded at build time (SSG). No runtime data fetching.

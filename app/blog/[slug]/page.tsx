@@ -1,10 +1,11 @@
 import { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import dynamic from 'next/dynamic'
+import { ArrowLeft, ArrowRight, Calendar, Clock } from 'lucide-react'
 import { getAllPosts, getPostBySlug } from '@/lib/blog'
+import { getBlogPostImageUrl } from '@/lib/blog-images'
 import { getPublicBaseUrl } from '@/lib/env.public'
-import { Calendar, Clock, ArrowLeft, ArrowRight } from 'lucide-react'
 
 const BlogPostContent = dynamic(() => import('@/components/BlogPostContent'), {
   loading: () => <div className="sr-only">Loading article content…</div>,
@@ -66,6 +67,8 @@ export default async function BlogPostPage({ params }: Props) {
   const baseUrl = getPublicBaseUrl().replace(/\/$/, '')
   // WHY: Guard against malformed frontmatter dates so rendering remains stable.
   const dateValues = getPostDateValues(post.date)
+  // WHY: Avoid referencing non-existent images in structured data.
+  const imageUrl = getBlogPostImageUrl(baseUrl, post.slug)
 
   // Structured data for article
   const articleStructuredData = {
@@ -73,7 +76,7 @@ export default async function BlogPostPage({ params }: Props) {
     '@type': 'Article',
     headline: post.title,
     description: post.description,
-    image: `${baseUrl}/blog/${post.slug}.jpg`,
+    ...(imageUrl ? { image: imageUrl } : {}),
     ...(dateValues.hasValidDate && dateValues.isoDate
       ? { datePublished: dateValues.isoDate, dateModified: dateValues.isoDate }
       : {}),
