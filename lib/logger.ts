@@ -169,6 +169,12 @@ function sanitizeValue(value: unknown): unknown {
   return value
 }
 
+/**
+ * Sanitize log context objects for safe external usage.
+ *
+ * NOTE: Exported for tests and future integrations that need log-safe context
+ * without sending logs directly. (Currently used internally as well.)
+ */
 export function sanitizeLogContext(context?: LogContext): LogContext | undefined {
   if (!context) {
     return context

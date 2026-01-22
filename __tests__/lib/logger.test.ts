@@ -141,7 +141,11 @@ describe('Logger', () => {
 
       logError('Test error message', error)
 
-      expect(consoleErrorSpy).toHaveBeenCalledWith('[ERROR]', 'Test error message', error, '')
+      expect(consoleErrorSpy).toHaveBeenCalledWith('[ERROR]', 'Test error message', {
+        name: 'Error',
+        message: 'Test error',
+        stack: expect.any(String),
+      }, '')
     })
 
     it('should log error with context in development', () => {
@@ -150,7 +154,11 @@ describe('Logger', () => {
 
       logError('Test error message', error, { userId: '123' })
 
-      expect(consoleErrorSpy).toHaveBeenCalledWith('[ERROR]', 'Test error message', error, {
+      expect(consoleErrorSpy).toHaveBeenCalledWith('[ERROR]', 'Test error message', {
+        name: 'Error',
+        message: 'Test error',
+        stack: expect.any(String),
+      }, {
         userId: '123',
       })
     })
