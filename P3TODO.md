@@ -181,7 +181,7 @@ Context:
 - Need comprehensive audit to identify any actionable inline TODOs vs documentation placeholders
 - Note: This task is about auditing, not automatically integrating - integration decisions come after audit
 Acceptance Criteria:
-- [ ] T-145.1: Run comprehensive search for inline TODO/FIXME/HACK/XXX comments in all source files (.ts, .tsx, .js, .jsx, etc.)
+- [ ] T-145.1: Run comprehensive search for inline TODO/FIXME/HACK/XXX comments in all source files (.ts, .tsx, .js, .jsx, etc.) using: `grep -r "TODO\|FIXME\|HACK\|XXX" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" -n`
 - [ ] T-145.2: Categorize findings as: actionable tasks, documentation placeholders, or historical notes
 - [ ] T-145.3: Document findings in /docs/INLINE_TODO_AUDIT.md with exact counts and examples
 - [ ] T-145.4: Create tasks in P0-P3TODO.md only for actionable inline TODOs requiring work (if any found)

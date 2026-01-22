@@ -254,7 +254,10 @@ ls -la CODEAUDIT.md SECURITYAUDIT.md DEPENDENCYAUDIT.md RELEASEAUDIT.md DOCSAUDI
 # Verify archive structure
 ls -la docs/ARCHIVE/README.md
 
-# Search for inline TODOs (comprehensive)
+# Search for inline TODOs (shows findings for categorization, not just count)
+grep -r "TODO\|FIXME\|HACK\|XXX" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" -n
+
+# Count inline TODOs (for quick verification)
 grep -r "TODO\|FIXME\|HACK\|XXX" --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" -n | wc -l
 ```
 

@@ -29,7 +29,7 @@ This directory contains documentation that is no longer active but preserved for
 | `RELEASEAUDIT.md` | 2026-01-21 | Historical audit | `/RELEASEAUDIT.md` (active) |
 | `RELEASE_CHECKLIST.md` | 2026-01-21 | Old checklist | `/docs/LAUNCH-SMOKE-TEST.md` |
 | `SECURITYAUDIT.md` | 2026-01-21 | Historical audit | `/SECURITYAUDIT.md` (active) |
-| `SECURITY_REVIEW.md` | 2026-01-21 | Historical review | Consolidated |
+| `SECURITY_REVIEW.md` | 2026-01-21 | Historical review | Consolidated into `/SECURITYAUDIT.md` |
 | `TODOCOMPLETED.md` | 2026-01-21 | Old completed tasks | `/TODOCOMPLETED.md` (active) |
 | `TODO_COMPLETED.md` | 2026-01-21 | Duplicate archive | `/TODOCOMPLETED.md` (active) |
 
