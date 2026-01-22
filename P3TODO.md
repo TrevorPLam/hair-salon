@@ -169,42 +169,4 @@ References:
 Dependencies: None
 Effort: XS
 
-### T-145: Decide whether to keep sanitizeUrl export
-Priority: P3
-Type: QUALITY
-Owner: AGENT
-Status: READY
-Blockers: None
-Context:
-- Audit DEAD-008 notes sanitizeUrl export is unused but security-relevant.
-- Decision should be explicit and documented.
-Acceptance Criteria:
-- [ ] T-145.1: Confirm sanitizeUrl is unused in app/test code.
-- [ ] T-145.2: Decide to keep (document usage intent) or remove.
-- [ ] T-145.3: Update tests/docs based on the decision.
-References:
-- /lib/sanitize.ts
-- /WRONG.md
-Dependencies: None
-Effort: XS
-
-### T-146: Decide whether to keep sanitizeLogContext export
-Priority: P3
-Type: QUALITY
-Owner: AGENT
-Status: READY
-Blockers: None
-Context:
-- Audit DEAD-009 notes sanitizeLogContext export may be unused.
-- Decision should be explicit to keep logger API clean.
-Acceptance Criteria:
-- [ ] T-146.1: Confirm whether sanitizeLogContext is imported externally.
-- [ ] T-146.2: Decide to keep (document external API) or remove export.
-- [ ] T-146.3: Update tests/docs accordingly.
-References:
-- /lib/logger.ts
-- /WRONG.md
-Dependencies: None
-Effort: XS
-
 _Completed (moved to TODOCOMPLETED.md on 2026-01-21): T-139, T-140, T-141, T-142, T-143._

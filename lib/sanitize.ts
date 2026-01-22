@@ -22,7 +22,7 @@
  * | textToHtmlParagraphs() | Multi-line text → HTML | Message body in emails |
  * | sanitizeEmail() | Email validation+clean | Contact form emails |
  * | sanitizeName() | Name validation+clean | Contact form names |
- * | sanitizeUrl() | User text → safe URL | Future link inputs |
+ * | sanitizeUrl() | User text → safe URL | Planned link inputs (e.g., user-provided links) |
  *
  * **AI ITERATION HINTS**:
  * - Adding new sanitizer? Follow escapeHtml pattern (pure function, no side effects)
@@ -286,6 +286,7 @@ export function sanitizeName(name: string): string {
  * **When to use:**
  * - User-provided URLs displayed as links
  * - URLs stored for later rendering in HTML
+ * - Planned link fields (kept exported for future safe reuse)
  *
  * @param url - User-provided URL
  * @returns Sanitized URL string, or empty string if invalid/unsafe
@@ -302,7 +303,7 @@ export function sanitizeUrl(url: string): string {
   }
 
   if (RELATIVE_URL_PATTERN.test(trimmed)) {
-    // Relative URLs are safe for internal navigation; reject protocol-relative via pattern.
+    // WHY: Relative URLs are safe for internal navigation; reject protocol-relative via pattern.
     return trimmed
   }
 
