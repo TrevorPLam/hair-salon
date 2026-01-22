@@ -1,150 +1,177 @@
 # Your Dedicated Marketer
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![Next.js](https://img.shields.io/badge/Next.js-15.5.9-black)
+![Next.js](https://img.shields.io/badge/Next.js-15.5.2-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)
 ![Cloudflare Pages](https://img.shields.io/badge/Deploy-Cloudflare%20Pages-orange)
 ![Diamond Standard](https://img.shields.io/badge/Standard-Diamond-b91c1c)
 
-A high-performance, edge-ready marketing platform template built for speed, SEO, and maintainability. Designed to be the "Diamond Standard" for modern web development agencies.
+A high-performance marketing site built to be fast, auditable, and safe-by-default. The repo emphasizes clear governance, static delivery through Cloudflare Pages, and a production-ready lead capture pipeline (Supabase + HubSpot) that prioritizes reliability over flashy demos.
 
 ---
 
-## 💎 The Diamond Standard
+## At a glance
 
-This repository adheres to a strict "Diamond Standard" of engineering excellence, ensuring that every deployment is:
+| Area | Summary |
+| --- | --- |
+| **Framework** | Next.js App Router (React 19) with TypeScript strict mode. |
+| **Rendering** | Static output for Cloudflare Pages via `@cloudflare/next-on-pages`. |
+| **Styling** | Tailwind CSS with utility-first patterns. |
+| **Content** | MDX-powered blog content with build-time rendering. |
+| **Search** | Pre-indexed, client-side search (no runtime API). |
+| **Lead capture** | Supabase storage + HubSpot CRM sync (best-effort). |
+| **Rate limiting** | Upstash Redis in production, in-memory fallback in dev/test. |
+| **Observability** | Structured logs + optional Sentry + GA4 consent gating. |
 
-*   **Secure by Design**: CSP headers, strict input validation (Zod), and secret scanning.
-*   **Edge Native**: Optimized for the Cloudflare Pages Edge Runtime.
-*   **Type Safe**: 100% TypeScript coverage with strict mode enabled.
-*   **Observable**: Integrated Sentry monitoring and comprehensive logging.
-*   **AI-Ready**: Structured specifically for effective collaboration with AI coding agents (`AGENTS.md`, `READMEAI.md`).
+---
 
-## 🚀 Key Features
+## What this repo provides ("bells & whistles")
 
-*   **Next.js App Router**: Utilizing the latest React Server Components architecture (version 15.5.9, compatible with Cloudflare Pages adapter).
-*   **Content Engine**: MDX-powered blog with static generation.
-*   **Client-Side Search**: Zero-latency, pre-indexed search functionality (`lib/search.ts`).
-*   **Performance First**: 
-    *   Tailwind CSS for zero-runtime styling.
-    *   Automatic image optimization.
-    *   Static content with per-request CSP nonce injection for security headers.
-*   **Developer Experience**:
-    *   Vitest for unit testing.
-    *   Playwright for E2E testing.
-    *   ESLint (Flat Config) & Prettier for code quality.
-    *   Dev Container support for consistent environments.
+### Product + UX
+- **Marketing site foundation** with dedicated pages, blog, and contact form.
+- **Search dialog** backed by a prebuilt index for instant results.
+- **PWA-ready assets** (install prompt + manifest) for app-like installs.
 
-## 🛠️ Tech Stack
+### Platform + performance
+- **Cloudflare Pages-first build** with static output (`.vercel/output/static`).
+- **MDX processing pipeline** with syntax highlighting and slug support.
+- **Image handling for Pages**: Cloudflare builds use unoptimized images unless a custom loader is added.
 
-| Category | Technology | Purpose |
-|----------|------------|---------|
-| **Framework** | [Next.js](https://nextjs.org/) | React meta-framework (App Router) |
-| **Language** | [TypeScript](https://www.typescriptlang.org/) | Static typing and reliability |
-| **Styling** | [Tailwind CSS](https://tailwindcss.com/) | Utility-first CSS framework |
-| **Icons** | [Lucide React](https://lucide.dev/) | Consistent, lightweight icons |
-| **Validation** | [Zod](https://zod.dev/) | Schema validation for forms/env vars |
-| **Testing** | [Vitest](https://vitest.dev/) / [Playwright](https://playwright.dev/) | Unit & End-to-End testing |
-| **Deployment** | [Cloudflare Pages](https://pages.cloudflare.com/) | Global edge hosting |
-| **Analytics** | [Sentry](https://sentry.io/) | Error tracking and performance monitoring |
+### Lead capture + reliability
+- **Required v1 pipeline**: Supabase persistence + HubSpot sync.
+- **Best-effort CRM sync**: submissions succeed even if HubSpot is down.
+- **Suspicious submission capture**: rate-limited entries are still stored with flags.
 
-## ⚡ Quick Start
+### Quality + governance
+- **Deterministic governance model** (`CODEBASECONSTITUTION.md`, `READMEAI.md`, `P0–P3TODO.md`).
+- **Audit-first posture** with explicit runbooks and verification scripts.
+- **Testing stack**: Vitest + Playwright + accessibility/lighthouse audits.
+
+---
+
+## How it works (deep dive)
+
+### Rendering model
+- Pages are built as static assets and served on Cloudflare Pages.
+- Client components are used only for interactive UI (forms, dialogs, consent banners).
+- MDX content is compiled at build time.
+
+### Lead capture flow (Supabase + HubSpot)
+1. **User submits** the contact form.
+2. **Rate limiting** checks email + IP; suspicious requests are flagged.
+3. **Supabase insert** happens first and is required.
+4. **HubSpot upsert** runs best-effort; failures are recorded for retry without blocking UX.
+
+### Observability + analytics
+- Structured logs include correlation IDs for request tracing.
+- Sentry is optional and controlled via env vars.
+- GA4 tracking is gated by explicit user consent (cookie + localStorage).
+
+---
+
+## Quick start
 
 ### Prerequisites
-*   Node.js 20+ (v20-v22 recommended)
-*   npm 10+
+- Node.js `>=20 <23`
+- npm `>=10`
 
-### Installation
-
+### Install + dev
 ```bash
-# Clone the repository
-git clone https://github.com/TrevorPLam/Your-Dedicated-Marketer.git
-
-# Enter directory
-cd Your-Dedicated-Marketer
-
-# Install dependencies (legacy peer deps required for Cloudflare adapter)
-npm install --legacy-peer-deps
-```
-
-### Local Development
-
-Start the development server:
-
-```bash
+npm install
 npm run dev
 ```
 
-Visit `http://localhost:3000` to view the application.
+Visit `http://localhost:3000`.
 
-### Verification
+---
 
-Run the full suite of "Diamond Standard" checks:
+## Verification (Diamond Standard checks)
+
+Recommended commands (from `repo.manifest.yaml`):
 
 ```bash
-# Run unit tests
-npm run test
-
-# Run type check
-npm run type-check
-
-# Run linting
-npm run lint
-
-# Run full project audit
-./scripts/check.sh
+scripts/ai-audit.sh
+scripts/check.sh
+scripts/security-scan.sh
 ```
 
-## 🌍 Deployment
+Common local checks:
 
-This project is configured for **Cloudflare Pages**.
+```bash
+npm run test
+npm run type-check
+npm run lint
+```
 
-### Build Command
-The build process uses `@cloudflare/next-on-pages` to adapt the Next.js output for the Edge Runtime.
+---
+
+## Environment variables
+
+All variables are validated on startup. The v1 lead pipeline **requires** Supabase + HubSpot credentials.
+
+**Required for v1 lead capture**
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `HUBSPOT_PRIVATE_APP_TOKEN`
+
+**Optional (recommended for production)**
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+
+**Optional integrations**
+- `NEXT_PUBLIC_ANALYTICS_ID`
+- `NEXT_PUBLIC_SENTRY_DSN`
+- `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`, `SENTRY_ENVIRONMENT`
+
+For the full, annotated list see [`env.example`](env.example) and [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+
+---
+
+## Deployment (Cloudflare Pages)
 
 ```bash
 npm run pages:build
 ```
 
-**Output Directory:** `.vercel/output/static`
+**Output directory:** `.vercel/output/static`
 
-**Environment Variables:**
-*   See [`env.example`](env.example) for all available variables
-*   Most variables have defaults and are optional
-*   Set `NEXT_PUBLIC_SITE_URL` to your production domain
-
-See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md) for detailed deployment instructions.
-
-## 📂 Project Structure
-
-```
-├── app/                  # Next.js App Router pages and API routes
-├── components/           # React components (Atomic design principles)
-│   ├── ui/               # Reusable base UI components
-│   └── ...               # Feature-specific components
-├── content/              # MDX content sources (Blog)
-├── docs/                 # Project documentation and standards
-├── lib/                  # Utilities, hooks, and core logic
-├── public/               # Static assets
-├── scripts/              # Maintenance and verification scripts
-└── tests/                # Additional test configurations
-```
-
-## 🤖 AI Agent Instructions
-
-If you are an AI coding assistant working on this repo, **YOU MUST READ**:
-
-1.  [`AGENTS.md`](AGENTS.md) - Operational guidelines and cost control.
-2.  [`CODEBASECONSTITUTION.md`](CODEBASECONSTITUTION.md) - The supreme laws of the repo.
-3.  [`P0TODO.md`](P0TODO.md), [`P1TODO.md`](P1TODO.md), [`P2TODO.md`](P2TODO.md), [`P3TODO.md`](P3TODO.md) - The sources of truth for tasks.
-
-**Do not deviate from `P0TODO.md`, `P1TODO.md`, `P2TODO.md`, or `P3TODO.md` without human approval.**
-
-## 📜 License
-
-This project is licensed under the MIT License - see the `LICENSE` file for details.
+For exact build settings, env variables, and rollback steps, see [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ---
 
-*maintained by Your Dedicated Marketer Team*
+## Project structure
 
+```
+app/            # Next.js App Router pages and routes
+components/     # UI + feature components
+content/        # MDX content (blog)
+docs/           # Governance, audits, and runbooks
+lib/            # Server utilities, actions, schemas
+public/         # Static assets
+scripts/        # Verification + audit scripts
+tests/          # Playwright E2E tests
+__tests__/      # Vitest unit tests
+```
+
+---
+
+## Governance (required reading)
+
+This repo enforces a strict governance hierarchy to keep changes auditable:
+
+1. [`CODEBASECONSTITUTION.md`](CODEBASECONSTITUTION.md)
+2. [`READMEAI.md`](READMEAI.md)
+3. [`P0TODO.md`](P0TODO.md), [`P1TODO.md`](P1TODO.md), [`P2TODO.md`](P2TODO.md), [`P3TODO.md`](P3TODO.md)
+4. [`BESTPR.md`](BESTPR.md)
+
+AI assistants **must** follow the above order and treat `P0–P3TODO.md` as the task truth sources.
+
+---
+
+## License
+
+MIT License. See `LICENSE` for details.
+
+---
+
+*Maintained by the Your Dedicated Marketer team.*

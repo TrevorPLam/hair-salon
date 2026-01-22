@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documented CSP nonce fallback behavior for missing nonce headers
 - Added audit-derived tasks from WRONG.md with priority assessment notes in P0TODO.md, P1TODO.md, P2TODO.md, P3TODO.md
 - Noted `vi` import requirements in the test checklist
+- Rewrote README with an expanded project overview, operational details, and governance links
 
 ### Changed
 - Removed deprecated `api` and `sentry` keys from `next.config.mjs`
