@@ -453,6 +453,10 @@ async function searchHubSpotContact(email: string, emailHash: string): Promise<s
   }
 
   const searchData = (await response.json()) as HubSpotSearchResponse
+  if (!Array.isArray(searchData.results)) {
+    // WHY: HubSpot responses can be malformed; avoid unsafe indexing on non-arrays.
+    throw new Error('HubSpot search response missing results array')
+  }
   return searchData.results[0]?.id
 }
 
@@ -506,11 +510,13 @@ async function insertLead(payload: Record<string, unknown>): Promise<SupabaseLea
   }
 
   const data = (await response.json()) as SupabaseLeadRow[]
-  if (!Array.isArray(data) || data.length === 0 || !data[0]?.id) {
-    throw new Error('Supabase insert returned no lead ID')
+  const lead = Array.isArray(data) ? data[0] : undefined
+  if (!lead || typeof lead.id !== 'string' || lead.id.trim() === '') {
+    // WHY: downstream sync requires a stable string ID; reject malformed responses early.
+    throw new Error('Supabase insert returned invalid lead ID')
   }
 
-  return data[0]
+  return lead
 }
 
 async function updateLead(leadId: string, updates: Record<string, unknown>) {

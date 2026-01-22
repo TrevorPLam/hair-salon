@@ -140,15 +140,16 @@ Effort: M
 Priority: P1
 Type: BUG
 Owner: AGENT
-Status: READY
+Status: DONE
 Blockers: None
+Completed: 2026-01-21
 Context:
 - Audit BUG-006/007 shows array access and ID validation gaps in external responses.
 - Invalid responses should be handled gracefully with explicit errors.
 Acceptance Criteria:
-- [ ] T-117.1: Verify HubSpot search responses are arrays before indexing.
-- [ ] T-117.2: Validate Supabase insert responses to ensure IDs are valid strings.
-- [ ] T-117.3: Add tests for malformed HubSpot/Supabase responses.
+- [x] T-117.1: Verify HubSpot search responses are arrays before indexing.
+- [x] T-117.2: Validate Supabase insert responses to ensure IDs are valid strings.
+- [x] T-117.3: Add tests for malformed HubSpot/Supabase responses.
 References:
 - /lib/actions.ts
 - /WRONG.md
