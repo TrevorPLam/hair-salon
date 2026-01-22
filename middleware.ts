@@ -165,7 +165,7 @@ export function parseContentLength(headerValue: string | null): number | null {
     return null
   }
 
-  const parsed = Number(headerValue)
+  const parsed = parseInt(headerValue, 10)
   if (!Number.isFinite(parsed) || parsed < 0) {
     // Invalid header: ignore to avoid blocking valid requests on bad input.
     return null
