@@ -181,21 +181,6 @@ Effort: M
 Priority: P1
 Type: QUALITY
 Owner: AGENT
-Status: READY
-Blockers: None
-Context:
-- Audit flags direct fetch calls and duplicate Supabase header building.
-- External integrations should be isolated behind adapters.
-Acceptance Criteria:
-- [ ] T-120.1: Create Supabase lead repository module with shared header builder.
-- [ ] T-120.2: Create HubSpot adapter module to avoid direct fetch usage in actions.
-- [ ] T-120.3: Update submit flow to use adapters and add adapter tests/mocks.
-References:
-- /lib/actions.ts
-- /lib (new modules)
-- /WRONG.md
-Dependencies: T-118, T-119
-Effort: M
 
 ### T-121: Create contact form orchestration layer
 Priority: P1

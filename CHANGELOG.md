@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored contact form submission logic to use shared rate limiting and request validation helpers
 - Refactored logger sanitization helpers and sensitive key detection rules for clearer redaction behavior
 - Refactored middleware security header configuration and content-length parsing for clearer guardrails
+- Refactored contact form integrations to use Supabase and HubSpot adapter modules
 
 ### Security
 - Added hashed IP + email rate limiting for contact form submissions

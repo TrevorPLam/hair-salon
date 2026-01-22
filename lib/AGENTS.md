@@ -19,6 +19,8 @@ This folder contains all shared utility modules for the application. Many module
 | `env.ts` | Environment variable validation | Zod schemas, fail-fast on missing secrets |
 | `sentry-sanitize.ts` | PII filtering for error reports | Redacts sensitive fields before Sentry |
 | `logger.ts` | Centralized logging with Sentry | Sanitizes context, redacts sensitive keys |
+| `hubspot-client.ts` | HubSpot CRM adapter | Server-only token usage, response validation |
+| `supabase-leads.ts` | Supabase lead repository | Service role auth, insert/update validation |
 
 **Non-Negotiable Rules:**
 - ALL user input MUST pass through `sanitize.ts` functions before use

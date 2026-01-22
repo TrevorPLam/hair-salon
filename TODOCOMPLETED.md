@@ -10,6 +10,27 @@ Move tasks here when Acceptance Criteria are met.
 ## Completed tasks
 <!-- Append completed tasks below. Preserve the original record for auditability. -->
 
+### T-120: Extract persistence + CRM adapters from lib/actions.ts
+Priority: P1
+Type: QUALITY
+Owner: AGENT
+Status: DONE
+Completed: 2026-01-22
+Context:
+- Audit flags direct fetch calls and duplicate Supabase header building.
+- External integrations should be isolated behind adapters.
+Acceptance Criteria:
+- [x] T-120.1: Create Supabase lead repository module with shared header builder.
+- [x] T-120.2: Create HubSpot adapter module to avoid direct fetch usage in actions.
+- [x] T-120.3: Update submit flow to use adapters and add adapter tests/mocks.
+References:
+- /lib/actions.ts
+- /lib (new modules)
+- /__tests__/lib (new tests)
+- /WRONG.md
+Dependencies: T-118, T-119
+Effort: M
+
 ### T-125: Refactor middleware for clarity and guardrails
 Priority: P1
 Type: QUALITY

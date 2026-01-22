@@ -7,6 +7,7 @@ const logInfo = vi.hoisted(() => vi.fn())
 const logWarn = vi.hoisted(() => vi.fn())
 
 let currentIp = '203.0.113.55'
+const supabaseUrl = 'https://supabase.example'
 
 vi.mock('@upstash/ratelimit', () => {
   class Ratelimit {
@@ -30,7 +31,7 @@ vi.mock('@upstash/redis', () => ({
 
 vi.mock('@/lib/env', () => ({
   validatedEnv: {
-    SUPABASE_URL: 'https://supabase.example',
+    SUPABASE_URL: supabaseUrl,
     SUPABASE_SERVICE_ROLE_KEY: 'supabase-key',
     HUBSPOT_PRIVATE_APP_TOKEN: 'hubspot-token',
     UPSTASH_REDIS_REST_URL: 'https://upstash.example',
@@ -84,7 +85,7 @@ describe('contact form Upstash rate limiting', () => {
     let leadCounter = 0
     fetchMock.mockImplementation(async (input: RequestInfo) => {
       const url = typeof input === 'string' ? input : input.toString()
-      const supabaseRestUrl = `${process.env.SUPABASE_URL}/rest/v1/leads`
+      const supabaseRestUrl = `${supabaseUrl}/rest/v1/leads`
 
       if (url === supabaseRestUrl) {
         leadCounter += 1
