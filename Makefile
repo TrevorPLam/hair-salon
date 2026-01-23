@@ -1,28 +1,66 @@
-SHELL := /usr/bin/env bash
+# Makefile for your-dedicated-marketer (Next.js Marketing Website)
+# Meta-commentary:
+# - Current Status: Next.js App Router with TypeScript, Tailwind CSS
+# - Reasoning: Keep verification steps explicit and centralized for deterministic local runs.
+# - Assumption: Node.js 20+ and npm 10+ are available
+SHELL := /bin/bash
+.ONESHELL:
 
-.PHONY: help governance security sync-todo check fix ci
+Q := @
+ifneq ($(V),1)
+Q := @
+else
+Q :=
+endif
 
-help:
-	@echo "Targets:"
-	@echo "  make sync-todo   - Regenerate TODO.generated.md from specs/project-tasks.md (non-binding notes)"
-	@echo "  make governance  - Run governance audit"
-	@echo "  make security    - Run lightweight security scan"
-	@echo "  make check       - Run repo checks (best-effort, stack-aware)"
-	@echo "  make ci          - Strict checks for CI"
+.PHONY: setup lint test typecheck dev build verify check-governance
 
-sync-todo:
-	@./scripts/sync-todo.sh
+setup:
+	$(Q)echo "=== INSTALLING DEPENDENCIES ==="
+	$(Q)npm ci --legacy-peer-deps
+	$(Q)echo "=== SETUP COMPLETE ==="
 
-governance:
-	@./scripts/ai-audit.sh
+lint:
+	$(Q)echo "=== LINTING ==="
+	$(Q)npm run lint
+	$(Q)echo "=== LINT COMPLETE ==="
 
-security:
-	@./scripts/security-scan.sh
+test:
+	$(Q)echo "=== RUNNING TESTS ==="
+	$(Q)npm run test
+	$(Q)echo "=== TESTS COMPLETE ==="
 
-check:
-	@./scripts/check.sh
+test:e2e:
+	$(Q)echo "=== RUNNING E2E TESTS ==="
+	$(Q)npm run test:e2e
+	$(Q)echo "=== E2E TESTS COMPLETE ==="
 
-fix:
-	@echo "No universal fixer in template. Add repo-specific fix steps (formatter/autofix) to scripts/check.sh."
+typecheck:
+	$(Q)echo "=== TYPE CHECKING ==="
+	$(Q)npm run type-check
+	$(Q)echo "=== TYPE CHECK COMPLETE ==="
 
-ci: sync-todo governance security check
+dev:
+	$(Q)echo "=== STARTING DEV SERVER ==="
+	$(Q)npm run dev
+
+build:
+	$(Q)echo "=== BUILDING ==="
+	$(Q)npm run build
+	$(Q)echo "=== BUILD COMPLETE ==="
+
+verify: lint typecheck test
+	$(Q)echo "=== VERIFICATION COMPLETE ==="
+
+check-governance:
+	$(Q)set +e
+	governance_status=0
+	$(Q)echo "=== GOVERNANCE VERIFICATION ==="
+	$(Q)chmod +x scripts/governance-verify.sh
+	$(Q)./scripts/governance-verify.sh
+	governance_status=$$?
+	$(Q)echo "=== SUMMARY ==="
+	$(Q)if [ $$governance_status -eq 0 ]; then echo "GOVERNANCE VERIFICATION: PASS"; else echo "GOVERNANCE VERIFICATION: FAIL"; fi
+	$(Q)exit $$governance_status
+
+ci: verify

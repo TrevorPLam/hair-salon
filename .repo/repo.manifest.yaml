@@ -1,0 +1,64 @@
+# /.repo/repo.manifest.yaml
+# SOURCE OF TRUTH for executable commands + verification profiles.
+# RULE: Agents MUST NOT guess commands. If unknown, set <UNKNOWN> and open HITL.
+
+repo:
+  ships: true
+  ship_kind: user_facing_app
+  release_protects: [app_stability, security_headers, csp_policy]
+
+prerequisites:
+  package_manager: npm
+  runtime_pinned: true
+  platform_tools_required_for_release: true
+
+# Canonical commands (names are fixed). Fill values by following docs/development/standards/manifest.md
+# Commands resolved from: Makefile, CI workflow (.github/workflows/ci.yml), package.json scripts
+commands:
+  install: "npm ci --legacy-peer-deps"
+  check:quick: "npm run lint && npm run type-check"
+  check:ci: "npm run lint && npm run type-check && npm run test && npm run build"
+  check:release: "npm run lint && npm run type-check && npm run test && npm run test:e2e && npm run build && npm audit --audit-level=moderate"
+  check:governance: "./scripts/governance-verify.sh"
+  check:boundaries: "<UNKNOWN> - Next.js App Router doesn't use traditional module boundaries"
+  check:security: "npm audit --audit-level=moderate && node scripts/check-client-secrets.mjs"
+
+verify_profiles:
+  quick: [check:quick]
+  ci: [check:ci]
+  release: [check:release]
+  governance: [check:governance]
+
+# Verification profiles (groups of commands)
+# Use these profiles in PR checks, local verification, etc.
+# Profiles are composable (can combine multiple profiles)
+
+tests:
+  unit: "npm run test"
+  e2e: "npm run test:e2e"
+  coverage: "npm run test:coverage"
+
+# Budgets (performance, bundle size, etc.)
+budgets:
+  bundle_size:
+    max_main_bundle_kb: 500
+    max_total_bundle_kb: 1000
+    check_command: "npm run check:bundle-size"
+
+# Security settings
+security:
+  every_pr: true
+  release_includes_security: true
+  dependency_vulns_always_hitl: true
+
+# Boundaries (for Next.js App Router)
+# Note: Next.js App Router doesn't use traditional module boundaries
+# Instead, we focus on:
+# - app/ directory structure (routes)
+# - components/ directory (reusable components)
+# - lib/ directory (utilities)
+boundaries:
+  model: nextjs_app_router
+  enforcement: manual_review
+  # No automatic boundary checking for Next.js App Router
+  # Rely on code review and architecture decisions
