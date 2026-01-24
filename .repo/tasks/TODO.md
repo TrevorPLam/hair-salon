@@ -66,22 +66,20 @@
 
 ---
 
-### [TASK-028] Create SECURITY.md File
+### [TASK-012] Run Security Audit and Fix Vulnerabilities
 - **Priority:** P0
-- **Status:** In Progress
+- **Status:** In Progress (Blocked: HITL-0001)
 - **Created:** 2026-01-23
-- **Context:** Per DIAMOND.md - SECURITY.md is missing and is a critical security requirement. Needed for vulnerability reporting and security policy documentation.
+- **Context:** Per CODEBASE_ANALYSIS.md - Security audit needed to identify and fix dependency vulnerabilities. Critical for production safety.
 
 #### Acceptance Criteria
-- [ ] Create SECURITY.md in repository root
-- [ ] Include vulnerability reporting process
-- [ ] Add security contact information
-- [ ] Document security policy
-- [ ] Include security best practices for users
-- [ ] Reference in README.md
-- [ ] Follow GitHub security policy format
+- [ ] Run `npm audit` to identify vulnerabilities
+- [ ] Fix all critical and high severity vulnerabilities
+- [ ] Document any acceptable risks for medium/low severity
+- [ ] Update dependencies where safe
+- [ ] Add npm audit to CI pipeline
 
 #### Notes
-- Reference: DIAMOND.md section 2.2, 20.1, 20.2 (Security Policy)
-- Missing: SECURITY.md file (mentioned 5+ times in DIAMOND.md)
-- Required for: Vulnerability reporting, security transparency, user guidance
+- Reference: CODEBASE_ANALYSIS.md section 19.7 (Dependency Health Check)
+- Current status: Unknown vulnerabilities (needs verification)
+- Set up Dependabot for automated updates

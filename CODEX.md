@@ -14,6 +14,8 @@ This file logs high-level actions, decisions, and status updates for the current
 - 2026-01-24: Logged new request, banked TASK-012 as blocked due to HITL-0001, and promoted TASK-013 for execution.
 - 2026-01-24: Removed @ts-ignore usage and updated tests with typed window helpers; updated task files and queued next P0 task.
 - 2026-01-24: Completed verification steps and generated required trace/agent logs for TASK-013.
+- 2026-01-24: Began TASK-028 documentation updates, created SECURITY.md per GitHub security policy format, and queued task management updates. (High-level log only; no private reasoning.)
+- 2026-01-24: Archived TASK-028 with acceptance criteria marked complete and promoted TASK-012 to TODO (blocked pending HITL-0001).
 
 ## Decisions
 - Security-triggered work requires HITL creation and a stop until human review is completed.
