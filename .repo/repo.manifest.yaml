@@ -19,9 +19,9 @@ commands:
   check:quick: "npm run lint && npm run type-check"
   check:ci: "npm run lint && npm run type-check && npm run test && npm run build"
   check:release: "npm run lint && npm run type-check && npm run test && npm run test:e2e && npm run build && npm audit --audit-level=moderate"
-  check:governance: "./scripts/governance-verify.sh"
-  check:boundaries: "<UNKNOWN> - Next.js App Router doesn't use traditional module boundaries"
-  check:security: "npm audit --audit-level=moderate && node scripts/check-client-secrets.mjs"
+  check:governance: "node scripts/governance-verify.js --hitl-file .repo/policy/HITL.md"
+  check:boundaries: "node scripts/check-boundaries.js"
+  check:security: "npm audit --audit-level=moderate && npm run check:security:patterns"
 
 verify_profiles:
   quick: [check:quick]
@@ -38,27 +38,22 @@ tests:
   e2e: "npm run test:e2e"
   coverage: "npm run test:coverage"
 
-# Budgets (performance, bundle size, etc.)
 budgets:
-  bundle_size:
-    max_main_bundle_kb: 500
-    max_total_bundle_kb: 1000
-    check_command: "npm run check:bundle-size"
+  mode: both               # bundle + runtime
+  enforcement: hard_fail_with_waiver
+  fallback_to_default: true
+  # defaults live in: .repo/policy/constitution.json.quality_gates (if repo-specific budgets missing)
 
-# Security settings
 security:
   every_pr: true
   release_includes_security: true
   dependency_vulns_always_hitl: true
+  secrets_absolute_prohibition: true
+  forbidden_patterns_source: ".repo/policy/constitution.json"
 
-# Boundaries (for Next.js App Router)
-# Note: Next.js App Router doesn't use traditional module boundaries
-# Instead, we focus on:
-# - app/ directory structure (routes)
-# - components/ directory (reusable components)
-# - lib/ directory (utilities)
 boundaries:
-  model: nextjs_app_router
-  enforcement: manual_review
-  # No automatic boundary checking for Next.js App Router
-  # Rely on code review and architecture decisions
+  enforcement: hybrid_checker_plus_manifest_edges
+  edges_model: layered_allow_list
+  # Explicit edges represent allowed exceptions beyond the default import direction.
+  # Format: from -> to, with reason + required ADR if cross-feature.
+  edges: []
