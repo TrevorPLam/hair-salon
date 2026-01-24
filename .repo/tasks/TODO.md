@@ -66,20 +66,17 @@
 
 ---
 
-### [TASK-012] Run Security Audit and Fix Vulnerabilities
-- **Priority:** P0
+### [TASK-008] Enable OpenAPI Drift Detection in CI
+- **Priority:** P2
 - **Status:** In Progress
 - **Created:** 2026-01-23
-- **Context:** Per CODEBASE_ANALYSIS.md - Security audit needed to identify and fix dependency vulnerabilities. Critical for production safety.
+- **Context:** OpenAPI check job is disabled (`if: false`) in CI workflow.
 
 #### Acceptance Criteria
-- [ ] Run `npm audit` to identify vulnerabilities
-- [ ] Fix all critical and high severity vulnerabilities
-- [ ] Document any acceptable risks for medium/low severity
-- [ ] Update dependencies where safe
-- [ ] Add npm audit to CI pipeline
+- [ ] Fix blocking issues preventing OpenAPI generation
+- [ ] Enable the `openapi-check` job
+- [ ] Ensure schema drift fails CI
+- [ ] Document OpenAPI workflow in CONTRIBUTING.md
 
 #### Notes
-- Blocked pending HITL-0001 completion per `.repo/policy/HITL.md` dependency-vulnerability rule.
-- Filepath: `.repo/hitl/HITL-0001.md`
-- Current status: Human action required before remediation work can proceed.
+- Committed OpenAPI artifact is single source of truth for API
