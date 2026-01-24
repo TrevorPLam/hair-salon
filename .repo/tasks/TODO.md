@@ -66,20 +66,21 @@
 
 ---
 
-### [TASK-016] Add Performance Monitoring
+### [TASK-032] Implement SBOM Generation
 - **Priority:** P1
 - **Status:** In Progress
 - **Created:** 2026-01-23
-- **Context:** Per CODEBASE_ANALYSIS.md - No performance monitoring for server action timing. Needed for production observability.
+- **Context:** Per DIAMOND.md Priority Gaps - SBOM generation is missing. Critical for supply chain security and compliance.
 
 #### Acceptance Criteria
-- [ ] Add performance timing to submitContactForm server action
-- [ ] Add request timing to middleware
-- [ ] Integrate with Sentry for performance tracking
-- [ ] Add performance metrics dashboard
-- [ ] Document performance monitoring setup
+- [ ] Add SBOM generation to CI pipeline
+- [ ] Choose format (SPDX or CycloneDX)
+- [ ] Generate SBOM on each build
+- [ ] Store SBOM artifact with releases
+- [ ] Document SBOM process in SECURITY.md
+- [ ] Include transitive dependencies
 
 #### Notes
-- Reference: CODEBASE_ANALYSIS.md section 8.1 (lib/actions.ts:56)
-- Tech debt item: No performance monitoring for server action timing
-- Use Sentry performance monitoring or custom solution
+- Reference: DIAMOND.md section 12.1, 12.2 (Dependency Security)
+- Missing: SBOM generation (mentioned in Priority Gaps)
+- Required for: Supply chain security, compliance, dependency transparency

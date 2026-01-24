@@ -70,26 +70,6 @@
 
 ## P1 — High
 
-### [TASK-032] Implement SBOM Generation
-- **Priority:** P1
-- **Status:** Pending
-- **Created:** 2026-01-23
-- **Context:** Per DIAMOND.md Priority Gaps - SBOM generation is missing. Critical for supply chain security and compliance.
-
-#### Acceptance Criteria
-- [ ] Add SBOM generation to CI pipeline
-- [ ] Choose format (SPDX or CycloneDX)
-- [ ] Generate SBOM on each build
-- [ ] Store SBOM artifact with releases
-- [ ] Document SBOM process in SECURITY.md
-- [ ] Include transitive dependencies
-
-#### Notes
-- Reference: DIAMOND.md section 12.1, 12.2 (Dependency Security)
-- Missing: SBOM generation (mentioned in Priority Gaps)
-- Required for: Supply chain security, compliance, dependency transparency
-
----
 
 ## P2 — Medium
 
