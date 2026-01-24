@@ -47,21 +47,23 @@
 
 ## P0 — Critical
 
-### [TASK-002] Create .env.example File
+### [TASK-012] Run Security Audit and Fix Vulnerabilities
 - **Priority:** P0
-- **Status:** Pending
+- **Status:** Blocked (HITL-0001)
 - **Created:** 2026-01-23
-- **Context:** Code references `.env.example` but file doesn't exist. Blocks new environment setup.
+- **Context:** Per CODEBASE_ANALYSIS.md - Security audit needed to identify and fix dependency vulnerabilities. Critical for production safety.
 
 #### Acceptance Criteria
-- [ ] Document all required environment variables from `env_validator.py`
-- [ ] Include comments explaining each variable
-- [ ] Add placeholder values (never real secrets)
-- [ ] Reference in README.md and docs/getting-started/onboarding.md
+- [ ] Run `npm audit` to identify vulnerabilities
+- [ ] Fix all critical and high severity vulnerabilities
+- [ ] Document any acceptable risks for medium/low severity
+- [ ] Update dependencies where safe
+- [ ] Add npm audit to CI pipeline
 
 #### Notes
-- Required vars: DJANGO_SECRET_KEY, POSTGRES_*, AWS_*, STRIPE_*, etc.
-- Production vars differ from development vars
+- Reference: CODEBASE_ANALYSIS.md section 19.7 (Dependency Health Check)
+- Current status: Unknown vulnerabilities (needs verification)
+- Set up Dependabot for automated updates
 
 ---
 
@@ -83,57 +85,6 @@
 ---
 
 ## P1 — High
-
-### [TASK-004] Create .github/copilot-instructions.md
-- **Priority:** P1
-- **Status:** Pending
-- **Created:** 2026-01-23
-- **Context:** Context engineering file for GitHub Copilot and VS Code AI features.
-
-#### Acceptance Criteria
-- [ ] Document product vision and architecture principles
-- [ ] Include contribution guidelines for AI
-- [ ] Reference supporting docs (ARCHITECTURE.md, PRODUCT.md)
-- [ ] Test with Copilot to verify context is picked up
-
-#### Notes
-- Part of the VS Code context engineering workflow standard
-
----
-
-### [TASK-005] Create PRODUCT.md
-- **Priority:** P1
-- **Status:** Pending
-- **Created:** 2026-01-23
-- **Context:** Product vision document giving AI context about WHY features exist.
-
-#### Acceptance Criteria
-- [ ] Define UBOS product vision and mission
-- [ ] Document target users (service firms)
-- [ ] List key features and their business value
-- [ ] Include product roadmap priorities
-
-#### Notes
-- AI agents need product context to make good decisions
-
----
-
-### [TASK-006] Expand docs/ARCHITECTURE.md
-- **Priority:** P1
-- **Status:** Pending
-- **Created:** 2026-01-23
-- **Context:** Current file is 14 lines. Needs comprehensive system documentation.
-
-#### Acceptance Criteria
-- [ ] Add Mermaid diagrams for system architecture
-- [ ] Document module ownership and boundaries
-- [ ] Explain data flow and integration patterns
-- [ ] Include decision rationale for key choices
-
-#### Notes
-- Critical for AI to understand system structure
-
----
 
 ### [TASK-014] Split lib/actions.ts into Smaller Modules
 - **Priority:** P1
