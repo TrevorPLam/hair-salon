@@ -7,8 +7,7 @@ import rehypePrettyCode from 'rehype-pretty-code'
 let withBundleAnalyzer = (config) => config
 if (process.env.ANALYZE === 'true') {
   try {
-    // @ts-ignore - optional dependency for bundle analysis, may not be installed
-    const bundleAnalyzer = (await import('@next/bundle-analyzer')).default
+    const { default: bundleAnalyzer } = await import('@next/bundle-analyzer')
     withBundleAnalyzer = bundleAnalyzer({ enabled: true })
   } catch (error) {
     if (process.env.NODE_ENV !== 'production') {

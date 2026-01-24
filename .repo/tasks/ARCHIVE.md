@@ -36,8 +36,8 @@
 ## Statistics
 | Metric | Count |
 |--------|-------|
-| Total Completed | 1 |
-| P0 Completed | 1 |
+| Total Completed | 2 |
+| P0 Completed | 2 |
 | P1 Completed | 0 |
 | P2 Completed | 0 |
 | P3 Completed | 0 |
@@ -47,6 +47,23 @@
 ---
 
 ## Completed Tasks
+
+### [TASK-013] Remove @ts-ignore Comments and Fix Type Safety Issues ✓
+- **Priority:** P0
+- **Status:** Completed
+- **Created:** 2026-01-23
+- **Completed:** 2026-01-24
+- **Context:** Per CODEBASE_ANALYSIS.md - @ts-ignore usage in next.config.mjs and potential type safety issues need resolution.
+
+#### Acceptance Criteria
+- [x] Remove @ts-ignore from next.config.mjs (line 10)
+- [x] Replace with proper type guards or type assertions
+- [x] Review all files for any type safety issues
+- [x] Ensure strict TypeScript compliance
+- [x] Verify no compilation errors
+
+#### Outcome
+- Removed the @ts-ignore in next.config.mjs and replaced test deletions with typed window helpers.
 
 ### [TASK-001] Refine AGENTS.md to Be Concise & Effective ✓
 - **Priority:** P0
