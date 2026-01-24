@@ -32,9 +32,9 @@ Deliver a marketing platform that is:
 - **Measured iteration**: ship small, verify, and document decisions.
 
 ## Roadmap Priorities
-1. **Security posture improvements** (dependency audits, SAST tooling, SBOM). 
-2. **Testing depth** (coverage improvements, visual regression testing). 
-3. **Operational automation** (release workflows, deployment automation). 
+1. **Security posture improvements** (dependency audits, SAST tooling, SBOM).
+2. **Testing depth** (coverage improvements, visual regression testing).
+3. **Operational automation** (release workflows, deployment automation).
 4. **Performance monitoring** (instrumentation and dashboarding).
 
 ## Success Metrics
