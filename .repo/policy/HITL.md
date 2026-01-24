@@ -60,6 +60,7 @@ Required fields:
 ### Active
 |ID|Category|Status|Summary|Filepath|
 |---|---|---|---|---|
+|HITL-0001|Risk|Pending|Dependency security audit for TASK-012 (npm audit & remediation)|.repo/hitl/HITL-0001.md|
 
 ### Archived
 |ID|Category|Status|Summary|Filepath|
