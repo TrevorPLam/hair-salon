@@ -143,9 +143,11 @@ function buildLeadSpanAttributes(leadId: string, emailHash: string): SpanAttribu
   }
 }
 
-const HUBSPOT_MAX_RETRIES = 3
-const HUBSPOT_RETRY_BASE_DELAY_MS = 250
-const HUBSPOT_RETRY_MAX_DELAY_MS = 2000
+import { HUBSPOT } from './constants'
+
+const HUBSPOT_MAX_RETRIES = HUBSPOT.MAX_RETRIES
+const HUBSPOT_RETRY_BASE_DELAY_MS = HUBSPOT.RETRY_BASE_DELAY_MS
+const HUBSPOT_RETRY_MAX_DELAY_MS = HUBSPOT.RETRY_MAX_DELAY_MS
 
 type SanitizedContactData = {
   safeEmail: string
