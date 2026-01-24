@@ -47,47 +47,23 @@
 
 ## P0 — Critical
 
-### [TASK-013] Remove @ts-ignore Comments and Fix Type Safety Issues
+### [TASK-012] Run Security Audit and Fix Vulnerabilities
 - **Priority:** P0
-- **Status:** Pending
+- **Status:** Blocked (HITL-0001)
 - **Created:** 2026-01-23
-- **Context:** Per CODEBASE_ANALYSIS.md - @ts-ignore usage in next.config.mjs and potential type safety issues need resolution.
+- **Context:** Per CODEBASE_ANALYSIS.md - Security audit needed to identify and fix dependency vulnerabilities. Critical for production safety.
 
 #### Acceptance Criteria
-- [ ] Remove @ts-ignore from next.config.mjs (line 10)
-- [ ] Replace with proper type guards or type assertions
-- [ ] Review all files for any type safety issues
-- [ ] Ensure strict TypeScript compliance
-- [ ] Verify no compilation errors
+- [ ] Run `npm audit` to identify vulnerabilities
+- [ ] Fix all critical and high severity vulnerabilities
+- [ ] Document any acceptable risks for medium/low severity
+- [ ] Update dependencies where safe
+- [ ] Add npm audit to CI pipeline
 
 #### Notes
-- Reference: CODEBASE_ANALYSIS.md section 2.1 (TypeScript Usage)
-- File: next.config.mjs:10
-- Current type coverage: 95%+ (target: 100%)
-
----
-
-### [TASK-028] Create SECURITY.md File
-- **Priority:** P0
-- **Status:** Pending
-- **Created:** 2026-01-23
-- **Context:** Per DIAMOND.md - SECURITY.md is missing and is a critical security requirement. Needed for vulnerability reporting and security policy documentation.
-
-#### Acceptance Criteria
-- [ ] Create SECURITY.md in repository root
-- [ ] Include vulnerability reporting process
-- [ ] Add security contact information
-- [ ] Document security policy
-- [ ] Include security best practices for users
-- [ ] Reference in README.md
-- [ ] Follow GitHub security policy format
-
-#### Notes
-- Reference: DIAMOND.md section 2.2, 20.1, 20.2 (Security Policy)
-- Missing: SECURITY.md file (mentioned 5+ times in DIAMOND.md)
-- Required for: Vulnerability reporting, security transparency, user guidance
-
----
+- Reference: CODEBASE_ANALYSIS.md section 19.7 (Dependency Health Check)
+- Current status: Unknown vulnerabilities (needs verification)
+- Set up Dependabot for automated updates
 
 ### [TASK-002] Create .env.example File
 - **Priority:** P0

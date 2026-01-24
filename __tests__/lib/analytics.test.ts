@@ -191,8 +191,8 @@ describe('Analytics', () => {
   describe('Error handling', () => {
     it('test_handles_missing_gtag', () => {
       // Error path: missing gtag should be safe when provider script fails to load.
-      // @ts-ignore
-      delete window.gtag
+      const windowWithGtag = window as Window & { gtag?: (...args: unknown[]) => void }
+      delete windowWithGtag.gtag
 
       expect(() => {
         trackEvent({
@@ -203,8 +203,10 @@ describe('Analytics', () => {
     })
 
     it('test_handles_missing_plausible', () => {
-      // @ts-ignore
-      delete window.plausible
+      const windowWithPlausible = window as Window & {
+        plausible?: (event: string, options?: { props?: Record<string, unknown> }) => void
+      }
+      delete windowWithPlausible.plausible
 
       expect(() => {
         trackEvent({
