@@ -70,26 +70,6 @@
 
 ## P1 — High
 
-### [TASK-016] Add Performance Monitoring
-- **Priority:** P1
-- **Status:** Pending
-- **Created:** 2026-01-23
-- **Context:** Per CODEBASE_ANALYSIS.md - No performance monitoring for server action timing. Needed for production observability.
-
-#### Acceptance Criteria
-- [ ] Add performance timing to submitContactForm server action
-- [ ] Add request timing to middleware
-- [ ] Integrate with Sentry for performance tracking
-- [ ] Add performance metrics dashboard
-- [ ] Document performance monitoring setup
-
-#### Notes
-- Reference: CODEBASE_ANALYSIS.md section 8.1 (lib/actions.ts:56)
-- Tech debt item: No performance monitoring for server action timing
-- Use Sentry performance monitoring or custom solution
-
----
-
 ### [TASK-032] Implement SBOM Generation
 - **Priority:** P1
 - **Status:** Pending

@@ -66,22 +66,20 @@
 
 ---
 
-### [TASK-015] Increase Test Coverage to 60%
+### [TASK-016] Add Performance Monitoring
 - **Priority:** P1
 - **Status:** In Progress
 - **Created:** 2026-01-23
-- **Context:** Per CODEBASE_ANALYSIS.md - Current coverage is 50%, target is 70%+. First milestone: 60%.
+- **Context:** Per CODEBASE_ANALYSIS.md - No performance monitoring for server action timing. Needed for production observability.
 
 #### Acceptance Criteria
-- [ ] Add tests for missing components in components/ui/
-- [ ] Add tests for utility functions without coverage
-- [ ] Add integration tests for contact form submission flow
-- [ ] Add error scenario tests
-- [ ] Update vitest.config.ts threshold to 60%
-- [ ] Verify coverage report shows 60%+
+- [ ] Add performance timing to submitContactForm server action
+- [ ] Add request timing to middleware
+- [ ] Integrate with Sentry for performance tracking
+- [ ] Add performance metrics dashboard
+- [ ] Document performance monitoring setup
 
 #### Notes
-- Reference: CODEBASE_ANALYSIS.md section 5.1 and 19.8
-- Current: 50% (branches: 40%, functions: 45%, lines: 50%, statements: 50%)
-- Target: 60% (short-term), 70%+ (medium-term)
-- Test files: 35 total (18 unit + 12 component + 5 E2E)
+- Reference: CODEBASE_ANALYSIS.md section 8.1 (lib/actions.ts:56)
+- Tech debt item: No performance monitoring for server action timing
+- Use Sentry performance monitoring or custom solution
