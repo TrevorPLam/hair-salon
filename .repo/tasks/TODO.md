@@ -66,20 +66,18 @@
 
 ---
 
-### [TASK-012] Run Security Audit and Fix Vulnerabilities
+### [TASK-002] Create .env.example File
 - **Priority:** P0
-- **Status:** In Progress (Blocked: HITL-0001)
+- **Status:** In Progress
 - **Created:** 2026-01-23
-- **Context:** Per CODEBASE_ANALYSIS.md - Security audit needed to identify and fix dependency vulnerabilities. Critical for production safety.
+- **Context:** Code references `.env.example` but file doesn't exist. Blocks new environment setup.
 
 #### Acceptance Criteria
-- [ ] Run `npm audit` to identify vulnerabilities
-- [ ] Fix all critical and high severity vulnerabilities
-- [ ] Document any acceptable risks for medium/low severity
-- [ ] Update dependencies where safe
-- [ ] Add npm audit to CI pipeline
+- [ ] Document all required environment variables from `env_validator.py`
+- [ ] Include comments explaining each variable
+- [ ] Add placeholder values (never real secrets)
+- [ ] Reference in README.md and docs/getting-started/onboarding.md
 
 #### Notes
-- Reference: CODEBASE_ANALYSIS.md section 19.7 (Dependency Health Check)
-- Current status: Unknown vulnerabilities (needs verification)
-- Set up Dependabot for automated updates
+- Required vars: DJANGO_SECRET_KEY, POSTGRES_*, AWS_*, STRIPE_*, etc.
+- Production vars differ from development vars
