@@ -106,7 +106,7 @@ const envSchema = z.object({
    * Used for absolute URLs in sitemap, OG tags, canonical URLs.
    *
    * @default 'http://localhost:3000' (development)
-   * @example 'https://yourdedicatedmarketer.com' (production)
+   * @example 'https://hairsalon.example.com' (production)
    */
   NEXT_PUBLIC_SITE_URL: z.string().url().default('http://localhost:3000'),
 

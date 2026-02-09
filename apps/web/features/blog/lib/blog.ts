@@ -26,7 +26,7 @@
  * description: string  # Required, used for SEO meta
  * date: YYYY-MM-DD     # Required, used for sorting
  * author: string       # Optional, defaults to team name
- * category: string     # Optional, defaults to "Marketing"
+ * category: string     # Optional, defaults to "Hair Care"
  * featured: boolean    # Optional, shows on homepage
  * ```
  *
@@ -232,7 +232,7 @@ export function getAllPosts(): BlogPost[] {
  * @returns BlogPost object or undefined if not found
  *
  * @example
- * const post = getPostBySlug('seo-basics-small-business')
+ * const post = getPostBySlug('hair-care-tips-summer')
  * if (!post) {
  *   notFound() // Next.js 404
  * }

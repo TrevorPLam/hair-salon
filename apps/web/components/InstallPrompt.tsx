@@ -12,7 +12,7 @@ interface BeforeInstallPromptEvent extends Event {
 
 /**
  * InstallPrompt component for PWA installation.
- * 
+ *
  * **Memory Safety:** All timers properly cleaned up on unmount.
  * **SSR Safety:** All browser API access guarded with window checks.
  */
@@ -23,7 +23,7 @@ export default function InstallPrompt() {
   useEffect(() => {
     // SSR Safety: Check if window is available (Issue #026 fixed)
     if (typeof window === 'undefined') return
-    
+
     // Check if user has already dismissed the prompt
     const dismissed = localStorage.getItem('pwa-install-dismissed')
     const installed = localStorage.getItem('pwa-installed')
@@ -67,7 +67,7 @@ export default function InstallPrompt() {
 
   const handleInstall = async () => {
     if (!deferredPrompt) return
-    
+
     // SSR Safety check
     if (typeof window === 'undefined') return
 
@@ -91,7 +91,7 @@ export default function InstallPrompt() {
   const handleDismiss = () => {
     // SSR Safety check
     if (typeof window === 'undefined') return
-    
+
     localStorage.setItem('pwa-install-dismissed', 'true')
     setShowPrompt(false)
   }
@@ -116,7 +116,7 @@ export default function InstallPrompt() {
         <div className="flex-1">
           <h3 className="font-bold text-lg mb-1">Install Our App</h3>
           <p className="text-sm text-blue-100 mb-3">
-            Get quick access to our marketing services with our mobile app. Works offline!
+            Get quick access to our hair salon services with our mobile app. Works offline!
           </p>
 
           <div className="flex gap-2">

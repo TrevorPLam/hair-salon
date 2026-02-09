@@ -1,7 +1,7 @@
 import React from 'react'
 import { cn } from '@repo/utils'
 
-// Gradient-free button styles with size/variant tokens to keep marketing pages consistent
+// Gradient-free button styles with size/variant tokens to keep hair salon pages consistent
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'text'
   size?: 'small' | 'medium' | 'large'
