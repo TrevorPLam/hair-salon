@@ -1,5 +1,51 @@
-import Link from 'next/link'
-import { ArrowRight, Home, Search, HelpCircle } from 'lucide-react'
+/**
+ * @file apps/web/app/not-found.tsx
+ * @role runtime
+ * @summary Custom 404 page with navigation to key routes.
+ *
+ * @entrypoints
+ * - Next.js App Router not-found boundary
+ *
+ * @exports
+ * - default NotFound
+ *
+ * @depends_on
+ * - External: next/link
+ * - External: lucide-react
+ *
+ * @used_by
+ * - App Router when a route is not found
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: none
+ * - outputs: 404 UI and navigation links
+ *
+ * @invariants
+ * - Quick links should point to valid routes
+ *
+ * @gotchas
+ * - Styling uses gradients and may need token updates if theme changes
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @opportunities
+ * - Add analytics event once consent gating is verified
+ *
+ * @verification
+ * - Visit a non-existent route and confirm 404 renders
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
+import Link from 'next/link';
+import { ArrowRight, Home, Search, HelpCircle } from 'lucide-react';
 
 // Friendly 404 with quick links back to primary conversion paths
 export default function NotFound() {
@@ -14,11 +60,10 @@ export default function NotFound() {
         </div>
 
         {/* Message */}
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          Page Not Found
-        </h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Page Not Found</h2>
         <p className="text-xl text-gray-600 mb-8">
-          Sorry, we couldn&apos;t find the page you&apos;re looking for. It might have been moved, deleted, or never existed.
+          Sorry, we couldn&apos;t find the page you&apos;re looking for. It might have been moved,
+          deleted, or never existed.
         </p>
 
         {/* Quick Links */}
@@ -64,20 +109,29 @@ export default function NotFound() {
         <div className="mt-12 pt-8 border-t border-gray-200">
           <p className="text-sm text-gray-600 mb-4">Popular pages:</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <Link href="/about" className="text-sm text-blue-600 hover:text-blue-700 hover:underline">
+            <Link
+              href="/about"
+              className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
+            >
               About Us
             </Link>
             <span className="text-gray-300">•</span>
-            <Link href="/pricing" className="text-sm text-blue-600 hover:text-blue-700 hover:underline">
+            <Link
+              href="/pricing"
+              className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
+            >
               Pricing
             </Link>
             <span className="text-gray-300">•</span>
-            <Link href="/blog" className="text-sm text-blue-600 hover:text-blue-700 hover:underline">
+            <Link
+              href="/blog"
+              className="text-sm text-blue-600 hover:text-blue-700 hover:underline"
+            >
               Blog
             </Link>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

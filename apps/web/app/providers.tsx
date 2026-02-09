@@ -1,65 +1,47 @@
 /**
- * Client-side providers wrapper for global functionality.
+ * @file apps/web/app/providers.tsx
+ * @role runtime
+ * @summary Client-only wrapper for global UI providers and error boundaries.
  *
- * @component Providers
+ * @entrypoints
+ * - Used by apps/web/app/layout.tsx
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - default Providers
  *
- * **FILE PURPOSE**: Client-only wrapper for global providers.
- * Wraps all pages with ErrorBoundary and Breadcrumbs components.
+ * @depends_on
+ * - Internal: apps/web/components/ErrorBoundary.tsx
+ * - Internal: apps/web/components/Breadcrumbs.tsx
  *
- * **RENDERING**: Client component ('use client') required for ErrorBoundary.
- * Server components cannot use error boundaries (React limitation).
+ * @used_by
+ * - apps/web/app/layout.tsx
  *
- * **COMPONENT HIERARCHY**:
- * ```
- * <ErrorBoundary>     ← Catches React errors globally
- *   <div className="min-h-screen flex flex-col">
- *     <Breadcrumbs /> ← Navigation breadcrumbs
- *     {children}       ← Page content
- *   </div>
- * </ErrorBoundary>
- * ```
+ * @runtime
+ * - environment: client
+ * - side_effects: global error boundary and breadcrumb rendering
  *
- * **USAGE**:
- * - Called from app/layout.tsx around page content
- * - Enables client-side error handling for all pages
- * - Provides breadcrumb navigation for better UX
+ * @data_flow
+ * - inputs: children (page content)
+ * - outputs: wrapped client UI
  *
- * **AI ITERATION HINTS**:
- * - Adding global provider? Add inside ErrorBoundary wrapper
- * - ErrorBoundary must remain outermost for proper error catching
- * - Breadcrumbs positioned before children for semantic order
+ * @invariants
+ * - ErrorBoundary should remain outermost to catch render errors
  *
- * **DEPENDENCIES**:
- * - ErrorBoundary: React error boundary wrapper
- * - Breadcrumbs: Navigation breadcrumb component
+ * @gotchas
+ * - Must remain a client component to use ErrorBoundary
  *
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * **Purpose:**
- * - Wrap all pages with global error handling
- * - Provide breadcrumb navigation for all pages
- * - Enable client-side functionality that requires browser APIs
+ * @opportunities
+ * - Add additional client providers inside the ErrorBoundary
  *
- * **Components:**
- * - ErrorBoundary: Catches React errors and provides recovery UI
- * - Breadcrumbs: Shows navigation path from homepage to current page
+ * @verification
+ * - Navigate pages and confirm breadcrumbs render and errors are caught
  *
- * **Layout Structure:**
- * - Flex column layout for full-height pages
- * - ErrorBoundary as outer wrapper for global error catching
- * - Breadcrumbs positioned above page content
- *
- * **Why Client Component:**
- * - ErrorBoundary requires browser APIs for error handling
- * - Server components cannot use error boundaries
- * - Enables dynamic client-side functionality
- *
- * @see components/ErrorBoundary for error handling details
- * @see components/Breadcrumbs for navigation breadcrumbs
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 'use client';
@@ -73,6 +55,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ErrorBoundary>
       <div className="min-h-screen flex flex-col">
+        {/* Breadcrumbs provide global navigation context above page content. */}
         <Breadcrumbs />
         {children}
       </div>

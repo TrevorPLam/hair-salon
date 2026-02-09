@@ -1,6 +1,47 @@
-import React, { memo } from 'react'
-import { Scissors, Heart, Sparkles } from 'lucide-react'
-import { Container, Section, Card } from '@repo/ui'
+/**
+ * @file apps/web/components/ValueProps.tsx
+ * @role runtime
+ * @summary Value proposition cards describing salon differentiators.
+ *
+ * @entrypoints
+ * - Used on the home page
+ *
+ * @exports
+ * - default ValueProps
+ *
+ * @depends_on
+ * - External: react
+ * - External: lucide-react
+ * - Internal: @repo/ui (Container, Section, Card)
+ *
+ * @used_by
+ * - apps/web/app/page.tsx
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static value props
+ * - outputs: value prop cards
+ *
+ * @invariants
+ * - Copy should align with actual services
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @verification
+ * - Confirm cards render with icons and copy.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
+import React, { memo } from 'react';
+import { Scissors, Heart, Sparkles } from 'lucide-react';
+import { Container, Section, Card } from '@repo/ui';
 
 const valueProps = [
   {
@@ -26,7 +67,8 @@ const valueProps = [
     description: (
       <>
         <p>
-          We believe that great hair starts with great health. That’s why we use only the best products.
+          We believe that great hair starts with great health. That’s why we use only the best
+          products.
         </p>
         <p>Our selection includes:</p>
         <ul className="list-disc list-inside pl-4 space-y-1">
@@ -56,7 +98,7 @@ const valueProps = [
       </>
     ),
   },
-]
+];
 
 function ValueProps() {
   return (
@@ -64,7 +106,7 @@ function ValueProps() {
       <Container>
         <div className="grid md:grid-cols-3 gap-8">
           {valueProps.map((prop) => {
-            const Icon = prop.icon
+            const Icon = prop.icon;
             return (
               <Card key={prop.title} variant="default">
                 <div className="w-12 h-12 bg-teal/10 rounded-lg flex items-center justify-center mb-4">
@@ -73,12 +115,12 @@ function ValueProps() {
                 <h3 className="text-xl font-semibold text-charcoal mb-3">{prop.title}</h3>
                 <div className="text-slate leading-relaxed space-y-4">{prop.description}</div>
               </Card>
-            )
+            );
           })}
         </div>
       </Container>
     </Section>
-  )
+  );
 }
 
-export default memo(ValueProps)
+export default memo(ValueProps);

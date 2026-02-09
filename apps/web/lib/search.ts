@@ -1,10 +1,32 @@
 /**
- * Search index generation for site-wide search.
+ * @file apps/web/lib/search.ts
+ * @role runtime
+ * @summary Search index generation for pages and blog posts.
  *
- * Purpose:
- * - Provide a single source of truth for search items
- * - Combine static pages and blog posts in one list
- * - Keep search dialog and search page consistent
+ * @entrypoints
+ * - getSearchIndex
+ *
+ * @exports
+ * - SearchItem
+ * - getSearchIndex
+ *
+ * @depends_on
+ * - Internal: @/lib/blog (getAllPosts)
+ *
+ * @used_by
+ * - apps/web/app/search/page.tsx
+ * - apps/web/components/Navigation.tsx
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: reads blog data
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 import { getAllPosts } from '@/lib/blog';

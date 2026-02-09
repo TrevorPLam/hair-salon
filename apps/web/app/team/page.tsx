@@ -1,11 +1,53 @@
-import type { Metadata } from 'next'
-import { Container, Section, Card } from '@repo/ui'
-import { Instagram, Twitter } from 'lucide-react'
+/**
+ * @file apps/web/app/team/page.tsx
+ * @role runtime
+ * @summary Team page with stylist bios and social placeholders.
+ *
+ * @entrypoints
+ * - Route: /team
+ *
+ * @exports
+ * - metadata
+ * - default TeamPage
+ *
+ * @depends_on
+ * - External: next (Metadata)
+ * - External: lucide-react
+ * - Internal: @repo/ui (Container, Section, Card)
+ *
+ * @used_by
+ * - Next.js app router
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static team member data
+ * - outputs: team grid and CTA
+ *
+ * @invariants
+ * - Placeholder links should be replaced with real profiles
+ *
+ * @issues
+ * - [severity:low] Social links are placeholders (#).
+ *
+ * @verification
+ * - Visit /team and verify bios and CTA render.
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+
+import type { Metadata } from 'next';
+import { Container, Section, Card } from '@repo/ui';
+import { Instagram, Twitter } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Our Team | Hair Salon Template',
   description: 'Meet our team of master stylists, colorists, and hair care experts.',
-}
+};
 
 const teamMembers = [
   {
@@ -31,12 +73,12 @@ const teamMembers = [
   },
   {
     name: 'Marcus Johnson',
-    role: 'Men\'s Grooming Specialist',
+    role: "Men's Grooming Specialist",
     bio: 'Marcus brings classic barbering techniques into the modern salon environment. He creates sharp, clean looks that grow out perfectly.',
-    specialties: ['Fades', 'Beard Trims', 'Men\'s Styling'],
+    specialties: ['Fades', 'Beard Trims', "Men's Styling"],
     image: 'bg-slate-300',
   },
-]
+];
 
 export default function TeamPage() {
   return (
@@ -47,7 +89,8 @@ export default function TeamPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Meet The Artists</h1>
             <p className="text-xl text-white/90">
-              Our diverse team of experts is united by a passion for hair and a commitment to excellence.
+              Our diverse team of experts is united by a passion for hair and a commitment to
+              excellence.
             </p>
           </div>
         </Container>
@@ -66,23 +109,32 @@ export default function TeamPage() {
                   </div>
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-teal/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                    <a href="#" className="text-white hover:text-charcoal transition-colors"><Instagram className="w-6 h-6" /></a>
-                    <a href="#" className="text-white hover:text-charcoal transition-colors"><Twitter className="w-6 h-6" /></a>
+                    <a href="#" className="text-white hover:text-charcoal transition-colors">
+                      <Instagram className="w-6 h-6" />
+                    </a>
+                    <a href="#" className="text-white hover:text-charcoal transition-colors">
+                      <Twitter className="w-6 h-6" />
+                    </a>
                   </div>
                 </div>
 
                 <div className="p-2">
                   <h3 className="text-xl font-bold text-charcoal mb-1">{member.name}</h3>
-                  <p className="text-teal font-medium text-sm mb-3 uppercase tracking-wide">{member.role}</p>
+                  <p className="text-teal font-medium text-sm mb-3 uppercase tracking-wide">
+                    {member.role}
+                  </p>
                   <p className="text-slate-600 text-sm mb-4 leading-relaxed line-clamp-4">
                     {member.bio}
                   </p>
-                  
+
                   <div className="border-t border-slate-100 pt-3">
                     <p className="text-xs font-semibold text-slate-500 mb-2">Specialties:</p>
                     <div className="flex flex-wrap gap-2">
-                      {member.specialties.map(tag => (
-                        <span key={tag} className="text-xs bg-off-white text-slate-700 px-2 py-1 rounded-full border border-slate-200">
+                      {member.specialties.map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-xs bg-off-white text-slate-700 px-2 py-1 rounded-full border border-slate-200"
+                        >
                           {tag}
                         </span>
                       ))}
@@ -101,7 +153,8 @@ export default function TeamPage() {
           <div className="max-w-4xl mx-auto bg-white rounded-2xl p-10 shadow-sm border border-slate-200 text-center">
             <h2 className="text-3xl font-bold text-charcoal mb-4">Join Our Team</h2>
             <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
-              We are always looking for talented, passionate individuals to grow with us. If you love hair and people, we&apos;d love to meet you.
+              We are always looking for talented, passionate individuals to grow with us. If you
+              love hair and people, we&apos;d love to meet you.
             </p>
             <button className="px-8 py-3 bg-charcoal text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors">
               View Careers
@@ -110,5 +163,5 @@ export default function TeamPage() {
         </Container>
       </section>
     </div>
-  )
+  );
 }

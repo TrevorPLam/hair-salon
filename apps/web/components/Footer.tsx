@@ -1,34 +1,75 @@
-import React from 'react'
-import Link from 'next/link'
-import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react'
+/**
+ * @file apps/web/components/Footer.tsx
+ * @role runtime
+ * @summary Global site footer with navigation and social links.
+ *
+ * @entrypoints
+ * - Used by layout/footer region
+ *
+ * @exports
+ * - default Footer
+ *
+ * @depends_on
+ * - External: react
+ * - External: next/link
+ * - External: lucide-react
+ *
+ * @used_by
+ * - apps/web/app/layout.tsx
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static link arrays
+ * - outputs: footer navigation
+ *
+ * @invariants
+ * - Social links should be real URLs before launch
+ *
+ * @issues
+ * - [severity:low] Social links use placeholder "#" URLs.
+ *
+ * @verification
+ * - Verify footer links render and navigate correctly.
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+
+import React from 'react';
+import Link from 'next/link';
+import { Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   const services = [
     { href: '/services/haircuts', label: 'Haircuts & Styling' },
     { href: '/services/coloring', label: 'Coloring Services' },
     { href: '/services/treatments', label: 'Treatments' },
     { href: '/services/special-occasions', label: 'Special Occasions' },
-  ]
+  ];
 
   const company = [
     { href: '/about', label: 'About Us' },
     { href: '/services', label: 'Services' },
     { href: '/contact', label: 'Contact' },
-  ]
+  ];
 
   const legal = [
     { href: '/privacy', label: 'Privacy Policy' },
     { href: '/terms', label: 'Terms of Service' },
-  ]
+  ];
 
   const socialLinks = [
     { href: '#', icon: Facebook, label: 'Facebook' },
     { href: '#', icon: Twitter, label: 'Twitter' },
     { href: '#', icon: Linkedin, label: 'LinkedIn' },
     { href: '#', icon: Instagram, label: 'Instagram' },
-  ]
+  ];
 
   return (
     <footer className="bg-charcoal text-white/80">
@@ -38,11 +79,12 @@ export default function Footer() {
           <div>
             <h3 className="text-2xl font-bold text-white mb-4">Salon Template</h3>
             <p className="text-white/70 mb-6">
-              Professional hair care services in a relaxing environment. We are dedicated to making you look and feel your best.
+              Professional hair care services in a relaxing environment. We are dedicated to making
+              you look and feel your best.
             </p>
             <div className="flex gap-4">
-              {socialLinks.map(social => {
-                const Icon = social.icon
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
                 return (
                   <a
                     key={social.label}
@@ -52,7 +94,7 @@ export default function Footer() {
                   >
                     <Icon size={20} />
                   </a>
-                )
+                );
               })}
             </div>
           </div>
@@ -61,7 +103,7 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4">Services</h4>
             <ul className="space-y-2">
-              {services.map(service => (
+              {services.map((service) => (
                 <li key={service.href}>
                   <Link
                     href={service.href}
@@ -78,7 +120,7 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4">Company</h4>
             <ul className="space-y-2">
-              {company.map(item => (
+              {company.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -95,7 +137,7 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-4">Legal</h4>
             <ul className="space-y-2">
-              {legal.map(item => (
+              {legal.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -111,11 +153,9 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="mt-12 pt-8 border-t border-white/10 text-center">
-          <p className="text-white/60">
-            © {currentYear} Salon Template. All rights reserved.
-          </p>
+          <p className="text-white/60">© {currentYear} Salon Template. All rights reserved.</p>
         </div>
       </div>
     </footer>
-  )
+  );
 }

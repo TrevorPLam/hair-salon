@@ -1,44 +1,50 @@
 /**
- * Supabase lead repository for contact submissions.
+ * @file apps/web/features/supabase/lib/supabase-leads.ts
+ * @role runtime
+ * @summary Supabase REST adapter for lead inserts and updates.
  *
- * @module lib/supabase-leads
+ * @entrypoints
+ * - insertSupabaseLead
+ * - updateSupabaseLead
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - SupabaseLeadRow
+ * - insertSupabaseLead
+ * - updateSupabaseLead
  *
- * **FILE PURPOSE**: Centralize Supabase REST calls for lead inserts/updates so
- * server actions stay focused on orchestration.
+ * @depends_on
+ * - Internal: ./logger (logError)
+ * - Internal: ./env (validatedEnv)
  *
- * **ARCHITECTURE PATTERN**: Repository module (server-only utility)
- * - Called by lib/actions.ts
- * - Throws errors so callers can decide UX behavior
+ * @used_by
+ * - apps/web/lib/actions.ts
  *
- * **CURRENT STATE**: Uses the REST API with service role key for insert/update.
+ * @runtime
+ * - environment: server
+ * - side_effects: network requests to Supabase
  *
- * **KEY DEPENDENCIES**:
- * - `./env.ts` — Validated server env vars
- * - `./logger.ts` — Sanitized logging
+ * @data_flow
+ * - inputs: lead payload and updates
+ * - outputs: Supabase response data
  *
- * **AI ITERATION HINTS**:
- * 1. Keep payloads opaque (Record<string, unknown>) to avoid coupling.
- * 2. Preserve Supabase REST "return=representation" behavior for inserts.
- * 3. Log only metadata (status codes) to avoid leaking PII.
+ * @invariants
+ * - Requires SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY
  *
- * **SECURITY CHECKLIST**:
- * - [x] Uses server-only service role key
- * - [x] Avoids logging user PII in errors
+ * @issues
+ * - [severity:low] Network failures propagate as errors.
  *
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-import { logError } from './logger'
-import { validatedEnv } from './env'
+import { logError } from './logger';
+import { validatedEnv } from './env';
 
-const SUPABASE_LEADS_PATH = '/rest/v1/leads'
+const SUPABASE_LEADS_PATH = '/rest/v1/leads';
 
 export interface SupabaseLeadRow {
-  id: string
+  id: string;
 }
 
 export function buildSupabaseHeaders(): Record<string, string> {
@@ -46,23 +52,23 @@ export function buildSupabaseHeaders(): Record<string, string> {
     apikey: validatedEnv.SUPABASE_SERVICE_ROLE_KEY,
     Authorization: `Bearer ${validatedEnv.SUPABASE_SERVICE_ROLE_KEY}`,
     'Content-Type': 'application/json',
-  }
+  };
 }
 
 function getSupabaseLeadsUrl(): string {
-  return `${validatedEnv.SUPABASE_URL}${SUPABASE_LEADS_PATH}`
+  return `${validatedEnv.SUPABASE_URL}${SUPABASE_LEADS_PATH}`;
 }
 
 function createSupabaseInsertError(status: number, errorText: string): Error {
-  return new Error(`Supabase insert failed with status ${status}: ${errorText}`)
+  return new Error(`Supabase insert failed with status ${status}: ${errorText}`);
 }
 
 function createSupabaseUpdateError(status: number): Error {
-  return new Error(`Supabase update failed with status ${status}`)
+  return new Error(`Supabase update failed with status ${status}`);
 }
 
 export async function insertSupabaseLead(
-  payload: Record<string, unknown>,
+  payload: Record<string, unknown>
 ): Promise<SupabaseLeadRow> {
   const response = await fetch(getSupabaseLeadsUrl(), {
     method: 'POST',
@@ -72,37 +78,37 @@ export async function insertSupabaseLead(
     },
     // WHY: Supabase REST inserts expect an array payload for bulk-safe APIs.
     body: JSON.stringify([payload]),
-  })
+  });
 
   if (!response.ok) {
-    const errorText = await response.text()
-    logError('Supabase lead insert failed', undefined, { status: response.status })
-    throw createSupabaseInsertError(response.status, errorText)
+    const errorText = await response.text();
+    logError('Supabase lead insert failed', undefined, { status: response.status });
+    throw createSupabaseInsertError(response.status, errorText);
   }
 
-  const data = (await response.json()) as SupabaseLeadRow[]
-  const lead = Array.isArray(data) ? data[0] : undefined
+  const data = (await response.json()) as SupabaseLeadRow[];
+  const lead = Array.isArray(data) ? data[0] : undefined;
   if (!lead || typeof lead.id !== 'string' || lead.id.trim() === '') {
     // WHY: Downstream CRM sync relies on a stable lead ID for idempotency.
-    logError('Supabase insert returned invalid lead ID')
-    throw new Error('Supabase insert returned invalid lead ID')
+    logError('Supabase insert returned invalid lead ID');
+    throw new Error('Supabase insert returned invalid lead ID');
   }
 
-  return lead
+  return lead;
 }
 
 export async function updateSupabaseLead(
   leadId: string,
-  updates: Record<string, unknown>,
+  updates: Record<string, unknown>
 ): Promise<void> {
   const response = await fetch(`${getSupabaseLeadsUrl()}?id=eq.${leadId}`, {
     method: 'PATCH',
     headers: buildSupabaseHeaders(),
     body: JSON.stringify(updates),
-  })
+  });
 
   if (!response.ok) {
-    logError('Supabase lead update failed', undefined, { status: response.status })
-    throw createSupabaseUpdateError(response.status)
+    logError('Supabase lead update failed', undefined, { status: response.status });
+    throw createSupabaseUpdateError(response.status);
   }
 }

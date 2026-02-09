@@ -1,4 +1,62 @@
+<!--
+/**
+ * @file CONFIG.md
+ * @role docs
+ * @summary Configuration overview for the monorepo. Portions are UNVERIFIED pending audit.
+ *
+ * @entrypoints
+ * - Onboarding and audit reference
+ *
+ * @exports
+ * - N/A
+ *
+ * @depends_on
+ * - N/A
+ *
+ * @used_by
+ * - Developers and auditors
+ *
+ * @runtime
+ * - environment: docs
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: configuration files
+ * - outputs: documentation summary (partially verified)
+ *
+ * @invariants
+ * - Verified facts must include file references
+ *
+ * @gotchas
+ * - Sections below include legacy statements that may be outdated
+ *
+ * @issues
+ * - [severity:med] Contains unverified statements without file references.
+ *
+ * @opportunities
+ * - Rebuild this document from audited file evidence
+ *
+ * @verification
+ * - TODO(verify): Audit each section and add file references
+ *
+ * @status
+ * - confidence: low
+ * - last_audited: 2026-02-09
+ */
+-->
+
 # Configuration Documentation
+
+## Audit Status (PARTIAL)
+
+- Verified facts with evidence:
+  - pnpm is pinned to 10.29.2 via packageManager in [package.json](package.json).
+  - Node engines are >=20.0.0 in [package.json](package.json).
+  - Turbo is 2.2.3 in root devDependencies in [package.json](package.json).
+  - Next.js 15.1.6 and React 19.0.0 are in [apps/web/package.json](apps/web/package.json).
+  - Prettier is 3.2.5 in [package.json](package.json).
+  - Not all versions are exact; caret ranges exist in [package.json](package.json).
+- All other statements below are UNVERIFIED until audited and linked to source files.
 
 This document explains the configuration setup for the Hair Salon Template monorepo and follows industry best practices.
 
@@ -28,11 +86,9 @@ This is a **pnpm workspaces monorepo** using modern tooling:
   - Exports React components from source (via TypeScript)
   - Declares React/React-DOM as peerDependencies
   - Depends on @repo/utils
-  
 - **packages/utils** - Shared utility functions
   - No external React dependency
   - Exports utility functions from source
-  
 - **packages/config** - Shared configuration packages
   - **packages/config/typescript-config/** - Shared TypeScript configurations
     - `base.json` - Base configuration (ES2022, bundler module resolution)
@@ -47,25 +103,30 @@ This is a **pnpm workspaces monorepo** using modern tooling:
 ### Root Level
 
 #### `package.json`
+
 - Defines workspace structure
-- Enforces pnpm 9.15.4 and Node >=20.0.0 via `engines` field
+- Enforces pnpm 10.29.2 and Node >=20.0.0 via packageManager/engines in [package.json](package.json)
 - Root-level dependencies: turbo, prettier, typescript
 - Workspace scripts for dev, build, lint, type-check, test
 
 #### `pnpm-workspace.yaml`
+
 - Declares workspace packages: `apps/*` and `packages/*`
 
 #### `.pnpmrc`
+
 - pnpm configuration enforcing strict peer dependencies
 - Disables shameful hoist (monorepo best practice)
 - Enables auto-install-peers and frozen lock files
 
 #### `tsconfig.json` & `tsconfig.base.json`
+
 - `tsconfig.base.json` - Base configuration with strict mode enabled
 - `tsconfig.json` - Root composite config extending base
 - Apps and packages extend these configurations
 
 #### `turbo.json`
+
 - Defines task pipeline and caching behavior
 - Tasks: `build`, `dev`, `lint`, `type-check`, `test`, `format`
 - `build` task depends on `^build` (dependencies first)
@@ -73,21 +134,26 @@ This is a **pnpm workspaces monorepo** using modern tooling:
 - `lint` depends on `^lint`
 
 #### `.prettierrc`
+
 - Consistent code formatting across monorepo
 - Semi-colons, single quotes, 100 char line width, trailing commas
 
 #### `.prettierignore`
+
 - Excludes node_modules, build outputs, lock files
 
 #### `.eslintignore`
+
 - Excludes build outputs and generated files
 
 #### `docker-compose.yml`
+
 - Development environment with Next.js app on port 3000
 - Volume mounts for hot reload
 - Uses Dockerfile in apps/web/
 
 #### `apps/web/Dockerfile`
+
 - Multi-stage build (deps → builder → runtime)
 - Production-ready Node.js Alpine base
 - Outputs Next.js standalone output
@@ -95,17 +161,19 @@ This is a **pnpm workspaces monorepo** using modern tooling:
 ### App Level: apps/web
 
 #### `package.json`
+
 - Name: `@repo/web`
 - Depends on:
   - **next** 15.1.6 (web framework)
   - **react** 19.0.0, **react-dom** 19.0.0 (UI library)
-  - **@repo/ui** workspace:* (internal component library)
-  - **@repo/utils** workspace:* (internal utilities)
+  - **@repo/ui** workspace:\* (internal component library)
+  - **@repo/utils** workspace:\* (internal utilities)
   - **lucide-react** 0.344.0 (icons)
   - **clsx** 2.1.1 (conditional class names)
   - **tailwind-merge** 2.6.1 (Tailwind utilities)
 
 #### `tsconfig.json`
+
 - Extends `../../tsconfig.base.json`
 - Includes path aliases:
   - `@/*` → app root files
@@ -114,6 +182,7 @@ This is a **pnpm workspaces monorepo** using modern tooling:
 - Next.js plugin included for better type checking
 
 #### `next.config.js`
+
 - `transpilePackages: ['@repo/ui', '@repo/utils']`
   - Allows Next.js to build these packages from source (TypeScript)
   - Required because these packages export source files, not built output
@@ -121,32 +190,38 @@ This is a **pnpm workspaces monorepo** using modern tooling:
 - `typescript.ignoreBuildErrors: false` - Enforce type checking during build
 
 #### `eslint.config.mjs`
+
 - Flat config format (ESLint v9+)
 - Extends Next.js core web vitals and TypeScript configs
 - Uses `@eslint/eslintrc` FlatCompat for compatibility
 
 #### `postcss.config.js`
+
 - Tailwind CSS and Autoprefixer plugins
 
 #### `tailwind.config.js`
+
 - Content paths configured to scan app, components, features, and packages/ui
 - Extends theme (can be customized)
 
 ### Package Level: packages/ui
 
 #### `package.json`
+
 - Name: `@repo/ui`
-- **dependencies**: `@repo/utils` (as workspace:*)
+- **dependencies**: `@repo/utils` (as workspace:\*)
 - **peerDependencies**: `react ^19.0.0`, `react-dom ^19.0.0`
   - Apps must provide React (prevents duplicate instances)
 - **devDependencies**: react, react-dom (for local development), typescript, eslint
 
 #### `tsconfig.json`
+
 - Extends `../../tsconfig.base.json`
 
 ### Package Level: packages/utils
 
 #### `package.json`
+
 - Name: `@repo/utils`
 - **dependencies**: clsx, tailwind-merge
 - **devDependencies**: typescript, eslint
@@ -154,14 +229,17 @@ This is a **pnpm workspaces monorepo** using modern tooling:
 ### Package Level: packages/config
 
 #### `package.json`
+
 - Declares workspaces: eslint-config, typescript-config
 
 #### `packages/config/typescript-config/package.json`
+
 - Provides shared TypeScript configurations
 - Files: base.json, react.json, node.json
 - Peer dependency: typescript 5.9.3
 
 #### `packages/config/eslint-config/package.json` (NEW)
+
 - Provides shared ESLint configurations
 - Exports:
   - `.` → library.js (base config)
@@ -170,19 +248,22 @@ This is a **pnpm workspaces monorepo** using modern tooling:
 ## Dependency Management Rules
 
 1. **React in @repo/ui**
+
    - Declared as `peerDependencies` so consuming apps provide React
    - Declared as `devDependencies` for local development/testing
    - Prevents duplicate React instances across the monorepo
 
 2. **Internal packages**
+
    - Referenced using `workspace:*` protocol
    - Allows pnpm to resolve to local versions immediately
    - Symlinks are created during install
 
 3. **Version pinning**
-   - All versions are exact (no caret ^ or tilde ~)
-   - Ensures consistent behavior across environments
-   - Update entire monorepo together
+
+- UNVERIFIED: Version pinning varies; verify ranges in [package.json](package.json)
+- Ensures consistent behavior across environments
+- Update entire monorepo together
 
 4. **TypeScript**
    - All packages use v5.9.3 (exact match)
@@ -242,7 +323,7 @@ docker-compose up -d
 
 ## Best Practices Applied
 
-1. **workspace:* protocol** - Internal package resolution without version numbers
+1. **workspace:\* protocol** - Internal package resolution without version numbers
 2. **Exact version pinning** - No caret/tilde ranges in monorepo
 3. **peerDependencies** - React in ui package prevents duplication
 4. **Strict TypeScript** - noUnusedLocals, noUnusedParameters enabled
@@ -254,21 +335,25 @@ docker-compose up -d
 ## Troubleshooting
 
 **Dependencies not resolving?**
+
 - Delete `node_modules` and `pnpm-lock.yaml`
 - Run `pnpm install` fresh
 - Check `.pnpmrc` settings
 
 **React version conflicts?**
+
 - Verify @repo/ui exports React as peerDependency
 - Ensure apps/web provides compatible React version
 - Check `transpilePackages` in next.config.js
 
 **TypeScript errors?**
+
 - Verify tsconfig.json path aliases are correct
 - Check that @repo/ui and @repo/utils exports exist
 - Run `pnpm type-check` for full diagnostics
 
 **ESLint errors during build?**
+
 - Check eslint.config.mjs syntax
 - Verify all config files are in place
 - Run `pnpm lint` to diagnose

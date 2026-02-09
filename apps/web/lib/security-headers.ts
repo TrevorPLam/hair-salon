@@ -1,73 +1,35 @@
 /**
- * ═══════════════════════════════════════════════════════════════════════════════
- * Security Headers Configuration
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @file apps/web/lib/security-headers.ts
+ * @role runtime
+ * @summary OWASP-inspired security headers configuration.
  *
- * Purpose:
- * - Define OWASP-recommended security headers for HTTP responses
- * - Protect against XSS, clickjacking, MIME sniffing, and other web attacks
- * - Provide environment-specific header configurations
+ * @entrypoints
+ * - securityHeaders
+ * - getSecurityHeaders
  *
- * Responsibilities:
- * - Owns: Security header definitions (X-Frame-Options, etc.)
- * - Owns: Environment-specific overrides (dev vs. production)
- * - Does NOT own: Header application logic (handled by middleware)
+ * @exports
+ * - securityHeaders
+ * - getSecurityHeaders
  *
- * Key Flows:
- * - Middleware imports → calls getSecurityHeaders() → applies to all responses
- * - Different headers served based on NODE_ENV
+ * @depends_on
+ * - None
  *
- * Inputs/Outputs:
- * - Input: Environment string ('development' | 'production')
- * - Output: Record<string, string> of HTTP headers
- * - Side effects: None (pure configuration)
+ * @used_by
+ * - apps/web/middleware.ts
  *
- * Dependencies:
- * - External: None
- * - Internal: Used by middleware.ts
+ * @runtime
+ * - environment: server/edge
+ * - side_effects: none
  *
- * State & Invariants:
- * - Invariant: Production must include HSTS header
+ * @invariants
+ * - HSTS should only be enabled in production
  *
- * Error Handling:
- * - Invalid directives: Browser ignores, logs console warning
- * - Missing headers: Reduces security but doesn't break functionality
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * Performance Notes:
- * - Headers parsed once per request (minimal overhead)
- * - Headers parsed once per request
- *
- * Security Notes:
- * - CRITICAL: X-Frame-Options prevents clickjacking
- * - CRITICAL: HSTS forces HTTPS in production
- * - NOTE: unsafe-eval/unsafe-inline needed for Next.js dev mode
- * - NOTE: Production CSP is stricter (removes unsafe directives)
- *
- * Testing Notes:
- * - Test: Run securityheaders.com scan on production
- * - Test: Verify CSP violations logged in console
- * - Test: Verify HSTS header present in production only
- *
- * Change Risks:
- * - Missing HSTS allows MITM attacks in production
- *
- * Owner Boundaries:
- * - CSP nonce generation: lib/csp.ts
- * - Header application: middleware.ts
- * - Security docs: SECURITY.md
- *
- * AI Navigation Tags:
- * #security #headers #csp #xss #clickjacking #hsts #owasp
- *
- * TODO: Add Permissions-Policy for more granular feature control
- *
- * ═══════════════════════════════════════════════════════════════════════════════
- */
-
-/**
- * Advanced Security Headers Middleware
- *
- * Implements OWASP Top 10 security headers and best practices
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 export const securityHeaders = {

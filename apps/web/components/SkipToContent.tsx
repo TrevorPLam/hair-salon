@@ -1,7 +1,40 @@
 /**
- * Skip to Content Link
- * Allows keyboard users to skip navigation and go directly to main content
- * Improves accessibility for screen reader and keyboard-only users
+ * @file apps/web/components/SkipToContent.tsx
+ * @role runtime
+ * @summary Accessibility skip link to jump to main content.
+ *
+ * @entrypoints
+ * - Used by root layout
+ *
+ * @exports
+ * - default SkipToContent
+ *
+ * @depends_on
+ * - None
+ *
+ * @used_by
+ * - apps/web/app/layout.tsx
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: none
+ * - outputs: anchor link
+ *
+ * @invariants
+ * - Target id must exist (#main-content)
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @verification
+ * - Tab to skip link and confirm focus jumps to main content.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 export default function SkipToContent() {
@@ -12,5 +45,5 @@ export default function SkipToContent() {
     >
       Skip to main content
     </a>
-  )
+  );
 }

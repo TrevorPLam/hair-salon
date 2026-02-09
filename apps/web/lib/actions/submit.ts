@@ -1,74 +1,105 @@
 /**
- * Main submission handler for contact form.
+ * @file apps/web/lib/actions/submit.ts
+ * @role runtime
+ * @summary Server action to validate, rate-limit, and store contact submissions.
  *
- * @module lib/actions/submit
+ * @entrypoints
+ * - submitContactForm
+ *
+ * @exports
+ * - submitContactForm
+ *
+ * @depends_on
+ * - External: next/headers, zod
+ * - Internal: ../contact-form-schema
+ * - Internal: ../logger
+ * - Internal: ../request-context.server
+ * - Internal: ../sentry-server
+ * - Internal: ../rate-limit
+ * - Internal: ../request-validation
+ * - Internal: ./helpers
+ * - Internal: ./supabase
+ *
+ * @used_by
+ * - apps/web/lib/actions.ts
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: network calls to Supabase/HubSpot
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-'use server'
+'use server';
 
-import { headers } from 'next/headers'
-import { z } from 'zod'
-import { contactFormSchema, type ContactFormData } from '@/lib/contact-form-schema'
-import { logError } from '../logger'
-import { runWithRequestId } from '../request-context.server'
-import { withServerSpan } from '../sentry-server'
-import { checkRateLimit } from '../rate-limit'
-import { getValidatedClientIp } from '../request-validation'
+import { headers } from 'next/headers';
+import { z } from 'zod';
+import { contactFormSchema, type ContactFormData } from '@/lib/contact-form-schema';
+import { logError } from '../logger';
+import { runWithRequestId } from '../request-context.server';
+import { withServerSpan } from '../sentry-server';
+import { checkRateLimit } from '../rate-limit';
+import { getValidatedClientIp } from '../request-validation';
 import {
   getCorrelationIdFromHeaders,
   hashSpanValue,
   hashIp,
   getBlockedSubmissionResponse,
   buildSanitizedContactData,
-} from './helpers'
-import { insertLeadWithSpan, syncHubSpotLead } from './supabase'
+} from './helpers';
+import { insertLeadWithSpan, syncHubSpotLead } from './supabase';
 
 /**
  * Get validated client IP address from request headers (Issue #011 fixed).
- * 
+ *
  * In production, only trusts headers from known proxies (Cloudflare/Vercel).
  * Prevents IP spoofing attacks that bypass rate limiting.
- * 
+ *
  * @returns Client IP address or 'unknown' if not available
  */
 async function getClientIp(): Promise<string> {
-  const requestHeaders = await headers()
-  return getValidatedClientIp(requestHeaders)
+  const requestHeaders = await headers();
+  return getValidatedClientIp(requestHeaders);
 }
 
 async function handleContactFormSubmission(data: ContactFormData, requestHeaders: Headers) {
-  const blockedResponse = getBlockedSubmissionResponse(requestHeaders, data)
+  const blockedResponse = getBlockedSubmissionResponse(requestHeaders, data);
   if (blockedResponse) {
-    return blockedResponse
+    return blockedResponse;
   }
 
-  const validatedData = contactFormSchema.parse(data)
-  const clientIp = await getClientIp()
-  const sanitized = buildSanitizedContactData(validatedData, clientIp)
+  const validatedData = contactFormSchema.parse(data);
+  const clientIp = await getClientIp();
+  const sanitized = buildSanitizedContactData(validatedData, clientIp);
 
   const rateLimitPassed = await checkRateLimit({
     email: sanitized.safeEmail,
     clientIp,
     hashIp,
-  })
-  const isSuspicious = !rateLimitPassed
+  });
+  const isSuspicious = !rateLimitPassed;
 
-  const lead = await insertLeadWithSpan(sanitized, isSuspicious)
-  await syncHubSpotLead(lead.id, sanitized)
+  const lead = await insertLeadWithSpan(sanitized, isSuspicious);
+  await syncHubSpotLead(lead.id, sanitized);
 
   if (!rateLimitPassed) {
     return {
       success: false,
       message: 'Too many submissions. Please try again later.',
-    }
+    };
   }
 
-  return { success: true, message: "Thank you for your message! We'll be in touch soon." }
+  return { success: true, message: "Thank you for your message! We'll be in touch soon." };
 }
 
 /**
  * Submit contact form with validation, rate limiting, sanitization, and lead capture.
- * 
+ *
  * **Flow:**
  * 1. Validate input with Zod schema (contactFormSchema)
  * 2. Check rate limits (email + IP)
@@ -76,34 +107,34 @@ async function handleContactFormSubmission(data: ContactFormData, requestHeaders
  * 4. Insert lead into Supabase (required)
  * 5. Attempt HubSpot sync (best-effort)
  * 6. Log result to Sentry (errors) and logger (info/warn)
- * 
+ *
  * **Rate Limiting:**
  * - 3 requests per hour per email address
  * - 3 requests per hour per IP address
  * - Uses Upstash Redis (distributed) or in-memory fallback
  * - Returns "Too many submissions" message on limit exceeded
- * 
+ *
  * **Security:**
  * - All inputs sanitized with escapeHtml() to prevent XSS
  * - IP addresses hashed before storage (SHA-256 with salt)
  * - Payload size limited by middleware (1MB max)
  * - Contact data stored in Supabase (server-only access)
- * 
+ *
  * **Lead Capture:**
  * - Supabase insert is required (fails if not configured)
  * - HubSpot sync is best-effort (failures marked for retry)
- * 
+ *
  * **Error Handling:**
  * - Validation errors (Zod): Returns field-specific error messages
  * - Rate limit errors: Returns "try again later" message
  * - Network/API errors: Returns generic error, logs to Sentry
  * - Never exposes internal error details to users
- * 
+ *
  * @param data - Contact form data (validated against contactFormSchema)
  * @returns Success response with message or error response with details
- * 
+ *
  * @throws Never throws - all errors caught and returned as response objects
- * 
+ *
  * @example
  * ```typescript
  * const result = await submitContactForm({
@@ -112,7 +143,7 @@ async function handleContactFormSubmission(data: ContactFormData, requestHeaders
  *   message: 'I need help with SEO',
  *   company: 'Acme Corp', // optional
  * });
- * 
+ *
  * if (result.success) {
  *   console.log(result.message); // "Thank you for your message!"
  * } else {
@@ -125,9 +156,9 @@ async function handleContactFormSubmission(data: ContactFormData, requestHeaders
  * ```
  */
 export async function submitContactForm(data: ContactFormData) {
-  const requestHeaders = await headers()
-  const correlationId = getCorrelationIdFromHeaders(requestHeaders)
-  const correlationIdHash = correlationId ? hashSpanValue(correlationId) : undefined
+  const requestHeaders = await headers();
+  const correlationId = getCorrelationIdFromHeaders(requestHeaders);
+  const correlationIdHash = correlationId ? hashSpanValue(correlationId) : undefined;
 
   return runWithRequestId(correlationId, async () => {
     return withServerSpan(
@@ -140,24 +171,24 @@ export async function submitContactForm(data: ContactFormData) {
       },
       async () => {
         try {
-          return await handleContactFormSubmission(data, requestHeaders)
+          return await handleContactFormSubmission(data, requestHeaders);
         } catch (error) {
-          logError('Contact form submission error', error)
+          logError('Contact form submission error', error);
 
           if (error instanceof z.ZodError) {
             return {
               success: false,
               message: 'Please check your form inputs and try again.',
               errors: error.issues,
-            }
+            };
           }
 
           return {
             success: false,
             message: 'Something went wrong. Please try again or email us directly.',
-          }
+          };
         }
-      },
-    )
-  })
+      }
+    );
+  });
 }

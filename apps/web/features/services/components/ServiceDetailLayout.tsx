@@ -1,62 +1,56 @@
 /**
- * Reusable service detail page layout template.
+ * @file apps/web/features/services/components/ServiceDetailLayout.tsx
+ * @role runtime
+ * @summary Shared layout for service detail pages with JSON-LD.
  *
- * **Purpose:**
- * Provides consistent structure for all service pages (/services/*).
- * Each service page imports this and passes service-specific data.
+ * @entrypoints
+ * - Used by /services/* routes
  *
- * **Sections (in order):**
- * 1. Hero - Icon, title, description, CTA
- * 2. What's Included - Checklist of features
- * 3. Our Process - Numbered steps
- * 4. Who It's For - Target audience list
- * 5. Pricing Options - Tier cards with links
- * 6. FAQs - Accordion with questions
- * 7. Final CTA - Contact prompt
+ * @exports
+ * - default ServiceDetailLayout
+ * - ServiceDetailProps
+ * - ProcessStep
  *
- * **SEO Features:**
- * - Service schema.org structured data
- * - FAQ schema.org structured data
+ * @depends_on
+ * - External: react
+ * - External: next/link
+ * - External: lucide-react
+ * - Internal: @repo/ui (Container, Section, Card, Button, Accordion)
+ * - Internal: @/lib/env.public
  *
- * **Usage:**
- * ```tsx
- * // In app/services/seo/page.tsx
- * import ServiceDetailLayout from '@/components/ServiceDetailLayout'
- * import { Search } from 'lucide-react'
+ * @used_by
+ * - apps/web/app/services/*
  *
- * export default function SEOServicePage() {
- *   return (
- *     <ServiceDetailLayout
- *       icon={Search}
- *       title="SEO Services"
- *       description="Optimize your search presence..."
- *       included={['Technical SEO', 'Keyword research', ...]}
- *       process={[{ title: 'Audit', description: '...' }, ...]}
- *       whoItsFor={['Small businesses', 'E-commerce stores', ...]}
- *       pricing={[{ tier: 'Starter', description: '...', href: '/pricing' }]}
- *       faqs={[{ question: '...', answer: '...' }]}
- *     />
- *   )
- * }
- * ```
+ * @runtime
+ * - environment: server
+ * - side_effects: injects JSON-LD
  *
- * @component
+ * @data_flow
+ * - inputs: service detail props
+ * - outputs: structured data and page layout
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-import React from 'react'
-import Link from 'next/link'
-import { Check, LucideIcon } from 'lucide-react'
-import { Container, Section, Card, Button, Accordion, AccordionItem } from '@repo/ui'
-import { getPublicBaseUrl } from '@/lib/env.public'
+import React from 'react';
+import Link from 'next/link';
+import { Check, LucideIcon } from 'lucide-react';
+import { Container, Section, Card, Button, Accordion, AccordionItem } from '@repo/ui';
+import { getPublicBaseUrl } from '@/lib/env.public';
 
 /**
  * Process step data structure.
  */
 export interface ProcessStep {
   /** Step title */
-  title: string
+  title: string;
   /** Step description */
-  description: string
+  description: string;
 }
 
 /**
@@ -65,27 +59,27 @@ export interface ProcessStep {
  */
 export interface ServiceDetailProps {
   /** Lucide icon component for the service */
-  icon: LucideIcon
+  icon: LucideIcon;
   /** Service title (used in h1 and structured data) */
-  title: string
+  title: string;
   /** Service description (hero and meta) */
-  description: string
+  description: string;
   /** List of features/deliverables included */
-  included: string[]
+  included: string[];
   /** Numbered process steps */
-  process: ProcessStep[]
+  process: ProcessStep[];
   /** Target audience descriptions */
-  whoItsFor: string[]
+  whoItsFor: string[];
   /** Pricing tier cards */
   pricing: {
-    tier: string
-    description: string
-    href: string
-  }[]
+    tier: string;
+    description: string;
+    href: string;
+  }[];
   /** FAQ items for accordion */
-  faqs: AccordionItem[]
+  faqs: AccordionItem[];
   /** Optional service slug for structured data */
-  serviceSlug?: string
+  serviceSlug?: string;
 }
 
 /**
@@ -103,10 +97,10 @@ export default function ServiceDetailLayout({
   faqs,
   serviceSlug,
 }: ServiceDetailProps) {
-  const baseUrl = getPublicBaseUrl().replace(/\/$/, '')
+  const baseUrl = getPublicBaseUrl().replace(/\/$/, '');
   const resolvedServiceUrl = serviceSlug
     ? `${baseUrl}/services/${serviceSlug}`
-    : `${baseUrl}/services`
+    : `${baseUrl}/services`;
 
   // Structured data for Service
   const serviceStructuredData = {
@@ -131,7 +125,7 @@ export default function ServiceDetailLayout({
       description: tier.description,
       url: `${baseUrl}${tier.href}`,
     })),
-  }
+  };
 
   // Structured data for FAQs
   const faqStructuredData = {
@@ -145,7 +139,7 @@ export default function ServiceDetailLayout({
         text: faq.answer,
       },
     })),
-  }
+  };
 
   return (
     <>
@@ -285,5 +279,5 @@ export default function ServiceDetailLayout({
         </Container>
       </Section>
     </>
-  )
+  );
 }

@@ -1,4 +1,56 @@
+<!--
+/**
+ * @file CONTRIBUTING.md
+ * @role docs
+ * @summary Contribution guidelines and developer workflow notes.
+ *
+ * @entrypoints
+ * - Onboarding and contributor reference
+ *
+ * @exports
+ * - N/A
+ *
+ * @depends_on
+ * - N/A
+ *
+ * @used_by
+ * - Contributors and maintainers
+ *
+ * @runtime
+ * - environment: docs
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: project policies
+ * - outputs: contribution guidance
+ *
+ * @invariants
+ * - Version requirements must match package.json
+ *
+ * @gotchas
+ * - Tooling versions drift if not updated alongside package.json
+ *
+ * @issues
+ * - [severity:med] Some tool version lines need verification against source files.
+ *
+ * @opportunities
+ * - Add file references to all version claims
+ *
+ * @verification
+ * - TODO(verify): Cross-check tooling versions with package.json and apps/web/package.json
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+-->
+
 # Contributing to Hair Salon Template
+
+## Audit Status (PARTIAL)
+
+- Verified prerequisites reference [package.json](package.json).
+- Other tooling claims below are UNVERIFIED until cross-checked with source files.
 
 Thank you for your interest in contributing to the Hair Salon Template! This document provides guidelines for contributing to this project.
 
@@ -6,8 +58,8 @@ Thank you for your interest in contributing to the Hair Salon Template! This doc
 
 ### Prerequisites
 
-- **Node.js** `>=20.0.0` (enforced via engines field)
-- **pnpm** `10.29.2` exactly (enforced via packageManager field)
+- **Node.js** `>=20.0.0` (see engines in [package.json](package.json))
+- **pnpm** `10.29.2` exactly (see packageManager in [package.json](package.json))
 
 ### Initial Setup
 
@@ -108,7 +160,7 @@ pnpm format:check
 The repository uses modern tooling:
 
 - **pnpm** - Fast, disk-efficient package manager
-- **TypeScript 5.9.3** - Type safety with strict mode
+- **TypeScript 5.7.2** - Type safety with strict mode (see [package.json](package.json))
 - **ESLint 9** - Flat config format
 - **Prettier 3.2.5** - Code formatter
 - **Turbo 2.2.3** - Monorepo task runner

@@ -1,6 +1,47 @@
-import React, { memo } from 'react'
-import Link from 'next/link'
-import { Button, Container, Section } from '@repo/ui'
+/**
+ * @file apps/web/components/FinalCTA.tsx
+ * @role runtime
+ * @summary Reusable CTA section for booking and services links.
+ *
+ * @entrypoints
+ * - Used on marketing pages
+ *
+ * @exports
+ * - default FinalCTA
+ *
+ * @depends_on
+ * - External: react
+ * - External: next/link
+ * - Internal: @repo/ui (Button, Container, Section)
+ *
+ * @used_by
+ * - apps/web/app/page.tsx
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static CTA copy
+ * - outputs: CTA section
+ *
+ * @invariants
+ * - Links should resolve to valid routes
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @verification
+ * - Confirm CTA links navigate to /contact and /services.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
+import React, { memo } from 'react';
+import Link from 'next/link';
+import { Button, Container, Section } from '@repo/ui';
 
 function FinalCTA() {
   return (
@@ -20,7 +61,11 @@ function FinalCTA() {
               </Button>
             </Link>
             <Link href="/services">
-              <Button variant="secondary" size="large" className="border-white text-charcoal bg-white hover:bg-off-white">
+              <Button
+                variant="secondary"
+                size="large"
+                className="border-white text-charcoal bg-white hover:bg-off-white"
+              >
                 View Services
               </Button>
             </Link>
@@ -28,7 +73,7 @@ function FinalCTA() {
         </div>
       </Container>
     </Section>
-  )
+  );
 }
 
-export default memo(FinalCTA)
+export default memo(FinalCTA);

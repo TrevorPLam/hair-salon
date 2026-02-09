@@ -1,34 +1,71 @@
-'use client'
+/**
+ * @file apps/web/features/search/components/SearchPage.tsx
+ * @role runtime
+ * @summary Client search page rendering filtered results.
+ *
+ * @entrypoints
+ * - Used by /search route
+ *
+ * @exports
+ * - default SearchPage
+ *
+ * @depends_on
+ * - External: react
+ * - External: next/link
+ * - External: next/navigation (useSearchParams)
+ * - External: lucide-react
+ * - Internal: @/lib/search (SearchItem)
+ *
+ * @used_by
+ * - apps/web/app/search/page.tsx
+ *
+ * @runtime
+ * - environment: client
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: query string and search items
+ * - outputs: filtered results list
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
 
-import { useMemo, useState } from 'react'
-import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
-import { Search } from 'lucide-react'
-import type { SearchItem } from '@/lib/search'
+'use client';
+
+import { useMemo, useState } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { Search } from 'lucide-react';
+import type { SearchItem } from '@/lib/search';
 
 interface SearchPageProps {
-  items: SearchItem[]
+  items: SearchItem[];
 }
 
 export default function SearchPage({ items }: SearchPageProps) {
-  const searchParams = useSearchParams()
-  const defaultQuery = searchParams.get('q') ?? ''
-  const [query, setQuery] = useState(defaultQuery)
+  const searchParams = useSearchParams();
+  const defaultQuery = searchParams.get('q') ?? '';
+  const [query, setQuery] = useState(defaultQuery);
 
   // Same substring search semantics as SearchDialog to keep results consistent between dialog and full page
   const filteredItems = useMemo(() => {
-    const normalized = query.trim().toLowerCase()
+    const normalized = query.trim().toLowerCase();
     if (!normalized) {
-      return items.slice(0, 10)
+      return items.slice(0, 10);
     }
 
     return items.filter((item) => {
       const haystack = [item.title, item.description, item.tags?.join(' ') ?? '']
         .join(' ')
-        .toLowerCase()
-      return haystack.includes(normalized)
-    })
-  }, [items, query])
+        .toLowerCase();
+      return haystack.includes(normalized);
+    });
+  }, [items, query]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -85,5 +122,5 @@ export default function SearchPage({ items }: SearchPageProps) {
         </div>
       </section>
     </div>
-  )
+  );
 }

@@ -1,11 +1,54 @@
-import type { Metadata } from 'next'
-import { Sparkles } from 'lucide-react'
-import ServiceDetailLayout from '@/features/services/components/ServiceDetailLayout'
+/**
+ * @file apps/web/app/services/treatments/page.tsx
+ * @role runtime
+ * @summary Service detail page for hair treatments.
+ *
+ * @entrypoints
+ * - Route: /services/treatments
+ *
+ * @exports
+ * - metadata
+ * - default TreatmentsPage
+ *
+ * @depends_on
+ * - External: next (Metadata)
+ * - External: lucide-react
+ * - Internal: @/features/services/components/ServiceDetailLayout
+ *
+ * @used_by
+ * - Next.js app router
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static service detail data
+ * - outputs: service detail layout
+ *
+ * @invariants
+ * - Pricing anchors should exist on /pricing
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @verification
+ * - Visit /services/treatments and confirm layout renders.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
+import type { Metadata } from 'next';
+import { Sparkles } from 'lucide-react';
+import ServiceDetailLayout from '@/features/services/components/ServiceDetailLayout';
 
 export const metadata: Metadata = {
   title: 'Hair Treatments | Hair Salon Template',
-  description: 'Revitalize your hair with our deep conditioning, keratin, and scalp treatments. Restore health, shine, and manageability.',
-}
+  description:
+    'Revitalize your hair with our deep conditioning, keratin, and scalp treatments. Restore health, shine, and manageability.',
+};
 
 export default function TreatmentsPage() {
   return (
@@ -68,17 +111,20 @@ export default function TreatmentsPage() {
       faqs={[
         {
           question: 'How long does a Keratin treatment last?',
-          answer: 'Depending on the specific treatment and aftercare, it can last anywhere from 3 to 5 months.',
+          answer:
+            'Depending on the specific treatment and aftercare, it can last anywhere from 3 to 5 months.',
         },
         {
           question: 'Can I get a treatment with my color service?',
-          answer: 'Yes! Many treatments are designed to be done immediately after color to lock it in and restore moisture.',
+          answer:
+            'Yes! Many treatments are designed to be done immediately after color to lock it in and restore moisture.',
         },
         {
           question: 'How often should I get a deep conditioning treatment?',
-          answer: 'For most hair types, once a month is recommended. If your hair is very damaged, we may suggest more frequent visits.',
+          answer:
+            'For most hair types, once a month is recommended. If your hair is very damaged, we may suggest more frequent visits.',
         },
       ]}
     />
-  )
+  );
 }

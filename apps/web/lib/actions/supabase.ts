@@ -1,19 +1,48 @@
 /**
- * Supabase-related functions for contact form actions.
+ * @file apps/web/lib/actions/supabase.ts
+ * @role runtime
+ * @summary Supabase lead insert/update helpers and HubSpot sync trigger.
  *
- * @module lib/actions/supabase
+ * @entrypoints
+ * - insertLeadWithSpan
+ * - updateLeadWithSpan
+ * - syncHubSpotLead
+ *
+ * @exports
+ * - Supabase lead helpers
+ *
+ * @depends_on
+ * - Internal: ../logger
+ * - Internal: ../sentry-server
+ * - Internal: ../supabase-leads
+ * - Internal: ./helpers
+ * - Internal: ./hubspot
+ *
+ * @used_by
+ * - apps/web/lib/actions/submit.ts
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: network calls to Supabase and HubSpot
+ *
+ * @issues
+ * - [severity:low] Sync failures update lead status to needs_sync.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-import { logWarn, logInfo, logError } from '../logger'
-import { withServerSpan } from '../sentry-server'
-import { insertSupabaseLead, updateSupabaseLead, type SupabaseLeadRow } from '../supabase-leads'
-import type { SanitizedContactData } from './types'
-import { buildLeadSpanAttributes, buildHubSpotIdempotencyKey, normalizeError } from './helpers'
-import { retryHubSpotUpsert, buildHubSpotProperties } from './hubspot'
+import { logWarn, logInfo, logError } from '../logger';
+import { withServerSpan } from '../sentry-server';
+import { insertSupabaseLead, updateSupabaseLead, type SupabaseLeadRow } from '../supabase-leads';
+import type { SanitizedContactData } from './types';
+import { buildLeadSpanAttributes, buildHubSpotIdempotencyKey, normalizeError } from './helpers';
+import { retryHubSpotUpsert, buildHubSpotProperties } from './hubspot';
 
 export async function insertLeadWithSpan(
   sanitized: SanitizedContactData,
-  isSuspicious: boolean,
+  isSuspicious: boolean
 ): Promise<SupabaseLeadRow> {
   const lead = await withServerSpan(
     {
@@ -35,35 +64,43 @@ export async function insertLeadWithSpan(
         hubspot_sync_status: 'pending',
         hubspot_retry_count: 0,
         hubspot_idempotency_key: null,
-      }),
-  )
+      })
+  );
 
   if (isSuspicious) {
     logWarn('Rate limit exceeded for contact form', {
       emailHash: sanitized.emailHash,
       ip: sanitized.hashedIp,
-    })
+    });
   }
 
-  return lead
+  return lead;
 }
 
-export async function updateLeadWithSpan(leadId: string, emailHash: string, updates: Record<string, unknown>) {
+export async function updateLeadWithSpan(
+  leadId: string,
+  emailHash: string,
+  updates: Record<string, unknown>
+) {
   return withServerSpan(
     {
       name: 'supabase.update',
       op: 'db.supabase',
       attributes: buildLeadSpanAttributes(leadId, emailHash),
     },
-    () => updateSupabaseLead(leadId, updates),
-  )
+    () => updateSupabaseLead(leadId, updates)
+  );
 }
 
 export async function syncHubSpotLead(leadId: string, sanitized: SanitizedContactData) {
-  const hubspotProperties = buildHubSpotProperties(sanitized)
-  const syncAttemptedAt = new Date().toISOString()
-  const idempotencyKey = buildHubSpotIdempotencyKey(leadId, sanitized.emailHash)
-  const retryResult = await retryHubSpotUpsert(hubspotProperties, idempotencyKey, sanitized.emailHash)
+  const hubspotProperties = buildHubSpotProperties(sanitized);
+  const syncAttemptedAt = new Date().toISOString();
+  const idempotencyKey = buildHubSpotIdempotencyKey(leadId, sanitized.emailHash);
+  const retryResult = await retryHubSpotUpsert(
+    hubspotProperties,
+    idempotencyKey,
+    sanitized.emailHash
+  );
 
   if (retryResult.contact) {
     try {
@@ -73,23 +110,23 @@ export async function syncHubSpotLead(leadId: string, sanitized: SanitizedContac
         hubspot_last_sync_attempt: syncAttemptedAt,
         hubspot_retry_count: retryResult.attempts,
         hubspot_idempotency_key: idempotencyKey,
-      })
-      logInfo('HubSpot contact synced', { leadId, emailHash: sanitized.emailHash })
+      });
+      logInfo('HubSpot contact synced', { leadId, emailHash: sanitized.emailHash });
     } catch (updateError) {
-      logError('Failed to update HubSpot sync status', updateError)
+      logError('Failed to update HubSpot sync status', updateError);
     }
-    return
+    return;
   }
 
-  logError('HubSpot sync failed', normalizeError(retryResult.error))
+  logError('HubSpot sync failed', normalizeError(retryResult.error));
   try {
     await updateLeadWithSpan(leadId, sanitized.emailHash, {
       hubspot_sync_status: 'needs_sync',
       hubspot_last_sync_attempt: syncAttemptedAt,
       hubspot_retry_count: retryResult.attempts,
       hubspot_idempotency_key: idempotencyKey,
-    })
+    });
   } catch (updateError) {
-    logError('Failed to update HubSpot sync status', updateError)
+    logError('Failed to update HubSpot sync status', updateError);
   }
 }

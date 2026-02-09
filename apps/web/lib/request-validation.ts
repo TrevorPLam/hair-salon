@@ -1,41 +1,39 @@
 /**
- * Request validation helpers for CSRF and IP parsing.
+ * @file apps/web/lib/request-validation.ts
+ * @role runtime
+ * @summary CSRF validation and trusted client IP extraction.
  *
- * @module lib/request-validation
+ * @entrypoints
+ * - validateOrigin
+ * - getValidatedClientIp
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - validateOrigin
+ * - getValidatedClientIp
  *
- * **FILE PURPOSE**: Centralize header validation and IP extraction logic so
- * server actions can focus on orchestration.
+ * @depends_on
+ * - Node: net (isIP)
+ * - Internal: ./logger
+ * - Internal: ./env
  *
- * **ARCHITECTURE PATTERN**: Helper module (server-only utility)
- * - Called by lib/actions.ts during contact submissions
- * - Returns safe/validated values without throwing
+ * @used_by
+ * - apps/web/lib/actions/submit.ts
  *
- * **CURRENT STATE**: Supports CSRF origin validation and trusted proxy headers.
+ * @runtime
+ * - environment: server
+ * - side_effects: none
  *
- * **KEY DEPENDENCIES**:
- * - `./env.ts` — environment detection and site URL
- * - `./logger.ts` — safe logging
+ * @issues
+ * - [severity:low] Missing headers result in validation failure.
  *
- * **AI ITERATION HINTS**:
- * 1. Keep trusted headers aligned with hosting providers.
- * 2. Avoid throwing; return false/unknown for unsafe inputs.
- * 3. Log only sanitized metadata (no raw IPs).
- *
- * **SECURITY CHECKLIST**:
- * - [x] Reject missing origin/referer headers
- * - [x] Validate URL parsing for origin/referer
- * - [x] Only trust proxy headers based on environment
- *
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-import { isIP } from 'net'
-import { logWarn } from './logger'
-import { isProduction, validatedEnv } from './env'
+import { isIP } from 'net';
+import { logWarn } from './logger';
+import { isProduction, validatedEnv } from './env';
 
 /**
  * Trusted proxy header configuration.
@@ -43,97 +41,91 @@ import { isProduction, validatedEnv } from './env'
  * Maps environment to trusted headers in priority order.
  */
 const TRUSTED_IP_HEADERS = {
-  production: [
-    'cf-connecting-ip',
-    'x-vercel-forwarded-for',
-  ],
-  development: [
-    'x-forwarded-for',
-    'x-real-ip',
-  ],
-} as const
+  production: ['cf-connecting-ip', 'x-vercel-forwarded-for'],
+  development: ['x-forwarded-for', 'x-real-ip'],
+} as const;
 
 function getExpectedHost(host: string | null): string {
-  return host || validatedEnv.NEXT_PUBLIC_SITE_URL.replace(/^https?:\/\//, '')
+  return host || validatedEnv.NEXT_PUBLIC_SITE_URL.replace(/^https?:\/\//, '');
 }
 
 function validateHeaderUrl(
   headerValue: string,
   expectedHost: string,
-  headerName: 'origin' | 'referer',
+  headerName: 'origin' | 'referer'
 ): boolean {
   try {
-    const url = new URL(headerValue)
+    const url = new URL(headerValue);
     if (url.host !== expectedHost) {
-      logWarn(`CSRF: ${headerName} mismatch`, { [headerName]: headerValue, expectedHost })
-      return false
+      logWarn(`CSRF: ${headerName} mismatch`, { [headerName]: headerValue, expectedHost });
+      return false;
     }
-    return true
+    return true;
   } catch {
-    logWarn(`CSRF: Invalid ${headerName} URL`, { [headerName]: headerValue })
-    return false
+    logWarn(`CSRF: Invalid ${headerName} URL`, { [headerName]: headerValue });
+    return false;
   }
 }
 
 export function validateOrigin(requestHeaders: Headers): boolean {
-  const origin = requestHeaders.get('origin')
-  const referer = requestHeaders.get('referer')
-  const host = requestHeaders.get('host')
+  const origin = requestHeaders.get('origin');
+  const referer = requestHeaders.get('referer');
+  const host = requestHeaders.get('host');
 
   if (!origin && !referer) {
-    logWarn('CSRF: No origin or referer header')
-    return false
+    logWarn('CSRF: No origin or referer header');
+    return false;
   }
 
-  const expectedHost = getExpectedHost(host)
+  const expectedHost = getExpectedHost(host);
 
   if (origin && !validateHeaderUrl(origin, expectedHost, 'origin')) {
-    return false
+    return false;
   }
 
   if (referer && !validateHeaderUrl(referer, expectedHost, 'referer')) {
-    return false
+    return false;
   }
 
-  return true
+  return true;
 }
 
 function isValidIpAddress(value: string): boolean {
-  return isIP(value) !== 0
+  return isIP(value) !== 0;
 }
 
 function extractFirstIp(headerValue: string): string | null {
-  const trimmedHeader = headerValue.trim()
+  const trimmedHeader = headerValue.trim();
   if (!trimmedHeader) {
-    return null
+    return null;
   }
 
-  const firstIp = trimmedHeader.split(',')[0]?.trim()
+  const firstIp = trimmedHeader.split(',')[0]?.trim();
   if (!firstIp) {
-    return null
+    return null;
   }
 
   if (!isValidIpAddress(firstIp)) {
     // WHY: Avoid trusting malformed proxy headers.
-    return null
+    return null;
   }
 
-  return firstIp
+  return firstIp;
 }
 
 export function getValidatedClientIp(requestHeaders: Headers): string {
-  const environment = isProduction() ? 'production' : 'development'
-  const trustedHeaders = TRUSTED_IP_HEADERS[environment]
+  const environment = isProduction() ? 'production' : 'development';
+  const trustedHeaders = TRUSTED_IP_HEADERS[environment];
 
   for (const headerName of trustedHeaders) {
-    const headerValue = requestHeaders.get(headerName)
+    const headerValue = requestHeaders.get(headerName);
     if (headerValue) {
-      const candidateIp = extractFirstIp(headerValue)
+      const candidateIp = extractFirstIp(headerValue);
       if (candidateIp) {
-        return candidateIp
+        return candidateIp;
       }
     }
   }
 
-  return 'unknown'
+  return 'unknown';
 }

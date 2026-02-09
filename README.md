@@ -1,4 +1,57 @@
+<!--
+/**
+ * @file README.md
+ * @role docs
+ * @summary Root project overview and quickstart instructions.
+ *
+ * @entrypoints
+ * - First-stop documentation for users and contributors
+ *
+ * @exports
+ * - N/A
+ *
+ * @depends_on
+ * - N/A
+ *
+ * @used_by
+ * - Developers and operators
+ *
+ * @runtime
+ * - environment: docs
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: repository configuration and tooling
+ * - outputs: onboarding guidance
+ *
+ * @invariants
+ * - Version claims must match package.json files
+ *
+ * @gotchas
+ * - Quickstart commands are UNVERIFIED until executed
+ *
+ * @issues
+ * - [severity:med] Contains unverified claims without file references.
+ *
+ * @opportunities
+ * - Add evidence links for all tool versions and commands
+ *
+ * @verification
+ * - TODO(verify): Run commands in docs/TESTING_STATUS.md and update this file
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+-->
+
 # Hair Salon Template
+
+## Audit Status (PARTIAL)
+
+- Verified: Node/pnpm requirements are defined in [package.json](package.json).
+- Verified: Next.js and React versions are defined in [apps/web/package.json](apps/web/package.json).
+- All other statements below are UNVERIFIED until audited and linked to source files.
 
 Professional hair salon website template monorepo built with modern web technologies.
 

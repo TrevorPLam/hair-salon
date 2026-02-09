@@ -1,32 +1,75 @@
-import React, { memo } from 'react'
-import { Container, Section, Card } from '@repo/ui'
+/**
+ * @file apps/web/components/SocialProof.tsx
+ * @role runtime
+ * @summary Testimonials and metrics section for social proof.
+ *
+ * @entrypoints
+ * - Used on the home page
+ *
+ * @exports
+ * - default SocialProof
+ *
+ * @depends_on
+ * - External: react
+ * - Internal: @repo/ui (Container, Section, Card)
+ *
+ * @used_by
+ * - apps/web/app/page.tsx
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static testimonials and metrics
+ * - outputs: social proof section
+ *
+ * @invariants
+ * - Metrics should match real business numbers
+ *
+ * @issues
+ * - [severity:low] Testimonial data is static placeholder copy.
+ *
+ * @verification
+ * - Confirm testimonial cards render in grid layout.
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+
+import React, { memo } from 'react';
+import { Container, Section, Card } from '@repo/ui';
 
 const testimonials = [
   {
-    quote: "I've never walked out of a salon feeling this confident. The stylists really listen to what you want.",
+    quote:
+      "I've never walked out of a salon feeling this confident. The stylists really listen to what you want.",
     author: 'Sarah Johnson',
     company: 'Local Resident',
     title: 'Client since 2023',
   },
   {
-    quote: "The atmosphere is so relaxing and the color services are top-notch. I wouldn't trust anyone else with my hair.",
+    quote:
+      "The atmosphere is so relaxing and the color services are top-notch. I wouldn't trust anyone else with my hair.",
     author: 'Michael Chen',
     company: 'Regular Customer',
     title: 'Client since 2021',
   },
   {
-    quote: "Fantastic experience from start to finish. The team is professional, friendly, and incredibly talented.",
+    quote:
+      'Fantastic experience from start to finish. The team is professional, friendly, and incredibly talented.',
     author: 'Emily Rodriguez',
     company: 'Wedding Client',
     title: 'Client since 2024',
   },
-]
+];
 
 const metrics = [
   { value: '5k+', label: 'Happy Clients' },
   { value: '10+', label: 'Years Experience' },
   { value: '4.9', label: 'Average Rating' },
-]
+];
 
 function SocialProof() {
   return (
@@ -45,7 +88,9 @@ function SocialProof() {
         <div className="grid md:grid-cols-3 gap-8 mb-16">
           {testimonials.map((testimonial) => (
             <Card key={testimonial.author} variant="testimonial">
-              <p className="text-slate mb-6 italic leading-relaxed">&quot;{testimonial.quote}&quot;</p>
+              <p className="text-slate mb-6 italic leading-relaxed">
+                &quot;{testimonial.quote}&quot;
+              </p>
               <div>
                 <p className="font-semibold text-charcoal">{testimonial.author}</p>
                 <p className="text-slate text-sm">{testimonial.title}</p>
@@ -65,7 +110,7 @@ function SocialProof() {
         </div>
       </Container>
     </Section>
-  )
+  );
 }
 
-export default memo(SocialProof)
+export default memo(SocialProof);

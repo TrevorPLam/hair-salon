@@ -1,83 +1,43 @@
 /**
- * React Error Boundary component with recovery mechanisms.
+ * @file apps/web/components/ErrorBoundary.tsx
+ * @role runtime
+ * @summary Client error boundary with retry and home navigation.
  *
- * @component ErrorBoundary
+ * @entrypoints
+ * - Used by providers to wrap the app tree
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - ErrorBoundary
+ * - navigateHome
+ * - default ErrorBoundary
  *
- * **FILE PURPOSE**: Global error boundary to prevent app crashes.
- * Catches React errors and provides user-friendly recovery options.
+ * @depends_on
+ * - External: react
+ * - Internal: @/lib/logger
  *
- * **RECOVERY MECHANISMS**:
- * - Retry button: Limited to MAX_RECOVERY_ATTEMPTS (default: 1)
- * - Go home: Safe navigation escape hatch
- * - Session storage tracks recovery attempts per session
+ * @used_by
+ * - apps/web/app/providers.tsx
  *
- * **ERROR HANDLING**:
- * - Catches errors in component tree below it
- * - Logs errors to error reporting service (via logError)
- * - Shows user-friendly fallback UI instead of blank screen
+ * @runtime
+ * - environment: client
+ * - side_effects: sessionStorage access, logging
  *
- * **STORAGE & PERSISTENCE**:
- * - Uses sessionStorage for recovery attempt tracking
- * - Handles storage failures gracefully (private browsing, blocked access)
- * - Resets on browser session end
+ * @data_flow
+ * - inputs: caught errors
+ * - outputs: fallback UI and log events
  *
- * **USAGE**:
- * ```tsx
- * <ErrorBoundary>
- *   <YourApp />
- * </ErrorBoundary>
+ * @invariants
+ * - Retry attempts are capped to avoid loops
  *
- * // With custom fallback
- * <ErrorBoundary fallback={<CustomErrorUI />}>
- *   <YourApp />
- * </ErrorBoundary>
- * ```
+ * @issues
+ * - [severity:low] Recovery attempts rely on sessionStorage availability.
  *
- * **AI ITERATION HINTS**:
- * - MAX_RECOVERY_ATTEMPTS can be adjusted based on error patterns
- * - Custom fallback prop available for branded error pages
- * - Error logging integrates with your error reporting service
+ * @verification
+ * - Trigger an error and confirm retry/home behavior.
  *
- * **DEPENDENCIES**:
- * - @/lib/logger: Error logging service
- * - React class component (required for error boundaries)
- *
- * ═══════════════════════════════════════════════════════════════════════════════
- *
- * **Purpose:**
- * - Catch React errors and prevent app crashes
- * - Provide user-friendly error recovery options
- * - Log errors for debugging and monitoring
- *
- * **Features:**
- * - Limited retry attempts to prevent infinite loops
- * - Safe navigation home as escape hatch
- * - Session-based recovery tracking
- * - Customizable fallback UI
- * - Error logging to monitoring service
- *
- * **Recovery Flow:**
- * 1. Error occurs → ErrorBoundary catches it
- * 2. Log error to monitoring service
- * 3. Show fallback UI with retry/home options
- * 4. Track recovery attempts in sessionStorage
- * 5. Disable retry after MAX_RECOVERY_ATTEMPTS reached
- *
- * **Storage Handling:**
- * - Uses sessionStorage for persistence across page reloads
- * - Gracefully handles storage unavailability
- * - Resets when browser session ends
- *
- * **Accessibility:**
- * - Semantic HTML structure for error screen
- * - Focus management for interactive elements
- * - Clear error messaging and action labels
- *
- * @see app/providers.tsx for global usage
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 'use client';

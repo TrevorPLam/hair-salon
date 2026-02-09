@@ -1,39 +1,50 @@
 /**
- * Homepage hero section component.
+ * @file apps/web/components/Hero.tsx
+ * @role runtime
+ * @summary Homepage hero with brand pitch and primary CTAs.
  *
- * **Purpose:**
- * Primary above-the-fold content on the homepage.
- * Introduces the brand value proposition with CTAs.
+ * @entrypoints
+ * - Used on the home page
  *
- * **Layout:**
- * - Two-column grid on desktop (text + image)
- * - Single column on mobile (text only, image hidden)
+ * @exports
+ * - default Hero
  *
- * **CTAs:**
- * - Primary: "Book Appointment" → /contact
- * - Secondary: "View Services" → /services
+ * @depends_on
+ * - External: react
+ * - External: next/link
+ * - External: next/image
+ * - Internal: @repo/ui (Button, Container)
  *
- * **Image:**
- * - Location: /public/images/hero-salon.svg
- * - Priority loaded (LCP optimization)
- * - Hidden on mobile for faster load
+ * @used_by
+ * - apps/web/app/page.tsx
  *
- * **Styling:**
- * - Background: Gradient from off-white to white
- * - Text: charcoal (dark) headings, slate body
+ * @runtime
+ * - environment: server
+ * - side_effects: none
  *
- * @component
+ * @data_flow
+ * - inputs: static hero copy
+ * - outputs: hero section
+ *
+ * @invariants
+ * - Hero image path should exist in public assets
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @verification
+ * - Confirm hero image loads and CTA links work.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-import React from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
-import { Button, Container } from '@repo/ui'
+import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Button, Container } from '@repo/ui';
 
-/**
- * Homepage hero section.
- * Renders the main value proposition and CTAs.
- */
 export default function Hero() {
   return (
     <section className="bg-gradient-to-b from-off-white to-white py-20 md:py-32">
@@ -45,7 +56,8 @@ export default function Hero() {
               Professional hair care that makes you shine.
             </h1>
             <p className="text-lg md:text-xl text-slate-800 mb-8 leading-relaxed">
-              Experience the perfect blend of style and service. Our expert stylists are dedicated to helping you look and feel your best with personalized hair care solutions.
+              Experience the perfect blend of style and service. Our expert stylists are dedicated
+              to helping you look and feel your best with personalized hair care solutions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/contact">
@@ -81,5 +93,5 @@ export default function Hero() {
         </div>
       </Container>
     </section>
-  )
+  );
 }

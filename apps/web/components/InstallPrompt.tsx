@@ -1,13 +1,55 @@
-'use client'
+/**
+ * @file apps/web/components/InstallPrompt.tsx
+ * @role runtime
+ * @summary PWA install prompt with deferred beforeinstallprompt handling.
+ *
+ * @entrypoints
+ * - Used by layout to nudge PWA install
+ *
+ * @exports
+ * - default InstallPrompt
+ *
+ * @depends_on
+ * - External: react
+ * - External: lucide-react
+ * - Internal: @repo/ui (Button)
+ * - Internal: @/lib/constants (UI_TIMING)
+ *
+ * @used_by
+ * - apps/web/app/layout.tsx
+ *
+ * @runtime
+ * - environment: client
+ * - side_effects: localStorage, window event listeners
+ *
+ * @data_flow
+ * - inputs: beforeinstallprompt event
+ * - outputs: install prompt UI
+ *
+ * @invariants
+ * - Prompt should not show if dismissed or installed
+ *
+ * @issues
+ * - [severity:low] localStorage access may fail in restricted modes.
+ *
+ * @verification
+ * - Trigger PWA prompt and verify dismiss/install behavior.
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
 
-import React, { useEffect, useState } from 'react'
-import { X, Download } from 'lucide-react'
-import { Button } from '@repo/ui'
-import { UI_TIMING } from '@/lib/constants'
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { X, Download } from 'lucide-react';
+import { Button } from '@repo/ui';
+import { UI_TIMING } from '@/lib/constants';
 
 interface BeforeInstallPromptEvent extends Event {
-  prompt: () => Promise<void>
-  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
 /**
@@ -17,86 +59,86 @@ interface BeforeInstallPromptEvent extends Event {
  * **SSR Safety:** All browser API access guarded with window checks.
  */
 export default function InstallPrompt() {
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
-  const [showPrompt, setShowPrompt] = useState(false)
+  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [showPrompt, setShowPrompt] = useState(false);
 
   useEffect(() => {
     // SSR Safety: Check if window is available (Issue #026 fixed)
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') return;
 
     // Check if user has already dismissed the prompt
-    const dismissed = localStorage.getItem('pwa-install-dismissed')
-    const installed = localStorage.getItem('pwa-installed')
+    const dismissed = localStorage.getItem('pwa-install-dismissed');
+    const installed = localStorage.getItem('pwa-installed');
 
     if (dismissed || installed) {
-      return
+      return;
     }
 
     // Timer ID for cleanup (Issue #025 fixed - proper cleanup scope)
-    let promptTimerId: NodeJS.Timeout | null = null
+    let promptTimerId: NodeJS.Timeout | null = null;
 
     const handler = (e: Event) => {
       // Prevent the mini-infobar from appearing on mobile
-      e.preventDefault()
+      e.preventDefault();
       // Save the event so it can be triggered later
-      setDeferredPrompt(e as BeforeInstallPromptEvent)
+      setDeferredPrompt(e as BeforeInstallPromptEvent);
 
       // Show the install prompt after a delay (to not be too intrusive)
       // Memory-safe: Timer will be cleaned up on unmount
       promptTimerId = setTimeout(() => {
-        setShowPrompt(true)
-      }, UI_TIMING.PWA_INSTALL_PROMPT_DELAY_MS)
-    }
+        setShowPrompt(true);
+      }, UI_TIMING.PWA_INSTALL_PROMPT_DELAY_MS);
+    };
 
-    window.addEventListener('beforeinstallprompt', handler)
+    window.addEventListener('beforeinstallprompt', handler);
 
     // Check if app is already installed
-    const isInstalled = window.matchMedia('(display-mode: standalone)').matches
+    const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
     if (isInstalled) {
-      localStorage.setItem('pwa-installed', 'true')
+      localStorage.setItem('pwa-installed', 'true');
     }
 
     // Cleanup: Remove event listener AND cancel timer
     return () => {
-      window.removeEventListener('beforeinstallprompt', handler)
+      window.removeEventListener('beforeinstallprompt', handler);
       if (promptTimerId) {
-        clearTimeout(promptTimerId)
+        clearTimeout(promptTimerId);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   const handleInstall = async () => {
-    if (!deferredPrompt) return
+    if (!deferredPrompt) return;
 
     // SSR Safety check
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') return;
 
     // Show the install prompt
-    await deferredPrompt.prompt()
+    await deferredPrompt.prompt();
 
     // Wait for the user to respond to the prompt
-    const choiceResult = await deferredPrompt.userChoice
+    const choiceResult = await deferredPrompt.userChoice;
 
     if (choiceResult.outcome === 'accepted') {
-      localStorage.setItem('pwa-installed', 'true')
+      localStorage.setItem('pwa-installed', 'true');
     } else {
-      localStorage.setItem('pwa-install-dismissed', 'true')
+      localStorage.setItem('pwa-install-dismissed', 'true');
     }
 
     // Clear the deferredPrompt
-    setDeferredPrompt(null)
-    setShowPrompt(false)
-  }
+    setDeferredPrompt(null);
+    setShowPrompt(false);
+  };
 
   const handleDismiss = () => {
     // SSR Safety check
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') return;
 
-    localStorage.setItem('pwa-install-dismissed', 'true')
-    setShowPrompt(false)
-  }
+    localStorage.setItem('pwa-install-dismissed', 'true');
+    setShowPrompt(false);
+  };
 
-  if (!showPrompt) return null
+  if (!showPrompt) return null;
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 p-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl animate-slide-up md:bottom-4 md:left-4 md:right-auto md:max-w-md md:rounded-lg">
@@ -138,5 +180,5 @@ export default function InstallPrompt() {
         </div>
       </div>
     </div>
-  )
+  );
 }

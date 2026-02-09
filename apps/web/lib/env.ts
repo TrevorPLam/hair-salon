@@ -1,82 +1,43 @@
 /**
- * Environment variable validation and type-safe access.
+ * @file apps/web/lib/env.ts
+ * @role runtime
+ * @summary Server-only environment validation and access helpers.
  *
- * @module lib/env
+ * @entrypoints
+ * - validatedEnv
+ * - getNodeEnvironment
+ * - isProduction
+ * - isDevelopment
+ * - isTest
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - validatedEnv and environment helpers
  *
- * **FILE PURPOSE**: Server-only environment validation. This file MUST import
- * 'server-only' to prevent accidental client-side bundling of secrets.
+ * @depends_on
+ * - External: zod
+ * - Internal: server-only
  *
- * **SECURITY CRITICAL**: This file handles API keys and secrets.
- * - NEVER expose non-NEXT_PUBLIC_ vars to client
- * - NEVER log secret values
- * - ALL secrets validated at startup (fail-fast)
+ * @used_by
+ * - server actions, adapters, and middleware
  *
- * **COUNTERPART**: `lib/env.public.ts` for browser-safe NEXT_PUBLIC_* vars
+ * @runtime
+ * - environment: server
+ * - side_effects: throws on invalid env
  *
- * **ADDING NEW ENV VARS**:
- * 1. Add to envSchema with Zod validation
- * 2. Add to env.safeParse() call below
- * 3. Add to env.example with placeholder
- * 4. Update scripts/check-client-secrets.mjs forbiddenTokens array
- * 5. Update docs/DEPLOYMENT.md env var list
+ * @invariants
+ * - Only server-safe vars included
  *
- * **AI ITERATION HINTS**:
- * - Supabase + HubSpot vars are required for the lead pipeline
- * - Keep server vars here, public vars in env.public.ts (twin pattern)
- * - Use .optional() for vars with graceful fallback, no modifier for required
+ * @issues
+ * - [severity:low] Requires restart to pick up env changes.
  *
- * **CURRENT VARS**:
- * | Var | Type | Required | Notes |
- * |-----|------|----------|-------|
- * | NEXT_PUBLIC_SITE_URL | url | defaults | Base URL for meta tags |
- * | NEXT_PUBLIC_SITE_NAME | string | defaults | Site name for branding |
- * | NEXT_PUBLIC_ANALYTICS_ID | string | optional | GA4/Plausible ID |
- * | UPSTASH_REDIS_REST_URL | string | optional | Rate limiting |
- * | UPSTASH_REDIS_REST_TOKEN | string | optional | Rate limiting |
- * | SUPABASE_URL | url | required | Supabase project URL |
- * | SUPABASE_SERVICE_ROLE_KEY | string | required | Server-only service role key |
- * | HUBSPOT_PRIVATE_APP_TOKEN | string | required | HubSpot private app token |
- *
- * **KNOWN ISSUES**:
- * - [x] ~~In-memory rate limiter not suitable for multi-instance production~~ (FIXED: Issue #005)
- *       Production now requires Upstash Redis at startup.
- * - [ ] No runtime validation for env changes (restart required)
- *
- * ═══════════════════════════════════════════════════════════════════════════════
- *
- * **Purpose:**
- * - Validate environment variables at startup (fail-fast)
- * - Provide type-safe access to env vars
- * - Fail fast with clear error messages
- * - Document required vs optional variables
- *
- * **Validation:**
- * - Uses Zod for runtime type checking
- * - Validates URLs, emails, enums
- * - Provides defaults for optional variables
- * - Throws on missing required variables
- *
- * **Usage:**
- * ```typescript
- * import { validatedEnv } from './env'
- *
- * // Type-safe access with autocomplete
- * const supabaseUrl = validatedEnv.SUPABASE_URL // string (required)
- * const siteUrl = validatedEnv.NEXT_PUBLIC_SITE_URL // string (required)
- * ```
- *
- * **Variable Categories:**
- * - **Public:** NEXT_PUBLIC_* (exposed to browser, use for non-sensitive config)
- * - **Server-only:** All others (never sent to browser, use for API keys/secrets)
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-import 'server-only'
+import 'server-only';
 
-import { z } from 'zod'
+import { z } from 'zod';
 
 /**
  * Environment variable schema with validation rules.
@@ -171,7 +132,7 @@ const envSchema = z.object({
    * Used for CRM sync.
    */
   HUBSPOT_PRIVATE_APP_TOKEN: z.string().trim().min(1),
-})
+});
 
 /**
  * Validate environment variables at module load time.
@@ -205,11 +166,11 @@ const env = envSchema.safeParse({
   SUPABASE_URL: process.env.SUPABASE_URL,
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   HUBSPOT_PRIVATE_APP_TOKEN: process.env.HUBSPOT_PRIVATE_APP_TOKEN,
-})
+});
 
 if (!env.success) {
-  console.error('❌ Invalid environment variables:', env.error.flatten().fieldErrors)
-  throw new Error('Invalid environment variables')
+  console.error('❌ Invalid environment variables:', env.error.flatten().fieldErrors);
+  throw new Error('Invalid environment variables');
 }
 
 /**
@@ -241,17 +202,17 @@ if (!env.success) {
  */
 if (env.data.NODE_ENV === 'production') {
   if (!env.data.UPSTASH_REDIS_REST_URL || !env.data.UPSTASH_REDIS_REST_TOKEN) {
-    console.error('❌ Production Error: Upstash Redis required for distributed rate limiting')
-    console.error('Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN in production')
-    console.error('\nWhy this is required:')
-    console.error('- In-memory rate limiting only works in single-instance deployments')
-    console.error('- Multi-instance production needs distributed rate limiting')
-    console.error('- Without Redis, rate limits can be bypassed across instances')
-    console.error('\nHow to fix:')
-    console.error('1. Create Upstash Redis database at https://upstash.com')
-    console.error('2. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN')
-    console.error('3. Redeploy application')
-    throw new Error('Upstash Redis required in production for rate limiting')
+    console.error('❌ Production Error: Upstash Redis required for distributed rate limiting');
+    console.error('Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN in production');
+    console.error('\nWhy this is required:');
+    console.error('- In-memory rate limiting only works in single-instance deployments');
+    console.error('- Multi-instance production needs distributed rate limiting');
+    console.error('- Without Redis, rate limits can be bypassed across instances');
+    console.error('\nHow to fix:');
+    console.error('1. Create Upstash Redis database at https://upstash.com');
+    console.error('2. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN');
+    console.error('3. Redeploy application');
+    throw new Error('Upstash Redis required in production for rate limiting');
   }
 }
 
@@ -274,14 +235,14 @@ if (env.data.NODE_ENV === 'production') {
  * const hubspotToken = validatedEnv.HUBSPOT_PRIVATE_APP_TOKEN
  * ```
  */
-export const validatedEnv = env.data
+export const validatedEnv = env.data;
 
 /**
  * Get current Node environment.
  *
  * @returns 'development' | 'production' | 'test'
  */
-export const getNodeEnvironment = () => process.env.NODE_ENV || validatedEnv.NODE_ENV
+export const getNodeEnvironment = () => process.env.NODE_ENV || validatedEnv.NODE_ENV;
 
 /**
  * Check if running in production.
@@ -293,7 +254,7 @@ export const getNodeEnvironment = () => process.env.NODE_ENV || validatedEnv.NOD
  *
  * @returns true if NODE_ENV === 'production'
  */
-export const isProduction = () => getNodeEnvironment() === 'production'
+export const isProduction = () => getNodeEnvironment() === 'production';
 
 /**
  * Check if running in development.
@@ -305,7 +266,7 @@ export const isProduction = () => getNodeEnvironment() === 'production'
  *
  * @returns true if NODE_ENV === 'development'
  */
-export const isDevelopment = () => getNodeEnvironment() === 'development'
+export const isDevelopment = () => getNodeEnvironment() === 'development';
 
 /**
  * Check if running in test mode.
@@ -317,4 +278,4 @@ export const isDevelopment = () => getNodeEnvironment() === 'development'
  *
  * @returns true if NODE_ENV === 'test'
  */
-export const isTest = () => getNodeEnvironment() === 'test'
+export const isTest = () => getNodeEnvironment() === 'test';

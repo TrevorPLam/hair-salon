@@ -1,11 +1,53 @@
-import type { Metadata } from 'next'
-import { Container, Section, Card, Button, Input, Select, Textarea } from '@repo/ui'
-import { Calendar, Clock, Scissors } from 'lucide-react'
+/**
+ * @file apps/web/app/book/page.tsx
+ * @role runtime
+ * @summary Booking request page with service form and salon info sidebar.
+ *
+ * @entrypoints
+ * - Route: /book
+ *
+ * @exports
+ * - metadata
+ * - default BookPage
+ *
+ * @depends_on
+ * - External: next (Metadata)
+ * - External: lucide-react
+ * - Internal: @repo/ui (Container, Section, Card, Button, Input, Select, Textarea)
+ *
+ * @used_by
+ * - Next.js app router
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static form fields
+ * - outputs: booking form UI
+ *
+ * @invariants
+ * - Cancellation policy text should match actual policy
+ *
+ * @issues
+ * - [severity:low] Form is static with no submission handler.
+ *
+ * @verification
+ * - Visit /book and ensure form fields and sidebar render correctly.
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+
+import type { Metadata } from 'next';
+import { Container, Section, Card, Button, Input, Select, Textarea } from '@repo/ui';
+import { Calendar, Clock, Scissors } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Book an Appointment | Hair Salon Template',
   description: 'Schedule your next haircut, color, or style appointment online.',
-}
+};
 
 export default function BookPage() {
   return (
@@ -32,7 +74,7 @@ export default function BookPage() {
                   <Calendar className="w-6 h-6 text-teal" />
                   Request an Appointment
                 </h2>
-                
+
                 <form className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
@@ -106,7 +148,7 @@ export default function BookPage() {
                   <Button variant="primary" size="large" className="w-full">
                     Request Appointment
                   </Button>
-                  
+
                   <p className="text-xs text-slate-500 text-center mt-4">
                     By booking, you agree to our cancellation policy (24-hour notice required).
                   </p>
@@ -147,19 +189,22 @@ export default function BookPage() {
                   Cancellation Policy
                 </h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
-                  We understand that things come up. If you need to cancel or reschedule, please let us know at least 24 hours in advance to avoid a cancellation fee.
+                  We understand that things come up. If you need to cancel or reschedule, please let
+                  us know at least 24 hours in advance to avoid a cancellation fee.
                 </p>
               </Card>
 
               <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm text-center">
                 <h3 className="font-bold text-charcoal mb-2">Prefer to call?</h3>
                 <p className="text-2xl font-bold text-teal mb-1">(555) 123-4567</p>
-                <p className="text-sm text-slate-500">We&apos;re available during business hours.</p>
+                <p className="text-sm text-slate-500">
+                  We&apos;re available during business hours.
+                </p>
               </div>
             </div>
           </div>
         </Container>
       </Section>
     </div>
-  )
+  );
 }

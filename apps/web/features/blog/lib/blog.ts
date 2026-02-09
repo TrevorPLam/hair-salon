@@ -1,125 +1,82 @@
 /**
- * Blog post management module.
+ * @file apps/web/features/blog/lib/blog.ts
+ * @role runtime
+ * @summary File-based blog CMS for MDX posts.
  *
- * @module lib/blog
+ * @entrypoints
+ * - getAllPosts
+ * - getPostBySlug
+ * - getFeaturedPosts
+ * - getPostsByCategory
+ * - getAllCategories
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - BlogPost type
+ * - blog data helpers
  *
- * **FILE PURPOSE**: File-based blog CMS. Reads MDX files from content/blog/
- * at build time (SSG). No runtime filesystem access in production.
+ * @depends_on
+ * - Node: fs, path
+ * - External: gray-matter, reading-time
  *
- * **EDGE RUNTIME WARNING**: This file uses Node.js `fs` module.
- * Routes using this MUST set `export const dynamic = 'force-static'`
- * or will fail on Cloudflare Pages edge runtime.
+ * @used_by
+ * - apps/web/app/blog/page.tsx
+ * - apps/web/app/blog/[slug]/page.tsx
+ * - apps/web/app/sitemap.ts
+ * - apps/web/lib/search.ts
  *
- * **DATA FLOW**:
- * ```
- * content/blog/*.mdx → getAllPosts() → BlogPost[]
- *                   → getPostBySlug(slug) → BlogPost | undefined
- * ```
+ * @runtime
+ * - environment: server
+ * - side_effects: filesystem reads
  *
- * **FRONTMATTER SCHEMA** (see content/AGENTS.md for details):
- * ```yaml
- * title: string        # Required
- * description: string  # Required, used for SEO meta
- * date: YYYY-MM-DD     # Required, used for sorting
- * author: string       # Optional, defaults to team name
- * category: string     # Optional, defaults to "Hair Care"
- * featured: boolean    # Optional, shows on homepage
- * ```
+ * @data_flow
+ * - inputs: MDX files in content/blog
+ * - outputs: parsed BlogPost objects
  *
- * **AI ITERATION HINTS**:
- * - Adding frontmatter field? Update BlogPost interface AND content/AGENTS.md
- * - Posts sorted by date descending (newest first)
- * - Featured posts: filter with `posts.filter(p => p.featured)`
- * - Empty blog/ folder returns [] (doesn't throw)
+ * @invariants
+ * - Requires Node runtime or static generation
  *
- * **CONSUMERS**:
- * - app/blog/page.tsx — listing page
- * - app/blog/[slug]/page.tsx — individual post
- * - app/sitemap.ts — sitemap generation
- * - lib/search.ts — search index
+ * @issues
+ * - [severity:med] Not compatible with edge runtime due to fs usage.
  *
- * **POTENTIAL IMPROVEMENTS**:
- * - [ ] Add caching layer for dev mode (re-reads on every request)
- * - [ ] Expand frontmatter validation with Zod
- * - [ ] Add prev/next post navigation helpers
- *
- * ═══════════════════════════════════════════════════════════════════════════════
- *
- * **Purpose:**
- * - Parse MDX blog posts from the filesystem
- * - Extract frontmatter metadata
- * - Calculate reading time
- * - Provide sorted, filtered access to posts
- *
- * **Data Source:**
- * - Location: `content/blog/*.mdx`
- * - Format: MDX files with YAML frontmatter
- * - Parsed at: Build time (SSG)
- *
- * **Frontmatter Schema:**
- * ```yaml
- * ---
- * title: string        # Required: Post title
- * description: string  # Required: SEO description
- * date: string         # Required: YYYY-MM-DD format
- * author: string       # Optional: Defaults to "Hair Salon Template Team"
- * category: string     # Optional: Defaults to "Hair Care"
- * featured: boolean    # Optional: Defaults to false
- * ---
- * ```
- *
- * **Usage:**
- * ```typescript
- * import { getAllPosts, getPostBySlug } from '@/lib/blog'
- *
- * // Get all posts sorted by date
- * const posts = getAllPosts()
- *
- * // Get single post
- * const post = getPostBySlug('my-post-slug')
- * ```
- *
- * @see content/AGENTS.md for content authoring guidelines
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
-import readingTime from 'reading-time'
+import fs from 'fs';
+import path from 'path';
+import matter from 'gray-matter';
+import readingTime from 'reading-time';
 
 /** Absolute path to blog content directory */
-const postsDirectory = path.join(process.cwd(), 'content/blog')
-const datePattern = /^\d{4}-\d{2}-\d{2}$/
+const postsDirectory = path.join(process.cwd(), 'content/blog');
+const datePattern = /^\d{4}-\d{2}-\d{2}$/;
 
 const isNonEmptyString = (value: unknown): value is string =>
-  typeof value === 'string' && value.trim().length > 0
+  typeof value === 'string' && value.trim().length > 0;
 
 const normalizeBlogDate = (value: unknown): { value: string; date: Date } | null => {
   if (value instanceof Date) {
-    const isoDate = value.toISOString().slice(0, 10)
-    return { value: isoDate, date: value }
+    const isoDate = value.toISOString().slice(0, 10);
+    return { value: isoDate, date: value };
   }
 
   if (!isNonEmptyString(value) || !datePattern.test(value)) {
-    return null
+    return null;
   }
 
-  const parsed = new Date(value)
+  const parsed = new Date(value);
   if (Number.isNaN(parsed.getTime())) {
-    return null
+    return null;
   }
 
   // WHY: Validate that the parsed date matches the frontmatter string to avoid rollover dates.
   if (parsed.toISOString().slice(0, 10) !== value) {
-    return null
+    return null;
   }
 
-  return { value, date: parsed }
-}
+  return { value, date: parsed };
+};
 
 const buildPost = (
   slug: string,
@@ -129,20 +86,20 @@ const buildPost = (
   const hasRequiredFields =
     Object.hasOwn(data, 'title') &&
     Object.hasOwn(data, 'description') &&
-    Object.hasOwn(data, 'date')
+    Object.hasOwn(data, 'date');
 
   if (!hasRequiredFields) {
     // WHY: Require explicit frontmatter fields to avoid silently accepting malformed posts.
-    return null
+    return null;
   }
 
-  const title = isNonEmptyString(data.title) ? data.title : null
-  const description = isNonEmptyString(data.description) ? data.description : null
-  const normalizedDate = normalizeBlogDate(data.date)
+  const title = isNonEmptyString(data.title) ? data.title : null;
+  const description = isNonEmptyString(data.description) ? data.description : null;
+  const normalizedDate = normalizeBlogDate(data.date);
 
   if (!title || !description || !normalizedDate) {
     // WHY: Skip invalid frontmatter to keep blog rendering stable.
-    return null
+    return null;
   }
 
   return {
@@ -155,8 +112,8 @@ const buildPost = (
     readingTime: readingTime(content).text,
     content,
     featured: typeof data.featured === 'boolean' ? data.featured : false,
-  }
-}
+  };
+};
 
 /**
  * Blog post data structure.
@@ -172,15 +129,15 @@ const buildPost = (
  * @property featured - Whether to show on homepage
  */
 export interface BlogPost {
-  slug: string
-  title: string
-  description: string
-  date: string
-  author: string
-  category: string
-  readingTime: string
-  content: string
-  featured?: boolean
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  author: string;
+  category: string;
+  readingTime: string;
+  content: string;
+  featured?: boolean;
 }
 
 /**
@@ -205,24 +162,24 @@ export interface BlogPost {
 export function getAllPosts(): BlogPost[] {
   // Create directory if it doesn't exist
   if (!fs.existsSync(postsDirectory)) {
-    return []
+    return [];
   }
 
-  const fileNames = fs.readdirSync(postsDirectory)
+  const fileNames = fs.readdirSync(postsDirectory);
   const allPosts = fileNames
     .filter((fileName) => fileName.endsWith('.mdx'))
     .map((fileName) => {
-      const slug = fileName.replace(/\.mdx$/, '')
-      const fullPath = path.join(postsDirectory, fileName)
-      const fileContents = fs.readFileSync(fullPath, 'utf8')
-      const { data, content } = matter(fileContents)
+      const slug = fileName.replace(/\.mdx$/, '');
+      const fullPath = path.join(postsDirectory, fileName);
+      const fileContents = fs.readFileSync(fullPath, 'utf8');
+      const { data, content } = matter(fileContents);
 
-      return buildPost(slug, data, content)
+      return buildPost(slug, data, content);
     })
-    .filter((post): post is BlogPost => post !== null)
+    .filter((post): post is BlogPost => post !== null);
 
   // Sort posts by date
-  return allPosts.sort((a, b) => Date.parse(b.date) - Date.parse(a.date))
+  return allPosts.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
 }
 
 /**
@@ -239,13 +196,13 @@ export function getAllPosts(): BlogPost[] {
  */
 export function getPostBySlug(slug: string): BlogPost | undefined {
   try {
-    const fullPath = path.join(postsDirectory, `${slug}.mdx`)
-    const fileContents = fs.readFileSync(fullPath, 'utf8')
-    const { data, content } = matter(fileContents)
+    const fullPath = path.join(postsDirectory, `${slug}.mdx`);
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    const { data, content } = matter(fileContents);
 
-    return buildPost(slug, data, content) ?? undefined
+    return buildPost(slug, data, content) ?? undefined;
   } catch {
-    return undefined
+    return undefined;
   }
 }
 
@@ -256,7 +213,7 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
  * @returns Array of posts where featured === true
  */
 export function getFeaturedPosts(): BlogPost[] {
-  return getAllPosts().filter((post) => post.featured)
+  return getAllPosts().filter((post) => post.featured);
 }
 
 /**
@@ -266,7 +223,7 @@ export function getFeaturedPosts(): BlogPost[] {
  * @returns Array of posts in the specified category
  */
 export function getPostsByCategory(category: string): BlogPost[] {
-  return getAllPosts().filter((post) => post.category === category)
+  return getAllPosts().filter((post) => post.category === category);
 }
 
 /**
@@ -276,7 +233,7 @@ export function getPostsByCategory(category: string): BlogPost[] {
  * @returns Sorted array of unique category names
  */
 export function getAllCategories(): string[] {
-  const posts = getAllPosts()
-  const categories = posts.map((post) => post.category)
-  return Array.from(new Set(categories)).sort()
+  const posts = getAllPosts();
+  const categories = posts.map((post) => post.category);
+  return Array.from(new Set(categories)).sort();
 }

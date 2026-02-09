@@ -1,3 +1,48 @@
+# /**
+#  * @file .prettierignore
+#  * @role config
+#  * @summary Prettier ignore rules for generated and vendor files.
+#  *
+#  * @entrypoints
+#  * - Prettier CLI and editor integrations
+#  *
+#  * @exports
+#  * - N/A
+#  *
+#  * @depends_on
+#  * - External: prettier
+#  *
+#  * @used_by
+#  * - pnpm format / format:check scripts
+#  *
+#  * @runtime
+#  * - environment: build
+#  * - side_effects: skips formatting on listed paths
+#  *
+#  * @data_flow
+#  * - inputs: file paths in this list
+#  * - outputs: prettier include/exclude behavior
+#  *
+#  * @invariants
+#  * - Generated build outputs should remain excluded
+#  *
+#  * @gotchas
+#  * - Ignoring .env* prevents prettier from touching local secrets
+#  *
+#  * @issues
+#  * - [severity:low] None observed in-file.
+#  *
+#  * @opportunities
+#  * - Keep ignore list aligned with build output locations
+#  *
+#  * @verification
+#  * - Run `pnpm format:check` and confirm ignores are respected
+#  *
+#  * @status
+#  * - confidence: high
+#  * - last_audited: 2026-02-09
+#  */
+
 # Dependencies
 node_modules/
 .pnpm-store/

@@ -1,10 +1,50 @@
-import type { Metadata } from 'next'
+/**
+ * @file apps/web/app/privacy/page.tsx
+ * @role runtime
+ * @summary Privacy policy page with legal disclosures.
+ *
+ * @entrypoints
+ * - Route: /privacy
+ *
+ * @exports
+ * - metadata
+ * - default PrivacyPolicyPage
+ *
+ * @depends_on
+ * - External: next (Metadata)
+ *
+ * @used_by
+ * - Next.js app router
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static policy content
+ * - outputs: legal content layout
+ *
+ * @invariants
+ * - Policy content must reflect actual data practices
+ *
+ * @issues
+ * - [severity:low] Content may require legal review before launch.
+ *
+ * @verification
+ * - Visit /privacy and confirm headings and dates render.
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Hair Salon Template',
   description:
     'Review how Hair Salon Template collects, uses, and protects information shared through the website.',
-}
+};
 
 export default function PrivacyPolicyPage() {
   return (
@@ -36,9 +76,10 @@ export default function PrivacyPolicyPage() {
           <div className="prose prose-lg max-w-4xl text-slate-700">
             <h2>Overview</h2>
             <p>
-              Hair Salon Template (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy.
-              This Privacy Policy explains how we collect, use, disclose, and safeguard your
-              information when you visit our website or book an appointment.
+              Hair Salon Template (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed
+              to protecting your privacy. This Privacy Policy explains how we collect, use,
+              disclose, and safeguard your information when you visit our website or book an
+              appointment.
             </p>
 
             <h2>Information We Collect</h2>
@@ -71,7 +112,10 @@ export default function PrivacyPolicyPage() {
 
             <h2>Information Storage and Sharing</h2>
             <h3>Storage</h3>
-            <p>Your information is stored securely in our appointment scheduling system and customer database.</p>
+            <p>
+              Your information is stored securely in our appointment scheduling system and customer
+              database.
+            </p>
 
             <h3>Third-Party Services</h3>
             <ul>
@@ -89,8 +133,8 @@ export default function PrivacyPolicyPage() {
 
             <h2>Data Retention</h2>
             <p>
-              We retain your information for as long as necessary to fulfill the purposes outlined in
-              this policy, comply with legal obligations, and provide you with ongoing service.
+              We retain your information for as long as necessary to fulfill the purposes outlined
+              in this policy, comply with legal obligations, and provide you with ongoing service.
             </p>
 
             <h2>Your Rights</h2>
@@ -105,20 +149,20 @@ export default function PrivacyPolicyPage() {
 
             <h2>Security</h2>
             <p>
-              We implement reasonable security measures to protect your information. However, no method
-              of transmission over the internet is 100% secure.
+              We implement reasonable security measures to protect your information. However, no
+              method of transmission over the internet is 100% secure.
             </p>
 
             <h2>Children&apos;s Privacy</h2>
             <p>
-              Our services are available to children with parental consent. We do not knowingly collect
-              personal information from children under 13 without verified parental consent.
+              Our services are available to children with parental consent. We do not knowingly
+              collect personal information from children under 13 without verified parental consent.
             </p>
 
             <h2>Changes to This Policy</h2>
             <p>
-              We may update this Privacy Policy periodically. Changes will be posted on this page with
-              an updated &quot;Last Updated&quot; date.
+              We may update this Privacy Policy periodically. Changes will be posted on this page
+              with an updated &quot;Last Updated&quot; date.
             </p>
 
             <h2>Contact Us</h2>
@@ -127,5 +171,5 @@ export default function PrivacyPolicyPage() {
         </div>
       </section>
     </div>
-  )
+  );
 }

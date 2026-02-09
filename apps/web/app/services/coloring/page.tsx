@@ -1,11 +1,54 @@
-import type { Metadata } from 'next'
-import { Palette } from 'lucide-react'
-import ServiceDetailLayout from '@/features/services/components/ServiceDetailLayout'
+/**
+ * @file apps/web/app/services/coloring/page.tsx
+ * @role runtime
+ * @summary Service detail page for coloring services.
+ *
+ * @entrypoints
+ * - Route: /services/coloring
+ *
+ * @exports
+ * - metadata
+ * - default ColoringPage
+ *
+ * @depends_on
+ * - External: next (Metadata)
+ * - External: lucide-react
+ * - Internal: @/features/services/components/ServiceDetailLayout
+ *
+ * @used_by
+ * - Next.js app router
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static service detail data
+ * - outputs: service detail layout
+ *
+ * @invariants
+ * - Pricing anchors should exist on /pricing
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @verification
+ * - Visit /services/coloring and confirm layout renders.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
+import type { Metadata } from 'next';
+import { Palette } from 'lucide-react';
+import ServiceDetailLayout from '@/features/services/components/ServiceDetailLayout';
 
 export const metadata: Metadata = {
   title: 'Coloring Services | Hair Salon Template',
-  description: 'Professional hair coloring services including highlights, balayage, and full color. Transform your look with our master colorists.',
-}
+  description:
+    'Professional hair coloring services including highlights, balayage, and full color. Transform your look with our master colorists.',
+};
 
 export default function ColoringPage() {
   return (
@@ -68,17 +111,20 @@ export default function ColoringPage() {
       faqs={[
         {
           question: 'How long does hair color last?',
-          answer: 'Permanent color lasts until it grows out, but may fade over time. Semi-permanent lasts 4-6 weeks. We recommend refreshing every 4-8 weeks.',
+          answer:
+            'Permanent color lasts until it grows out, but may fade over time. Semi-permanent lasts 4-6 weeks. We recommend refreshing every 4-8 weeks.',
         },
         {
           question: 'Will coloring damage my hair?',
-          answer: 'We use premium products with bond-building technology to protect your hair during the coloring process.',
+          answer:
+            'We use premium products with bond-building technology to protect your hair during the coloring process.',
         },
         {
           question: 'What is Balayage?',
-          answer: 'Balayage is a freehand highlighting technique that creates a natural, graduated effect that is lower maintenance than traditional foils.',
+          answer:
+            'Balayage is a freehand highlighting technique that creates a natural, graduated effect that is lower maintenance than traditional foils.',
         },
       ]}
     />
-  )
+  );
 }

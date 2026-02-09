@@ -1,3 +1,48 @@
+# /**
+#  * @file .editorconfig
+#  * @role config
+#  * @summary EditorConfig defaults for formatting and whitespace across the repo.
+#  *
+#  * @entrypoints
+#  * - EditorConfig-compatible tools and editors
+#  *
+#  * @exports
+#  * - N/A
+#  *
+#  * @depends_on
+#  * - External: EditorConfig tooling
+#  *
+#  * @used_by
+#  * - Developer editors and formatters
+#  *
+#  * @runtime
+#  * - environment: build
+#  * - side_effects: normalizes whitespace and indentation
+#  *
+#  * @data_flow
+#  * - inputs: file edits
+#  * - outputs: normalized formatting rules
+#  *
+#  * @invariants
+#  * - root=true prevents parent configs from overriding rules
+#  *
+#  * @gotchas
+#  * - Markdown keeps trailing whitespace; do not rely on trimming
+#  *
+#  * @issues
+#  * - [severity:low] None observed in-file.
+#  *
+#  * @opportunities
+#  * - Keep glob sections aligned with supported file types
+#  *
+#  * @verification
+#  * - Open a file and confirm indent and newline rules apply
+#  *
+#  * @status
+#  * - confidence: high
+#  * - last_audited: 2026-02-09
+#  */
+
 # EditorConfig for Hair Salon Template repository
 # https://editorconfig.org
 

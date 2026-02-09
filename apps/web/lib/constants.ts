@@ -1,18 +1,37 @@
 /**
- * Application-wide constants for configuration values.
+ * @file apps/web/lib/constants.ts
+ * @role runtime
+ * @summary Shared constants for validation, timing, and org metadata.
  *
- * @module lib/constants
+ * @entrypoints
+ * - Import constants throughout app and features
  *
- * This file centralizes magic numbers and configuration values to:
- * - Improve code maintainability
- * - Provide clear naming for values
- * - Make it easier to adjust configuration
- * - Enable consistent values across the application
+ * @exports
+ * - FORM_VALIDATION
+ * - RATE_LIMIT
+ * - HUBSPOT
+ * - UI_TIMING
+ * - TEST
+ * - ORGANIZATION
+ *
+ * @depends_on
+ * - None
+ *
+ * @used_by
+ * - Contact form schema, rate limiting, UI timing
+ *
+ * @runtime
+ * - environment: shared
+ * - side_effects: none
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-/**
- * Form validation constants
- */
 export const FORM_VALIDATION = {
   /** Minimum length for name field */
   NAME_MIN_LENGTH: 2,
@@ -44,21 +63,15 @@ export const FORM_VALIDATION = {
 
   /** Maximum length for email subject lines */
   EMAIL_SUBJECT_MAX_LENGTH: 200,
-} as const
+} as const;
 
-/**
- * Rate limiting constants
- */
 export const RATE_LIMIT = {
   /** Maximum requests allowed within the time window */
   MAX_REQUESTS: 3,
   /** Time window in milliseconds (1 hour) */
   WINDOW_MS: 60 * 60 * 1000,
-} as const
+} as const;
 
-/**
- * HubSpot integration constants
- */
 export const HUBSPOT = {
   /** Maximum number of retry attempts for HubSpot API calls */
   MAX_RETRIES: 3,
@@ -66,21 +79,15 @@ export const HUBSPOT = {
   RETRY_BASE_DELAY_MS: 250,
   /** Maximum delay in milliseconds for exponential backoff */
   RETRY_MAX_DELAY_MS: 2000,
-} as const
+} as const;
 
-/**
- * UI/UX timing constants
- */
 export const UI_TIMING = {
   /** Delay before showing PWA install prompt (milliseconds) */
   PWA_INSTALL_PROMPT_DELAY_MS: 3000,
   /** Debounce delay for form error display (milliseconds) */
   FORM_ERROR_DEBOUNCE_MS: 500,
-} as const
+} as const;
 
-/**
- * Test-related constants
- */
 export const TEST = {
   /** Default timeout for Playwright tests (milliseconds) */
   PLAYWRIGHT_TIMEOUT_MS: 60 * 1000,
@@ -88,11 +95,8 @@ export const TEST = {
   PLAYWRIGHT_EXPECT_TIMEOUT_MS: 10 * 1000,
   /** Default local development URL */
   DEFAULT_DEV_URL: 'http://localhost:3000',
-} as const
+} as const;
 
-/**
- * Organization/Business information constants
- */
 export const ORGANIZATION = {
   /** Primary contact email address */
   CONTACT_EMAIL: 'contact@hairsalontemplate.com',
@@ -117,4 +121,4 @@ export const ORGANIZATION = {
   ADDRESS: {
     COUNTRY: 'US',
   },
-} as const
+} as const;

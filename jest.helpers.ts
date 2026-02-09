@@ -1,10 +1,49 @@
 /**
- * Shared test utilities and factories for monorepo.
+ * @file jest.helpers.ts
+ * @role test
+ * @summary Shared Jest test utilities for environment and async assertions.
  *
- * Usage:
- * - Custom matchers
- * - Test data factories
- * - Common setup/teardown
+ * @entrypoints
+ * - Imported by test files under __tests__
+ *
+ * @exports
+ * - createTestEnv
+ * - mockEnv
+ * - waitFor
+ * - assertThrows
+ *
+ * @depends_on
+ * - External: process.env
+ *
+ * @used_by
+ * - Jest test suites across apps and packages
+ *
+ * @runtime
+ * - environment: test
+ * - side_effects: mutates process.env in mockEnv
+ *
+ * @data_flow
+ * - inputs: env overrides, predicates, functions under test
+ * - outputs: env snapshots, assertion outcomes
+ *
+ * @invariants
+ * - mockEnv returns cleanup to restore prior env state
+ *
+ * @gotchas
+ * - mockEnv must be cleaned up to avoid cross-test leaks
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @opportunities
+ * - Add helper for restoring multiple env vars at once
+ *
+ * @verification
+ * - Run: pnpm test and confirm env helpers isolate state
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 /**
@@ -22,7 +61,7 @@ export function createTestEnv(overrides: Partial<Record<string, string>> = {}) {
     SUPABASE_SERVICE_ROLE_KEY: 'test-key-123abc',
     HUBSPOT_PRIVATE_APP_TOKEN: 'pat-test-123',
     ...overrides,
-  }
+  };
 }
 
 /**
@@ -38,19 +77,19 @@ export function createTestEnv(overrides: Partial<Record<string, string>> = {}) {
  * @returns Cleanup function
  */
 export function mockEnv(key: string, value: string | undefined) {
-  const original = process.env[key]
+  const original = process.env[key];
   if (value === undefined) {
-    delete process.env[key]
+    delete process.env[key];
   } else {
-    process.env[key] = value
+    process.env[key] = value;
   }
   return () => {
     if (original === undefined) {
-      delete process.env[key]
+      delete process.env[key];
     } else {
-      process.env[key] = original
+      process.env[key] = original;
     }
-  }
+  };
 }
 
 /**
@@ -60,16 +99,13 @@ export function mockEnv(key: string, value: string | undefined) {
  * @param timeout - Max ms to wait (default 5000)
  * @returns Promise that resolves when condition is true
  */
-export async function waitFor(
-  condition: () => boolean,
-  timeout = 5000,
-): Promise<void> {
-  const startTime = Date.now()
+export async function waitFor(condition: () => boolean, timeout = 5000): Promise<void> {
+  const startTime = Date.now();
   while (!condition()) {
     if (Date.now() - startTime > timeout) {
-      throw new Error(`waitFor timeout after ${timeout}ms`)
+      throw new Error(`waitFor timeout after ${timeout}ms`);
     }
-    await new Promise((resolve) => setTimeout(resolve, 50))
+    await new Promise((resolve) => setTimeout(resolve, 50));
   }
 }
 
@@ -85,26 +121,26 @@ export async function waitFor(
  * @param expectedMessage - Expected error message (substring match)
  */
 export async function assertThrows(fn: () => unknown, expectedMessage?: string) {
-  let threw = false
-  let error: Error | undefined
+  let threw = false;
+  let error: Error | undefined;
 
   try {
-    const result = fn()
+    const result = fn();
     if (result instanceof Promise) {
-      await result
+      await result;
     }
   } catch (e) {
-    threw = true
-    error = e instanceof Error ? e : new Error(String(e))
+    threw = true;
+    error = e instanceof Error ? e : new Error(String(e));
   }
 
   if (!threw) {
-    throw new Error('Expected function to throw')
+    throw new Error('Expected function to throw');
   }
 
   if (expectedMessage && !error?.message.includes(expectedMessage)) {
     throw new Error(
-      `Expected error message to include "${expectedMessage}", got "${error?.message}"`,
-    )
+      `Expected error message to include "${expectedMessage}", got "${error?.message}"`
+    );
   }
 }

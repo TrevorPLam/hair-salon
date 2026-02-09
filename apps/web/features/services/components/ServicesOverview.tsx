@@ -1,7 +1,43 @@
-import React from 'react'
-import Link from 'next/link'
-import { Scissors, Palette, Sparkles, Calendar } from 'lucide-react'
-import { Container, Section, Card } from '@repo/ui'
+/**
+ * @file apps/web/features/services/components/ServicesOverview.tsx
+ * @role runtime
+ * @summary Services overview grid used on marketing pages.
+ *
+ * @entrypoints
+ * - Used by /services and home pages
+ *
+ * @exports
+ * - default ServicesOverview
+ *
+ * @depends_on
+ * - External: react
+ * - External: next/link
+ * - External: lucide-react
+ * - Internal: @repo/ui (Container, Section, Card)
+ *
+ * @used_by
+ * - apps/web/app/services/page.tsx
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static services array
+ * - outputs: service cards
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
+import React from 'react';
+import Link from 'next/link';
+import { Scissors, Palette, Sparkles, Calendar } from 'lucide-react';
+import { Container, Section, Card } from '@repo/ui';
 
 const services = [
   {
@@ -28,24 +64,23 @@ const services = [
     description: 'Bridal hair, updos, and styling for weddings, proms, and special events.',
     href: '/services/special-occasions',
   },
-]
+];
 
 export default function ServicesOverview() {
   return (
     <Section className="bg-off-white">
       <Container>
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
-            Our Services
-          </h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">Our Services</h2>
           <p className="text-lg text-slate max-w-2xl mx-auto">
-            From classic cuts to modern makeovers, we offer a full range of hair services tailored to you.
+            From classic cuts to modern makeovers, we offer a full range of hair services tailored
+            to you.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
           {services.map((service) => {
-            const Icon = service.icon
+            const Icon = service.icon;
             return (
               <Card key={service.title} variant="service">
                 <div className="w-12 h-12 bg-teal/10 rounded-lg flex items-center justify-center mb-4">
@@ -60,10 +95,10 @@ export default function ServicesOverview() {
                   Learn More →
                 </Link>
               </Card>
-            )
+            );
           })}
         </div>
       </Container>
     </Section>
-  )
+  );
 }

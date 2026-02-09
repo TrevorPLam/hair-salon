@@ -1,97 +1,59 @@
 /**
- * Site navigation component with responsive mobile menu.
+ * @file apps/web/components/Navigation.tsx
+ * @role runtime
+ * @summary Primary navigation with desktop links, mobile menu, and search.
  *
- * @component Navigation
+ * @entrypoints
+ * - Used by the root layout
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - default Navigation
  *
- * **FILE PURPOSE**: Global site navigation. Renders in root layout on ALL pages.
- * Handles desktop nav, mobile hamburger menu, and search integration.
+ * @depends_on
+ * - External: react
+ * - External: next/link
+ * - External: next/navigation (usePathname)
+ * - External: lucide-react
+ * - Internal: @repo/ui (Button)
+ * - Internal: @/components/SearchDialog
+ * - Internal: @/lib/search (SearchItem)
+ * - Internal: @/lib/utils (cn)
  *
- * **RENDERING**: Client component ('use client') for mobile menu state.
+ * @used_by
+ * - apps/web/app/layout.tsx
  *
- * **MODIFYING NAV LINKS**:
- * Edit the `navLinks` array (line ~45). Changes auto-apply to both
- * desktop and mobile menus. Format: { href: '/path', label: 'Label' }
+ * @runtime
+ * - environment: client
+ * - side_effects: window event listeners, focus management
  *
- * **LAYOUT STRUCTURE**:
- * ```
- * <nav sticky>
- *   <Logo>                          |
- *   <DesktopLinks> (hidden md:flex) | md+ viewport
- *   <SearchDialog> <CTA Button>     |
- *   -----------------------------------
- *   <MobileSearch> <Hamburger>      | < md viewport
- *   <MobileMenu if open>            |
- * </nav>
- * ```
+ * @data_flow
+ * - inputs: searchItems, current pathname
+ * - outputs: nav links, search dialog, mobile menu
  *
- * **ACCESSIBILITY**:
- * - Escape key closes mobile menu
- * - aria-expanded on hamburger button
- * - aria-label on mobile menu container
- * - focus-visible outlines on all interactive elements
+ * @invariants
+ * - navLinks should reflect active routes and sitemap
  *
- * **AI ITERATION HINTS**:
- * - Adding nav link? Add to navLinks array, update sitemap.ts
- * - Changing logo? Update Link content around line 85
- * - Mobile menu: controlled by isMobileMenuOpen state
- * - Search: SearchDialog component handles its own state
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * **PROPS**:
- * - searchItems: SearchItem[] — passed from layout.tsx via getSearchIndex()
+ * @verification
+ * - Verify desktop and mobile nav behavior including focus trap.
  *
- * **STYLING NOTES**:
- * - bg-charcoal: dark header background
- * - sticky top-0 z-50: fixed header behavior
- * - Breakpoint: md (768px) for desktop/mobile switch
- *
- * **POTENTIAL ISSUES**:
- * - [ ] Mobile menu doesn't trap focus (a11y improvement)
- * - [ ] No active link highlighting
- *
- * ═══════════════════════════════════════════════════════════════════════════════
- *
- * **Features:**
- * - Sticky header with dark charcoal background
- * - Desktop: Horizontal nav links with search and CTA
- * - Mobile: Hamburger menu with slide-down panel
- * - Keyboard accessible (Escape closes mobile menu)
- *
- * **Behavior:**
- * - Mobile menu closes on link click
- * - Mobile menu closes on Escape key
- * - Search dialog integrated for both desktop and mobile
- *
- * **Usage:**
- * ```tsx
- * // In layout.tsx
- * import Navigation from '@/components/Navigation'
- * import { getSearchIndex } from '@/lib/search'
- *
- * const searchItems = getSearchIndex()
- * <Navigation searchItems={searchItems} />
- * ```
- *
- * **Modifying Navigation Links:**
- * Edit the `navLinks` array below. Changes apply to both
- * desktop and mobile menus automatically.
- *
- * @see components/SearchDialog for search functionality
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-'use client'
+'use client';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { Menu, X } from 'lucide-react'
-import { Button } from '@repo/ui'
-import SearchDialog from '@/components/SearchDialog'
-import type { SearchItem } from '@/lib/search'
-import { cn } from '@/lib/utils'
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
+import { Button } from '@repo/ui';
+import SearchDialog from '@/components/SearchDialog';
+import type { SearchItem } from '@/lib/search';
+import { cn } from '@/lib/utils';
 
 /**
  * Navigation link configuration.
@@ -104,15 +66,15 @@ const navLinks = [
   { href: '/team', label: 'Team' },
   { href: '/about', label: 'About' },
   { href: '/blog', label: 'Blog' },
-]
+];
 
 /**
  * Navigation component props.
- * 
+ *
  * @property searchItems - Search index from lib/search.ts
  */
 interface NavigationProps {
-  searchItems: SearchItem[]
+  searchItems: SearchItem[];
 }
 
 /**
@@ -120,88 +82,91 @@ interface NavigationProps {
  * Renders in root layout - appears on all pages.
  */
 export default function Navigation({ searchItems }: NavigationProps) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const pathname = usePathname()
-  const mobileMenuRef = useRef<HTMLDivElement | null>(null)
-  const lastFocusedElementRef = useRef<HTMLElement | null>(null)
-  const mobileToggleButtonRef = useRef<HTMLButtonElement | null>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const mobileMenuRef = useRef<HTMLDivElement | null>(null);
+  const lastFocusedElementRef = useRef<HTMLElement | null>(null);
+  const mobileToggleButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const normalizePath = (path: string) => {
-    const [cleanPath] = path.split(/[?#]/)
+    const [cleanPath] = path.split(/[?#]/);
     if (!cleanPath || cleanPath === '/') {
-      return '/'
+      return '/';
     }
 
-    return cleanPath.endsWith('/') ? cleanPath.slice(0, -1) : cleanPath
-  }
+    return cleanPath.endsWith('/') ? cleanPath.slice(0, -1) : cleanPath;
+  };
 
-  const activePath = useMemo(() => normalizePath(pathname ?? '/'), [pathname])
+  const activePath = useMemo(() => normalizePath(pathname ?? '/'), [pathname]);
 
   const isFileLink = (href: string) => {
-    const lastSegment = href.split('/').pop()
-    return Boolean(lastSegment && lastSegment.includes('.'))
-  }
+    const lastSegment = href.split('/').pop();
+    return Boolean(lastSegment && lastSegment.includes('.'));
+  };
 
   const isActiveLink = (href: string) => {
-    const normalizedHref = normalizePath(href)
+    const normalizedHref = normalizePath(href);
     if (isFileLink(normalizedHref)) {
-      return activePath === normalizedHref
+      return activePath === normalizedHref;
     }
 
-    return activePath === normalizedHref || activePath.startsWith(`${normalizedHref}/`)
-  }
+    return activePath === normalizedHref || activePath.startsWith(`${normalizedHref}/`);
+  };
 
   const getFocusableElements = () => {
     if (!mobileMenuRef.current) {
-      return []
+      return [];
     }
 
     return Array.from(
       mobileMenuRef.current.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
       )
-    )
-  }
+    );
+  };
 
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen((prev) => !prev)
-  }
+    setIsMobileMenuOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setIsMobileMenuOpen(false)
+        setIsMobileMenuOpen(false);
       }
-    }
+    };
 
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [])
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   useEffect(() => {
     if (!isMobileMenuOpen) {
-      const focusTarget = mobileToggleButtonRef.current ?? lastFocusedElementRef.current
-      focusTarget?.focus()
-      return
+      const focusTarget = mobileToggleButtonRef.current ?? lastFocusedElementRef.current;
+      focusTarget?.focus();
+      return;
     }
 
-    lastFocusedElementRef.current = document.activeElement as HTMLElement | null
-    const focusableElements = getFocusableElements()
-    focusableElements[0]?.focus()
-  }, [isMobileMenuOpen])
+    lastFocusedElementRef.current = document.activeElement as HTMLElement | null;
+    const focusableElements = getFocusableElements();
+    focusableElements[0]?.focus();
+  }, [isMobileMenuOpen]);
 
   return (
     <nav className="bg-charcoal shadow-sm sticky top-0 z-50" role="navigation" aria-label="Primary">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-white hover:text-white/90 transition-colors">
+          <Link
+            href="/"
+            className="text-2xl font-bold text-white hover:text-white/90 transition-colors"
+          >
             Salon Template
           </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map(link => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -248,29 +213,29 @@ export default function Navigation({ searchItems }: NavigationProps) {
           aria-label="Mobile navigation"
           onKeyDown={(event) => {
             if (event.key !== 'Tab') {
-              return
+              return;
             }
 
-            const focusableElements = getFocusableElements()
+            const focusableElements = getFocusableElements();
             if (focusableElements.length === 0) {
-              return
+              return;
             }
 
-            const firstElement = focusableElements[0]
-            const lastElement = focusableElements[focusableElements.length - 1]
-            const activeElement = document.activeElement
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            const activeElement = document.activeElement;
 
             if (event.shiftKey && activeElement === firstElement) {
-              event.preventDefault()
-              lastElement.focus()
+              event.preventDefault();
+              lastElement.focus();
             } else if (!event.shiftKey && activeElement === lastElement) {
-              event.preventDefault()
-              firstElement.focus()
+              event.preventDefault();
+              firstElement.focus();
             }
           }}
         >
           <div className="px-6 py-4 space-y-4">
-            {navLinks.map(link => (
+            {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -293,5 +258,5 @@ export default function Navigation({ searchItems }: NavigationProps) {
         </div>
       )}
     </nav>
-  )
+  );
 }

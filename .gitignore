@@ -1,3 +1,48 @@
+# /**
+#  * @file .gitignore
+#  * @role config
+#  * @summary Git ignore rules for generated, vendor, and local-only files.
+#  *
+#  * @entrypoints
+#  * - Git reads this for status/add/commit operations
+#  *
+#  * @exports
+#  * - N/A
+#  *
+#  * @depends_on
+#  * - External: git
+#  *
+#  * @used_by
+#  * - Developers and CI when checking repo state
+#  *
+#  * @runtime
+#  * - environment: build
+#  * - side_effects: prevents accidental commits of build and local files
+#  *
+#  * @data_flow
+#  * - inputs: file paths in this list
+#  * - outputs: git ignored paths
+#  *
+#  * @invariants
+#  * - Keep outputs and secrets out of version control
+#  *
+#  * @gotchas
+#  * - Later ignore rules can override earlier negations
+#  *
+#  * @issues
+#  * - [severity:med] .vscode/ is ignored again later, overriding earlier negations for settings.json.
+#  *
+#  * @opportunities
+#  * - Consolidate IDE ignores to avoid conflicting rules
+#  *
+#  * @verification
+#  * - Run `git check-ignore -v .vscode/settings.json` to confirm desired behavior
+#  *
+#  * @status
+#  * - confidence: medium
+#  * - last_audited: 2026-02-09
+#  */
+
 # OS files
 .DS_Store
 Thumbs.db
@@ -55,6 +100,7 @@ coverage/
 *.lcov
 
 # IDE
+# AUDIT: .vscode/ below overrides earlier negations for settings.json.
 .vscode/
 .idea/
 

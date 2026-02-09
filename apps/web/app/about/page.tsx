@@ -1,69 +1,44 @@
 /**
- * About page component showcasing salon story and values.
+ * @file apps/web/app/about/page.tsx
+ * @role runtime
+ * @summary About page with story, values, stats, and conversion CTAs.
  *
- * @page About
+ * @entrypoints
+ * - Route: /about
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - metadata
+ * - default AboutPage
  *
- * **FILE PURPOSE**: About page telling the salon's story, values, and building trust.
- * Showcases expertise, care, atmosphere with statistics and social proof.
+ * @depends_on
+ * - External: next (Metadata)
+ * - External: next/link
+ * - External: lucide-react
+ * - Internal: @repo/ui (Container)
  *
- * **SEO**: Custom metadata for about page branding and search visibility.
+ * @used_by
+ * - Next.js app router
  *
- * **SECTIONS**:
- * 1. Hero - Main value proposition with gradient background
- * 2. Our Story - Narrative about salon founding and growth
- * 3. Values - Three key differentiators (expertise, care, atmosphere)
- * 4. Stats - Social proof with numbers (years, clients, satisfaction)
- * 5. CTA - Conversion to booking/services
+ * @runtime
+ * - environment: server (default)
+ * - side_effects: none
  *
- * **DESIGN SYSTEM**:
- * - Gradients: charcoal-to-teal for hero sections
- * - Cards: White with subtle shadows and borders
- * - Icons: Lucide React (Scissors, Heart, Sparkles)
- * - Typography: Hero headings (4xl-5xl), section headings (3xl-4xl)
+ * @data_flow
+ * - inputs: static content
+ * - outputs: rendered marketing sections and links
  *
- * **CONVERSION FLOW**:
- * - Primary CTA: "Book Now" → /contact
- * - Secondary CTA: "View Services" → /services
- * - Stats build credibility before CTA
+ * @invariants
+ * - CTA routes should exist (/contact, /services)
  *
- * **AI ITERATION HINTS**:
- * - Adding new value? Update Values section grid
- * - Changing stats? Update all four stat items
- * - Modifying CTA? Update both links and styling
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * **DEPENDENCIES**:
- * - @repo/ui: Container component for consistent layout
- * - Lucide React: Icon library for visual elements
+ * @verification
+ * - Visit /about and verify section order and CTA links.
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- *
- * **Purpose:**
- * - Tell the salon's story and build emotional connection
- * - Showcase key differentiators and value propositions
- * - Provide social proof through statistics
- * - Drive conversions with strategic CTAs
- *
- * **Content Sections:**
- * - Hero: Main headline and value proposition
- * - Story: Narrative about founding and team growth
- * - Values: Three pillars (expertise, care, atmosphere)
- * - Stats: Quantified social proof (years, clients, satisfaction)
- * - CTA: Conversion-focused final section
- *
- * **Design Elements:**
- * - Gradient backgrounds for visual hierarchy
- * - Card-based layout for values and stats
- * - Consistent icon usage for visual reinforcement
- * - Responsive grid layouts (mobile-first approach)
- *
- * **SEO Optimization:**
- * - Custom title and meta description
- * - Semantic HTML structure
- * - Clear conversion paths
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 import { Metadata } from 'next';

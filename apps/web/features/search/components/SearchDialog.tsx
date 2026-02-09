@@ -1,72 +1,110 @@
-'use client'
+/**
+ * @file apps/web/features/search/components/SearchDialog.tsx
+ * @role runtime
+ * @summary Client search modal with keyboard shortcut.
+ *
+ * @entrypoints
+ * - Used by navigation (desktop/mobile)
+ *
+ * @exports
+ * - default SearchDialog
+ *
+ * @depends_on
+ * - External: react
+ * - External: next/link
+ * - External: lucide-react
+ * - Internal: @repo/ui (Button)
+ * - Internal: @/lib/search (SearchItem)
+ *
+ * @used_by
+ * - apps/web/components/Navigation.tsx
+ *
+ * @runtime
+ * - environment: client
+ * - side_effects: window keydown listener
+ *
+ * @data_flow
+ * - inputs: search items, query text
+ * - outputs: filtered results list
+ *
+ * @invariants
+ * - Items list should be precomputed
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
 
-import { useEffect, useMemo, useRef, useState } from 'react'
-import Link from 'next/link'
-import { Search, X } from 'lucide-react'
-import { Button } from '@repo/ui'
-import type { SearchItem } from '@/lib/search'
+'use client';
+
+import { useEffect, useMemo, useRef, useState } from 'react';
+import Link from 'next/link';
+import { Search, X } from 'lucide-react';
+import { Button } from '@repo/ui';
+import type { SearchItem } from '@/lib/search';
 
 interface SearchDialogProps {
-  items: SearchItem[]
-  variant?: 'desktop' | 'mobile'
+  items: SearchItem[];
+  variant?: 'desktop' | 'mobile';
 }
 
-const shortcutHint = '⌘K'
+const shortcutHint = '⌘K';
 
 export default function SearchDialog({ items, variant = 'desktop' }: SearchDialogProps) {
-  const [isOpen, setIsOpen] = useState(false)
-  const [query, setQuery] = useState('')
-  const inputRef = useRef<HTMLInputElement | null>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   // Case-insensitive substring match across title/description/tags; default to a small sample when empty to avoid overwhelming the dialog
   const filteredItems = useMemo(() => {
-    const normalized = query.trim().toLowerCase()
+    const normalized = query.trim().toLowerCase();
     if (!normalized) {
-      return items.slice(0, 6)
+      return items.slice(0, 6);
     }
 
     return items.filter((item) => {
       const tagText = Array.isArray(item.tags)
         ? item.tags.filter((tag) => typeof tag === 'string' && tag.trim().length > 0).join(' ')
-        : ''
-      const haystack = [item.title, item.description, tagText]
-        .join(' ')
-        .toLowerCase()
-      return haystack.includes(normalized)
-    })
-  }, [items, query])
+        : '';
+      const haystack = [item.title, item.description, tagText].join(' ').toLowerCase();
+      return haystack.includes(normalized);
+    });
+  }, [items, query]);
 
   useEffect(() => {
     // Allow Cmd/Ctrl+K to open and Escape to close so the dialog matches site-wide shortcut expectations
     const onKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
-        event.preventDefault()
-        setIsOpen(true)
-        return
+        event.preventDefault();
+        setIsOpen(true);
+        return;
       }
 
       if (event.key === 'Escape') {
-        setIsOpen(false)
+        setIsOpen(false);
       }
-    }
+    };
 
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [])
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
       // WHY: focus immediately after the dialog renders to keep keyboard search deterministic.
-      inputRef.current?.focus()
+      inputRef.current?.focus();
     } else {
-      setQuery('')
+      setQuery('');
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   const buttonClasses =
     variant === 'mobile'
       ? 'text-white p-2 hover:bg-white/10 rounded-lg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'
-      : 'inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-3 py-2 rounded-lg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white'
+      : 'inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold px-3 py-2 rounded-lg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white';
 
   return (
     <>
@@ -137,7 +175,9 @@ export default function SearchDialog({ items, variant = 'desktop' }: SearchDialo
                       >
                         <div className="flex items-center justify-between">
                           <span className="font-semibold text-gray-900">{item.title}</span>
-                          <span className="text-xs uppercase tracking-wide text-purple-600">{item.type}</span>
+                          <span className="text-xs uppercase tracking-wide text-purple-600">
+                            {item.type}
+                          </span>
                         </div>
                         <p className="mt-1 text-sm text-gray-600">{item.description}</p>
                       </Link>
@@ -153,5 +193,5 @@ export default function SearchDialog({ items, variant = 'desktop' }: SearchDialo
         </div>
       )}
     </>
-  )
+  );
 }

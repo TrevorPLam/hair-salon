@@ -1,70 +1,37 @@
 /**
- * ═══════════════════════════════════════════════════════════════════════════════
- * Utility Functions for Web App
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @file apps/web/lib/utils.ts
+ * @role runtime
+ * @summary Local className merge helper for app components.
  *
- * Purpose:
- * - Wrap @repo/utils cn() function for app-level className merging
- * - Provide local re-export to avoid direct imports from @repo/utils
- * - Enable future app-specific utility additions without changing imports
+ * @entrypoints
+ * - cn
  *
- * Responsibilities:
- * - Owns: Re-exporting shared utils with app-specific naming
- * - Does NOT own: Actual implementation (delegated to @repo/utils)
+ * @exports
+ * - cn
  *
- * Key Flows:
- * - Component imports cn() → uses for conditional Tailwind classes → conflict resolution applied
+ * @depends_on
+ * - External: clsx
+ * - External: tailwind-merge
  *
- * Inputs/Outputs:
- * - Input: Variable number of class name arguments (strings, objects, arrays)
- * - Output: Merged string with Tailwind conflicts resolved
- * - Side effects: None (pure function)
+ * @used_by
+ * - apps/web/components and features
  *
- * Dependencies:
- * - External: clsx (conditional classes), tailwind-merge (conflict resolution)
- * - Internal: @repo/utils/cn (implementation)
+ * @runtime
+ * - environment: shared
+ * - side_effects: none
  *
- * State & Invariants:
- * - Invariant: Function is pure (no side effects, deterministic)
- * - Invariant: Must delegate to @repo/utils (single source of truth)
- * - Assumption: Tailwind classes follow standard naming convention
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * Error Handling:
- * - Invalid input types: clsx handles gracefully (ignores non-strings)
- * - No errors thrown (safe for any input)
- *
- * Performance Notes:
- * - O(n) where n = total class names across all inputs
- * - Hot path: Called on every component render
- * - Very fast (<1ms typical, uses string operations only)
- *
- * Security Notes:
- * - No security implications (client-side styling only)
- * - User input should never reach className (XSS risk)
- *
- * Testing Notes:
- * - Test: Verify Tailwind conflict resolution (px-2 + px-4 → px-4)
- * - Test: Verify conditional classes work (true/false logic)
- * - Mock: Not needed (pure function, no external dependencies)
- *
- * Change Risks:
- * - Changing implementation breaks all component styling
- * - Must stay compatible with @repo/utils interface
- *
- * Owner Boundaries:
- * - Implementation: packages/utils/src/index.ts
- * - Usage: All components in apps/web
- *
- * AI Navigation Tags:
- * #utils #styling #tailwind #classnames #ui
- *
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-import { ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { ClassValue, clsx } from 'clsx';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
   // Merge conditional class names while resolving Tailwind conflicts (e.g., px-4 vs px-2)
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }

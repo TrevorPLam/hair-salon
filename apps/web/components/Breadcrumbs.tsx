@@ -1,35 +1,78 @@
-'use client'
+/**
+ * @file apps/web/components/Breadcrumbs.tsx
+ * @role runtime
+ * @summary Client breadcrumbs with JSON-LD for SEO.
+ *
+ * @entrypoints
+ * - Used by providers/layout to render navigation context
+ *
+ * @exports
+ * - default Breadcrumbs
+ *
+ * @depends_on
+ * - External: react
+ * - External: next/link
+ * - External: next/navigation (usePathname)
+ * - External: lucide-react
+ * - Internal: @/lib/env.public (getPublicBaseUrl)
+ *
+ * @used_by
+ * - apps/web/app/providers.tsx
+ *
+ * @runtime
+ * - environment: client
+ * - side_effects: injects JSON-LD
+ *
+ * @data_flow
+ * - inputs: current pathname, base URL
+ * - outputs: breadcrumb nav and JSON-LD
+ *
+ * @invariants
+ * - Base URL must be valid for structured data
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @verification
+ * - Navigate routes and verify breadcrumb labels and JSON-LD.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
 
-import React, { useMemo } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { Home } from 'lucide-react'
+'use client';
 
-import { getPublicBaseUrl } from '@/lib/env.public'
+import React, { useMemo } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Home } from 'lucide-react';
+
+import { getPublicBaseUrl } from '@/lib/env.public';
 
 function titleize(segment: string) {
   return segment
     .split('-')
     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-    .join(' ')
+    .join(' ');
 }
 
 export default function Breadcrumbs() {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   const crumbs = useMemo(() => {
-    if (!pathname || pathname === '/') return []
+    if (!pathname || pathname === '/') return [];
 
-    const segments = pathname.split('/').filter(Boolean)
+    const segments = pathname.split('/').filter(Boolean);
     return segments.map((segment, index) => {
-      const href = '/' + segments.slice(0, index + 1).join('/')
-      return { label: titleize(segment), href }
-    })
-  }, [pathname])
+      const href = '/' + segments.slice(0, index + 1).join('/');
+      return { label: titleize(segment), href };
+    });
+  }, [pathname]);
 
-  if (!crumbs.length) return null
+  if (!crumbs.length) return null;
 
-  const baseUrl = getPublicBaseUrl().replace(/\/$/, '')
+  const baseUrl = getPublicBaseUrl().replace(/\/$/, '');
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -47,7 +90,7 @@ export default function Breadcrumbs() {
         item: `${baseUrl}${crumb.href}`,
       })),
     ],
-  }
+  };
 
   return (
     <nav
@@ -56,7 +99,10 @@ export default function Breadcrumbs() {
     >
       <ol className="max-w-7xl mx-auto px-6 py-3 flex items-center gap-2 text-sm text-slate">
         <li>
-          <Link href="/" className="inline-flex items-center gap-1 text-teal font-semibold hover:text-teal-dark">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1 text-teal font-semibold hover:text-teal-dark"
+          >
             <Home className="w-4 h-4" aria-hidden="true" />
             <span className="sr-only">Home</span>
           </Link>
@@ -88,5 +134,5 @@ export default function Breadcrumbs() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
     </nav>
-  )
+  );
 }

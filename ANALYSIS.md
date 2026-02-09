@@ -1,4 +1,56 @@
+<!--
+/**
+ * @file ANALYSIS.md
+ * @role docs
+ * @summary Legacy analysis document pending re-audit and evidence linking.
+ *
+ * @entrypoints
+ * - Human readers seeking historical analysis context
+ *
+ * @exports
+ * - N/A
+ *
+ * @depends_on
+ * - N/A
+ *
+ * @used_by
+ * - Documentation review and audit planning
+ *
+ * @runtime
+ * - environment: docs
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: prior manual analysis
+ * - outputs: narrative summary (currently UNVERIFIED)
+ *
+ * @invariants
+ * - All claims must be verified with file references before reuse
+ *
+ * @gotchas
+ * - Content below is not yet validated against current code
+ *
+ * @issues
+ * - [severity:med] Document contains unverified claims without file references.
+ *
+ * @opportunities
+ * - Replace with evidence-based summaries in docs/BASELINE.md and docs/CODEBASE_INDEX.md
+ *
+ * @verification
+ * - TODO(verify): Audit each claim and add file references or remove
+ *
+ * @status
+ * - confidence: low
+ * - last_audited: 2026-02-09
+ */
+-->
+
 # Codebase Analysis
+
+## Audit Status (UNVERIFIED)
+
+- This document predates the current audit. All statements below are UNVERIFIED.
+- TODO(verify): Re-audit and replace claims with evidence links in docs/BASELINE.md, docs/CODEBASE_INDEX.md, and docs/QUALITY_REPORT.md.
 
 ## Executive Summary
 

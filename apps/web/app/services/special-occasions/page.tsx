@@ -1,11 +1,54 @@
-import type { Metadata } from 'next'
-import { Calendar } from 'lucide-react'
-import ServiceDetailLayout from '@/features/services/components/ServiceDetailLayout'
+/**
+ * @file apps/web/app/services/special-occasions/page.tsx
+ * @role runtime
+ * @summary Service detail page for special occasions styling.
+ *
+ * @entrypoints
+ * - Route: /services/special-occasions
+ *
+ * @exports
+ * - metadata
+ * - default SpecialOccasionsPage
+ *
+ * @depends_on
+ * - External: next (Metadata)
+ * - External: lucide-react
+ * - Internal: @/features/services/components/ServiceDetailLayout
+ *
+ * @used_by
+ * - Next.js app router
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static service detail data
+ * - outputs: service detail layout
+ *
+ * @invariants
+ * - Pricing anchors should exist on /pricing
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @verification
+ * - Visit /services/special-occasions and confirm layout renders.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
+import type { Metadata } from 'next';
+import { Calendar } from 'lucide-react';
+import ServiceDetailLayout from '@/features/services/components/ServiceDetailLayout';
 
 export const metadata: Metadata = {
   title: 'Special Occasions | Hair Salon Template',
-  description: 'Elegant hairstyles for weddings, proms, and special events. Look your absolute best for your big day.',
-}
+  description:
+    'Elegant hairstyles for weddings, proms, and special events. Look your absolute best for your big day.',
+};
 
 export default function SpecialOccasionsPage() {
   return (
@@ -29,7 +72,8 @@ export default function SpecialOccasionsPage() {
         },
         {
           title: 'Trial',
-          description: 'Test run the style before the big day to ensure it\'s exactly what you want.',
+          description:
+            "Test run the style before the big day to ensure it's exactly what you want.",
         },
         {
           title: 'Prep',
@@ -68,7 +112,8 @@ export default function SpecialOccasionsPage() {
       faqs={[
         {
           question: 'Should I wash my hair before an updo?',
-          answer: 'Usually, "day-old" hair holds style better. We recommend washing it the night before and not applying heavy products.',
+          answer:
+            'Usually, "day-old" hair holds style better. We recommend washing it the night before and not applying heavy products.',
         },
         {
           question: 'Do you travel to wedding venues?',
@@ -76,9 +121,10 @@ export default function SpecialOccasionsPage() {
         },
         {
           question: 'How long does bridal hair take?',
-          answer: 'We typically allocate 60-90 minutes for the bride and 45 minutes for bridesmaids.',
+          answer:
+            'We typically allocate 60-90 minutes for the bride and 45 minutes for bridesmaids.',
         },
       ]}
     />
-  )
+  );
 }

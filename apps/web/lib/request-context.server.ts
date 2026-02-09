@@ -1,89 +1,51 @@
 /**
- * ═══════════════════════════════════════════════════════════════════════════════
- * Request Context Storage (Server-Side)
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @file apps/web/lib/request-context.server.ts
+ * @role runtime
+ * @summary AsyncLocalStorage request context for request IDs.
  *
- * Purpose:
- * - Provide request-scoped context storage using Node.js AsyncLocalStorage
- * - Enable correlation of logs/errors to specific requests via request ID
- * - Maintain context across async operations (server actions, API routes)
+ * @entrypoints
+ * - runWithRequestId
+ * - getRequestId
  *
- * Responsibilities:
- * - Owns: Request ID storage and retrieval within async context
- * - Owns: AsyncLocalStorage instance for thread-safe context
- * - Does NOT own: Request ID generation (handled by middleware)
+ * @exports
+ * - runWithRequestId
+ * - getRequestId
  *
- * Key Flows:
- * - Middleware generates ID → calls runWithRequestId() → nested calls see same ID
- * - Logger calls getRequestId() → retrieves ID from context → includes in logs
+ * @depends_on
+ * - Node: async_hooks
  *
- * Inputs/Outputs:
- * - runWithRequestId(id, fn): Stores ID in context, runs function, returns result
- * - getRequestId(): Returns current request ID or undefined
- * - Side effects: AsyncLocalStorage maintains context across async boundaries
+ * @used_by
+ * - apps/web/lib/logger.ts
+ * - apps/web/middleware.ts
  *
- * Dependencies:
- * - External: node:async_hooks (Node.js built-in)
- * - Internal: Used by lib/logger.ts, middleware.ts
+ * @runtime
+ * - environment: server
+ * - side_effects: AsyncLocalStorage context
  *
- * State & Invariants:
- * - Invariant: Request ID is isolated per request (thread-safe)
- * - Invariant: Nested runWithRequestId calls maintain separate contexts
- * - Assumption: Node.js environment (AsyncLocalStorage available)
+ * @issues
+ * - [severity:low] Not available on edge runtime.
  *
- * Error Handling:
- * - No errors thrown (AsyncLocalStorage handles edge cases)
- * - Missing context returns undefined (graceful)
- * - Function errors propagate normally
- *
- * Performance Notes:
- * - Minimal overhead (<1µs per context operation)
- * - AsyncLocalStorage is optimized by Node.js runtime
- * - No memory leaks (context cleaned up automatically)
- *
- * Security Notes:
- * - No security implications (request ID is random UUID)
- * - Request ID is safe to log (no PII, no secrets)
- *
- * Testing Notes:
- * - Test: Verify nested contexts maintain separate IDs
- * - Test: Verify getRequestId() returns undefined outside context
- * - Mock: Not needed (AsyncLocalStorage is deterministic)
- *
- * Change Risks:
- * - Removing AsyncLocalStorage breaks request correlation
- * - Signature changes break logger integration
- * - Edge runtime incompatibility (no AsyncLocalStorage support)
- *
- * Owner Boundaries:
- * - Client stubs: request-context.ts (client-side no-ops)
- * - Usage: lib/logger.ts, middleware.ts
- * - Request ID generation: middleware.ts
- *
- * AI Navigation Tags:
- * #context #request-id #async-local-storage #correlation #logging #server
- *
- * NOTE: This is the SERVER-SIDE implementation; client stub is in request-context.ts
- *
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-import { AsyncLocalStorage } from 'node:async_hooks'
+import { AsyncLocalStorage } from 'node:async_hooks';
 
 interface RequestContext {
-  requestId?: string
+  requestId?: string;
 }
 
-const requestContextStore = new AsyncLocalStorage<RequestContext>()
+const requestContextStore = new AsyncLocalStorage<RequestContext>();
 
 export function runWithRequestId<T>(requestId: string | undefined, fn: () => T): T {
   if (!requestId) {
-    return fn()
+    return fn();
   }
 
-  return requestContextStore.run({ requestId }, fn)
+  return requestContextStore.run({ requestId }, fn);
 }
 
 export function getRequestId(): string | undefined {
-  return requestContextStore.getStore()?.requestId
+  return requestContextStore.getStore()?.requestId;
 }

@@ -1,82 +1,40 @@
 /**
- * Contact form validation schema using Zod.
+ * @file apps/web/features/contact/lib/contact-form-schema.ts
+ * @role runtime
+ * @summary Zod schema for contact form validation.
  *
- * @module contact-form-schema
+ * @entrypoints
+ * - Used by ContactForm and server-side validation
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - contactFormSchema
+ * - ContactFormData
  *
- * **FILE PURPOSE**: Contact form validation with security features.
- * Defines schema for contact form data validation and type safety.
+ * @depends_on
+ * - External: zod
+ * - Internal: @/lib/constants (FORM_VALIDATION)
  *
- * **SECURITY FEATURES**:
- * - Honeypot field (website) with max length 0 to catch bots
- * - Input sanitization and length limits
- * - Email format validation
+ * @used_by
+ * - apps/web/features/contact/components/ContactForm.tsx
+ * - apps/web/lib/actions.ts
  *
- * **VALIDATION RULES**:
- * - name: 2-50 characters, required
- * - email: Valid email format, max 254 characters
- * - company: Optional, max 100 characters
- * - phone: Required, trimmed, max 50 characters
- * - servicesInterested: Optional, max 50 characters
- * - preferredAppointment: Optional, max 50 characters
- * - website: Honeypot, must be empty (max 0)
- * - message: 10-1000 characters, required
- * - hearAboutUs: Optional, max 100 characters
+ * @runtime
+ * - environment: shared
+ * - side_effects: none
  *
- * **USAGE**:
- * ```tsx
- * import { contactFormSchema, type ContactFormData } from './contact-form-schema'
+ * @data_flow
+ * - inputs: form fields
+ * - outputs: validation results
  *
- * // Validate form data
- * const result = contactFormSchema.safeParse(formData)
- * if (result.success) {
- *   // Type-safe data access
- *   const { name, email } = result.data
- * }
- * ```
+ * @invariants
+ * - Honeypot field must remain empty
  *
- * **AI ITERATION HINTS**:
- * - Adding new field? Add to schema with appropriate validation
- * - Changing validation rules? Update FORM_VALIDATION constants
- * - Honeypot field must remain for bot protection
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * **DEPENDENCIES**:
- * - zod: Schema validation and type inference
- * - ./constants: FORM_VALIDATION configuration
- *
- * ═══════════════════════════════════════════════════════════════════════════════
- *
- * **Purpose:**
- * - Define validation schema for contact form submissions
- * - Provide type safety for form data
- * - Implement security measures against spam bots
- *
- * **Security Features:**
- * - Honeypot field (website) to detect automated submissions
- * - Input length limits to prevent abuse
- * - Email format validation
- *
- * **Validation Rules:**
- * - Required fields: name, email, message
- * - Optional fields: company, servicesInterested, preferredAppointment, hearAboutUs
- * - Honeypot field: website (must be empty)
- *
- * **Usage:**
- * ```tsx
- * import { contactFormSchema, type ContactFormData } from './contact-form-schema'
- *
- * // Parse and validate form data
- * const result = contactFormSchema.parse(formData)
- * // or with safeParse for error handling
- * const result = contactFormSchema.safeParse(formData)
- * ```
- *
- * **Type Safety:**
- * - ContactFormData type inferred from schema
- * - Provides autocomplete and compile-time checks
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 import { z } from 'zod';

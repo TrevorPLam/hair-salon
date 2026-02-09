@@ -1,3 +1,48 @@
+# /**
+#  * @file .eslintignore
+#  * @role config
+#  * @summary Lists files and folders excluded from ESLint checks.
+#  *
+#  * @entrypoints
+#  * - ESLint reads this when linting the repo
+#  *
+#  * @exports
+#  * - N/A
+#  *
+#  * @depends_on
+#  * - External: eslint
+#  *
+#  * @used_by
+#  * - pnpm lint (turbo run lint)
+#  *
+#  * @runtime
+#  * - environment: build
+#  * - side_effects: suppresses linting on listed paths
+#  *
+#  * @data_flow
+#  * - inputs: file paths in this list
+#  * - outputs: lint include/exclude behavior
+#  *
+#  * @invariants
+#  * - Generated outputs should remain ignored to avoid noisy lint
+#  *
+#  * @gotchas
+#  * - Ignoring .env* means lint will not catch accidental secrets in env files
+#  *
+#  * @issues
+#  * - [severity:low] None observed in-file.
+#  *
+#  * @opportunities
+#  * - Keep ignore list aligned with build output locations
+#  *
+#  * @verification
+#  * - Run: pnpm lint and confirm ignored paths are skipped
+#  *
+#  * @status
+#  * - confidence: high
+#  * - last_audited: 2026-02-09
+#  */
+
 # ESLint ignore file
 
 # Dependencies

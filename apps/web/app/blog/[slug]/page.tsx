@@ -1,20 +1,68 @@
-import { Metadata } from 'next'
-import dynamic from 'next/dynamic'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
-import { ArrowLeft, ArrowRight, Calendar, Clock } from 'lucide-react'
-import { getAllPosts, getPostBySlug } from '@/lib/blog'
-import { getBlogPostImageUrl } from '@/lib/blog-images'
-import { getPublicBaseUrl } from '@/lib/env.public'
+/**
+ * @file apps/web/app/blog/[slug]/page.tsx
+ * @role runtime
+ * @summary Blog post detail page with structured data and CTA.
+ *
+ * @entrypoints
+ * - Route: /blog/[slug]
+ *
+ * @exports
+ * - generateStaticParams
+ * - generateMetadata
+ * - default BlogPostPage
+ *
+ * @depends_on
+ * - External: next (Metadata, dynamic)
+ * - External: next/link
+ * - External: next/navigation (notFound)
+ * - External: lucide-react
+ * - Internal: @/lib/blog (getAllPosts, getPostBySlug)
+ * - Internal: @/lib/blog-images (getBlogPostImageUrl)
+ * - Internal: @/lib/env.public (getPublicBaseUrl)
+ * - Internal: @/components/BlogPostContent
+ *
+ * @used_by
+ * - Next.js app router
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: reads blog data, emits JSON-LD
+ *
+ * @data_flow
+ * - inputs: slug param, post data, base URL
+ * - outputs: rendered article + JSON-LD
+ *
+ * @invariants
+ * - Slug must resolve to a post; otherwise notFound()
+ *
+ * @issues
+ * - [severity:med] @/lib/blog and @/lib/blog-images aliases appear unresolved; verify alias mapping.
+ *
+ * @verification
+ * - Visit /blog/{slug} and confirm metadata and JSON-LD output.
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+
+import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { ArrowLeft, ArrowRight, Calendar, Clock } from 'lucide-react';
+import { getAllPosts, getPostBySlug } from '@/lib/blog';
+import { getBlogPostImageUrl } from '@/lib/blog-images';
+import { getPublicBaseUrl } from '@/lib/env.public';
 
 const BlogPostContent = dynamic(() => import('@/components/BlogPostContent'), {
   loading: () => <div className="sr-only">Loading article content…</div>,
   ssr: true,
-})
+});
 
 const getPostDateValues = (dateValue: string) => {
-  const parsed = new Date(dateValue)
-  const hasValidDate = !Number.isNaN(parsed.getTime())
+  const parsed = new Date(dateValue);
+  const hasValidDate = !Number.isNaN(parsed.getTime());
 
   return {
     hasValidDate,
@@ -26,49 +74,49 @@ const getPostDateValues = (dateValue: string) => {
           year: 'numeric',
         })
       : 'Unknown date',
-  }
-}
+  };
+};
 
 interface Props {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  const posts = getAllPosts()
+  const posts = getAllPosts();
   return posts.map((post) => ({
     slug: post.slug,
-  }))
+  }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
-  const post = getPostBySlug(slug)
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
     return {
       title: 'Post Not Found',
-    }
+    };
   }
 
   return {
     title: `${post.title} | Blog | Hair Salon Template`,
     description: post.description,
-  }
+  };
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const { slug } = await params
-  const post = getPostBySlug(slug)
+  const { slug } = await params;
+  const post = getPostBySlug(slug);
 
   if (!post) {
-    notFound()
+    notFound();
   }
 
-  const baseUrl = getPublicBaseUrl().replace(/\/$/, '')
+  const baseUrl = getPublicBaseUrl().replace(/\/$/, '');
   // WHY: Guard against malformed frontmatter dates so rendering remains stable.
-  const dateValues = getPostDateValues(post.date)
+  const dateValues = getPostDateValues(post.date);
   // WHY: Avoid referencing non-existent images in structured data.
-  const imageUrl = getBlogPostImageUrl(baseUrl, post.slug)
+  const imageUrl = getBlogPostImageUrl(baseUrl, post.slug);
 
   // Structured data for article
   const articleStructuredData = {
@@ -102,7 +150,7 @@ export default async function BlogPostPage({ params }: Props) {
       '@id': `${baseUrl}/blog/${post.slug}`,
     },
     articleSection: post.category,
-  }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -134,30 +182,22 @@ export default async function BlogPostPage({ params }: Props) {
             </div>
 
             {/* Title */}
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              {post.title}
-            </h1>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">{post.title}</h1>
 
             {/* Description */}
-            <p className="text-xl text-gray-600 mb-8">
-              {post.description}
-            </p>
+            <p className="text-xl text-gray-600 mb-8">{post.description}</p>
 
             {/* Meta Info */}
             <div className="flex flex-wrap items-center gap-6 pb-8 border-b border-gray-200">
               <div className="flex items-center gap-2 text-gray-600">
                 <Calendar className="w-5 h-5" />
-                <span>
-                  {dateValues.formattedDate}
-                </span>
+                <span>{dateValues.formattedDate}</span>
               </div>
               <div className="flex items-center gap-2 text-gray-600">
                 <Clock className="w-5 h-5" />
                 <span>{post.readingTime}</span>
               </div>
-              <div className="text-gray-600">
-                By {post.author}
-              </div>
+              <div className="text-gray-600">By {post.author}</div>
             </div>
 
             {/* Content */}
@@ -195,5 +235,5 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
       </section>
     </div>
-  )
+  );
 }

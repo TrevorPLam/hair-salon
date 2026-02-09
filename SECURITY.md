@@ -1,4 +1,55 @@
+<!--
+/**
+ * @file SECURITY.md
+ * @role docs
+ * @summary Security policy and vulnerability reporting guidance.
+ *
+ * @entrypoints
+ * - Security reporting reference
+ *
+ * @exports
+ * - N/A
+ *
+ * @depends_on
+ * - N/A
+ *
+ * @used_by
+ * - Security reporters and maintainers
+ *
+ * @runtime
+ * - environment: docs
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: vulnerability reports
+ * - outputs: response expectations and contact info
+ *
+ * @invariants
+ * - Contact details must be accurate and monitored
+ *
+ * @gotchas
+ * - Placeholder email must be replaced before release
+ *
+ * @issues
+ * - [severity:high] security@example.com appears to be a placeholder contact.
+ *
+ * @opportunities
+ * - Add real security contact and PGP if required
+ *
+ * @verification
+ * - TODO(verify): Confirm security contact address and SLA policies
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+-->
+
 # Security Policy
+
+## Audit Status (PARTIAL)
+
+- TODO(verify): Replace placeholder email with real security contact.
 
 ## Supported Versions
 

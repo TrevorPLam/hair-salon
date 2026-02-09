@@ -1,17 +1,53 @@
 /**
- * Jest setup file for all test suites.
+ * @file jest.setup.js
+ * @role test
+ * @summary Global Jest setup for matchers and console noise suppression.
  *
- * Configures:
- * - Testing Library matchers
- * - Global test configuration
- * - Mock setup
+ * @entrypoints
+ * - Loaded via jest.config.js setupFilesAfterEnv
+ *
+ * @exports
+ * - N/A
+ *
+ * @depends_on
+ * - External: @testing-library/jest-dom
+ *
+ * @used_by
+ * - All Jest test suites
+ *
+ * @runtime
+ * - environment: test
+ * - side_effects: overrides console.warn/error during tests
+ *
+ * @data_flow
+ * - inputs: console messages from tests
+ * - outputs: suppressed or forwarded logs
+ *
+ * @invariants
+ * - Overrides must be restored in afterAll
+ *
+ * @gotchas
+ * - Filtering by string match may hide unexpected warnings
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @opportunities
+ * - Consider narrowing filters or surfacing suppressed messages in debug mode
+ *
+ * @verification
+ * - Run: pnpm test and confirm known warnings are suppressed
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-require('@testing-library/jest-dom')
+require('@testing-library/jest-dom');
 
 // Suppress console output in tests (unless test explicitly checks for it)
-const originalError = console.error
-const originalWarn = console.warn
+const originalError = console.error;
+const originalWarn = console.warn;
 
 beforeAll(() => {
   console.error = (...args) => {
@@ -20,23 +56,23 @@ beforeAll(() => {
       (args[0].includes('Warning: ReactDOM.render') ||
         args[0].includes('Not implemented: HTMLFormElement.prototype.submit'))
     ) {
-      return
+      return;
     }
-    originalError.call(console, ...args)
-  }
+    originalError.call(console, ...args);
+  };
   console.warn = (...args) => {
     if (
       typeof args[0] === 'string' &&
       (args[0].includes('Warning: useLayoutEffect') ||
         args[0].includes('componentWillReceiveProps'))
     ) {
-      return
+      return;
     }
-    originalWarn.call(console, ...args)
-  }
-})
+    originalWarn.call(console, ...args);
+  };
+});
 
 afterAll(() => {
-  console.error = originalError
-  console.warn = originalWarn
-})
+  console.error = originalError;
+  console.warn = originalWarn;
+});

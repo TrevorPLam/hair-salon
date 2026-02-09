@@ -1,11 +1,54 @@
-import type { Metadata } from 'next'
-import { Scissors } from 'lucide-react'
-import ServiceDetailLayout from '@/features/services/components/ServiceDetailLayout'
+/**
+ * @file apps/web/app/services/haircuts/page.tsx
+ * @role runtime
+ * @summary Service detail page for haircuts and styling.
+ *
+ * @entrypoints
+ * - Route: /services/haircuts
+ *
+ * @exports
+ * - metadata
+ * - default HaircutsPage
+ *
+ * @depends_on
+ * - External: next (Metadata)
+ * - External: lucide-react
+ * - Internal: @/features/services/components/ServiceDetailLayout
+ *
+ * @used_by
+ * - Next.js app router
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static service detail data
+ * - outputs: service detail layout
+ *
+ * @invariants
+ * - Pricing anchors should exist on /pricing
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @verification
+ * - Visit /services/haircuts and confirm layout renders.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
+import type { Metadata } from 'next';
+import { Scissors } from 'lucide-react';
+import ServiceDetailLayout from '@/features/services/components/ServiceDetailLayout';
 
 export const metadata: Metadata = {
   title: 'Haircuts & Styling | Hair Salon Template',
-  description: 'Precision haircuts and professional styling for women, men, and children. Experience a fresh look tailored to your lifestyle.',
-}
+  description:
+    'Precision haircuts and professional styling for women, men, and children. Experience a fresh look tailored to your lifestyle.',
+};
 
 export default function HaircutsPage() {
   return (
@@ -68,21 +111,25 @@ export default function HaircutsPage() {
       faqs={[
         {
           question: 'How often should I get a haircut?',
-          answer: 'We generally recommend every 6-8 weeks to maintain shape and health. For shorter styles, 4-6 weeks may be necessary.',
+          answer:
+            'We generally recommend every 6-8 weeks to maintain shape and health. For shorter styles, 4-6 weeks may be necessary.',
         },
         {
           question: 'Do you cut curly hair?',
-          answer: 'Yes! We have stylists who specialize in curly hair techniques to enhance your natural texture.',
+          answer:
+            'Yes! We have stylists who specialize in curly hair techniques to enhance your natural texture.',
         },
         {
           question: 'Is a wash included?',
-          answer: 'Yes, all our haircut services include a luxurious shampoo and conditioning treatment.',
+          answer:
+            'Yes, all our haircut services include a luxurious shampoo and conditioning treatment.',
         },
         {
           question: 'Can I bring a picture of what I want?',
-          answer: 'Absolutely! Pictures are a great way to communicate your vision to your stylist.',
+          answer:
+            'Absolutely! Pictures are a great way to communicate your vision to your stylist.',
         },
       ]}
     />
-  )
+  );
 }

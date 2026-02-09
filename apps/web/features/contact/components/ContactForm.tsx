@@ -1,125 +1,72 @@
 /**
- * Contact form component with validation and submission handling.
+ * @file apps/web/features/contact/components/ContactForm.tsx
+ * @role runtime
+ * @summary Contact form with validation, submission, and analytics tracking.
  *
- * @component ContactForm
+ * @entrypoints
+ * - Used on /contact
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - default ContactForm
  *
- * **FILE PURPOSE**: Primary lead capture form. Critical conversion component.
- * Handles client-side validation → server action submission → feedback display.
+ * @depends_on
+ * - External: react, react-hook-form, zod
+ * - External: lucide-react
+ * - Internal: @repo/ui (Input, Select, Textarea, Button)
+ * - Internal: @/lib/actions (submitContactForm)
+ * - Internal: @/lib/contact-form-schema
+ * - Internal: @/lib/analytics
+ * - Internal: @/lib/constants
+ * - Internal: @/lib/sentry-client
  *
- * **RENDERING**: Client component ('use client') for form interactivity.
+ * @used_by
+ * - apps/web/app/contact/page.tsx
  *
- * **FORM FLOW**:
- * 1. User fills form (validated on blur via react-hook-form)
- * 2. Submit triggers onSubmit handler
- * 3. Calls submitContactForm server action (lib/actions.ts)
- * 4. Displays success/error message based on response
+ * @runtime
+ * - environment: client
+ * - side_effects: network submission, analytics, sentry context
  *
- * **HONEYPOT FIELD**: Hidden 'website' field catches bots.
- * - Rendered as sr-only, tabIndex=-1, autoComplete=off
- * - Server rejects if filled (lib/actions.ts)
+ * @data_flow
+ * - inputs: form fields
+ * - outputs: submission request and status UI
  *
- * **FORM FIELDS** (current schema from contact-form-schema.ts):
- * | Field | Required | Notes |
- * |-------|----------|-------|
- * | name | ✅ | min 2 chars |
- * | email | ✅ | valid email |
- * | company | ❌ | optional |
- * | phone | ✅ | required |
- * | servicesInterested | ❌ | dropdown (Haircut, Color, Styling, Treatment) |
- * | preferredAppointment | ❌ | dropdown (Morning, Afternoon, Evening) |
- * | message | ✅ | min 10 chars |
- * | hearAboutUs | ❌ | dropdown |
+ * @invariants
+ * - Honeypot field must remain empty
  *
- * **AI ITERATION HINTS**:
- * - Adding field? Update contact-form-schema.ts FIRST, then add Input here
- * - Required fields: name, email, phone, message
- * - Use same pattern: register() + error display + isValid green check
- * - Test with __tests__/components/ContactForm.test.tsx
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * **DEPENDENCIES**:
- * - lib/actions.ts — submitContactForm server action
- * - lib/contact-form-schema.ts — Zod validation schema
- * - components/ui/Input, Select, Textarea, Button — form primitives
- * - lib/sentry-client.ts — Sentry context on successful submit
- * - lib/analytics.ts — conversion tracking for submissions
+ * @verification
+ * - Submit form and verify success/error states.
  *
- * **VALIDATION MODES**:
- * - mode: 'onBlur' — validates when field loses focus
- * - reValidateMode: 'onChange' — re-validates while typing after first error
- * - delayError: UI_TIMING.FORM_ERROR_DEBOUNCE_MS — debounces error display for smoother UX
- *
- * **POTENTIAL ISSUES**:
- * - [ ] Success message disappears on page navigation
- *
- * ═══════════════════════════════════════════════════════════════════════════════
- *
- * **Features:**
- * - Client-side validation with Zod schema
- * - Server action submission (no API route needed)
- * - Rate limiting protection (server-side)
- * - Success/error state feedback
- * - Loading state with spinner
- * - Sentry context for error tracking
- *
- * **Form Fields:**
- * - Name (required)
- * - Email (required, validated)
- * - Company (optional)
- * - Phone (required)
- * - Services Interested In (dropdown: Haircut, Color, Styling, Treatment)
- * - Preferred Appointment Time (dropdown: Morning, Afternoon, Evening)
- * - Message (required)
- * - How did you hear about us (dropdown)
- *
- * **Validation:**
- * - Mode: onBlur (validates when field loses focus)
- * - ReValidateMode: onChange (re-validates as user types after first error)
- * - Error delay: 500ms debounce
- *
- * **Security:**
- * - All inputs sanitized server-side in lib/actions.ts
- * - Rate limited per email and IP address
- * - No sensitive data logged
- *
- * **Usage:**
- * ```tsx
- * import ContactForm from '@/components/ContactForm'
- *
- * // In contact page
- * <ContactForm />
- * ```
- *
- * @see lib/actions.ts for server-side handling
- * @see lib/contact-form-schema.ts for validation schema
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-'use client'
+'use client';
 
-import React, { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { submitContactForm } from '@/lib/actions'
-import { contactFormSchema, type ContactFormData } from '@/lib/contact-form-schema'
-import { trackFormSubmission } from '@/lib/analytics'
-import { UI_TIMING } from '@/lib/constants'
-import { Input, Select, Textarea, Button } from '@repo/ui'
-import { Loader2 } from 'lucide-react'
-import { setSentryContext, setSentryUser, withSentrySpan } from '@/lib/sentry-client'
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { submitContactForm } from '@/lib/actions';
+import { contactFormSchema, type ContactFormData } from '@/lib/contact-form-schema';
+import { trackFormSubmission } from '@/lib/analytics';
+import { UI_TIMING } from '@/lib/constants';
+import { Input, Select, Textarea, Button } from '@repo/ui';
+import { Loader2 } from 'lucide-react';
+import { setSentryContext, setSentryUser, withSentrySpan } from '@/lib/sentry-client';
 
 /**
  * Contact form with full validation and server submission.
  * Manages its own submission state and error handling.
  */
 export default function ContactForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{
-    type: 'success' | 'error' | null
-    message: string
-  }>({ type: null, message: '' })
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
 
   const {
     register,
@@ -131,60 +78,54 @@ export default function ContactForm() {
     mode: 'onBlur', // Validate on blur for better UX
     reValidateMode: 'onChange', // Re-validate on change after first validation
     delayError: UI_TIMING.FORM_ERROR_DEBOUNCE_MS, // Debounce error display
-  })
+  });
 
   const onSubmit = async (data: ContactFormData) => {
-    setIsSubmitting(true)
-    setSubmitStatus({ type: null, message: '' })
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
 
     try {
       const result = await withSentrySpan(
         { name: 'contact_form.submit', op: 'ui.action', attributes: { route: '/contact' } },
-        () => submitContactForm(data),
-      )
+        () => submitContactForm(data)
+      );
 
       if (result.success) {
-        trackFormSubmission('contact', true)
-        await setSentryUser({ email: data.email, name: data.name })
+        trackFormSubmission('contact', true);
+        await setSentryUser({ email: data.email, name: data.name });
         await setSentryContext('contact_form', {
           servicesInterested: data.servicesInterested,
           preferredAppointment: data.preferredAppointment,
           heardFrom: data.hearAboutUs,
-        })
+        });
         setSubmitStatus({
           type: 'success',
           message: result.message,
-        })
-        reset()
+        });
+        reset();
       } else {
-        trackFormSubmission('contact', false)
+        trackFormSubmission('contact', false);
         setSubmitStatus({
           type: 'error',
           message: result.message,
-        })
+        });
       }
     } catch {
-      trackFormSubmission('contact', false)
+      trackFormSubmission('contact', false);
       setSubmitStatus({
         type: 'error',
         message: 'Something went wrong. Please try again.',
-      })
+      });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" aria-label="Contact form">
       <div className="sr-only" aria-hidden="true">
         <label htmlFor="website">Website</label>
-        <input
-          id="website"
-          type="text"
-          tabIndex={-1}
-          autoComplete="off"
-          {...register('website')}
-        />
+        <input id="website" type="text" tabIndex={-1} autoComplete="off" {...register('website')} />
       </div>
 
       <Input
@@ -309,5 +250,5 @@ export default function ContactForm() {
         )}
       </Button>
     </form>
-  )
+  );
 }

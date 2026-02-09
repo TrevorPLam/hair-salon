@@ -1,4 +1,55 @@
+<!--
+/**
+ * @file TODO.md
+ * @role docs
+ * @summary Implementation backlog and phased tasks for the template.
+ *
+ * @entrypoints
+ * - Planning and prioritization reference
+ *
+ * @exports
+ * - N/A
+ *
+ * @depends_on
+ * - N/A
+ *
+ * @used_by
+ * - Maintainers and contributors
+ *
+ * @runtime
+ * - environment: docs
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: roadmap decisions
+ * - outputs: task list
+ *
+ * @invariants
+ * - Tasks should align with current codebase state
+ *
+ * @gotchas
+ * - Contains aspirational items that may not match current implementation
+ *
+ * @issues
+ * - [severity:med] Backlog statements are UNVERIFIED against current codebase.
+ *
+ * @opportunities
+ * - Reconcile backlog items with audited findings and docs/REMEDIATION_PLAN.md
+ *
+ * @verification
+ * - TODO(verify): Review each item against current code and update status
+ *
+ * @status
+ * - confidence: low
+ * - last_audited: 2026-02-09
+ */
+-->
+
 # Hair Salon Template - Implementation TODO
+
+## Audit Status (UNVERIFIED)
+
+- This backlog is not yet reconciled with the audited codebase.
 
 ## Overview
 

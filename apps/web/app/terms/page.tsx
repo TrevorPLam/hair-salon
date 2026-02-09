@@ -1,15 +1,48 @@
-import type { Metadata } from 'next'
-
 /**
- * Terms of Service page
+ * @file apps/web/app/terms/page.tsx
+ * @role runtime
+ * @summary Terms of Service page with legal template content.
  *
- * Meta-note: Content is adapted from /docs/TERMS_OF_SERVICE_TEMPLATE.md so legal review
- * can align each section with the approved placeholder language.
+ * @entrypoints
+ * - Route: /terms
+ *
+ * @exports
+ * - metadata
+ * - default TermsOfServicePage
+ *
+ * @depends_on
+ * - External: next (Metadata)
+ *
+ * @used_by
+ * - Next.js app router
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static legal content
+ * - outputs: legal content layout
+ *
+ * @invariants
+ * - Template placeholders must be updated before launch
+ *
+ * @issues
+ * - [severity:med] Terms content includes placeholders and TO BE UPDATED fields.
+ *
+ * @verification
+ * - Visit /terms and confirm legal sections render.
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
  */
+
+import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Terms of Service | Hair Salon Template',
   description: 'Review the terms that govern use of the Hair Salon Template website.',
-}
+};
 
 export default function TermsOfServicePage() {
   return (
@@ -46,9 +79,9 @@ export default function TermsOfServicePage() {
 
             <h2>Agreement to Terms</h2>
             <p>
-              By accessing or using the Hair Salon Template website (&quot;Site&quot;), you agree to be
-              bound by these Terms of Service (&quot;Terms&quot;). If you disagree with any part of these Terms,
-              you may not access the Site.
+              By accessing or using the Hair Salon Template website (&quot;Site&quot;), you agree to
+              be bound by these Terms of Service (&quot;Terms&quot;). If you disagree with any part
+              of these Terms, you may not access the Site.
             </p>
 
             <h2>Use of the Site</h2>
@@ -66,27 +99,33 @@ export default function TermsOfServicePage() {
             <h3>Intellectual Property</h3>
             <p>
               All content on this Site (text, images, logos, graphics) is owned by Your Dedicated
-              Marketer and protected by copyright and trademark laws. You may not reproduce, distribute,
-              or create derivative works without written permission.
+              Marketer and protected by copyright and trademark laws. You may not reproduce,
+              distribute, or create derivative works without written permission.
             </p>
 
             <h2>Services</h2>
             <h3>Description</h3>
-            <p>Hair Salon Template provides [TO BE CUSTOMIZED: describe your hair salon services].</p>
+            <p>
+              Hair Salon Template provides [TO BE CUSTOMIZED: describe your hair salon services].
+            </p>
 
             <h3>No Guarantees</h3>
             <p>
-              We strive to provide high-quality services but do not guarantee specific results. Services
-              are provided &quot;as is&quot; without warranties of any kind.
+              We strive to provide high-quality services but do not guarantee specific results.
+              Services are provided &quot;as is&quot; without warranties of any kind.
             </p>
 
             <h3>Service Modifications</h3>
-            <p>We reserve the right to modify or discontinue services at any time without notice.</p>
+            <p>
+              We reserve the right to modify or discontinue services at any time without notice.
+            </p>
 
             <h2>User Submissions</h2>
             <p>When you submit information through contact forms:</p>
             <ul>
-              <li>You grant us permission to use the information as described in our Privacy Policy</li>
+              <li>
+                You grant us permission to use the information as described in our Privacy Policy
+              </li>
               <li>You represent that all information provided is accurate</li>
               <li>You consent to being contacted regarding your inquiry</li>
             </ul>
@@ -98,7 +137,10 @@ export default function TermsOfServicePage() {
             </p>
 
             <h2>Disclaimer of Warranties</h2>
-            <p>THE SITE IS PROVIDED &quot;AS IS&quot; WITHOUT WARRANTIES OF ANY KIND, INCLUDING BUT NOT LIMITED TO:</p>
+            <p>
+              THE SITE IS PROVIDED &quot;AS IS&quot; WITHOUT WARRANTIES OF ANY KIND, INCLUDING BUT
+              NOT LIMITED TO:
+            </p>
             <ul>
               <li>Warranties of merchantability</li>
               <li>Fitness for a particular purpose</li>
@@ -109,9 +151,14 @@ export default function TermsOfServicePage() {
             <h2>Limitation of Liability</h2>
             <p>TO THE FULLEST EXTENT PERMITTED BY LAW:</p>
             <ul>
-              <li>We are not liable for any indirect, incidental, special, or consequential damages</li>
+              <li>
+                We are not liable for any indirect, incidental, special, or consequential damages
+              </li>
               <li>Our total liability shall not exceed the amount you paid to us (if any)</li>
-              <li>We are not responsible for damages from website downtime, errors, or security breaches</li>
+              <li>
+                We are not responsible for damages from website downtime, errors, or security
+                breaches
+              </li>
             </ul>
 
             <h2>Indemnification</h2>
@@ -123,9 +170,9 @@ export default function TermsOfServicePage() {
 
             <h2>Termination</h2>
             <p>
-              We reserve the right to terminate or suspend your access to the Site at any time, without
-              notice, for violation of these Terms, fraudulent or illegal activity, or any reason at our
-              sole discretion.
+              We reserve the right to terminate or suspend your access to the Site at any time,
+              without notice, for violation of these Terms, fraudulent or illegal activity, or any
+              reason at our sole discretion.
             </p>
 
             <h2>Governing Law</h2>
@@ -137,9 +184,9 @@ export default function TermsOfServicePage() {
 
             <h2>Changes to Terms</h2>
             <p>
-              We may update these Terms at any time. Changes will be posted on this page with an updated
-              &quot;Last Updated&quot; date. Your continued use of the Site constitutes acceptance of the revised
-              Terms.
+              We may update these Terms at any time. Changes will be posted on this page with an
+              updated &quot;Last Updated&quot; date. Your continued use of the Site constitutes
+              acceptance of the revised Terms.
             </p>
 
             <h2>Contact Information</h2>
@@ -159,14 +206,14 @@ export default function TermsOfServicePage() {
             </p>
 
             <p>
-              <strong>⚠️ Legal notice:</strong> This is a placeholder template. Before launch, consult
-              with a legal professional to ensure compliance with applicable laws and customize terms
-              based on your specific service offerings, jurisdiction, industry-specific regulations,
-              and risk management needs.
+              <strong>⚠️ Legal notice:</strong> This is a placeholder template. Before launch,
+              consult with a legal professional to ensure compliance with applicable laws and
+              customize terms based on your specific service offerings, jurisdiction,
+              industry-specific regulations, and risk management needs.
             </p>
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }

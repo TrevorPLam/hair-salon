@@ -1,162 +1,112 @@
 /**
- * Root layout component for the entire application.
+ * @file apps/web/app/layout.tsx
+ * @role runtime
+ * @summary Root app layout defining document shell, metadata, CSP nonce, and global UI.
  *
- * @module app/layout
+ * @entrypoints
+ * - Next.js App Router root layout for all routes
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - metadata
+ * - default RootLayout
  *
- * **FILE PURPOSE**: Root layout wrapping ALL pages. Defines HTML structure,
- * global metadata, fonts, navigation, and footer. Changes here affect
- * every page on the site.
+ * @depends_on
+ * - Internal: apps/web/app/globals.css
+ * - Internal: apps/web/app/providers.tsx
+ * - Internal: apps/web/components/Navigation.tsx
+ * - Internal: apps/web/components/Footer.tsx
+ * - Internal: apps/web/components/SkipToContent.tsx
+ * - Internal: apps/web/components/InstallPrompt.tsx
+ * - Internal: apps/web/components/AnalyticsConsentBanner.tsx
+ * - Internal: apps/web/lib/csp.ts
+ * - Internal: apps/web/lib/env.public.ts
+ * - Internal: apps/web/lib/logger.ts
+ * - Internal: apps/web/lib/search.ts
+ * - Internal: apps/web/lib/constants.ts
+ * - External: next, next/headers, next/font/google
  *
- * **RENDERING**: Server component (no 'use client'). Children rendered
- * inside Providers wrapper which IS a client component.
+ * @used_by
+ * - Next.js app router
  *
- * **COMPONENT HIERARCHY**:
- * ```
- * <html>
- *   <head>  ← metadata export handles this
- *   <body>
- *     <SkipToContent />     ← a11y jump link
- *     <Navigation />         ← sticky header (client)
- *     <Providers>            ← ErrorBoundary + Breadcrumbs (client)
- *       <main>{children}</main>
- *     </Providers>
- *     <Footer />             ← site footer (server)
- *     <InstallPrompt />      ← PWA install (client)
- *   </body>
- * </html>
- * ```
+ * @runtime
+ * - environment: server
+ * - side_effects: reads request headers; logs warnings/errors; injects CSP nonce
  *
- * **METADATA**:
- * - Default title with template: "%s | Hair Salon Template"
- * - Child pages override with their own metadata export
- * - OG image generated via /api/og route
- * - Structured data: Organization + WebSite schemas in <head>
+ * @data_flow
+ * - inputs: request headers, public env, search index
+ * - outputs: HTML shell, metadata, JSON-LD, consent banner props
  *
- * **FONTS** (Google Fonts via next/font):
- * - Inter: --font-inter (body text, sans-serif default)
- * - IBM Plex Sans: --font-plex (headings, .font-authority class)
+ * @invariants
+ * - CSP nonce should be present in request headers from middleware
+ * - metadataBase must be a valid URL
  *
- * **AI ITERATION HINTS**:
- * - Adding global script? Add to <head> section
- * - GA4 script is injected after consent when NEXT_PUBLIC_ANALYTICS_ID is set
- * - Changing fonts? Update font imports and CSS variables
- * - Changing nav links? Edit Navigation.tsx navLinks array
- * - Adding global provider? Wrap in Providers component
+ * @gotchas
+ * - Fallback nonce is used if middleware omits the header
  *
- * **PWA CONFIG**:
- * - manifest.json linked in metadata
- * - Apple touch icons in metadata
- * - Theme color: #0ea5e9
- * - InstallPrompt handles A2HS flow
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * **SEARCH**: getSearchIndex() called at layout level,
- * passed to Navigation for SearchDialog.
+ * @opportunities
+ * - Verify structured data URLs derive from env (currently static strings)
  *
- * **KNOWN ISSUES**:
- * - [ ] No skip link target (#main-content) on some pages
- * - [ ] Structured data URLs hardcoded (should use env)
+ * @verification
+ * - Run dev server and confirm CSP nonce and structured data scripts render
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- *
- * **Purpose:**
- * - Defines the HTML document structure
- * - Provides global metadata for SEO
- * - Wraps all pages with Navigation, Footer, and Providers
- * - Configures fonts, PWA settings, and structured data
- *
- * **Component Hierarchy:**
- * ```
- * <html>
- *   <head>  (PWA meta, structured data)
- *   <body>
- *     <SkipToContent />     (accessibility)
- *     <Navigation />         (sticky header)
- *     <Providers>            (error boundary, breadcrumbs)
- *       <main>{children}</main>
- *     </Providers>
- *     <Footer />
- *     <InstallPrompt />     (PWA install)
- *   </body>
- * </html>
- * ```
- *
- * **SEO Configuration:**
- * - Default title with template for child pages
- * - OpenGraph and Twitter card metadata
- * - Organization and WebSite structured data
- * - Robots directives for search engines
- *
- * **Fonts:**
- * - Inter: Primary sans-serif (body text)
- * - IBM Plex Sans: Authority font (headings, emphasis)
- *
- * **PWA:**
- * - Manifest linked for installability
- * - Apple touch icons configured
- * - Theme color set
- *
- * **Dynamic Imports:**
- * - Providers: Client-side only (ErrorBoundary needs browser)
- * - InstallPrompt: Client-side only (PWA API)
- *
- * @see app/AGENTS.md for page conventions
- * @see tailwind.config.ts for theme customization
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
  */
 
-import type { Metadata } from 'next'
-import { headers } from 'next/headers'
-import { IBM_Plex_Sans, Inter } from 'next/font/google'
-import './globals.css'
-import Navigation from '@/components/Navigation'
-import Footer from '@/components/Footer'
-import SkipToContent from '@/components/SkipToContent'
-import AnalyticsConsentBanner from '@/components/AnalyticsConsentBanner'
-import Providers from '@/app/providers'
-import InstallPrompt from '@/components/InstallPrompt'
-import { createCspNonce, CSP_NONCE_HEADER } from '@/lib/csp'
-import { getPublicBaseUrl, validatedPublicEnv } from '@/lib/env.public'
-import { logError, logWarn } from '@/lib/logger'
-import { getSearchIndex } from '@/lib/search'
-import { ORGANIZATION } from '@/lib/constants'
+import type { Metadata } from 'next';
+import { headers } from 'next/headers';
+import { IBM_Plex_Sans, Inter } from 'next/font/google';
+import './globals.css';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import SkipToContent from '@/components/SkipToContent';
+import AnalyticsConsentBanner from '@/components/AnalyticsConsentBanner';
+import Providers from '@/app/providers';
+import InstallPrompt from '@/components/InstallPrompt';
+import { createCspNonce, CSP_NONCE_HEADER } from '@/lib/csp';
+import { getPublicBaseUrl, validatedPublicEnv } from '@/lib/env.public';
+import { logError, logWarn } from '@/lib/logger';
+import { getSearchIndex } from '@/lib/search';
+import { ORGANIZATION } from '@/lib/constants';
 
 // Font configuration with CSS variables
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const plexSans = IBM_Plex_Sans({
   subsets: ['latin'],
   variable: '--font-plex',
   display: 'swap',
   weight: ['400', '600', '700'],
-})
+});
 
-const siteUrl = getPublicBaseUrl()
-const analyticsId = validatedPublicEnv.NEXT_PUBLIC_ANALYTICS_ID
-const ogImageUrl = new URL('/api/og?title=Hair%20Salon%20Template', siteUrl).toString()
-const NONCE_ERROR_FALLBACK = 'fallback-nonce'
+const siteUrl = getPublicBaseUrl();
+const analyticsId = validatedPublicEnv.NEXT_PUBLIC_ANALYTICS_ID;
+const ogImageUrl = new URL('/api/og?title=Hair%20Salon%20Template', siteUrl).toString();
+const NONCE_ERROR_FALLBACK = 'fallback-nonce';
 
 function resolveCspNonce(requestHeaders: Headers): string {
-  const headerNonce = requestHeaders.get(CSP_NONCE_HEADER)
+  const headerNonce = requestHeaders.get(CSP_NONCE_HEADER);
 
   if (headerNonce) {
-    return headerNonce
+    return headerNonce;
   }
 
   // We prefer keeping the app online over hard-failing when middleware misses the header.
   logWarn('CSP nonce missing from request headers; using fallback nonce.', {
     header: CSP_NONCE_HEADER,
-  })
+  });
 
   try {
-    return createCspNonce()
+    return createCspNonce();
   } catch (error) {
     // If crypto is unavailable, still return a nonce so the layout can render.
     logError('Failed to create CSP nonce fallback; using static nonce.', error, {
       header: CSP_NONCE_HEADER,
-    })
-    return NONCE_ERROR_FALLBACK
+    });
+    return NONCE_ERROR_FALLBACK;
   }
 }
 
@@ -174,8 +124,17 @@ export const metadata: Metadata = {
     default: 'Hair Salon Template | Professional Hair Salon Website',
     template: '%s | Hair Salon Template',
   },
-  description: 'Professional hair salon website template with modern design, booking system, and service showcase. Perfect for hair stylists and salon owners.',
-  keywords: ['hair salon', 'hair stylist', 'beauty salon', 'haircut', 'hair styling', 'salon website', 'booking system'],
+  description:
+    'Professional hair salon website template with modern design, booking system, and service showcase. Perfect for hair stylists and salon owners.',
+  keywords: [
+    'hair salon',
+    'hair stylist',
+    'beauty salon',
+    'haircut',
+    'hair styling',
+    'salon website',
+    'booking system',
+  ],
   authors: [{ name: 'Hair Salon Template' }],
   creator: 'Hair Salon Template',
   publisher: 'Hair Salon Template',
@@ -223,16 +182,12 @@ export const metadata: Metadata = {
     images: [ogImageUrl],
     creator: '@hairsalontemplate',
   },
-}
+};
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const searchItems = getSearchIndex()
-  const requestHeaders = await headers()
-  const cspNonce = resolveCspNonce(requestHeaders)
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const searchItems = getSearchIndex();
+  const requestHeaders = await headers();
+  const cspNonce = resolveCspNonce(requestHeaders);
 
   return (
     <html lang="en" className={`${inter.variable} ${plexSans.variable}`}>
@@ -255,7 +210,8 @@ export default async function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: 'Hair Salon Template',
-              description: 'Professional hair salon website template with modern design and booking system.',
+              description:
+                'Professional hair salon website template with modern design and booking system.',
               url: siteUrl,
               logo: new URL('/logo.png', siteUrl).toString(),
               contactPoint: {
@@ -309,8 +265,9 @@ export default async function RootLayout({
         </Providers>
         <Footer />
         <InstallPrompt />
+        {/* NOTE(consent): Banner must keep analytics default-off until user opts in. */}
         <AnalyticsConsentBanner analyticsId={analyticsId} nonce={cspNonce} />
       </body>
     </html>
-  )
+  );
 }

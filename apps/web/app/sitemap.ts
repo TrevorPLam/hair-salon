@@ -1,4 +1,52 @@
+/**
+ * @file apps/web/app/sitemap.ts
+ * @role runtime
+ * @summary Generates sitemap.xml with static routes and blog posts.
+ *
+ * @entrypoints
+ * - Route: /sitemap.xml (Next.js metadata route)
+ *
+ * @exports
+ * - default sitemap
+ *
+ * @depends_on
+ * - Internal: apps/web/lib/env.public.ts
+ * - Internal: @/lib/blog (alias; verify target file)
+ * - External: next (MetadataRoute)
+ *
+ * @used_by
+ * - Search engines and Next.js metadata routing
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: reads blog posts for dynamic routes
+ *
+ * @data_flow
+ * - inputs: public base URL, blog post list
+ * - outputs: sitemap entries
+ *
+ * @invariants
+ * - Static routes should match actual app routes
+ *
+ * @gotchas
+ * - Blog import alias must resolve to the real blog module
+ *
+ * @issues
+ * - [severity:med] @/lib/blog appears unresolved; verify alias mapping and file location.
+ *
+ * @opportunities
+ * - Consider centralizing static routes to avoid drift
+ *
+ * @verification
+ * - Visit /sitemap.xml and confirm static + blog URLs are present
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+
 import { MetadataRoute } from 'next';
+// TODO(verify): Ensure @/lib/blog resolves to the blog module in features/blog.
 import { getAllPosts } from '@/lib/blog';
 import { getPublicBaseUrl } from '@/lib/env.public';
 

@@ -1,17 +1,61 @@
-import { Metadata } from 'next'
-import Link from 'next/link'
-import { getAllPosts, getAllCategories } from '@/lib/blog'
-import { Calendar, Clock, ArrowRight } from 'lucide-react'
-import { Container } from '@repo/ui'
+/**
+ * @file apps/web/app/blog/page.tsx
+ * @role runtime
+ * @summary Blog index with category filters and post cards.
+ *
+ * @entrypoints
+ * - Route: /blog
+ *
+ * @exports
+ * - metadata
+ * - default BlogPage
+ *
+ * @depends_on
+ * - External: next (Metadata)
+ * - External: next/link
+ * - External: lucide-react
+ * - Internal: @repo/ui (Container)
+ * - Internal: @/lib/blog (getAllPosts, getAllCategories)
+ *
+ * @used_by
+ * - Next.js app router
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: reads blog data
+ *
+ * @data_flow
+ * - inputs: blog posts and categories
+ * - outputs: category links and post cards
+ *
+ * @invariants
+ * - Blog data must include slug, title, date, description
+ *
+ * @issues
+ * - [severity:med] @/lib/blog alias appears unresolved; verify alias mapping.
+ *
+ * @verification
+ * - Visit /blog and confirm categories and cards render correctly.
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+
+import { Metadata } from 'next';
+import Link from 'next/link';
+import { getAllPosts, getAllCategories } from '@/lib/blog';
+import { Calendar, Clock, ArrowRight } from 'lucide-react';
+import { Container } from '@repo/ui';
 
 export const metadata: Metadata = {
   title: 'Blog | Hair Salon Template',
   description: 'Hair care tips, trends, and salon news.',
-}
+};
 
 export default function BlogPage() {
-  const posts = getAllPosts()
-  const categories = getAllCategories()
+  const posts = getAllPosts();
+  const categories = getAllCategories();
 
   return (
     <div className="min-h-screen">
@@ -19,11 +63,10 @@ export default function BlogPage() {
       <section className="bg-gradient-to-br from-charcoal via-slate-800 to-teal/20 text-white py-20">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Salon Tips & Trends
-            </h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">Salon Tips & Trends</h1>
             <p className="text-xl text-white/90 leading-relaxed">
-              Expert advice on maintaining your look, product recommendations, and the latest style trends.
+              Expert advice on maintaining your look, product recommendations, and the latest style
+              trends.
             </p>
           </div>
         </Container>
@@ -83,9 +126,7 @@ export default function BlogPage() {
                     </h2>
 
                     {/* Description */}
-                    <p className="text-slate mb-6 line-clamp-3">
-                      {post.description}
-                    </p>
+                    <p className="text-slate mb-6 line-clamp-3">{post.description}</p>
 
                     {/* Meta Info */}
                     <div className="flex items-center gap-4 text-sm text-slate/70 mb-6">
@@ -139,5 +180,5 @@ export default function BlogPage() {
         </Container>
       </section>
     </div>
-  )
+  );
 }

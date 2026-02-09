@@ -1,14 +1,56 @@
-import type { Metadata } from 'next'
-import { Container, Section, Button } from '@repo/ui'
-import { Instagram } from 'lucide-react'
+/**
+ * @file apps/web/app/gallery/page.tsx
+ * @role runtime
+ * @summary Gallery page with category filters and portfolio grid.
+ *
+ * @entrypoints
+ * - Route: /gallery
+ *
+ * @exports
+ * - metadata
+ * - default GalleryPage
+ *
+ * @depends_on
+ * - External: next (Metadata)
+ * - External: lucide-react
+ * - Internal: @repo/ui (Container, Section, Button)
+ *
+ * @used_by
+ * - Next.js app router
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static categories and portfolio items
+ * - outputs: gallery UI
+ *
+ * @invariants
+ * - Placeholder data should be replaced with real assets
+ *
+ * @issues
+ * - [severity:low] Gallery uses placeholder data and images.
+ *
+ * @verification
+ * - Visit /gallery and verify grid and filter buttons render.
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+
+import type { Metadata } from 'next';
+import { Container, Section, Button } from '@repo/ui';
+import { Instagram } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Gallery | Hair Salon Template',
   description: 'View our portfolio of haircuts, colors, and styles.',
-}
+};
 
 // Placeholder images logic
-const categories = ['All', 'Cuts', 'Color', 'Bridal', 'Extensions']
+const categories = ['All', 'Cuts', 'Color', 'Bridal', 'Extensions'];
 
 const portfolioItems = [
   { id: 1, category: 'Color', title: 'Platinum Blonde Transformation', image: 'bg-slate-200' },
@@ -19,7 +61,7 @@ const portfolioItems = [
   { id: 6, category: 'Extensions', title: 'Volume & Length', image: 'bg-slate-300' },
   { id: 7, category: 'Color', title: 'Vivid Purple', image: 'bg-slate-200' },
   { id: 8, category: 'Bridal', title: 'Boho Waves', image: 'bg-slate-300' },
-]
+];
 
 export default function GalleryPage() {
   return (
@@ -63,10 +105,12 @@ export default function GalleryPage() {
                 className="group relative aspect-[4/5] overflow-hidden rounded-lg bg-slate-100 cursor-pointer"
               >
                 {/* Placeholder for actual image */}
-                <div className={`w-full h-full ${item.image} flex items-center justify-center text-slate-400`}>
+                <div
+                  className={`w-full h-full ${item.image} flex items-center justify-center text-slate-400`}
+                >
                   Image {item.id}
                 </div>
-                
+
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                   <span className="text-teal text-xs font-bold uppercase tracking-wider mb-1">
@@ -87,5 +131,5 @@ export default function GalleryPage() {
         </Container>
       </Section>
     </div>
-  )
+  );
 }
