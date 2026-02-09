@@ -4,6 +4,7 @@
   "private": true,
   "description": "Shared ESLint configuration for the monorepo",
   "main": "./library.js",
+  "type": "module",
   "exports": {
     ".": "./library.js",
     "./next": "./next.js",
@@ -13,10 +14,15 @@
     "library.js",
     "next.js"
   ],
-  "devDependencies": {
-    "eslint": "9.18.0",
-    "@eslint/eslintrc": "3.2.0",
+  "dependencies": {
     "@typescript-eslint/eslint-plugin": "8.19.1",
     "@typescript-eslint/parser": "8.19.1"
+  },
+  "devDependencies": {
+    "eslint": "9.18.0",
+    "@eslint/eslintrc": "3.2.0"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0"
   }
 }

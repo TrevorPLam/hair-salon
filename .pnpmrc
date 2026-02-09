@@ -1,0 +1,18 @@
+# Strict peer dependency resolution
+# Fails if a package declares peer deps that aren't installed
+strict-peer-dependencies=true
+
+# Auto-install declared peer dependencies
+auto-install-peers=true
+
+# Monorepo isolation: don't hoist packages above package directories
+shamefully-hoist=false
+
+# Use frozen lock file (don't update) in CI/Docker
+prefer-frozen-lockfile=true
+
+# Use pnpm's symlink node_modules strategy
+node-linker=pnpm
+
+# Enable recursive install across all workspace packages
+recursive-install=true

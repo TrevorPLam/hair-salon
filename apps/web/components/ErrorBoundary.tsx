@@ -1,58 +1,153 @@
-'use client'
+/**
+ * React Error Boundary component with recovery mechanisms.
+ *
+ * @component ErrorBoundary
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * 🤖 AI METACODE — Quick Reference for AI Agents
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **FILE PURPOSE**: Global error boundary to prevent app crashes.
+ * Catches React errors and provides user-friendly recovery options.
+ *
+ * **RECOVERY MECHANISMS**:
+ * - Retry button: Limited to MAX_RECOVERY_ATTEMPTS (default: 1)
+ * - Go home: Safe navigation escape hatch
+ * - Session storage tracks recovery attempts per session
+ *
+ * **ERROR HANDLING**:
+ * - Catches errors in component tree below it
+ * - Logs errors to error reporting service (via logError)
+ * - Shows user-friendly fallback UI instead of blank screen
+ *
+ * **STORAGE & PERSISTENCE**:
+ * - Uses sessionStorage for recovery attempt tracking
+ * - Handles storage failures gracefully (private browsing, blocked access)
+ * - Resets on browser session end
+ *
+ * **USAGE**:
+ * ```tsx
+ * <ErrorBoundary>
+ *   <YourApp />
+ * </ErrorBoundary>
+ *
+ * // With custom fallback
+ * <ErrorBoundary fallback={<CustomErrorUI />}>
+ *   <YourApp />
+ * </ErrorBoundary>
+ * ```
+ *
+ * **AI ITERATION HINTS**:
+ * - MAX_RECOVERY_ATTEMPTS can be adjusted based on error patterns
+ * - Custom fallback prop available for branded error pages
+ * - Error logging integrates with your error reporting service
+ *
+ * **DEPENDENCIES**:
+ * - @/lib/logger: Error logging service
+ * - React class component (required for error boundaries)
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * **Purpose:**
+ * - Catch React errors and prevent app crashes
+ * - Provide user-friendly error recovery options
+ * - Log errors for debugging and monitoring
+ *
+ * **Features:**
+ * - Limited retry attempts to prevent infinite loops
+ * - Safe navigation home as escape hatch
+ * - Session-based recovery tracking
+ * - Customizable fallback UI
+ * - Error logging to monitoring service
+ *
+ * **Recovery Flow:**
+ * 1. Error occurs → ErrorBoundary catches it
+ * 2. Log error to monitoring service
+ * 3. Show fallback UI with retry/home options
+ * 4. Track recovery attempts in sessionStorage
+ * 5. Disable retry after MAX_RECOVERY_ATTEMPTS reached
+ *
+ * **Storage Handling:**
+ * - Uses sessionStorage for persistence across page reloads
+ * - Gracefully handles storage unavailability
+ * - Resets when browser session ends
+ *
+ * **Accessibility:**
+ * - Semantic HTML structure for error screen
+ * - Focus management for interactive elements
+ * - Clear error messaging and action labels
+ *
+ * @see app/providers.tsx for global usage
+ */
 
-import React, { Component, ReactNode } from 'react'
-import { logError } from '@/lib/logger'
+'use client';
+
+import React, { Component, ReactNode } from 'react';
+import { logError } from '@/lib/logger';
 
 interface Props {
-  children: ReactNode
-  fallback?: ReactNode
-  onNavigateHome?: () => void
+  children: ReactNode;
+  fallback?: ReactNode;
+  onNavigateHome?: () => void;
 }
 
 interface State {
-  hasError: boolean
-  error?: Error
-  recoveryAttempts: number
+  hasError: boolean;
+  error?: Error;
+  recoveryAttempts: number;
 }
 
-const RECOVERY_STORAGE_KEY = 'error-boundary-recovery-attempts'
-const MAX_RECOVERY_ATTEMPTS = 1
+// Configuration constants for recovery behavior
+const RECOVERY_STORAGE_KEY = 'error-boundary-recovery-attempts';
+const MAX_RECOVERY_ATTEMPTS = 1;
 
+/**
+ * Read recovery attempts from sessionStorage.
+ * Handles storage failures gracefully.
+ */
 const readRecoveryAttempts = (): number => {
   if (typeof window === 'undefined') {
-    return 0
+    return 0;
   }
 
   try {
-    const rawAttempts = window.sessionStorage.getItem(RECOVERY_STORAGE_KEY)
-    const parsedAttempts = Number(rawAttempts)
+    const rawAttempts = window.sessionStorage.getItem(RECOVERY_STORAGE_KEY);
+    const parsedAttempts = Number(rawAttempts);
 
     // Treat missing/invalid values as zero to avoid crashing the fallback UI.
-    return Number.isFinite(parsedAttempts) && parsedAttempts >= 0 ? parsedAttempts : 0
+    return Number.isFinite(parsedAttempts) && parsedAttempts >= 0 ? parsedAttempts : 0;
   } catch {
     // Storage can be unavailable (private mode / blocked access), so fail safely.
-    return 0
+    return 0;
   }
-}
+};
 
+/**
+ * Write recovery attempts to sessionStorage.
+ * Handles storage failures gracefully.
+ */
 const writeRecoveryAttempts = (attempts: number): void => {
   if (typeof window === 'undefined') {
-    return
+    return;
   }
 
   try {
-    window.sessionStorage.setItem(RECOVERY_STORAGE_KEY, String(attempts))
+    window.sessionStorage.setItem(RECOVERY_STORAGE_KEY, String(attempts));
   } catch {
     // If storage fails, we still allow the user to retry without persisting state.
   }
-}
+};
 
+/**
+ * Safe navigation home function.
+ * Uses direct location change to avoid React router issues.
+ */
 export const navigateHome = (): void => {
   // Use a direct location change so users can escape an error loop safely.
   if (typeof window !== 'undefined') {
-    window.location.assign('/')
+    window.location.assign('/');
   }
-}
+};
 
 /**
  * Error Boundary component to catch and handle React errors
@@ -60,52 +155,61 @@ export const navigateHome = (): void => {
  */
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
-    super(props)
-    this.state = { hasError: false, recoveryAttempts: readRecoveryAttempts() }
+    super(props);
+    this.state = { hasError: false, recoveryAttempts: readRecoveryAttempts() };
   }
 
   static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error, recoveryAttempts: readRecoveryAttempts() }
+    return { hasError: true, error, recoveryAttempts: readRecoveryAttempts() };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log error to your error reporting service
     logError('React Error Boundary caught an error', error, {
       componentStack: errorInfo.componentStack,
-    })
+    });
   }
 
+  /**
+   * Handle retry attempt with limit checking.
+   * Prevents infinite loops when underlying error persists.
+   */
   handleRetry = () => {
     // Limit retries to avoid infinite loops when the underlying error persists.
     if (this.state.recoveryAttempts >= MAX_RECOVERY_ATTEMPTS) {
-      return
+      return;
     }
 
-    const nextAttempts = this.state.recoveryAttempts + 1
-    writeRecoveryAttempts(nextAttempts)
+    const nextAttempts = this.state.recoveryAttempts + 1;
+    writeRecoveryAttempts(nextAttempts);
 
-    this.setState({ hasError: false, error: undefined, recoveryAttempts: nextAttempts })
-  }
+    this.setState({ hasError: false, error: undefined, recoveryAttempts: nextAttempts });
+  };
 
+  /**
+   * Handle navigation home with fallback to default function.
+   * Provides escape hatch from error state.
+   */
   handleGoHome = () => {
     // Safe navigation gives users an escape hatch without triggering reload loops.
-    const navigate = this.props.onNavigateHome ?? navigateHome
-    navigate()
-  }
+    const navigate = this.props.onNavigateHome ?? navigateHome;
+    navigate();
+  };
 
   render() {
     if (this.state.hasError) {
-      // Custom fallback UI
+      // Custom fallback UI if provided
       if (this.props.fallback) {
-        return this.props.fallback
+        return this.props.fallback;
       }
 
-      const recoveryDisabled = this.state.recoveryAttempts >= MAX_RECOVERY_ATTEMPTS
+      const recoveryDisabled = this.state.recoveryAttempts >= MAX_RECOVERY_ATTEMPTS;
 
-      // Default fallback UI
+      // Default fallback UI with recovery options
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
           <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+            {/* Error icon */}
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <svg
                 className="w-8 h-8 text-red-600"
@@ -121,10 +225,14 @@ export class ErrorBoundary extends Component<Props, State> {
                 />
               </svg>
             </div>
+
+            {/* Error message */}
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h2>
             <p className="text-gray-600 mb-6">
               We&apos;re sorry, but something unexpected happened. Please try refreshing the page.
             </p>
+
+            {/* Action buttons */}
             <div className="space-y-3">
               <button
                 type="button"
@@ -142,6 +250,8 @@ export class ErrorBoundary extends Component<Props, State> {
                 Go to homepage
               </button>
             </div>
+
+            {/* Recovery limit notice */}
             {recoveryDisabled ? (
               <p className="mt-4 text-sm text-gray-500">
                 Recovery attempts are exhausted. Please contact support if this keeps happening.
@@ -149,11 +259,11 @@ export class ErrorBoundary extends Component<Props, State> {
             ) : null}
           </div>
         </div>
-      )
+      );
     }
 
-    return this.props.children
+    return this.props.children;
   }
 }
 
-export default ErrorBoundary
+export default ErrorBoundary;

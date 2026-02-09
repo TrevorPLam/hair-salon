@@ -6,9 +6,9 @@ This document explains the configuration setup for the Hair Salon Template monor
 
 This is a **pnpm workspaces monorepo** using modern tooling:
 
-- **pnpm 9.15.4** - Fast, disk-efficient package manager
+- **pnpm 10.29.2** - Fast, disk-efficient package manager
 - **Node.js** >=20.0.0 (enforced via engines field)
-- **TypeScript 5.9.3** - Static typing with strict mode
+- **TypeScript 5.7.2** - Static typing with strict mode
 - **ESLint 9** - Flat config system (ESLint v9+)
 - **Prettier 3.2.5** - Code formatting
 - **Turbo 2.2.3** - Build system and task runner
@@ -101,9 +101,9 @@ This is a **pnpm workspaces monorepo** using modern tooling:
   - **react** 19.0.0, **react-dom** 19.0.0 (UI library)
   - **@repo/ui** workspace:* (internal component library)
   - **@repo/utils** workspace:* (internal utilities)
-  - **lucide-react** 0.544.0 (icons)
+  - **lucide-react** 0.344.0 (icons)
   - **clsx** 2.1.1 (conditional class names)
-  - **tailwind-merge** 2.7.0 (Tailwind utilities)
+  - **tailwind-merge** 2.6.1 (Tailwind utilities)
 
 #### `tsconfig.json`
 - Extends `../../tsconfig.base.json`
