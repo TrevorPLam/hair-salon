@@ -29,7 +29,8 @@
  * | email | ✅ | valid email |
  * | company | ❌ | optional |
  * | phone | ✅ | required |
- * | marketingSpend | ❌ | dropdown |
+ * | servicesInterested | ❌ | dropdown (Haircut, Color, Styling, Treatment) |
+ * | preferredAppointment | ❌ | dropdown (Morning, Afternoon, Evening) |
  * | message | ✅ | min 10 chars |
  * | hearAboutUs | ❌ | dropdown |
  *
@@ -69,7 +70,8 @@
  * - Email (required, validated)
  * - Company (optional)
  * - Phone (required)
- * - Marketing Spend (dropdown)
+ * - Services Interested In (dropdown: Haircut, Color, Styling, Treatment)
+ * - Preferred Appointment Time (dropdown: Morning, Afternoon, Evening)
  * - Message (required)
  * - How did you hear about us (dropdown)
  *
@@ -145,7 +147,8 @@ export default function ContactForm() {
         trackFormSubmission('contact', true)
         await setSentryUser({ email: data.email, name: data.name })
         await setSentryContext('contact_form', {
-          marketingSpend: data.marketingSpend,
+          servicesInterested: data.servicesInterested,
+          preferredAppointment: data.preferredAppointment,
           heardFrom: data.hearAboutUs,
         })
         setSubmitStatus({
@@ -224,22 +227,34 @@ export default function ContactForm() {
       />
 
       <Select
-        label="Current Monthly Marketing Spend"
+        label="Services Interested In"
         options={[
-          { value: '', label: 'Select an option' },
-          { value: 'under-1k', label: 'Under $1,000' },
-          { value: '1k-5k', label: '$1,000 - $5,000' },
-          { value: '5k-10k', label: '$5,000 - $10,000' },
-          { value: 'over-10k', label: 'Over $10,000' },
-          { value: 'not-sure', label: 'Not sure' },
+          { value: '', label: 'Select services' },
+          { value: 'haircut', label: 'Haircut & Styling' },
+          { value: 'color', label: 'Hair Color & Highlights' },
+          { value: 'treatment', label: 'Hair Treatment' },
+          { value: 'styling', label: 'Special Occasion Styling' },
+          { value: 'consultation', label: 'Consultation' },
         ]}
-        error={errors.marketingSpend?.message}
-        {...register('marketingSpend')}
+        error={errors.servicesInterested?.message}
+        {...register('servicesInterested')}
+      />
+
+      <Select
+        label="Preferred Appointment Time"
+        options={[
+          { value: '', label: 'Select time' },
+          { value: 'morning', label: 'Morning (9AM - 12PM)' },
+          { value: 'afternoon', label: 'Afternoon (12PM - 5PM)' },
+          { value: 'evening', label: 'Evening (5PM - 8PM)' },
+        ]}
+        error={errors.preferredAppointment?.message}
+        {...register('preferredAppointment')}
       />
 
       <Textarea
         label="Message"
-        placeholder="Tell us about your business and marketing goals..."
+        placeholder="Tell us about your hair care needs and desired services..."
         rows={5}
         required
         error={errors.message?.message}

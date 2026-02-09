@@ -134,7 +134,7 @@ const plexSans = IBM_Plex_Sans({
 
 const siteUrl = getPublicBaseUrl()
 const analyticsId = validatedPublicEnv.NEXT_PUBLIC_ANALYTICS_ID
-const ogImageUrl = new URL('/api/og?title=Your%20Dedicated%20Marketer', siteUrl).toString()
+const ogImageUrl = new URL('/api/og?title=Hair%20Salon%20Template', siteUrl).toString()
 const NONCE_ERROR_FALLBACK = 'fallback-nonce'
 
 function resolveCspNonce(requestHeaders: Headers): string {
@@ -221,7 +221,7 @@ export const metadata: Metadata = {
     description:
       'Professional hair salon website template with modern design and booking system. Perfect for hair stylists and salon owners.',
     images: [ogImageUrl],
-    creator: '@yourdedicatedmarketer',
+    creator: '@hairsalontemplate',
   },
 }
 
@@ -242,7 +242,7 @@ export default async function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="YDM" />
+        <meta name="apple-mobile-web-app-title" content="HST" />
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
         <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png" />

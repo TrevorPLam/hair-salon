@@ -66,8 +66,8 @@
  * title: string        # Required: Post title
  * description: string  # Required: SEO description
  * date: string         # Required: YYYY-MM-DD format
- * author: string       # Optional: Defaults to "Your Dedicated Marketer Team"
- * category: string     # Optional: Defaults to "Marketing"
+ * author: string       # Optional: Defaults to "Hair Salon Template Team"
+ * category: string     # Optional: Defaults to "Hair Care"
  * featured: boolean    # Optional: Defaults to false
  * ---
  * ```
@@ -150,8 +150,8 @@ const buildPost = (
     title,
     description,
     date: normalizedDate.value,
-    author: isNonEmptyString(data.author) ? data.author : 'Your Dedicated Marketer Team',
-    category: isNonEmptyString(data.category) ? data.category : 'Marketing',
+    author: isNonEmptyString(data.author) ? data.author : 'Hair Salon Template Team',
+    category: isNonEmptyString(data.category) ? data.category : 'Hair Care',
     readingTime: readingTime(content).text,
     content,
     featured: typeof data.featured === 'boolean' ? data.featured : false,
@@ -160,7 +160,7 @@ const buildPost = (
 
 /**
  * Blog post data structure.
- * 
+ *
  * @property slug - URL-safe identifier (derived from filename)
  * @property title - Post title from frontmatter
  * @property description - SEO description from frontmatter
@@ -185,19 +185,19 @@ export interface BlogPost {
 
 /**
  * Get all blog posts sorted by date (newest first).
- * 
+ *
  * **Behavior:**
  * - Reads all .mdx files from content/blog/
  * - Parses frontmatter with gray-matter
  * - Calculates reading time
  * - Returns empty array if directory doesn't exist
- * 
+ *
  * **Performance:**
  * - Called at build time for SSG
  * - Results are cached by Next.js during build
- * 
+ *
  * @returns Array of blog posts sorted by date descending
- * 
+ *
  * @example
  * const posts = getAllPosts()
  * // Use in getStaticProps or generateStaticParams
@@ -227,10 +227,10 @@ export function getAllPosts(): BlogPost[] {
 
 /**
  * Get a single blog post by its slug.
- * 
+ *
  * @param slug - URL slug (filename without .mdx extension)
  * @returns BlogPost object or undefined if not found
- * 
+ *
  * @example
  * const post = getPostBySlug('seo-basics-small-business')
  * if (!post) {
@@ -252,7 +252,7 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
 /**
  * Get posts marked as featured.
  * Used for homepage highlights.
- * 
+ *
  * @returns Array of posts where featured === true
  */
 export function getFeaturedPosts(): BlogPost[] {
@@ -261,7 +261,7 @@ export function getFeaturedPosts(): BlogPost[] {
 
 /**
  * Get posts by category.
- * 
+ *
  * @param category - Category name to filter by (case-sensitive)
  * @returns Array of posts in the specified category
  */
@@ -272,7 +272,7 @@ export function getPostsByCategory(category: string): BlogPost[] {
 /**
  * Get all unique categories.
  * Categories are extracted from post frontmatter.
- * 
+ *
  * @returns Sorted array of unique category names
  */
 export function getAllCategories(): string[] {

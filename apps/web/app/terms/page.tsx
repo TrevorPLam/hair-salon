@@ -7,8 +7,8 @@ import type { Metadata } from 'next'
  * can align each section with the approved placeholder language.
  */
 export const metadata: Metadata = {
-  title: 'Terms of Service | Your Dedicated Marketer',
-  description: 'Review the terms that govern use of the Your Dedicated Marketer website.',
+  title: 'Terms of Service | Hair Salon Template',
+  description: 'Review the terms that govern use of the Hair Salon Template website.',
 }
 
 export default function TermsOfServicePage() {
@@ -46,7 +46,7 @@ export default function TermsOfServicePage() {
 
             <h2>Agreement to Terms</h2>
             <p>
-              By accessing or using the Your Dedicated Marketer website (&quot;Site&quot;), you agree to be
+              By accessing or using the Hair Salon Template website (&quot;Site&quot;), you agree to be
               bound by these Terms of Service (&quot;Terms&quot;). If you disagree with any part of these Terms,
               you may not access the Site.
             </p>
@@ -72,7 +72,7 @@ export default function TermsOfServicePage() {
 
             <h2>Services</h2>
             <h3>Description</h3>
-            <p>Your Dedicated Marketer provides [TO BE CUSTOMIZED: describe your marketing services].</p>
+            <p>Hair Salon Template provides [TO BE CUSTOMIZED: describe your hair salon services].</p>
 
             <h3>No Guarantees</h3>
             <p>
@@ -116,7 +116,7 @@ export default function TermsOfServicePage() {
 
             <h2>Indemnification</h2>
             <p>
-              You agree to indemnify and hold harmless Your Dedicated Marketer from any claims, damages,
+              You agree to indemnify and hold harmless Hair Salon Template from any claims, damages,
               or expenses arising from your use of the Site, your violation of these Terms, or your
               violation of any rights of another party.
             </p>
@@ -145,7 +145,7 @@ export default function TermsOfServicePage() {
             <h2>Contact Information</h2>
             <p>For questions about these Terms, contact:</p>
             <p>
-              <strong>Your Dedicated Marketer</strong>
+              <strong>Hair Salon Template</strong>
               <br />
               Email: [TO BE ADDED]
               <br />

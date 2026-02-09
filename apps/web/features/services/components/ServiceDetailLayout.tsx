@@ -1,10 +1,10 @@
 /**
  * Reusable service detail page layout template.
- * 
+ *
  * **Purpose:**
  * Provides consistent structure for all service pages (/services/*).
  * Each service page imports this and passes service-specific data.
- * 
+ *
  * **Sections (in order):**
  * 1. Hero - Icon, title, description, CTA
  * 2. What's Included - Checklist of features
@@ -13,17 +13,17 @@
  * 5. Pricing Options - Tier cards with links
  * 6. FAQs - Accordion with questions
  * 7. Final CTA - Contact prompt
- * 
+ *
  * **SEO Features:**
  * - Service schema.org structured data
  * - FAQ schema.org structured data
- * 
+ *
  * **Usage:**
  * ```tsx
  * // In app/services/seo/page.tsx
  * import ServiceDetailLayout from '@/components/ServiceDetailLayout'
  * import { Search } from 'lucide-react'
- * 
+ *
  * export default function SEOServicePage() {
  *   return (
  *     <ServiceDetailLayout
@@ -39,7 +39,7 @@
  *   )
  * }
  * ```
- * 
+ *
  * @component
  */
 
@@ -116,7 +116,7 @@ export default function ServiceDetailLayout({
     description: description,
     provider: {
       '@type': 'Organization',
-      name: 'Your Dedicated Marketer',
+      name: 'Hair Salon Template',
       url: baseUrl,
     },
     url: resolvedServiceUrl,

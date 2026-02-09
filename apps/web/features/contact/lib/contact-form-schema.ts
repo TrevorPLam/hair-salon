@@ -15,8 +15,8 @@ export const contactFormSchema = z.object({
     .min(1, 'Phone number is required')
     .max(FORM_VALIDATION.PHONE_MAX_LENGTH)
     .optional(),
-  marketingSpend: z.string().max(FORM_VALIDATION.MARKETING_SPEND_MAX_LENGTH).optional(),
-  // Honeypot trap: bots that fill this get blocked upstream in submitContactForm
+  servicesInterested: z.string().max(50, 'Please select services you\'re interested in').optional(),
+  preferredAppointment: z.string().max(50, 'Please select preferred appointment time').optional(),
   website: z.string().max(0, 'Honeypot must be empty').optional(),
   message: z
     .string()

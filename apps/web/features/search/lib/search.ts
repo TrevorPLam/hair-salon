@@ -69,7 +69,7 @@ import { getAllPosts } from '@/lib/blog'
 
 /**
  * Search index item structure.
- * 
+ *
  * @property id - Unique identifier (prefixed with 'page-' or 'post-')
  * @property title - Display title
  * @property description - Search snippet / meta description
@@ -88,36 +88,36 @@ export type SearchItem = {
 
 /**
  * Static pages registry.
- * 
+ *
  * **Maintenance:**
  * When adding a new static page to the site:
  * 1. Create the page in app/
  * 2. Add an entry here with appropriate metadata
  * 3. Update sitemap.ts if needed
- * 
+ *
  * @internal
  */
 const staticPages: SearchItem[] = [
   {
     id: 'page-home',
     title: 'Home',
-    description: 'Overview of our marketing services, results, and client success stories.',
+    description: 'Overview of our hair salon services, pricing, and booking information.',
     href: '/',
     type: 'Page',
-    tags: ['marketing', 'services', 'agency'],
+    tags: ['hair salon', 'services', 'styling'],
   },
   {
     id: 'page-services',
     title: 'Services',
-    description: 'Explore SEO, content, social media, and email marketing services.',
+    description: 'Explore haircuts, coloring, styling, and hair treatment services.',
     href: '/services',
     type: 'Page',
-    tags: ['seo', 'content', 'social', 'email'],
+    tags: ['hair services', 'treatments', 'styling'],
   },
   {
     id: 'page-pricing',
     title: 'Pricing',
-    description: 'Review marketing packages, deliverables, and pricing tiers.',
+    description: 'Review hair salon service packages, pricing, and membership options.',
     href: '/pricing',
     type: 'Page',
     tags: ['pricing', 'packages'],
@@ -125,7 +125,7 @@ const staticPages: SearchItem[] = [
   {
     id: 'page-blog',
     title: 'Blog',
-    description: 'Marketing insights, trends, and strategies from our team.',
+    description: 'Hair care tips, trends, and styling advice from our experts.',
     href: '/blog',
     type: 'Page',
     tags: ['blog', 'insights'],
@@ -141,7 +141,7 @@ const staticPages: SearchItem[] = [
   {
     id: 'page-about',
     title: 'About',
-    description: 'Learn about the team, mission, and marketing approach.',
+    description: 'Learn about our stylists, mission, and hair care philosophy.',
     href: '/about',
     type: 'Page',
     tags: ['team', 'mission'],

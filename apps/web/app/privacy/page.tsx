@@ -7,9 +7,9 @@ import type { Metadata } from 'next'
  * so legal review can map each section back to the template.
  */
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Your Dedicated Marketer',
+  title: 'Privacy Policy | Hair Salon Template',
   description:
-    'Review how Your Dedicated Marketer collects, uses, and protects information shared through the website.',
+    'Review how Hair Salon Template collects, uses, and protects information shared through the website.',
 }
 
 export default function PrivacyPolicyPage() {
@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
 
             <h2>Overview</h2>
             <p>
-              Your Dedicated Marketer ("we," "our," or "us") is committed to protecting your privacy.
+              Hair Salon Template ("we," "our," or "us") is committed to protecting your privacy.
               This Privacy Policy explains how we collect, use, disclose, and safeguard your
               information when you visit our website.
             </p>
@@ -145,7 +145,7 @@ export default function PrivacyPolicyPage() {
             <h2>Contact Us</h2>
             <p>For questions about this Privacy Policy, contact:</p>
             <p>
-              <strong>Your Dedicated Marketer</strong>
+              <strong>Hair Salon Template</strong>
               <br />
               Email: [TO BE ADDED]
               <br />

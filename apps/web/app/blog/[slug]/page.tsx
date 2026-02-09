@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${post.title} | Blog | Your Dedicated Marketer`,
+    title: `${post.title} | Blog | Hair Salon Template`,
     description: post.description,
   }
 }
@@ -86,12 +86,12 @@ export default async function BlogPostPage({ params }: Props) {
     },
     isPartOf: {
       '@type': 'Blog',
-      name: 'Your Dedicated Marketer Blog',
+      name: 'Hair Salon Template Blog',
       url: `${baseUrl}/blog`,
     },
     publisher: {
       '@type': 'Organization',
-      name: 'Your Dedicated Marketer',
+      name: 'Hair Salon Template',
       logo: {
         '@type': 'ImageObject',
         url: `${baseUrl}/logo.png`,
@@ -171,10 +171,10 @@ export default async function BlogPostPage({ params }: Props) {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Ready to Implement These Strategies?
+              Ready to Book Your Appointment?
             </h2>
             <p className="text-xl text-gray-600 mb-8">
-              Let our team handle your marketing while you focus on growing your business.
+              Let our stylists help you look your best while you relax and enjoy the experience.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link

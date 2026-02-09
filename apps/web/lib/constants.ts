@@ -1,8 +1,8 @@
 /**
  * Application-wide constants for configuration values.
- * 
+ *
  * @module lib/constants
- * 
+ *
  * This file centralizes magic numbers and configuration values to:
  * - Improve code maintainability
  * - Provide clear naming for values
@@ -18,27 +18,30 @@ export const FORM_VALIDATION = {
   NAME_MIN_LENGTH: 2,
   /** Maximum length for name field */
   NAME_MAX_LENGTH: 100,
-  
+
   /** Maximum length for email address (RFC 5321 standard) */
   EMAIL_MAX_LENGTH: 254,
-  
+
   /** Maximum length for company field */
   COMPANY_MAX_LENGTH: 200,
-  
+
   /** Maximum length for phone field */
   PHONE_MAX_LENGTH: 50,
-  
-  /** Maximum length for marketing spend field */
-  MARKETING_SPEND_MAX_LENGTH: 50,
-  
+
+  /** Maximum length for services interested field */
+  SERVICES_INTERESTED_MAX_LENGTH: 50,
+
+  /** Maximum length for preferred appointment field */
+  PREFERRED_APPOINTMENT_MAX_LENGTH: 50,
+
   /** Minimum length for message field */
   MESSAGE_MIN_LENGTH: 10,
   /** Maximum length for message field */
   MESSAGE_MAX_LENGTH: 5000,
-  
+
   /** Maximum length for "hear about us" field */
   HEAR_ABOUT_US_MAX_LENGTH: 100,
-  
+
   /** Maximum length for email subject lines */
   EMAIL_SUBJECT_MAX_LENGTH: 200,
 } as const
@@ -93,7 +96,7 @@ export const TEST = {
 export const ORGANIZATION = {
   /** Primary contact email address */
   CONTACT_EMAIL: 'contact@hairsalontemplate.com',
-  
+
   /** Social media profile URLs */
   SOCIAL_MEDIA: {
     FACEBOOK: 'https://www.facebook.com/hairsalontemplate',
@@ -101,7 +104,7 @@ export const ORGANIZATION = {
     LINKEDIN: 'https://www.linkedin.com/company/hairsalontemplate',
     INSTAGRAM: 'https://www.instagram.com/hairsalontemplate',
   },
-  
+
   /** Aggregate rating information */
   RATING: {
     /** Average rating value (out of 5) */
@@ -109,7 +112,7 @@ export const ORGANIZATION = {
     /** Total number of reviews */
     COUNT: '127',
   },
-  
+
   /** Address information */
   ADDRESS: {
     COUNTRY: 'US',

@@ -6,8 +6,8 @@ import { getSearchIndex } from '@/lib/search'
 export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
-  title: 'Search | Your Dedicated Marketer',
-  description: 'Search blog posts, services, and marketing resources across the site.',
+  title: 'Search | Hair Salon Template',
+  description: 'Search blog posts, services, and hair care resources across the site.',
 }
 
 export default async function SearchRoute() {

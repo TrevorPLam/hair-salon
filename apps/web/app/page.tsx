@@ -1,26 +1,26 @@
 /**
  * Homepage component.
- * 
+ *
  * **Purpose:**
- * Main landing page for the marketing website.
- * Showcases services, social proof, and drives conversions.
- * 
+ * Main landing page for the hair salon website.
+ * Showcases hair services, booking, and client testimonials.
+ *
  * **Section Order:**
  * 1. Hero - Value proposition + primary CTAs
  * 2. ValueProps - Key benefits grid
  * 3. ServicesOverview - Service offerings cards
  * 4. SocialProof - Testimonials (lazy loaded)
  * 5. FinalCTA - Bottom conversion prompt (lazy loaded)
- * 
+ *
  * **Performance:**
  * - Above-fold components (Hero, ValueProps, ServicesOverview) loaded immediately
  * - Below-fold components dynamically imported for code splitting
  * - All components SSR-enabled (ssr: true)
- * 
+ *
  * **SEO:**
  * - Uses default metadata from layout.tsx
  * - No page-specific metadata override needed
- * 
+ *
  * @see app/layout.tsx for global metadata
  * @see components/Hero.tsx for hero section details
  */
