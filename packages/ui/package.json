@@ -12,10 +12,15 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@repo/utils": "workspace:*",
-    "react": "19.0.0"
+    "@repo/utils": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
     "@types/react": "19.0.2",
     "typescript": "5.9.3",
     "eslint": "9.18.0",

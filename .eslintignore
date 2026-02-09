@@ -1,0 +1,35 @@
+# ESLint ignore file
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+build/
+.next/
+.turbo/
+coverage/
+
+# Generated files
+*.tsbuildinfo
+next-env.d.ts
+.next/
+
+# Lock files
+pnpm-lock.yaml
+
+# Environment files
+.env*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log

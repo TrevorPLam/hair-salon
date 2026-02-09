@@ -1,42 +1,127 @@
 # Hair Salon Template
 
-Hair salon website template monorepo built with Next.js.
+Professional hair salon website template monorepo built with modern web technologies.
 
-## Installation
+## Quick Start
+
+### Prerequisites
+
+- **Node.js** `>=20.0.0`
+- **pnpm** `9.15.4` (enforced)
+
+### Installation
 
 ```bash
-# Install dependencies
+# Install dependencies (pnpm required)
 pnpm install
 ```
 
-## Usage
+### Development
 
 ```bash
-# Run development server
+# Start development server
 pnpm dev
 
+# Application runs on http://localhost:3000
+```
+
+### Building
+
+```bash
 # Build all packages
 pnpm build
 
-# Run linter
+# Start production server
+pnpm start
+```
+
+### Code Quality
+
+```bash
+# Lint all packages
 pnpm lint
 
 # Type check
 pnpm type-check
+
+# Format code
+pnpm format
+
+# Check formatting (without changes)
+pnpm format:check
 ```
 
 ## Project Structure
 
-- `apps/web/` - Main Next.js application for hair salon website
-- `packages/ui/` - Shared design system components
-- `packages/utils/` - Shared utilities
-- `infrastructure/` - Deployment and infrastructure configs
-- `docs/` - Documentation
+```
+├── apps/
+│   └── web/                 # Next.js 15 web application
+├── packages/
+│   ├── ui/                  # Shared React UI components
+│   ├── utils/               # Shared utilities
+│   └── config/              # Shared configurations (TS, ESLint)
+├── docs/                    # Documentation
+├── infrastructure/          # Deployment and infrastructure
+└── scripts/                 # Utility scripts
+```
+
+## Technology Stack
+
+- **Frontend Framework:** Next.js 15.1.6
+- **UI Library:** React 19.0.0
+- **Styling:** Tailwind CSS 3.4.17
+- **Type Safety:** TypeScript 5.9.3
+- **Linting:** ESLint 9 (flat config)
+- **Code Formatting:** Prettier 3.2.5
+- **Package Manager:** pnpm 9.15.4
+- **Monorepo Tool:** Turbo 2.2.3
+- **Container:** Docker & Docker Compose
+
+## Documentation
+
+- **[CONFIG.md](CONFIG.md)** - Detailed configuration documentation
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines and setup
+- **[CHANGELOG.md](CHANGELOG.md)** - Version history
+- **[Security.md](SECURITY.md)** - Security policy
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start development server |
+| `pnpm build` | Build all packages and apps |
+| `pnpm start` | Start production server |
+| `pnpm lint` | Run ESLint across workspace |
+| `pnpm type-check` | Run TypeScript type checking |
+| `pnpm test` | Run tests |
+| `pnpm format` | Format code with Prettier |
+| `pnpm format:check` | Check formatting without changes |
+
+## Docker
+
+Build and run locally with Docker Compose:
+
+```bash
+docker-compose up -d
+```
+
+Application will be available at `http://localhost:3000`
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
+Before contributing, please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
+- Setting up development environment
+- Code standards and style
+- Making and submitting changes
+- Pull request process
 
 ## License
 
 MIT License - See [LICENSE](LICENSE) for details.
+
+## Support
+
+For issues, questions, or suggestions:
+1. Check [CONFIG.md](CONFIG.md) for configuration troubleshooting
+2. Review [CONTRIBUTING.md](CONTRIBUTING.md) for setup help
+3. Open a GitHub issue with details
