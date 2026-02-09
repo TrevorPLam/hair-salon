@@ -8,7 +8,7 @@
 
 ## Frontend Stack
 
-- **Framework:** Next.js 15.1.6 (App Router)
+- **Framework:** Next.js 15.1.6 (App Router, Maintenance LTS)
 - **React:** 19.0.0
 - **TypeScript:** 5.7.2 (strict mode enabled)
 - **Styling:** Tailwind CSS 3.4.17
@@ -30,7 +30,7 @@ Strict mode with additional safety:
 - `noUnusedParameters: true`
 - `noUncheckedIndexedAccess: true`
 - `noFallthroughCasesInSwitch: true`
-- No `any` types allowed
+- `noImplicitAny` enforced via `strict`
 
 ## Common Commands
 

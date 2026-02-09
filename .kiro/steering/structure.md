@@ -20,11 +20,22 @@
 
 ```
 app/
-├── (routes)/                   # Route groups
-│   ├── about/
-│   ├── blog/[slug]/
-│   ├── services/
-│   └── ...
+├── about/
+├── blog/
+│   └── [slug]/
+├── book/
+├── contact/
+├── gallery/
+├── pricing/
+├── privacy/
+├── search/
+├── services/
+│   ├── haircuts/
+│   ├── coloring/
+│   ├── treatments/
+│   └── special-occasions/
+├── team/
+├── terms/
 ├── api/                        # API routes
 ├── layout.tsx                  # Root layout
 ├── page.tsx                    # Home page
@@ -44,7 +55,7 @@ features/
     └── api/                    # API handlers (optional)
 ```
 
-Examples: `analytics/`, `blog/`, `contact/`, `services/`, `supabase/`
+Examples: `analytics/`, `blog/`, `contact/`, `services/`, `search/`, `supabase/`
 
 ### Shared Components
 

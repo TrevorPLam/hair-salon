@@ -1,6 +1,6 @@
 # Product Overview
 
-Professional hair salon website template designed for modern salons to establish their online presence.
+Professional hair salon website template designed for modern salons to establish their online presence with consent-gated, default-off integrations.
 
 ## Core Features
 
@@ -9,9 +9,10 @@ Professional hair salon website template designed for modern salons to establish
 - Contact form for customer inquiries
 - Team member profiles
 - Gallery showcase
-- Booking integration ready
-- Analytics and consent management
+- Booking integration ready (deep links/embeds)
+- Analytics with consent gating (default-off)
 - SEO optimized with sitemap and metadata
+- Marketing-first enhancements roadmap (social proof, before/after, trust indicators)
 
 ## Target Users
 
@@ -21,6 +22,6 @@ Hair salons, beauty professionals, and stylists looking for a production-ready w
 
 - Mobile-first responsive design
 - Accessibility compliant
-- Performance optimized
+- Performance optimized with Core Web Vitals targets
 - SEO friendly
-- Privacy-focused (GDPR ready)
+- Privacy-focused (consent-first tracking)

@@ -9,19 +9,39 @@ This design document outlines the technical implementation for enhancing the hai
 1. **Maximize Conversions**: Implement strategic CTAs, urgency elements, and lead capture mechanisms throughout the user journey
 2. **Build Trust**: Display authentic social proof, certifications, and credentials to establish credibility
 3. **Showcase Quality**: Create compelling before/after galleries and stylist portfolios to demonstrate expertise
-4. **Maintain Performance**: Ensure all enhancements maintain Lighthouse scores above 90 and Core Web Vitals compliance
+4. **Maintain Performance**: Ensure all enhancements meet Core Web Vitals targets and script/image budgets
 5. **Preserve Architecture**: Follow existing feature-based architecture and monorepo patterns
 6. **Enable Management**: Provide admin interfaces for content management without requiring developer intervention
+7. **Stay Evergreen**: Track latest patches and maintain a clear upgrade path for core runtime dependencies
+8. **Productize Setup**: Deliver a golden-path initializer and demo mode for instant setup
+9. **Prove Claims**: Publish CI-backed artifacts for performance, privacy, and accessibility
 
 ### Technology Alignment
 
-- **Framework**: Next.js 15.1.6 with App Router (existing)
+- **Framework**: Next.js 15.1.6 with App Router (existing, Maintenance LTS)
+- **Runtime**: Node 24 recommended (Node 20 fallback only when required)
+- **UI**: React 19.2.x (latest stable patch line)
 - **Database**: Supabase (existing integration, will be extended)
 - **Image Optimization**: Next.js Image component with Supabase Storage
 - **Validation**: Zod schemas for all forms and data inputs
 - **Styling**: Tailwind CSS with existing design system
 - **State Management**: React Server Components with Server Actions
 - **Analytics**: Extend existing GA4 integration
+- **Monorepo**: Turbo (upgrade to latest stable or document pin rationale)
+
+### Upgrade Posture
+
+- Isolate framework-specific concerns in `integrations`, `jobs`, and `lib` to minimize Next.js major upgrade impact.
+- Avoid unstable APIs in the consent registry, event bus, and background job infrastructure.
+- Maintain a written upgrade policy: latest patches in current major + planned path to next major.
+- Automate dependency updates with patch auto-merge; minor updates require CI + changelog review.
+
+### Golden Path Setup and Demo Mode
+
+- Provide `pnpm template:init` to collect salon details and generate `site.config.ts`, JSON-LD, and env stubs.
+- Default consent to deny analytics/marketing until explicit enablement.
+- Provide `/demo` mode (or seeded deployment) that showcases all features and consent states.
+- Document one-click deploy options for Vercel, Docker, and Supabase bootstrap.
 
 ## Architecture
 
@@ -37,6 +57,7 @@ apps/web/
 │   ├── trust-indicators/      # NEW: Certifications & badges
 │   ├── conversion/            # NEW: CTA management & tracking
 │   ├── reviews/               # NEW: Review collection & aggregation
+│   ├── integrations/          # NEW: Integration registry, consent, loaders
 │   ├── team/                  # ENHANCED: Extended stylist profiles
 │   ├── services/              # ENHANCED: Enhanced service pages
 │   └── analytics/             # ENHANCED: Conversion tracking
@@ -48,7 +69,8 @@ apps/web/
 │   ├── team/[slug]/           # NEW: Individual stylist pages
 │   └── api/
 │       ├── reviews/           # NEW: Review endpoints
-│       └── portfolio/         # NEW: Portfolio management
+│       ├── portfolio/         # NEW: Portfolio management
+│       └── integrations/      # NEW: Server-side integration helpers
 └── components/
     ├── ConversionElements/    # NEW: Reusable CTAs, popups
     └── TrustBadges/           # NEW: Trust indicator components
@@ -59,6 +81,8 @@ apps/web/
 ```mermaid
 graph TD
     A[Client Browser] -->|View Content| B[Next.js App Router]
+    A -->|Consent Updates| L[Consent Manager]
+    L -->|Allow/Block Scripts| M[Script Loader]
     A -->|Submit Review| C[Server Actions]
     A -->|Upload Portfolio| D[Admin API Routes]
 
@@ -72,6 +96,10 @@ graph TD
 
     B -->|Track Events| J[Analytics Service]
     C -->|Conversion Events| J
+    M -->|Load Tags| J
+
+    N[Background Jobs] -->|Review Sync| G
+    N -->|Instagram Sync| P[Instagram Adapter]
 
     F -->|Optimize Images| K[Image Processor]
     K -->|Serve Optimized| A
@@ -85,11 +113,176 @@ graph TD
 4. **Gallery**: Filterable before/after showcase with Instagram integration
 5. **Admin Dashboard**: Content management for all new features
 
+### Integration Architecture
+
+The integration layer keeps all third-party tools present but default-off. Consent gating and performance-safe loading are enforced centrally.
+
+**Key Modules**
+
+- **Integration Registry**: Single config object declaring provider, enabled state, consent category, load mode, and load rules
+- **Consent Manager**: Stores and exposes consent categories (necessary, functional, analytics, marketing)
+- **Script Loader**: Loads third-party scripts only after consent and only when required
+- **Event Bus**: Fan-out for analytics and conversion events to enabled providers
+- **CSP Allowlist Builder**: Generates allowed domains based on enabled integrations
+
+**Load Rules**
+
+- **on_page_load**: Load after page is interactive (only when consent granted)
+- **on_interaction**: Load after explicit user action (button click, widget open)
+- **idle**: Load during idle time with requestIdleCallback fallback
+
+**Global UX Constraints**
+
+- No full-screen overlays on initial page load from mobile search.
+- Prefer inline or bottom-banner lead capture on mobile; exit intent is experiment-only.
+- Urgency/activity components must be system-sourced or render a neutral variant.
+
+**Event Taxonomy**
+
+- `book_click`, `contact_click`, `lead_submit`, `gallery_open`, `testimonial_engage`, `review_submit`, `cta_click`
+- Emitted via the event bus; no PII allowed in payloads
+
+**Integration Quality Bar**
+
+- Zod schema per provider config with fail-fast validation when enabled
+- Consent category + load rule required for every integration
+- CSP domain lists required per provider
+- Event subscriptions declared per provider
+- Test proving disabled integrations do not load
+
+### Experimentation Framework and Event Inspector
+
+- Feature flag and experiment assignment with deterministic bucketing
+- Experiment exposure tracked via the event bus (no PII)
+- Experiments must respect consent gating for analytics/marketing
+- Dev-only event inspector panel lists events and validates PII-free payloads
+- Test harness verifies consent denied -> zero third-party requests
+
+### Performance Budgets
+
+- Target CWV: LCP <= 2.0s, INP <= 150ms, CLS <= 0.1 on key pages
+- Limit above-the-fold media to a small, curated set; hero images eager, everything else lazy
+- Use generated thumbnails for gallery grids and load full-resolution only in modals
+- Keep third-party JS within page budgets (third-party JS <= 80KB gzip, total JS <= 170KB gzip per key route)
+- Lighthouse CI targets: Performance >= 95, Accessibility >= 95, Best Practices >= 95, SEO >= 95
+
+### Quality Gates and Proof Artifacts
+
+- CI runs lint, type-check, tests, and security scans on PRs
+- Lighthouse CI runs on home, services, and booking routes with budgets
+- Bundle size budgets enforced for key routes
+- Accessibility checks for modals, carousels, and CTA patterns
+- Consent gating E2E tests enforced (denied -> no tags, granted -> enabled-only)
+- Artifacts published: Lighthouse reports, bundle stats, SBOMs, and consent test logs
+- README Repo Scorecard derives from CI artifacts
+
+**Integration Catalog Coverage**
+
+- Booking providers (Square, Vagaro, Mindbody, Fresha, Booksy, generic link)
+- Payments (Stripe, Square, PayPal)
+- Analytics and tags (GA4, GTM optional, privacy-friendly analytics)
+- Ads and remarketing (Google Ads, Meta Pixel + CAPI, TikTok, Pinterest, Snapchat, LinkedIn)
+- Consent management (CMP or custom banner with Consent Mode v2)
+- Chat widgets (loaded after consent + interaction)
+- Local SEO (GBP booking URL, maps links)
+- Reviews and testimonials (deep links + on-site)
+- Bot protection and webhooks (Turnstile, Zapier/Make)
+- CMS adapter (optional, for content ops)
+
 ## Components and Interfaces
+
+### Feature: Integrations (Registry, Consent, Loader)
+
+**Purpose**: Centralize third-party integration configuration, consent gating, and performance-safe script loading.
+
+#### Core Interfaces
+
+**`IntegrationConfig`**
+
+```typescript
+type ConsentCategory = 'necessary' | 'functional' | 'analytics' | 'marketing';
+type LoadMode = 'server' | 'client' | 'hybrid';
+type LoadRule = 'on_page_load' | 'on_interaction' | 'idle';
+
+interface IntegrationConfig {
+  id: string;
+  provider: string;
+  enabled: boolean;
+  consentCategory: ConsentCategory;
+  loadMode: LoadMode;
+  loadRule: LoadRule;
+  config: Record<string, string | number | boolean>;
+  csp?: {
+    scriptSrc?: string[];
+    imgSrc?: string[];
+    connectSrc?: string[];
+    frameSrc?: string[];
+  };
+  events?: string[];
+}
+```
+
+**`IntegrationRegistry`**
+
+```typescript
+interface IntegrationRegistry {
+  integrations: IntegrationConfig[];
+  getEnabled(): IntegrationConfig[];
+  getByCategory(category: ConsentCategory): IntegrationConfig[];
+}
+```
+
+**`ConsentState`**
+
+```typescript
+interface ConsentState {
+  necessary: 'unknown' | 'granted' | 'denied';
+  functional: 'unknown' | 'granted' | 'denied';
+  analytics: 'unknown' | 'granted' | 'denied';
+  marketing: 'unknown' | 'granted' | 'denied';
+  region?: string;
+  policyVersion?: string;
+  updatedAt: string; // ISO-8601
+}
+```
+
+**`ScriptLoadPlan`**
+
+```typescript
+interface ScriptLoadPlan {
+  src: string;
+  id?: string;
+  async?: boolean;
+  defer?: boolean;
+  nonce?: string;
+  onLoad?: () => void;
+}
+```
+
+**Validation**
+
+- Integration registry and per-provider configs are validated with Zod at runtime.
+- Enabled integrations without required keys fail fast in non-development environments.
+
+**`EventBus`**
+
+```typescript
+interface EventPayload {
+  name: string;
+  category: string;
+  props?: Record<string, unknown>;
+  value?: number;
+}
+
+interface EventBus {
+  emit(event: EventPayload): void;
+  subscribe(providerId: string, handler: (event: EventPayload) => void): void;
+}
+```
 
 ### Feature: Testimonials
 
-**Purpose**: Manage and display customer testimonials with text, video, and ratings.
+**Purpose**: Display curated testimonials that can reference underlying reviews.
 
 #### Components
 
@@ -119,6 +312,7 @@ interface TestimonialCarouselProps {
 
 // Rotating carousel for homepage and service pages
 // Auto-advances with pause on hover
+// Supports keyboard navigation and reduced motion preferences
 ```
 
 **`TestimonialGrid`**
@@ -147,7 +341,7 @@ interface VideoTestimonialProps {
 }
 
 // Video player with captions and transcript
-// Lazy loads video content
+// Lazy loads iframe only after user interaction
 ```
 
 **`AggregateRating`**
@@ -175,7 +369,7 @@ interface GetTestimonialsParams {
   limit?: number;
   offset?: number;
   includeVideo?: boolean;
-  verified?: boolean;
+  verifiedMode?: 'source_verified' | 'booking_verified';
 }
 
 interface GetTestimonialsResponse {
@@ -195,7 +389,8 @@ interface CreateTestimonialRequest {
   videoUrl?: string;
   photoUrl?: string;
   photoPermission: boolean;
-  verified: boolean;
+  reviewId?: string;
+  verifiedMode?: 'source_verified' | 'booking_verified';
 }
 ```
 
@@ -246,6 +441,7 @@ interface TransformationModalProps {
 
 // Lightbox modal for detailed view
 // Shows full details, stylist info, products used
+// Requires focus trap, keyboard navigation, and reduced motion handling
 ```
 
 **`CategoryFilter`**
@@ -269,10 +465,12 @@ interface InstagramFeedProps {
   posts: InstagramPost[];
   columns?: 3 | 4 | 6;
   limit?: number;
+  mode: 'instagram_graph_api' | 'embed_links' | 'manual_cms';
 }
 
 // Displays recent Instagram posts
 // Links to Instagram profile
+// Defaults to manual CMS with optional Graph API sync
 ```
 
 #### API Interfaces
@@ -401,7 +599,7 @@ interface StickyBookingButtonProps {
 interface UrgencyIndicatorProps {
   type: 'limited-slots' | 'countdown' | 'recent-booking' | 'special-offer';
   message: string;
-  expiryDate?: Date;
+  expiryDate?: string; // ISO-8601
   variant?: 'subtle' | 'prominent';
 }
 
@@ -411,7 +609,7 @@ interface UrgencyIndicatorProps {
 
 **`ExitIntentModal`**
 
-```typescript
+````typescript
 interface ExitIntentModalProps {
   title: string;
   description: string;
@@ -424,7 +622,23 @@ interface ExitIntentModalProps {
 // Exit-intent popup for lead capture
 // Mobile: triggers on scroll up
 // Desktop: triggers on mouse leave
-```
+// Non-intrusive on mobile; experiment-only
+
+**`LeadCaptureBanner`**
+
+```typescript
+interface LeadCaptureBannerProps {
+  title: string;
+  description?: string;
+  ctaText: string;
+  onSubmit: (email: string) => void;
+  variant?: 'inline' | 'bottom_banner';
+}
+
+// Non-intrusive lead capture for mobile and search landings
+````
+
+````
 
 **`RecentActivityFeed`**
 
@@ -439,7 +653,8 @@ interface RecentActivityFeedProps {
 // Shows recent booking activity
 // "Sarah just booked a color appointment"
 // Builds social proof and urgency
-```
+// Must be system-sourced or render neutral variant
+````
 
 **`PricingDisplay`**
 
@@ -474,7 +689,7 @@ interface CTAButtonProps extends ButtonProps {
 
 ### Feature: Reviews
 
-**Purpose**: Collect, aggregate, and manage customer reviews from multiple sources.
+**Purpose**: Collect and aggregate raw reviews from multiple sources, with moderation and caching.
 
 #### Components
 
@@ -579,7 +794,7 @@ interface AggregateReviewsRequest {
 interface SendReviewRequestRequest {
   customerEmail: string;
   customerName: string;
-  serviceDate: Date;
+  serviceDate: string; // ISO-8601
   serviceType: string;
 }
 ```
@@ -740,6 +955,8 @@ interface RelatedServicesProps {
 
 ## Data Models
 
+**Boundary note:** All API request/response date-time fields use ISO-8601 strings. Convert to `Date` only in internal processing.
+
 ### Core Data Types
 
 **`Testimonial`**
@@ -747,6 +964,7 @@ interface RelatedServicesProps {
 ```typescript
 interface Testimonial {
   id: string;
+  reviewId?: string; // Optional reference to a source review
   customerId?: string;
   customerName: string;
   customerEmail: string;
@@ -754,16 +972,16 @@ interface Testimonial {
   rating: number; // 1-5
   text: string;
   service: string;
-  serviceDate?: Date;
+  serviceDate?: string; // ISO-8601
   videoUrl?: string;
   videoThumbnail?: string;
   transcript?: string; // For video accessibility
-  verified: boolean;
+  verifiedMode?: 'source_verified' | 'booking_verified';
   source: 'direct' | 'google' | 'facebook';
   photoPermission: boolean;
   featured: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string; // ISO-8601
+  updatedAt: string; // ISO-8601
 }
 ```
 
@@ -786,12 +1004,15 @@ interface Transformation {
   productsUsed?: string[];
   clientPermission: boolean;
   permissionDocumentUrl?: string;
+  permissionScope?: 'site_only' | 'site_and_social' | 'site_social_ads';
+  revokedAt?: string; // ISO-8601
+  revocationReason?: string;
   featured: boolean;
   viewCount: number;
   likeCount: number;
   instagramPostId?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string; // ISO-8601
+  updatedAt: string; // ISO-8601
 }
 ```
 
@@ -814,13 +1035,15 @@ interface Review {
   photoUrl?: string;
   source: 'direct' | 'google' | 'facebook';
   sourceUrl?: string; // Link to original review
-  verified: boolean;
+  verifiedMode?: 'source_verified' | 'booking_verified';
   helpful: number; // Helpful vote count
   response?: string; // Salon response
-  responseDate?: Date;
+  responseDate?: string; // ISO-8601
   status: 'pending' | 'approved' | 'rejected';
-  createdAt: Date;
-  updatedAt: Date;
+  externalFetchedAt?: string; // ISO-8601
+  externalHash?: string;
+  createdAt: string; // ISO-8601
+  updatedAt: string; // ISO-8601
 }
 ```
 
@@ -854,14 +1077,14 @@ interface TrustBadge {
   title: string;
   description?: string;
   issuer?: string;
-  issueDate?: Date;
-  expiryDate?: Date;
+  issueDate?: string; // ISO-8601
+  expiryDate?: string; // ISO-8601
   verificationUrl?: string;
   iconUrl?: string;
   displayOrder: number;
   active: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string; // ISO-8601
+  updatedAt: string; // ISO-8601
 }
 ```
 
@@ -873,15 +1096,15 @@ interface Certification {
   stylistId?: string; // null for salon-wide certifications
   title: string;
   issuer: string;
-  issueDate: Date;
-  expiryDate?: Date;
+  issueDate: string; // ISO-8601
+  expiryDate?: string; // ISO-8601
   certificateNumber?: string;
   verificationUrl?: string;
   certificateImageUrl?: string;
   category: 'education' | 'license' | 'specialty' | 'safety';
   active: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string; // ISO-8601
+  updatedAt: string; // ISO-8601
 }
 ```
 
@@ -913,8 +1136,8 @@ interface Stylist {
   featured: boolean;
   displayOrder: number;
   active: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string; // ISO-8601
+  updatedAt: string; // ISO-8601
 }
 ```
 
@@ -939,8 +1162,8 @@ interface Service {
   featured: boolean;
   displayOrder: number;
   active: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string; // ISO-8601
+  updatedAt: string; // ISO-8601
 }
 ```
 
@@ -978,7 +1201,7 @@ interface BookingActivity {
   id: string;
   customerName: string; // Anonymized: "Sarah M."
   service: string;
-  timestamp: Date;
+  timestamp: string; // ISO-8601
   location?: string;
 }
 ```
@@ -994,7 +1217,7 @@ interface ConversionElement {
   buttonText?: string;
   buttonUrl?: string;
   urgencyMessage?: string;
-  expiryDate?: Date;
+  expiryDate?: string; // ISO-8601
   active: boolean;
   placement: string[]; // ['homepage', 'services', 'team']
   displayRules: {
@@ -1008,8 +1231,8 @@ interface ConversionElement {
     clicks: number;
     conversions: number;
   };
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string; // ISO-8601
+  updatedAt: string; // ISO-8601
 }
 ```
 
@@ -1024,11 +1247,12 @@ interface InstagramPost {
   thumbnailUrl: string;
   mediaType: 'IMAGE' | 'VIDEO' | 'CAROUSEL_ALBUM';
   permalink: string;
-  timestamp: Date;
+  timestamp: string; // ISO-8601
   likeCount?: number;
   commentCount?: number;
+  source?: 'instagram_graph_api' | 'embed_links' | 'manual_cms';
   synced: boolean;
-  syncedAt: Date;
+  syncedAt: string; // ISO-8601
 }
 ```
 
@@ -1047,6 +1271,7 @@ interface InstagramPost {
 9. `conversion_elements` - CTA and urgency element configurations
 10. `booking_activities` - Recent booking feed (anonymized)
 11. `instagram_posts` - Cached Instagram content
+12. `review_sync_jobs` - Review aggregation sync metadata
 
 **Storage Buckets:**
 
@@ -1055,6 +1280,32 @@ interface InstagramPost {
 3. `portfolio-images` - Before/after transformation images
 4. `certification-documents` - Certification PDFs and images
 5. `trust-badge-icons` - Trust badge icon files
+
+### Background Jobs and Webhooks
+
+**Review Sync Jobs**
+
+- Scheduled cron job (`jobs/reviewsSync`) plus admin-triggered force refresh
+- Stores `externalId`, `sourceUrl`, `externalFetchedAt`, `externalHash`
+- Applies rate limiting, backoff, and delta sync
+- Never blocks page render on external fetch
+
+**Instagram Sync Jobs**
+
+- Optional cron job for Instagram Graph API sync (Business/Creator)
+- Token refresh strategy required; fallback to manual CMS ingest
+
+**Webhooks**
+
+- Booking provider callbacks (if available)
+- Payment provider webhooks (Stripe, Square)
+- All jobs emit standardized events to the event bus
+
+### Access Control (Supabase)
+
+- RLS policies per table (admin write, public read where appropriate)
+- Storage bucket rules (private by default; signed URLs for protected assets)
+- Admin role claims via JWT custom claims or admin users table
 
 ### Validation Schemas
 
@@ -1070,7 +1321,7 @@ const testimonialSchema = z.object({
   service: z.string().min(1),
   videoUrl: z.string().url().optional(),
   photoPermission: z.boolean(),
-  verified: z.boolean().default(false),
+  verifiedMode: z.enum(['source_verified', 'booking_verified']).optional(),
 });
 
 // Similar schemas for all data models

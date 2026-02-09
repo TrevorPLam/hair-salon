@@ -75,6 +75,7 @@ pnpm format:check
 - **Code Formatting:** Prettier 3.2.5
 - **Package Manager:** pnpm 10.29.2
 - **Monorepo Tool:** Turbo 2.2.3
+- **Error Tracking:** Sentry 8.0.0
 - **Container:** Docker & Docker Compose
 
 ## Documentation
@@ -82,8 +83,8 @@ pnpm format:check
 - **[CONFIG.md](CONFIG.md)** - Detailed configuration documentation
 - **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines and setup
 - **[docs/TEMPLATE_SETUP.md](docs/TEMPLATE_SETUP.md)** - Template setup and integration guide
-- **[CHANGELOG.md](CHANGELOG.md)** - Version history
-- **[Security.md](SECURITY.md)** - Security policy
+- **[docs/INTEGRATION_GUARDRAILS.md](docs/INTEGRATION_GUARDRAILS.md)** - Consent, performance, and tracking guardrails
+- **[SECURITY.md](SECURITY.md)** - Security policy
 
 ## Available Scripts
 

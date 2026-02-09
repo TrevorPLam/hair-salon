@@ -2,215 +2,532 @@
 
 ## Overview
 
-This document tracks all remaining implementation tasks needed to complete
-hair salon template. Configuration and infrastructure are complete; this list focuses on feature development.
+This document tracks remaining implementation tasks to complete the hair salon template.
+Work is phased to avoid thrash: **do not start a lower phase until the previous phase is green**.
 
 **Status:** Configuration ✅ | Build 🔴 | Development 🚀
 
 ---
 
-## Current Blockers (Build/Lint/Dev)
+## Phase 0 - Get to Green (Build/Lint/Dev)
 
-- [ ] Fix module alias paths and missing re-exports (e.g., `@/lib/blog`, `@/components/ContactForm`, `@/lib/analytics-consent`)
-- [ ] Install missing dependencies referenced by the app (blog + forms + MDX)
-- [ ] Resolve ESLint config package resolution (`@repo/eslint-config`)
-- [ ] Add Tailwind color tokens for `bg-off-white` and related utilities in Tailwind config
-- [ ] Align SearchDialog styles with teal palette (replace purple accents)
-- [ ] Add missing CHANGELOG or remove README reference
+**Goal:** `pnpm lint`, `pnpm type-check`, `pnpm build`, `pnpm dev` all pass.
 
----
+**Definition of Done**
 
-## Critical Path (Blocking Build)
+- [ ] `pnpm lint` passes
+- [ ] `pnpm type-check` passes
+- [ ] `pnpm build` passes
+- [ ] `pnpm dev` runs without runtime errors
 
-### 1. Blog System
+**Tasks**
 
-- [ ] Fix `@/lib/blog` and related blog module imports
-- [ ] Add missing dependencies: `next-mdx-remote`, `gray-matter`, `reading-time`, `remark-gfm`, `rehype-slug`, `rehype-pretty-code`
-- [ ] Verify blog components export names match imports
-- [ ] Create sample blog posts in `blogs/` directory (MDX format)
+- [ ] Module alias + re-export audit
+- Deliverables: fix barrel exports in `features/*/index.ts`, fix `lib/*` exports, update alias paths
+- DoD: no `Module not found` errors for `@/lib/*`, `@/features/*`, `@/components/*`
+- Deps: none
 
-### 2. Contact Form System
+- [ ] Dependency install + verify
+- Deliverables: add MDX + forms deps to `apps/web/package.json`, lockfile updated
+- DoD: build passes and a sample MDX file renders in dev
+- Deps: none
 
-- [ ] Add missing dependencies: `react-hook-form`, `@hookform/resolvers/zod`
-- [ ] Align contact form imports with shared schema location
-- [ ] Set up backend form submission (HubSpot or Supabase integration)
+- [ ] ESLint config resolution
+- Deliverables: `@repo/eslint-config` resolves from all packages
+- DoD: `pnpm lint` passes in a clean install
+- Deps: none
 
-### 3. Analytics & Consent
+- [ ] Tailwind tokens + SearchDialog palette
+- Deliverables: Tailwind tokens for `bg-off-white` and palette updates
+- DoD: no missing class warnings; UI only changes where intended
+- Deps: none
 
-- [ ] Fix analytics consent import path (`AnalyticsConsentBanner` -> analytics consent module)
-- [ ] Validate consent persistence wiring
+- [ ] Consent persistence smoke test
+- Deliverables: consent cookie/localStorage keys documented and used
+- DoD: refresh preserves toggles; SSR reads correct state
+- Deps: existing analytics consent module
 
-### 4. Search System
+- [ ] Component fixups
+- Deliverables: InstallPrompt Button import, Navigation null checks, Gallery Button variant, Book page Select options
+- DoD: `pnpm dev` runs without runtime errors on these pages
+- Deps: none
 
-- [ ] Ensure SearchDialog and SearchPage imports match actual component paths
-- [ ] Verify search indexing includes blog posts and service pages
-
-### 5. Services Feature
-
-- [ ] Create `features/services/components/ServiceDetailLayout.tsx` - Service detail page layout
-- [ ] Populate services data (coloring, haircuts, treatments, special-occasions)
-
----
-
-## Type & Export Issues
-
-### Module Exports
-
-- [ ] `features/blog/index.ts` - Export `BlogPostContent` as named export
-- [ ] `features/contact/index.ts` - Export `ContactForm` as named export
-- [ ] `features/search/index.ts` - Export `SearchDialog` and `SearchPage` as named exports
-- [ ] `features/services/index.ts` - Export `ServicesOverview` and `ServiceDetailLayout` as named exports
-- [ ] `components/ui/Button.tsx` - Add default export or update imports in `InstallPrompt.tsx`
-
-### Type Definitions
-
-- [ ] Add `options` property to `SelectProps` interface (used in book page)
-- [ ] Add proper types for blog post metadata
-- [ ] Fix undefined navigation element reference issue in `Navigation.tsx`
-
-### Unused Variables
-
-- [ ] Remove unused `requestId` in `lib/request-context.ts`
-- [ ] Resolve implicit `any` types in multiple files (use proper generics)
+- [ ] Type hygiene cleanup
+- Deliverables: remove unused `requestId`, fix implicit `any` types
+- DoD: `pnpm type-check` passes without new errors
+- Deps: none
 
 ---
 
-## Dependencies to Add
+## Phase 0.5 - Evergreen Posture + Proof Artifacts
 
-### Essential
+**Goal:** Establish evergreen maintenance, golden-path setup, and quality gates.
 
-- [ ] `react-hook-form` - Form state management
-- [ ] `@hookform/resolvers/zod` - Schema validation integration
-- [ ] `next-mdx-remote` - MDX content rendering in Next.js
-- [ ] `gray-matter` - YAML frontmatter parsing
+**Definition of Done**
 
-### Optional but Recommended
+- [ ] Upgrade policy documented and adopted
+- [ ] Automated dependency upkeep configured
+- [ ] CI quality gates publish artifacts and enforce budgets
 
-- [ ] `@upstash/ratelimit` - API rate limiting
-- [ ] `@upstash/redis` - Serverless Redis for rate limiting
-- [ ] `reading-time` - Estimated reading time for blog posts
-- [ ] Markdown plugins: `remark-gfm`, `rehype-slug`, `rehype-pretty-code`
+**Tasks**
+
+- [ ] Evergreen version policy
+- Deliverables: policy doc for Next/React/Turbo patches, Node 24 recommended engine, upgrade path to next major
+- DoD: policy referenced in README and requirements/design docs
+- Deps: none
+
+- [ ] Automated dependency upkeep
+- Deliverables: Renovate config, patch auto-merge, minor upgrade gates
+- DoD: CI green on a sample dependency update PR
+- Deps: evergreen policy
+
+- [ ] SBOM + dependency scanning
+- Deliverables: SBOM generation step, dependency audit task, artifacts upload
+- DoD: CI publishes SBOM and fails on critical vulns
+- Deps: CI baseline
+
+- [ ] Quality gates pipeline
+- Deliverables: lint/type/test, Lighthouse CI on key routes (95+ targets), bundle size budgets (strict), a11y checks (95+), secret scan
+- DoD: PRs fail when budgets or checks fail; artifacts stored
+- Deps: CI baseline
+
+- [ ] Consent gating E2E tests
+- Deliverables: e2e tests for consent denied -> no scripts; consent granted -> only enabled scripts
+- DoD: tests enforced in CI
+- Deps: integration platform layer
+
+- [ ] Demo mode / demo route
+- Deliverables: `/demo` or seeded mode showcasing all features toggled on/off
+- DoD: demo documents consent gating and integrations
+- Deps: core features present
+
+- [ ] One-command initializer
+- Deliverables: `pnpm template:init` prompts and generates `site.config.ts`, schema JSON-LD, env stubs
+- DoD: fresh setup runs without manual edits
+- Deps: config schema defined
+
+- [ ] Marketing setup checklist
+- Deliverables: short playbook for local SEO, GBP, social proof, CTAs, interstitial guidance
+- DoD: referenced from README and docs
+- Deps: none
+
+- [ ] Repo scorecard section
+- Deliverables: README badges for CWV targets, consent compliance, budget pass rate
+- DoD: scorecard reflects CI outputs
+- Deps: quality gates pipeline
+
+## Phase 1 - Core Site MVP
+
+**Goal:** Blog + Services + Contact + Search + Book page work end-to-end.
+
+**Definition of Done**
+
+- [ ] Home -> service -> book click works and is tracked
+- [ ] Contact form submits successfully with confirmation
+- [ ] Blog index loads and a post renders
+
+**Tasks**
+
+- [ ] Blog: MDX parsing
+- Deliverables: `apps/web/features/blog/lib/*`, `app/blog/page.tsx`, `app/blog/[slug]/page.tsx`
+- DoD: `/blog` renders 3 sample posts; one post renders code blocks
+- Deps: MDX deps installed
+
+- [ ] Blog: metadata types + validation
+- Deliverables: blog frontmatter types and validation in blog lib
+- DoD: invalid frontmatter fails fast in dev
+- Deps: blog lib exists
+
+- [ ] Contact form: schema + UI
+- Deliverables: `features/contact/lib/contact-form-schema.ts`, `ContactForm` updates
+- DoD: client-side validation works with clear error states
+- Deps: react-hook-form + resolver deps installed
+
+- [ ] Contact form: submission + spam baseline
+- Deliverables: server action or route handler; rate limit or honeypot
+- DoD: submit success and error paths display correctly
+- Deps: contact schema exists
+
+- [ ] Services: data model + pages
+- Deliverables: services data, `ServiceDetailLayout`, `/services/*` pages
+- DoD: all service pages render with pricing and booking link
+- Deps: services data defined
+
+- [ ] Search: index + UX
+- Deliverables: search index includes blog + services; search dialog hotkey
+- DoD: Ctrl/Cmd+K opens dialog; results include blog and services
+- Deps: blog and services pages exist
+
+- [ ] Book page: MVP flow
+- Deliverables: booking CTA, service and stylist selection placeholders
+- DoD: booking CTA routes correctly; selection UI renders
+- Deps: services + team data available
+
+- [ ] Seed data
+- Deliverables: sample services, stylists, blog posts
+- DoD: local dev uses real data with no empty states
+- Deps: models exist
 
 ---
 
-## Feature Implementation Details
+## Phase 2 - Integration Platform Layer (Default-Off)
 
-### Blog Posts
+**Goal:** Add integrations without ad-hoc scripts, all default-off, consent gated.
 
-- [ ] Create `blogs/` directory structure
-- [ ] Add sample posts in MDX format with frontmatter (title, date, author, excerpt, etc.)
-- [ ] Implement dynamic route `app/blog/[slug]/page.tsx`
-- [ ] Generate static routes at build time
-- [ ] Add RSS feed generation (optional)
+**Deliverables**
 
-### Contact Form
+- [ ] Integration registry + schema validation
+- Deliverables: `integrations.config.ts`, Zod registry schema, per-provider schemas
+- DoD: enabled providers without required keys fail fast
+- Deps: Zod available
 
-- [ ] Design form fields (name, email, phone, message, service type)
-- [ ] Set up validation with Zod
-- [ ] Implement submission handler (API route or server action)
-- [ ] Add rate limiting to prevent spam
-- [ ] Connect to email/CRM (HubSpot or Supabase)
+- [ ] Event taxonomy + event bus
+- Deliverables: canonical event list (book_click, lead_submit, call_click, directions_click, gallery_open)
+- DoD: client emit + server emit wrappers sanitize payloads
+- Deps: none
 
-### Services Pages
+- [ ] Consent model + helpers
+- Deliverables: cookie format, server read helper, client hook, banner wiring
+- DoD: unknown/granted/denied tracked per category
+- Deps: existing consent banner and analytics module
 
-- [ ] Define service categories and details
-- [ ] Create service detail pages: `/services/coloring`, `/services/haircuts`, etc.
-- [ ] Add pricing information
-- [ ] Link to booking system
+- [ ] Script loader
+- Deliverables: `loadClientScript(id, src, rule)` with dedupe, timeout, error logging
+- DoD: scripts load only after consent and per load rule
+- Deps: consent model
 
-### Search
+- [ ] Provider adapter pattern
+- Deliverables: provider declarations include consent category, load rule, CSP domains, event subscriptions
+- DoD: enabling a provider requires no ad-hoc script tags
+- Deps: registry + loader
 
-- [ ] Index all pages, blog posts, and services
-- [ ] Implement search algorithm (full-text or simple filtering)
-- [ ] Create search API endpoint
-- [ ] Add keyboard shortcuts (Cmd/Ctrl+K) for search dialog
+- [ ] CSP allowlist builder
+- Deliverables: CSP domain sets for script/img/connect/frame sources
+- DoD: CSP updates only for enabled integrations
+- Deps: provider adapter pattern
 
-### Analytics
+- [ ] Verification tests
+- Deliverables: E2E consent off -> no tags; consent on -> only enabled tags
+- DoD: tests pass in CI-like run
+- Deps: event bus + script loader
 
-- [ ] Set up Sentry error tracking
-- [ ] Implement Google Analytics/Vercel Analytics
-- [ ] Cookie consent management for tracking
-- [ ] User consent persistence
+**Definition of Done**
 
----
+- [ ] Consent off -> no analytics/marketing scripts load
+- [ ] Consent on -> only enabled scripts load
+- [ ] No PII in event payloads
 
-## Component Fixes
+**Guardrails**
 
-### InstallPrompt.tsx
-
-- [ ] Fix Button import - change from default to named import from `@repo/ui`
-- [ ] Update: `import { Button } from '@repo/ui'`
-
-### Navigation.tsx
-
-- [ ] Add null check for `lastElement` and `firstElement` before using
-- [ ] Fix SearchDialog integration
-
-### Gallery Page
-
-- [ ] Fix Button variant - change `"outline"` to valid variant (`"text"`, `"primary"`, or `"secondary"`)
-
-### Book Page
-
-- [ ] Add `options` property to Select components (line 71 and 91)
-- [ ] Define available options for each Select
+- [ ] All integrations must be disabled by default
+- [ ] All marketing/analytics scripts must be consent gated
+- [ ] Scripts must be lazy or interaction-loaded unless critical
 
 ---
 
-## Page-Specific Implementations
+## Phase 2.5 - Platform Data Layer (DB, RLS, Storage, Jobs)
 
-### `/blog` Pages
+**Goal:** Data and security foundations exist before marketing UI builds.
 
-- [ ] Implement blog list with filtering and sorting
-- [ ] Add pagination support
-- [ ] Category/tag filtering
+**Tasks**
 
-### `/contact` Page
+- [ ] DB migrations + indexes
+- Deliverables: SQL or migration scripts for reviews, testimonials, transformations, badges, certifications
+- DoD: migrations apply cleanly; indexes cover common queries
+- Deps: data models finalized
 
-- [ ] Ensure ContactForm component loads
-- [ ] Add form submission feedback (success/error states)
-- [ ] Form accessibility compliance
+- [ ] RLS policies
+- Deliverables: policies for public read (approved) and admin write
+- DoD: public cannot write; admins can manage content
+- Deps: migrations applied
 
-### `/book` Page (Appointment Booking)
+- [ ] Storage bucket policies
+- Deliverables: buckets for media, signed URL strategy for private assets
+- DoD: public assets readable; consent docs private
+- Deps: migrations applied
 
-- [ ] Integration with appointment system
-- [ ] Calendar/date picker
-- [ ] Service selection
-- [ ] Stylist selection
-- [ ] Payment processing (if applicable)
+- [ ] Admin role model
+- Deliverables: role claims or admins table; route middleware guard
+- DoD: admin routes protected in dev and prod
+- Deps: auth strategy defined
 
-### `/search` Page
+- [ ] Background job runner
+- Deliverables: cron strategy for review sync, optional Instagram sync, cleanup job for revoked media
+- DoD: jobs run without blocking page render
+- Deps: data tables and storage buckets
 
-- [ ] Real-time search results
-- [ ] Search suggestions/autocomplete
-- [ ] Results filtering
+---
+
+## Phase 3 - Marketing Enhancements
+
+**Goal:** Social proof, portfolio, trust indicators, and conversion elements built on the platform layer.
+
+### 3.1 Social Proof (Reviews/Testimonial Model)
+
+- [ ] Model decision and schema
+- Deliverables: review schema + testimonial schema referencing reviewId
+- DoD: one source of truth for ratings and counts
+- Deps: data layer ready
+
+- [ ] Testimonial display MVP
+- Deliverables: carousel/grid, verified badge modes, aggregate rating component
+- DoD: homepage shows ratings and a rotating testimonial block
+- Deps: schema and seed data
+
+- [ ] Video testimonials
+- Deliverables: thumbnail + click-to-load player
+- DoD: no iframe loads until interaction
+- Deps: testimonial UI exists
+
+### 3.2 Portfolio (Before/After)
+
+- [ ] Transformation model + permissions
+- Deliverables: transformation schema with permission scope and revocation
+- DoD: permission fields stored and enforceable
+- Deps: data layer ready
+
+- [ ] Portfolio MVP slice
+- Deliverables: gallery with filters, lightbox, keyboard support
+- DoD: gallery shows 12 items; modal accessible
+- Deps: transformation data seeded
+
+- [ ] Performance rules
+- Deliverables: thumbnails for grids, lazy-load full res in modal
+- DoD: no above-the-fold grids of full-size images
+- Deps: gallery MVP
+
+- [ ] Instagram feed adapter
+- Deliverables: manual CMS default with optional API sync job
+- DoD: feed renders from manual data with fallback copy
+- Deps: data layer ready
+
+### 3.3 Trust Indicators
+
+- [ ] Trust models
+- Deliverables: trust badge + certification schemas with verification URLs
+- DoD: links point to issuer verification pages
+- Deps: data layer ready
+
+- [ ] Trust UI
+- Deliverables: badge grid + certification cards
+- DoD: displayed on homepage and service pages
+- Deps: trust models seeded
+
+- [ ] Guarantee + longevity
+- Deliverables: satisfaction and longevity copy with source fields
+- DoD: only data-backed claims render
+- Deps: business data source
+
+### 3.4 Conversion Elements (Truthful + Non-Intrusive)
+
+- [ ] Sticky booking CTA
+- Deliverables: sticky button with safe mobile spacing
+- DoD: no overlap with mobile nav or footer
+- Deps: booking link defined
+
+- [ ] CTA component + tracking
+- Deliverables: CTA component wired to event bus
+- DoD: click emits canonical event without PII
+- Deps: event bus
+
+- [ ] Urgency and activity rules
+- Deliverables: system-sourced checks + neutral fallback copy
+- DoD: no fabricated numbers displayed
+- Deps: booking/CRM data source
+
+- [ ] Lead capture banner
+- Deliverables: inline/bottom banner variant
+- DoD: banner used on mobile; non-intrusive
+- Deps: contact endpoint
+
+- [ ] Exit intent experiment
+- Deliverables: desktop-only experiment flag
+- DoD: disabled by default; no mobile interstitials
+- Deps: analytics events
+
+---
+
+## Phase 4 - Admin UI + Content Ops
+
+**Goal:** Non-devs can manage content safely.
+
+**Tasks**
+
+- [ ] Admin routes + auth
+- Deliverables: admin dashboard routes, route protection middleware
+- DoD: non-admins cannot access admin pages
+- Deps: admin role model
+
+- [ ] Upload tooling
+- Deliverables: admin upload UI, validation, optimization, thumbnails
+- DoD: upload produces optimized assets + thumbnails
+- Deps: storage buckets ready
+
+- [ ] Moderation workflow
+- Deliverables: pending/approved/rejected status UI and filters
+- DoD: only approved content renders publicly
+- Deps: review/testimonial schemas
+
+- [ ] Audit log
+- Deliverables: lightweight audit table and admin activity log view
+- DoD: admin actions recorded and viewable
+- Deps: admin routes
+
+- [ ] Media takedown tooling
+- Deliverables: revoke + purge flow for consented media
+- DoD: revoked assets removed from UI and CDN
+- Deps: storage buckets + revocation fields
+
+---
+
+## Phase 5 - Major Integrations (Tiered)
+
+### Tier 1 (Highest ROI, Lowest Complexity)
+
+- [ ] GA4 baseline + event taxonomy mapping
+- Deliverables: GA4 tag wired to event bus and consent
+- DoD: events visible in GA4 debug view
+- Deps: integration platform layer
+
+- [ ] GTM optional
+- Deliverables: GTM loader with consent gating
+- DoD: GTM loads only when enabled
+- Deps: script loader
+
+- [ ] Google Ads conversion (client)
+- Deliverables: conversion tag mapping to events
+- DoD: conversion fires on lead submit or booking click
+- Deps: event taxonomy
+
+- [ ] Meta Pixel (client)
+- Deliverables: pixel tag with consent gating
+- DoD: pixel fires only on consent
+- Deps: script loader
+
+- [ ] Turnstile on forms
+- Deliverables: Turnstile widget + server verification
+- DoD: form rejects invalid tokens
+- Deps: form endpoints
+
+- [ ] Booking providers (deep links + embeds)
+- Deliverables: provider adapter + link/embed templates
+- DoD: booking CTA opens correct provider link
+- Deps: integration registry
+
+### Tier 2
+
+- [ ] Meta CAPI (server) with `event_id` dedup
+- Deliverables: server event endpoint + deduped payloads
+- DoD: test events show in Meta test console
+- Deps: event bus
+
+- [ ] Stripe payment links + webhooks
+- Deliverables: payment link config + webhook handler
+- DoD: webhook verified and logged
+- Deps: server env secrets
+
+- [ ] Email routing adapters
+- Deliverables: server adapters for Mailchimp/Brevo/etc.
+- DoD: lead submit routes to selected provider
+- Deps: lead schema
+
+### Tier 3
+
+- [ ] Review aggregation jobs
+- Deliverables: scheduled review sync; Google required, Facebook best-effort
+- DoD: reviews update without blocking page render
+- Deps: background job runner
+
+- [ ] CMS adapters
+- Deliverables: optional adapters for Sanity/Contentful/Strapi/Payload
+- DoD: content reads from selected CMS when enabled
+- Deps: integration registry
+
+- [ ] Advanced chat widgets / session replay
+- Deliverables: chat and replay tags gated by marketing consent
+- DoD: no scripts load without consent
+- Deps: script loader
 
 ---
 
 ## Testing & Validation
 
-- [ ] Unit tests for form validation schemas
-- [ ] Integration tests for form submission
-- [ ] E2E tests for critical user journeys
-- [ ] Accessibility audit (WCAG 2.1 AA)
+- [ ] Unit tests for Zod schemas + integration registry validation
+- [ ] E2E: consent off -> no scripts load
+- [ ] E2E: consent on -> only enabled scripts load
+- [ ] Accessibility tests for modals/carousels (focus trap, escape, keyboard nav)
 - [ ] Performance testing (Core Web Vitals)
-- [ ] Mobile responsiveness validation
 
 ---
 
-## Optional Enhancements
+## Appendix A - Task Index (Full)
 
-- [ ] Dark mode support
-- [ ] Multi-language support (i18n)
-- [ ] Progressive Web App (PWA) capabilities
-- [ ] Image optimization and CDN setup
-- [ ] Caching strategies
-- [ ] API rate limiting
-- [ ] Admin dashboard for content management
-- [ ] Email marketing integration
-- [ ] SMS notifications for appointments
-- [ ] Google Business profile integration
-- [ ] Review/ratings system
+- Module alias + re-export audit
+- Dependency install + verify
+- ESLint config resolution
+- Tailwind tokens + SearchDialog palette
+- Consent persistence smoke test
+- Component fixups
+- Type hygiene cleanup
+- Blog: MDX parsing
+- Blog: metadata types + validation
+- Contact form: schema + UI
+- Contact form: submission + spam baseline
+- Services: data model + pages
+- Search: index + UX
+- Book page: MVP flow
+- Seed data
+- Integration registry + schema validation
+- Event taxonomy + event bus
+- Consent model + helpers
+- Script loader
+- Provider adapter pattern
+- CSP allowlist builder
+- Verification tests
+- DB migrations + indexes
+- RLS policies
+- Storage bucket policies
+- Admin role model
+- Background job runner
+- Social proof: model + schema
+- Social proof: testimonial display MVP
+- Social proof: video testimonials
+- Portfolio: transformation model + permissions
+- Portfolio: gallery MVP slice
+- Portfolio: performance rules
+- Portfolio: Instagram adapter
+- Trust: models
+- Trust: UI
+- Trust: guarantee + longevity
+- Conversion: sticky booking CTA
+- Conversion: CTA component + tracking
+- Conversion: urgency and activity rules
+- Conversion: lead capture banner
+- Conversion: exit intent experiment
+- Admin routes + auth
+- Upload tooling
+- Moderation workflow
+- Audit log
+- Media takedown tooling
+- Tier 1 integrations
+- Tier 2 integrations
+- Tier 3 integrations
+- Testing and validation
+
+---
+
+## Appendix B - Integration Catalog (Reference)
+
+- Booking: Square, Vagaro, Mindbody, Fresha, Booksy, generic booking link
+- Payments: Stripe, Square, PayPal
+- Analytics: GA4, GTM, privacy-friendly analytics (Plausible, Matomo)
+- Ads: Google Ads, Meta Pixel + CAPI, TikTok, Pinterest, Snapchat, LinkedIn
+- Consent: CMP or custom banner with Consent Mode v2
+- Chat: Intercom, Crisp, Tawk
+- Reviews: Google (managed locations), Facebook (best-effort)
+- Bot protection: Turnstile
+- CRM: Mailchimp, Klaviyo, Brevo, ActiveCampaign, Twilio, MessageBird
+- CMS: Sanity, Contentful, Strapi, Payload
 
 ---
 
@@ -229,8 +546,6 @@ hair salon template. Configuration and infrastructure are complete; this list fo
 
 ## Notes
 
-- All configuration and infrastructure is production-ready
-- ESLint and TypeScript are properly configured
 - Use `pnpm dev` for development
 - Use `pnpm build` to test production build
 - Use `pnpm lint` and `pnpm type-check` regularly
