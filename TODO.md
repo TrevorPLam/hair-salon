@@ -60,83 +60,194 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
 ---
 
-## Phase 0 - Get to Green (Build/Lint/Dev)
+## Phase 0 - Critical Infrastructure & Build Fixes
 
-**Goal:** `pnpm lint`, `pnpm type-check`, `pnpm build`, `pnpm dev` all pass.
+**Goal:** All basic development commands work without errors.
 
 **Definition of Done**
 
-- [ ] `pnpm lint` passes
-- [ ] `pnpm type-check` passes
-- [ ] `pnpm build` passes
+- [ ] `pnpm install` completes without errors
+- [ ] `pnpm lint` passes across all packages
+- [ ] `pnpm type-check` passes without errors
+- [ ] `pnpm build` completes successfully
 - [ ] `pnpm dev` runs without runtime errors
 
 **Tasks**
 
-- [ ] Module alias + re-export audit
-- Deliverables: fix barrel exports in `features/*/index.ts`, fix `lib/*` exports, update alias paths
-- DoD: no `Module not found` errors for `@/lib/*`, `@/features/*`, `@/components/*`
-- Deps: none
+### 0.1 Package Configuration & Dependencies
 
-- [ ] Canonical feature import surface
-- Deliverables: add a single feature barrel (e.g., `apps/web/lib/feature-index.ts`) and update imports to use it
-- DoD: fewer direct deep imports; alias drift reduced
-- Deps: module alias audit
+- [ ] **Fix @repo/eslint-config package resolution**
 
-- [ ] Align local env template with runtime schema
-- Deliverables: update `.env.example` to match `apps/web/lib/env.ts` + `apps/web/lib/env.public.ts`
-- DoD: new devs can copy `.env.example` without immediate schema failures
-- Deps: none
+  - [ ] Verify package.json exports in packages/config/eslint-config/
+    - File: packages/config/eslint-config/package.json
+    - Snip:
+      ```json
+      { "main": "./library.js", "exports": { ".": "./library.js", "./next": "./next.js" } }
+      ```
+  - [ ] Ensure workspace dependencies are properly linked
+  - [ ] Test eslint config resolution in all packages
+  - DoD: `pnpm lint` runs without "Cannot find package '@repo/eslint-config'" errors
+  - Deps: none
 
-- [ ] Dependency install + verify
-- Deliverables: add MDX + forms deps to `apps/web/package.json`, lockfile updated
-- DoD: build passes and a sample MDX file renders in dev
-- Deps: none
+- [ ] **Install missing MDX dependencies**
 
-- [ ] ESLint config resolution
-- Deliverables: `@repo/eslint-config` resolves from all packages
-- DoD: `pnpm lint` passes in a clean install
-- Deps: none
+  - [ ] Add `next-mdx-remote`, `gray-matter`, `reading-time`, `remark-gfm`, `rehype-slug`, `rehype-pretty-code` to apps/web/package.json
+    - File: apps/web/package.json (dependencies)
+    - Snip:
+      ```json
+      { "dependencies": { "next": "15.1.6", "react": "19.0.0" } }
+      ```
+  - [ ] Update lockfile and verify installation
+  - [ ] Test MDX compilation in development
+  - DoD: MDX files parse without import errors
+  - Deps: none
 
-- [ ] Tailwind tokens + SearchDialog palette
-- Deliverables: Tailwind tokens for `bg-off-white` and palette updates
-- DoD: no missing class warnings; UI only changes where intended
-- Deps: none
+- [ ] **Install missing form dependencies**
 
-- [ ] Consent persistence smoke test
-- Deliverables: consent cookie/localStorage keys documented and used
-- DoD: refresh preserves toggles; SSR reads correct state
-- Deps: existing analytics consent module
+  - [ ] Add `react-hook-form`, `@hookform/resolvers/zod` to apps/web/package.json
+    - File: apps/web/package.json (dependencies)
+    - Snip:
+      ```json
+      { "dependencies": { "zod": "3.22.4" } }
+      ```
+  - [ ] Update lockfile and verify installation
+  - [ ] Test form validation imports
+  - DoD: Contact form imports resolve without errors
+  - Deps: none
 
-- [ ] Component fixups
-- Deliverables: InstallPrompt Button import, Navigation null checks, Gallery Button variant, Book page Select options
-- DoD: `pnpm dev` runs without runtime errors on these pages
-- Deps: none
+- [ ] **Install missing rate limiting dependencies**
+  - [ ] Add `@upstash/ratelimit`, `@upstash/redis` to apps/web/package.json
+    - File: apps/web/package.json (dependencies)
+    - Snip:
+      ```json
+      { "dependencies": { "@sentry/nextjs": "8.0.0" } }
+      ```
+  - [ ] Update lockfile and verify installation
+  - [ ] Test rate limiting imports
+  - DoD: Rate limiting module imports resolve without errors
+  - Deps: none
 
-- [ ] Type hygiene cleanup
-- Deliverables: remove unused `requestId`, fix implicit `any` types
-- DoD: `pnpm type-check` passes without new errors
-- Deps: none
+### 0.2 Module Resolution & Import Fixes
 
-- [ ] CI tests must be blocking
-- Deliverables: remove `continue-on-error` from tests in `.github/workflows/ci.yml`
-- DoD: CI fails when tests fail
-- Deps: none
+- [ ] **Fix component barrel exports**
 
-- [ ] Verification command log update
-- Deliverables: run `pnpm install`, `pnpm lint`, `pnpm type-check`, `pnpm test`, `pnpm test:coverage`, `pnpm build`, and `pnpm --filter @repo/web start` (or `docker-compose up -d`) then record outputs in `docs/TESTING_STATUS.md`
-- DoD: command log includes outputs and dates for each run
-- Deps: none
+  - [ ] Audit all `features/*/index.ts` files for missing exports
+    - Files: apps/web/features/blog/index.ts, apps/web/features/contact/index.ts, apps/web/features/search/index.ts, apps/web/features/services/index.ts
+  - [ ] Fix BlogPostContent export in features/blog/index.ts
+  - [ ] Fix ContactForm export in features/contact/index.ts
+  - [ ] Fix SearchDialog and SearchPage exports in features/search/index.ts
+  - [ ] Fix ServicesOverview and ServiceDetailLayout exports in features/services/index.ts
+  - DoD: All feature barrel exports match their component files
+  - Deps: none
 
-- [ ] Fix .vscode ignore negation ordering
-- Deliverables: adjust `.gitignore` ordering so `.vscode/settings.json` is included as intended
-- DoD: git treats `.vscode/settings.json` as tracked per policy
-- Deps: none
+- [ ] **Fix missing component imports**
 
-- [ ] Relax local env schema for optional integrations
-- Deliverables: allow Supabase/HubSpot vars to be optional in local dev while remaining required in production
-- DoD: local `pnpm dev` runs without setting optional integration keys; prod still validates
-- Deps: env schema alignment
+  - [ ] Create or fix ServicesOverview component import in app/page.tsx
+  - [ ] Create or fix SearchDialog component import in components/Navigation.tsx
+    - File: apps/web/components/Navigation.tsx
+    - Snip:
+      ```tsx
+      import SearchDialog from '@/components/SearchDialog';
+      <SearchDialog items={searchItems} />
+      <SearchDialog items={searchItems} variant="mobile" />
+      ```
+  - [ ] Verify all @/component imports resolve correctly
+  - DoD: No "Cannot find module '@/components/\*'" errors
+  - Deps: component barrel exports
+
+- [ ] **Fix TypeScript configuration issues**
+  - [ ] Update tsconfig.json paths to match current directory structure
+  - [ ] Verify @/lib, @/features, @/components paths are correct
+  - [ ] Test module resolution in development
+  - DoD: TypeScript paths resolve without alias errors
+  - Deps: none
+
+### 0.3 Type Safety & Code Quality
+
+- [ ] **Fix TypeScript errors**
+
+  - [ ] Fix Button variant type error in Gallery component
+  - [ ] Fix undefined array access in Navigation.tsx (lastElement, firstElement)
+  - [ ] Fix HubSpot action string type error
+  - [ ] Remove unused imports (requestId, env variables)
+  - DoD: `pnpm type-check` passes without new errors
+  - Deps: module resolution fixes
+
+- [ ] **Fix NODE_ENV assignment errors**
+  - [ ] Replace direct NODE_ENV assignment with process.env.NODE_ENV
+  - [ ] Update test files to use proper environment variable handling
+  - [ ] Verify environment variable usage in tests
+  - DoD: Test files run without "read-only property" errors
+  - Deps: none
+
+### 0.4 Environment Configuration
+
+- [ ] **Align local env template with runtime schema**
+
+  - [ ] Compare .env.example with apps/web/lib/env.ts and apps/web/lib/env.public.ts
+  - [ ] Update .env.example to match current schema requirements
+  - [ ] Add missing optional integration variables
+  - DoD: New developers can copy .env.example without immediate failures
+  - Deps: env schema finalized
+
+- [ ] **Relax local env schema for optional integrations**
+  - [ ] Make Supabase/HubSpot variables optional in local development
+  - [ ] Keep them required for production builds
+  - [ ] Update validation logic accordingly
+  - DoD: Local pnpm dev runs without setting optional integration keys
+  - Deps: env schema alignment
+
+### 0.5 Build & Development Tools
+
+- [ ] **Fix Tailwind configuration**
+
+  - [ ] Add missing Tailwind tokens for bg-off-white
+  - [ ] Update SearchDialog palette configuration
+  - [ ] Verify no missing class warnings
+  - DoD: UI only changes where intended; no missing class warnings
+  - Deps: none
+
+- [ ] **Fix component runtime errors**
+
+  - [ ] Fix InstallPrompt Button import issues
+  - [ ] Add null checks in Navigation component
+  - [ ] Fix Gallery Button variant usage
+  - [ ] Fix Book page Select options
+  - DoD: pnpm dev runs without runtime errors on these pages
+  - Deps: type fixes
+
+- [ ] **Fix .gitignore ordering**
+  - [ ] Adjust .gitignore ordering so .vscode/settings.json is included
+  - [ ] Verify git treats .vscode/settings.json as tracked per policy
+  - DoD: Git ignore negation works as intended
+  - Deps: none
+
+### 0.6 Testing & CI Configuration
+
+- [ ] **Make CI tests blocking**
+
+  - [ ] Remove continue-on-error from tests in .github/workflows/ci.yml
+  - [ ] Verify CI fails when tests fail
+  - [ ] Test CI pipeline with intentional failure
+  - DoD: CI fails when tests fail
+  - Deps: tests pass locally
+
+- [ ] **Update verification command log**
+
+  - [ ] Run pnpm install, pnpm lint, pnpm type-check, pnpm test, pnpm test:coverage, pnpm build
+  - [ ] Run pnpm --filter @repo/web start (or docker-compose up -d)
+  - [ ] Record all outputs in docs/TESTING_STATUS.md
+  - [ ] Include dates and success/failure status
+  - DoD: Command log includes outputs and dates for each run
+  - Deps: all commands work
+
+- [ ] **Verify consent persistence**
+
+  - [ ] Document consent cookie/localStorage keys
+  - [ ] Test that refresh preserves consent toggles
+  - [ ] Verify SSR reads correct consent state
+  - DoD: Consent state persists across sessions
+  - Deps: analytics consent module exists
 
 - [x] Fix blog import paths (resolved)
 - Deliverables: corrected blog/search/sitemap imports in `apps/web/app/blog/[slug]/page.tsx`, `apps/web/app/blog/page.tsx`, `apps/web/app/search/page.tsx`, `apps/web/app/sitemap.ts`
@@ -172,197 +283,470 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
 **Tasks**
 
-- [ ] Evergreen version policy
-- Deliverables: policy doc for Next/React/Turbo patches, Node 24 recommended engine, upgrade path to next major
-- DoD: policy referenced in README and requirements/design docs
-- Deps: none
+### 0.5.1 Maintenance and Upkeep
 
-- [ ] Automated dependency upkeep
-- Deliverables: Renovate config, patch auto-merge, minor upgrade gates
-- DoD: CI green on a sample dependency update PR
-- Deps: evergreen policy
+- [ ] **Evergreen version policy**
 
-- [ ] SBOM + dependency scanning
-- Deliverables: SBOM generation step, dependency audit task, artifacts upload
-- DoD: CI publishes SBOM and fails on critical vulns
-- Deps: CI baseline
+  - [ ] Document policy for Next/React/Turbo patches
+  - [ ] Set Node 24 as recommended engine version
+  - [ ] Define upgrade path to next major versions
+  - [ ] Create version compatibility matrix
+  - DoD: Policy referenced in README and requirements/design docs
+  - Deps: none
 
-- [ ] Quality gates pipeline
-- Deliverables: lint/type/test, Lighthouse CI on key routes (95+ targets), bundle size budgets (strict), a11y checks (95+), secret scan
-- DoD: PRs fail when budgets or checks fail; artifacts stored
-- Deps: CI baseline
+- [ ] **Automated dependency upkeep**
+  - [ ] Configure Renovate for dependency updates
+  - [ ] Set up patch auto-merge rules
+  - [ ] Create minor upgrade approval gates
+  - [ ] Test dependency update PR workflow
+  - DoD: CI green on a sample dependency update PR
+  - Deps: evergreen policy
 
-- [ ] Security contact accuracy
-- Deliverables: replace placeholder security email in `SECURITY.md`
-- DoD: security reports go to a monitored address
-- Deps: maintainers sign-off
+### 0.5.2 Quality Gates and Security
 
-- [ ] Documentation evidence reconciliation
-- Deliverables: reconcile README/CONFIG/ANALYSIS/QUALITY_REPORT with evidence links and update TESTING_STATUS after running commands
-- DoD: verified facts are linked; UNVERIFIED sections reduced or removed
-- Deps: Phase 0 commands run
+- [ ] **SBOM and dependency scanning**
 
-- [ ] Verify legacy analysis claims
-- Deliverables: audit `ANALYSIS.md` and add evidence links or mark as deprecated
-- DoD: legacy analysis is verified or clearly archived
-- Deps: none
+  - [ ] Add SBOM generation step to CI pipeline
+  - [ ] Implement dependency audit task
+  - [ ] Configure artifacts upload for security scans
+  - [ ] Set up failure on critical vulnerabilities
+  - DoD: CI publishes SBOM and fails on critical vulns
+  - Deps: CI baseline
 
-- [ ] Verify README/CONFIG/CONTRIBUTING claims
-- Deliverables: audit `README.md`, `CONFIG.md`, and `CONTRIBUTING.md` for unverified statements and add evidence links
-- DoD: unverified claims are updated or explicitly marked
-- Deps: none
+- [ ] **Quality gates pipeline**
 
-- [ ] Refresh audit checklist
-- Deliverables: update `tasks.md` to reflect current audit progress
-- DoD: audit checklist matches current state
-- Deps: none
+  - [ ] Implement lint/type/test checks in CI
+  - [ ] Add Lighthouse CI on key routes (95+ targets)
+  - [ ] Create bundle size budgets (strict enforcement)
+  - [ ] Add accessibility checks (95+ score)
+  - [ ] Implement secret scanning
+  - DoD: PRs fail when budgets or checks fail; artifacts stored
+  - Deps: CI baseline
 
-- [ ] Verify backlog against codebase
-- Deliverables: review `TODO.md` items against current implementation and update statuses
-- DoD: backlog reflects current codebase state
-- Deps: none
+- [ ] **Security contact accuracy**
+  - [ ] Replace placeholder security email in `SECURITY.md`
+  - [ ] Update security reporting procedures
+  - [ ] Verify security monitoring setup
+  - DoD: Security reports go to a monitored address
+  - Deps: maintainers sign-off
 
-- [ ] Trace analytics/consent flow
-- Deliverables: document consent and analytics flow from code into docs
-- DoD: audit entry exists with evidence references
-- Deps: none
+### 0.5.3 Documentation and Evidence
 
-- [ ] Populate remediation plan
-- Deliverables: prioritize fixes and add them to `docs/REMEDIATION_PLAN.md`
-- DoD: remediation plan lists prioritized fixes with owners/targets
-- Deps: issues documented
+- [ ] **Documentation evidence reconciliation**
 
-- [ ] Consent gating E2E tests
-- Deliverables: e2e tests for consent denied -> no scripts; consent granted -> only enabled scripts
-- DoD: tests enforced in CI
-- Deps: integration platform layer
+  - [ ] Reconcile README/CONFIG/ANALYSIS/QUALITY_REPORT with evidence links
+  - [ ] Update TESTING_STATUS after running verification commands
+  - [ ] Add evidence links to all verified claims
+  - [ ] Remove or mark UNVERIFIED sections
+  - DoD: Verified facts are linked; UNVERIFIED sections reduced
+  - Deps: Phase 0 commands run
 
-- [ ] Demo mode / demo route
-- Deliverables: `/demo` or seeded mode showcasing all features toggled on/off
-- DoD: demo documents consent gating and integrations
-- Deps: core features present
+- [ ] **Verify legacy analysis claims**
 
-- [ ] One-command initializer
-- Deliverables: `pnpm template:init` prompts and generates `site.config.ts`, schema JSON-LD, env stubs
-- DoD: fresh setup runs without manual edits
-- Deps: config schema defined
+  - [ ] Audit `ANALYSIS.md` for outdated information
+  - [ ] Add evidence links or mark as deprecated
+  - [ ] Update analysis with current findings
+  - DoD: Legacy analysis is verified or clearly archived
+  - Deps: none
 
-- [ ] Marketing setup checklist
-- Deliverables: short playbook for local SEO, GBP, social proof, CTAs, interstitial guidance
-- DoD: referenced from README and docs
-- Deps: none
+- [ ] **Verify README/CONFIG/CONTRIBUTING claims**
+  - [ ] Audit `README.md` for unverified statements
+  - [ ] Audit `CONFIG.md` for accuracy
+  - [ ] Audit `CONTRIBUTING.md` for current processes
+  - [ ] Add evidence links to verified claims
+  - DoD: Unverified claims are updated or explicitly marked
+  - Deps: none
 
-- [ ] Repo scorecard section
-- Deliverables: README badges for CWV targets, consent compliance, budget pass rate
-- DoD: scorecard reflects CI outputs
-- Deps: quality gates pipeline
+### 0.5.4 Audit and Verification
+
+- [ ] **Refresh audit checklist**
+
+  - [ ] Update `tasks.md` to reflect current audit progress
+  - [ ] Add new audit items discovered during analysis
+  - [ ] Prioritize audit items by impact
+  - DoD: Audit checklist matches current state
+  - Deps: none
+
+- [ ] **Verify backlog against codebase**
+
+  - [ ] Review `TODO.md` items against current implementation
+  - [ ] Update task statuses based on actual progress
+  - [ ] Add missing tasks discovered during audit
+  - [ ] Remove completed or obsolete tasks
+  - DoD: Backlog reflects current codebase state
+  - Deps: none
+
+- [ ] **Trace analytics and consent flow**
+
+  - [ ] Document consent and analytics flow from code
+  - [ ] Create flow diagrams and documentation
+  - [ ] Add evidence references to audit entries
+  - DoD: Audit entry exists with evidence references
+  - Deps: none
+
+- [ ] **Populate remediation plan**
+  - [ ] Prioritize fixes based on impact and effort
+  - [ ] Add prioritized fixes to `docs/REMEDIATION_PLAN.md`
+  - [ ] Assign owners and target dates
+  - DoD: Remediation plan lists prioritized fixes with owners/targets
+  - Deps: issues documented
+
+### 0.5.5 Demo and Setup
+
+- [ ] **Demo mode and demo route**
+
+  - [ ] Create `/demo` route or seeded mode
+  - [ ] Showcase all features toggled on/off
+  - [ ] Document consent gating and integrations
+  - DoD: Demo documents consent gating and integrations
+  - Deps: core features present
+
+- [ ] **One-command initializer**
+
+  - [ ] Create `pnpm template:init` command
+  - [ ] Add prompts for site configuration
+  - [ ] Generate `site.config.ts`, schema JSON-LD, env stubs
+  - DoD: Fresh setup runs without manual edits
+  - Deps: config schema defined
+
+- [ ] **Marketing setup checklist**
+
+  - [ ] Create short playbook for local SEO
+  - [ ] Add GBP (Google Business Profile) setup guide
+  - [ ] Document social proof and CTA strategies
+  - [ ] Add interstitial guidance
+  - DoD: Referenced from README and docs
+  - Deps: none
+
+- [ ] **Repo scorecard section**
+  - [ ] Add README badges for CWV targets
+  - [ ] Include consent compliance badges
+  - [ ] Add budget pass rate indicators
+  - DoD: Scorecard reflects CI outputs
+  - Deps: quality gates pipeline
 
 ## Phase 1 - Core Site MVP
 
-**Goal:** Blog + Services + Contact + Search + Book page work end-to-end.
+**Goal:** Essential business features work end-to-end for a functional salon website.
 
 **Definition of Done**
 
-- [ ] Home -> service -> book click works and is tracked
+- [ ] Home -> service -> book click flow works and is tracked
 - [ ] Contact form submits successfully with confirmation
-- [ ] Blog index loads and a post renders
+- [ ] Blog index loads and individual posts render correctly
+- [ ] Search functionality works across content
+- [ ] All core pages are accessible and functional
 
 **Tasks**
 
-- [ ] Blog: MDX parsing
-- Deliverables: `apps/web/features/blog/lib/*`, `app/blog/page.tsx`, `app/blog/[slug]/page.tsx`
-- DoD: `/blog` renders 3 sample posts; one post renders code blocks
-- Deps: MDX deps installed
+### 1.1 Blog System Implementation
 
-- [ ] Blog: category filtering
-- Deliverables: filter `/blog?category=` results using `getPostsByCategory`
-- DoD: category links change the visible list; empty state shown when none
-- Deps: blog lib exists
+- [ ] **Blog: MDX parsing and rendering**
 
-- [ ] Terms of Service placeholder cleanup
-- Deliverables: replace placeholder and TO BE UPDATED content in `/terms`
-- DoD: terms page reads as production-ready copy
-- Deps: content owner input
+  - [ ] Implement MDX parsing in `apps/web/features/blog/lib/`
+  - [ ] Create `app/blog/page.tsx` for blog index
+  - [ ] Create `app/blog/[slug]/page.tsx` for individual posts
+  - [ ] Add sample blog posts with proper frontmatter
+  - [ ] Test code blocks and markdown rendering
+  - Refs:
+    - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts)
+    - [apps/web/app/blog/page.tsx](apps/web/app/blog/page.tsx)
+    - [apps/web/app/blog/[slug]/page.tsx](apps/web/app/blog/%5Bslug%5D/page.tsx)
+  - Snip:
+    ```ts
+    const posts = getAllPosts();
+    const categories = getAllCategories();
+    ```
+  - DoD: `/blog` renders 3 sample posts; one post renders code blocks
+  - Deps: MDX dependencies installed
 
-- [ ] Blog: metadata types + validation
-- Deliverables: blog frontmatter types and validation in blog lib
-- DoD: invalid frontmatter fails fast in dev
-- Deps: blog lib exists
+- [ ] **Blog: category filtering system**
 
-- [ ] Contact form: schema + UI
-- Deliverables: `features/contact/lib/contact-form-schema.ts`, `ContactForm` updates
-- DoD: client-side validation works with clear error states
-- Deps: react-hook-form + resolver deps installed
+  - [ ] Implement `getPostsByCategory` function in blog lib
+  - [ ] Add category filtering UI to blog index page
+  - [ ] Add category links and filtering logic
+  - [ ] Implement empty state for filtered results
+  - Refs:
+    - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts)
+    - [apps/web/app/blog/page.tsx](apps/web/app/blog/page.tsx)
+  - Snip:
+    ```ts
+    export function getPostsByCategory(category: string): BlogPost[] {
+      return getAllPosts().filter((post) => post.category === category);
+    }
+    ```
+  - DoD: Category links change visible list; empty state shown when none
+  - Deps: blog lib exists
 
-- [ ] Contact form: submission + spam baseline
-- Deliverables: server action or route handler; rate limit or honeypot
-- DoD: submit success and error paths display correctly
-- Deps: contact schema exists
+- [ ] **Blog: metadata validation and types**
 
-- [ ] Booking form submission handler
-- Deliverables: add a submission handler or explicit provider redirect flow for `/book`
-- DoD: booking CTA has a functional submission or redirect path
-- Deps: booking flow decision
+  - [ ] Define blog frontmatter TypeScript types
+  - [ ] Implement Zod schema for frontmatter validation
+  - [ ] Add validation error handling in development
+  - [ ] Create sample posts with valid metadata
+  - Refs:
+    - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts)
+  - Snip:
+    ```ts
+    export interface BlogPost {
+      slug: string;
+      title: string;
+      description: string;
+      date: string;
+    }
+    ```
+  - DoD: Invalid frontmatter fails fast in dev
+  - Deps: blog lib exists
 
-- [ ] Contact: spam policy for CRM sync
-- Deliverables: define behavior when rate limit fails (e.g., skip HubSpot sync)
-- DoD: suspicious submissions do not reach CRM without explicit override
-- Deps: rate limiting in place
+- [ ] **Blog: performance optimization**
+  - [ ] Implement memoization for `getAllPosts()` and related helpers
+  - [ ] Add server-side caching for blog data
+  - [ ] Optimize MDX compilation caching
+  - Refs:
+    - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts)
+  - Snip:
+    ```ts
+    export function getAllPosts(): BlogPost[] {
+      // reads content/blog/*.mdx
+      return allPosts.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+    }
+    ```
+  - DoD: Repeated calls avoid redundant fs reads during SSR
+  - Deps: blog lib exists
 
-- [ ] Rate limit fallback policy in production
-- Deliverables: decide fail-closed vs hard error when Upstash init fails in prod
-- DoD: production behavior documented and enforced in `apps/web/lib/rate-limit.ts`
-- Deps: rate limiting in place
+### 1.2 Contact Form System
 
-- [ ] Services: data model + pages
-- Deliverables: services data, `ServiceDetailLayout`, `/services/*` pages
-- DoD: all service pages render with pricing and booking link
-- Deps: services data defined
+- [ ] **Contact form: schema and validation**
 
-- [ ] Gallery placeholder data replacement
-- Deliverables: replace placeholder portfolio data and imagery
-- DoD: gallery shows real or seeded data with consistent metadata
-- Deps: media assets available
+  - [ ] Create `features/contact/lib/contact-form-schema.ts` with Zod schema
+  - [ ] Update `ContactForm` component with client-side validation
+  - [ ] Add clear error states and validation messages
+  - [ ] Implement form submission loading states
+  - Refs:
+    - [apps/web/features/contact/lib/contact-form-schema.ts](apps/web/features/contact/lib/contact-form-schema.ts)
+    - [apps/web/features/contact/components/ContactForm.tsx](apps/web/features/contact/components/ContactForm.tsx)
+  - Snip:
+    ```ts
+    export const contactFormSchema = z.object({
+      name: z.string().min(2),
+      email: z.string().email(),
+    });
+    ```
+  - DoD: Client-side validation works with clear error states
+  - Deps: form dependencies installed
 
-- [ ] Search: index + UX
-- Deliverables: search index includes blog + services; search dialog hotkey
-- DoD: Ctrl/Cmd+K opens dialog; results include blog and services
-- Deps: blog and services pages exist
+- [ ] **Contact form: submission and spam protection**
 
-- [ ] Search index caching
-- Deliverables: memoize `getSearchIndex()` with server cache helper
-- DoD: repeated renders do not re-read blog files
-- Deps: blog lib exists
+  - [ ] Implement server action or route handler for form submission
+  - [ ] Add rate limiting or honeypot spam protection
+  - [ ] Create success and error response handling
+  - [ ] Add email notification system
+  - Refs:
+    - [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts)
+    - [apps/web/lib/rate-limit.ts](apps/web/lib/rate-limit.ts)
+    - [apps/web/features/contact/components/ContactForm.tsx](apps/web/features/contact/components/ContactForm.tsx)
+  - Snip:
+    ```ts
+    export async function submitContactForm(data: ContactFormData) {
+      return handleContactFormSubmission(data, requestHeaders);
+    }
+    ```
+  - DoD: Submit success and error paths display correctly
+  - Deps: contact schema exists
 
-- [ ] Blog data caching
-- Deliverables: memoize `getAllPosts()` and related helpers
-- DoD: repeated calls avoid redundant fs reads during SSR
-- Deps: blog lib exists
+- [ ] **Contact: CRM integration and spam policy**
+  - [ ] Define behavior when rate limit fails (skip HubSpot sync)
+  - [ ] Implement suspicious submission detection
+  - [ ] Add CRM sync error handling and logging
+  - Refs:
+    - [apps/web/lib/actions/supabase.ts](apps/web/lib/actions/supabase.ts)
+    - [apps/web/lib/actions/hubspot.ts](apps/web/lib/actions/hubspot.ts)
+    - [apps/web/lib/actions/helpers.ts](apps/web/lib/actions/helpers.ts)
+  - Snip:
+    ```ts
+    const lead = await insertLeadWithSpan(sanitized, isSuspicious);
+    await syncHubSpotLead(lead.id, sanitized);
+    ```
+  - DoD: Suspicious submissions do not reach CRM without explicit override
+  - Deps: rate limiting in place
 
-- [ ] OG image route protection
-- Deliverables: lightweight rate limit or cache for `/api/og`
-- DoD: basic abuse protection without breaking social previews
-- Deps: rate limiting util or edge cache strategy
+### 1.3 Services and Booking System
 
-- [ ] Book page: MVP flow
-- Deliverables: booking CTA, service and stylist selection placeholders
-- DoD: booking CTA routes correctly; selection UI renders
-- Deps: services + team data available
+- [ ] **Services: data model and pages**
 
-- [ ] Team social links replacement
-- Deliverables: replace placeholder social links in the team page
-- DoD: team social links point to real profiles or are removed
-- Deps: content owner input
+  - [ ] Define services data structure and types
+  - [ ] Create `ServiceDetailLayout` component
+  - [ ] Implement individual service pages (`/services/*`)
+  - [ ] Add pricing information and booking links
+  - Refs:
+    - [apps/web/features/services/components/ServiceDetailLayout.tsx](apps/web/features/services/components/ServiceDetailLayout.tsx)
+    - [apps/web/features/services/components/ServicesOverview.tsx](apps/web/features/services/components/ServicesOverview.tsx)
+    - [apps/web/app/services/page.tsx](apps/web/app/services/page.tsx)
+  - Snip:
+    ```tsx
+    export interface ServiceDetailProps {
+      title: string;
+      description: string;
+      pricing: { tier: string; description: string; href: string }[];
+    }
+    ```
+  - DoD: All service pages render with pricing and booking link
+  - Deps: services data defined
 
-- [ ] Footer social links replacement
-- Deliverables: replace placeholder footer social links or remove them
-- DoD: footer links are real or intentionally omitted
-- Deps: content owner input
+- [ ] **Booking form submission handler**
+  - [ ] Decide on booking flow (internal vs external provider)
+  - [ ] Implement booking CTA submission handler
+  - [ ] Add provider redirect flow if needed
+  - [ ] Create booking confirmation system
+  - Refs:
+    - [apps/web/app/book/page.tsx](apps/web/app/book/page.tsx)
+    - [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx)
+  - Snip:
+    ```tsx
+    <Link href="/book">
+      <Button variant="primary">Book Now</Button>
+    </Link>
+    ```
+  - DoD: Booking CTA has functional submission or redirect path
+  - Deps: booking flow decision
 
-- [ ] Seed data
-- Deliverables: sample services, stylists, blog posts
-- DoD: local dev uses real data with no empty states
-- Deps: models exist
+### 1.4 Search Functionality
+
+- [ ] **Search: index and user experience**
+
+  - [ ] Build search index including blog + services content
+  - [ ] Implement search dialog with keyboard shortcut (Ctrl/Cmd+K)
+  - [ ] Add search results highlighting and navigation
+  - [ ] Create search page for full search experience
+  - Refs:
+    - [apps/web/lib/search.ts](apps/web/lib/search.ts)
+    - [apps/web/features/search/components/SearchDialog.tsx](apps/web/features/search/components/SearchDialog.tsx)
+    - [apps/web/features/search/components/SearchPage.tsx](apps/web/features/search/components/SearchPage.tsx)
+  - Snip:
+    ```ts
+    export function getSearchIndex(): SearchItem[] {
+      return [...staticPages, ...posts];
+    }
+    ```
+  - DoD: Ctrl/Cmd+K opens dialog; results include blog and services
+  - Deps: blog and services pages exist
+
+- [ ] **Search: performance optimization**
+  - [ ] Implement memoization for `getSearchIndex()` with server cache
+  - [ ] Add search result caching strategies
+  - [ ] Optimize search algorithm performance
+  - Refs:
+    - [apps/web/lib/search.ts](apps/web/lib/search.ts)
+  - Snip:
+    ```ts
+    const posts = getAllPosts().map((post) => ({
+      id: `post-${post.slug}`,
+    }));
+    ```
+  - DoD: Repeated renders do not re-read blog files
+  - Deps: blog lib exists
+
+### 1.5 Content and Media
+
+- [ ] **Gallery: placeholder data replacement**
+
+  - [ ] Replace placeholder portfolio data with real content
+  - [ ] Update imagery with consistent metadata
+  - [ ] Add alt text and accessibility features
+  - Refs:
+    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+  - Snip:
+    ```tsx
+    <section className="py-20 bg-off-white">
+      <Container>
+    ```
+  - DoD: Gallery shows real or seeded data with consistent metadata
+  - Deps: media assets available
+
+- [ ] **Terms of Service: content finalization**
+
+  - [ ] Replace placeholder and "TO BE UPDATED" content
+  - [ ] Write production-ready terms copy
+  - [ ] Add legal disclaimers and privacy references
+  - Refs:
+    - [apps/web/app/terms/page.tsx](apps/web/app/terms/page.tsx)
+    - [apps/web/app/privacy/page.tsx](apps/web/app/privacy/page.tsx)
+  - Snip:
+    ```tsx
+    export const metadata: Metadata = {
+      title: 'Terms of Service | Hair Salon Template',
+    };
+    ```
+  - DoD: Terms page reads as production-ready copy
+  - Deps: content owner input
+
+- [ ] **Team and social links**
+  - [ ] Replace placeholder social links in team page
+  - [ ] Update footer social links or remove if not needed
+  - [ ] Verify all social links point to real profiles
+  - Refs:
+    - [apps/web/app/team/page.tsx](apps/web/app/team/page.tsx)
+    - [apps/web/components/Footer.tsx](apps/web/components/Footer.tsx)
+  - Snip:
+    ```tsx
+    <Link href="/team" className="text-white/70">
+      Team
+    </Link>
+    ```
+  - DoD: Team and footer social links are real or intentionally omitted
+  - Deps: content owner input
+
+### 1.6 Performance and Security
+
+- [ ] **OG image route protection**
+
+  - [ ] Add lightweight rate limiting for `/api/og`
+  - [ ] Implement caching strategy for OG images
+  - [ ] Add error handling for OG image generation
+  - Refs:
+    - [apps/web/app/api/og/route.tsx](apps/web/app/api/og/route.tsx)
+    - [apps/web/lib/rate-limit.ts](apps/web/lib/rate-limit.ts)
+  - Snip:
+    ```ts
+    export async function GET(request: Request) {
+      // TODO: add rate limit
+    }
+    ```
+  - DoD: Basic abuse protection without breaking social previews
+  - Deps: rate limiting util or edge cache strategy
+
+- [ ] **Rate limiting: production fallback policy**
+  - [ ] Decide fail-closed vs hard error when Upstash fails
+  - [ ] Implement fallback behavior in production
+  - [ ] Document production rate limiting behavior
+  - Refs:
+    - [apps/web/lib/rate-limit.ts](apps/web/lib/rate-limit.ts)
+  - Snip:
+    ```ts
+    if (missingUpstashKeys.length === 0) {
+      // init Upstash
+    }
+    ```
+  - DoD: Production behavior documented and enforced in `apps/web/lib/rate-limit.ts`
+  - Deps: rate limiting in place
+
+### 1.7 Seed Data and Testing
+
+- [ ] **Seed data creation**
+  - [ ] Create sample services data
+  - [ ] Add sample stylists/team members
+  - [ ] Create sample blog posts
+  - [ ] Add sample gallery images
+  - Refs:
+    - [apps/web/features/services/components/ServicesOverview.tsx](apps/web/features/services/components/ServicesOverview.tsx)
+    - [apps/web/app/team/page.tsx](apps/web/app/team/page.tsx)
+    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+  - Snip:
+    ```ts
+    const services = [{ title: 'Haircuts & Styling', href: '/services/haircuts' }];
+    ```
+  - DoD: Local dev uses real data with no empty states
+  - Deps: models exist
 
 ---
 
@@ -370,54 +754,156 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
 **Goal:** Add integrations without ad-hoc scripts, all default-off, consent gated.
 
-**Deliverables**
-
-- [ ] Integration registry + schema validation
-- Deliverables: `integrations.config.ts`, Zod registry schema, per-provider schemas
-- DoD: enabled providers without required keys fail fast
-- Deps: Zod available
-
-- [ ] Event taxonomy + event bus
-- Deliverables: canonical event list (book_click, lead_submit, call_click, directions_click, gallery_open)
-- DoD: client emit + server emit wrappers sanitize payloads
-- Deps: none
-
-- [ ] Consent model + helpers
-- Deliverables: cookie format, server read helper, client hook, banner wiring
-- DoD: unknown/granted/denied tracked per category
-- Deps: existing consent banner and analytics module
-
-- [ ] Script loader
-- Deliverables: `loadClientScript(id, src, rule)` with dedupe, timeout, error logging
-- DoD: scripts load only after consent and per load rule
-- Deps: consent model
-
-- [ ] Provider adapter pattern
-- Deliverables: provider declarations include consent category, load rule, CSP domains, event subscriptions
-- DoD: enabling a provider requires no ad-hoc script tags
-- Deps: registry + loader
-
-- [ ] CSP allowlist builder
-- Deliverables: CSP domain sets for script/img/connect/frame sources
-- DoD: CSP updates only for enabled integrations
-- Deps: provider adapter pattern
-
-- [ ] Verification tests
-- Deliverables: E2E consent off -> no tags; consent on -> only enabled tags
-- DoD: tests pass in CI-like run
-- Deps: event bus + script loader
-
 **Definition of Done**
 
 - [ ] Consent off -> no analytics/marketing scripts load
 - [ ] Consent on -> only enabled scripts load
 - [ ] No PII in event payloads
+- [ ] All integrations disabled by default
 
 **Guardrails**
 
 - [ ] All integrations must be disabled by default
 - [ ] All marketing/analytics scripts must be consent gated
 - [ ] Scripts must be lazy or interaction-loaded unless critical
+
+**Tasks**
+
+### 2.1 Core Integration Infrastructure
+
+- [ ] **Integration registry and schema validation**
+
+  - [ ] Create `integrations.config.ts` with provider definitions
+  - [ ] Implement Zod registry schema for validation
+  - [ ] Create per-provider schemas with required fields
+  - [ ] Add validation error handling for missing keys
+  - Refs:
+    - [apps/web/lib/env.ts](apps/web/lib/env.ts)
+    - [apps/web/lib/env.public.ts](apps/web/lib/env.public.ts)
+  - Snip:
+    ```ts
+    export const validatedEnv = envSchema.parse(process.env);
+    ```
+  - DoD: Enabled providers without required keys fail fast
+  - Deps: Zod available
+
+- [ ] **Event taxonomy and event bus**
+
+  - [ ] Define canonical event list (book_click, lead_submit, call_click, directions_click, gallery_open)
+  - [ ] Implement client-side event emitter with payload sanitization
+  - [ ] Create server-side event emitter wrapper
+  - [ ] Add event validation and logging
+  - Refs:
+    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+  - Snip:
+    ```ts
+    export function trackEvent({ action, category, label, value }: AnalyticsEvent) {
+      if (!hasAnalyticsConsent()) return;
+    }
+    ```
+  - DoD: Client emit + server emit wrappers sanitize payloads
+  - Deps: none
+
+- [ ] **Consent model and helpers**
+
+  - [ ] Define cookie format for consent storage
+  - [ ] Create server-side consent reading helper
+  - [ ] Implement client-side consent hook
+  - [ ] Wire consent banner to consent model
+  - [ ] Add per-category consent tracking (unknown/granted/denied)
+  - Refs:
+    - [apps/web/features/analytics/lib/analytics-consent.ts](apps/web/features/analytics/lib/analytics-consent.ts)
+    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+  - Snip:
+    ```ts
+    export type AnalyticsConsentState = 'granted' | 'denied' | 'unknown';
+    ```
+  - DoD: Unknown/granted/denied tracked per category
+  - Deps: existing consent banner and analytics module
+
+- [ ] **Script loader system**
+
+  - [ ] Implement `loadClientScript(id, src, rule)` with deduplication
+  - [ ] Add timeout handling and error logging
+  - [ ] Create script loading queue management
+  - [ ] Add script removal and cleanup functionality
+  - Refs:
+    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+  - Snip:
+    ```tsx
+    <Script src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`} />
+    ```
+  - DoD: Scripts load only after consent and per load rule
+  - Deps: consent model
+
+- [ ] **Provider adapter pattern**
+
+  - [ ] Define provider declaration structure with consent category
+  - [ ] Implement load rule system for each provider
+  - [ ] Add CSP domain configuration per provider
+  - [ ] Create event subscription system for providers
+  - Refs:
+    - [apps/web/lib/csp.ts](apps/web/lib/csp.ts)
+    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+  - Snip:
+    ```ts
+    const scriptSources = ["'self'", `'nonce-${nonce}'`, 'https://www.googletagmanager.com'];
+    ```
+  - DoD: Enabling a provider requires no ad-hoc script tags
+  - Deps: registry + loader
+
+- [ ] **CSP allowlist builder**
+  - [ ] Create CSP domain sets for script/img/connect/frame sources
+  - [ ] Implement dynamic CSP header generation
+  - [ ] Add CSP validation and testing
+  - [ ] Update CSP only for enabled integrations
+  - Refs:
+    - [apps/web/lib/csp.ts](apps/web/lib/csp.ts)
+    - [apps/web/middleware.ts](apps/web/middleware.ts)
+  - Snip:
+    ```ts
+    const csp = buildContentSecurityPolicy({ nonce, isDevelopment });
+    response.headers.set('Content-Security-Policy', csp);
+    ```
+  - DoD: CSP updates only for enabled integrations
+  - Deps: provider adapter pattern
+
+### 2.2 Testing and Verification
+
+- [ ] **Integration platform verification tests**
+
+  - [ ] Create E2E tests for consent off -> no tags
+  - [ ] Create E2E tests for consent on -> only enabled tags
+  - [ ] Add unit tests for event bus and script loader
+  - [ ] Test integration registry validation
+  - Refs:
+    - [apps/web/lib/**tests**/env.test.ts](apps/web/lib/__tests__/env.test.ts)
+    - [jest.config.js](jest.config.js)
+  - Snip:
+    ```ts
+    describe('env', () => {
+      it('validates public env', () => {});
+    });
+    ```
+  - DoD: Tests pass in CI-like run
+  - Deps: event bus + script loader
+
+- [ ] **Consent gating E2E tests**
+  - [ ] Test consent denied -> no scripts load
+  - [ ] Test consent granted -> only enabled scripts load
+  - [ ] Verify consent persistence across sessions
+  - [ ] Test consent category-specific behavior
+  - Refs:
+    - [apps/web/features/analytics/lib/analytics-consent.ts](apps/web/features/analytics/lib/analytics-consent.ts)
+    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+  - Snip:
+    ```ts
+    export function setAnalyticsConsent(consent: AnalyticsConsentState) {
+      writeStoredConsent(consent);
+    }
+    ```
+  - DoD: Tests enforced in CI
+  - Deps: integration platform layer
 
 ---
 
@@ -432,25 +918,60 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: migrations apply cleanly; indexes cover common queries
 - Deps: data models finalized
 
+  - Refs:
+    - [infrastructure/](infrastructure/)
+    - [apps/web/features/supabase/lib/supabase-leads.ts](apps/web/features/supabase/lib/supabase-leads.ts)
+  - Snip:
+    ```ts
+    const SUPABASE_LEADS_PATH = '/rest/v1/leads';
+    ```
+
 - [ ] RLS policies
 - Deliverables: policies for public read (approved) and admin write
 - DoD: public cannot write; admins can manage content
 - Deps: migrations applied
+
+  - Refs:
+    - [infrastructure/](infrastructure/)
+  - Snip:
+    ```sql
+    -- TODO: create RLS policies for public read + admin write
+    ```
 
 - [ ] Storage bucket policies
 - Deliverables: buckets for media, signed URL strategy for private assets
 - DoD: public assets readable; consent docs private
 - Deps: migrations applied
 
+  - Refs:
+    - [infrastructure/](infrastructure/)
+  - Snip:
+    ```sql
+    -- TODO: storage bucket policies for media and private assets
+    ```
+
 - [ ] Admin role model
 - Deliverables: role claims or admins table; route middleware guard
 - DoD: admin routes protected in dev and prod
 - Deps: auth strategy defined
 
+  - Refs:
+    - [apps/web/middleware.ts](apps/web/middleware.ts)
+  - Snip:
+    ```ts
+    export const config = { matcher: ['/((?!_next/static).*)'] };
+    ```
+
 - [ ] Background job runner
 - Deliverables: cron strategy for review sync, optional Instagram sync, cleanup job for revoked media
 - DoD: jobs run without blocking page render
 - Deps: data tables and storage buckets
+  - Refs:
+    - [infrastructure/](infrastructure/)
+  - Snip:
+    ```ts
+    // TODO: define scheduled jobs (review sync, instagram sync)
+    ```
 
 ---
 
@@ -465,15 +986,36 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: one source of truth for ratings and counts
 - Deps: data layer ready
 
+  - Refs:
+    - [apps/web/components/SocialProof.tsx](apps/web/components/SocialProof.tsx)
+  - Snip:
+    ```ts
+    const testimonials = [{ quote: '...', author: '...', title: '...' }];
+    ```
+
 - [ ] Testimonial display MVP
 - Deliverables: carousel/grid, verified badge modes, aggregate rating component
 - DoD: homepage shows ratings and a rotating testimonial block
 - Deps: schema and seed data
 
+  - Refs:
+    - [apps/web/components/SocialProof.tsx](apps/web/components/SocialProof.tsx)
+  - Snip:
+    ```tsx
+    <div className="grid md:grid-cols-3 gap-8 mb-16">
+      {testimonials.map((testimonial) => (
+    ```
+
 - [ ] Video testimonials
 - Deliverables: thumbnail + click-to-load player
 - DoD: no iframe loads until interaction
 - Deps: testimonial UI exists
+  - Refs:
+    - [apps/web/components/SocialProof.tsx](apps/web/components/SocialProof.tsx)
+  - Snip:
+    ```tsx
+    <Card key={testimonial.author} variant="testimonial">
+    ```
 
 ### 3.2 Portfolio (Before/After)
 
@@ -482,20 +1024,49 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: permission fields stored and enforceable
 - Deps: data layer ready
 
+  - Refs:
+    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+  - Snip:
+    ```tsx
+    <section className="py-20 bg-off-white">
+    ```
+
 - [ ] Portfolio MVP slice
 - Deliverables: gallery with filters, lightbox, keyboard support
 - DoD: gallery shows 12 items; modal accessible
 - Deps: transformation data seeded
+
+  - Refs:
+    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+  - Snip:
+    ```tsx
+    <div className="grid md:grid-cols-3 gap-8">
+    ```
 
 - [ ] Performance rules
 - Deliverables: thumbnails for grids, lazy-load full res in modal
 - DoD: no above-the-fold grids of full-size images
 - Deps: gallery MVP
 
+  - Refs:
+    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+  - Snip:
+    ```tsx
+    <div className={`w-full h-full ${item.image} flex items-center justify-center`}>
+      Image {item.id}
+    </div>
+    ```
+
 - [ ] Instagram feed adapter
 - Deliverables: manual CMS default with optional API sync job
 - DoD: feed renders from manual data with fallback copy
 - Deps: data layer ready
+  - Refs:
+    - [infrastructure/](infrastructure/)
+  - Snip:
+    ```ts
+    // TODO: optional Instagram sync job
+    ```
 
 ### 3.3 Trust Indicators
 
@@ -504,15 +1075,38 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: links point to issuer verification pages
 - Deps: data layer ready
 
+  - Refs:
+    - [apps/web/app/about/page.tsx](apps/web/app/about/page.tsx)
+  - Snip:
+    ```tsx
+    <h2 className="text-3xl font-bold text-charcoal">Our Story</h2>
+    ```
+
 - [ ] Trust UI
 - Deliverables: badge grid + certification cards
 - DoD: displayed on homepage and service pages
 - Deps: trust models seeded
 
+  - Refs:
+    - [apps/web/components/ValueProps.tsx](apps/web/components/ValueProps.tsx)
+    - [apps/web/app/services/page.tsx](apps/web/app/services/page.tsx)
+  - Snip:
+    ```tsx
+    <div className="grid md:grid-cols-3 gap-8">
+    ```
+
 - [ ] Guarantee + longevity
 - Deliverables: satisfaction and longevity copy with source fields
 - DoD: only data-backed claims render
 - Deps: business data source
+  - Refs:
+    - [apps/web/components/Hero.tsx](apps/web/components/Hero.tsx)
+  - Snip:
+    ```tsx
+    <p className="text-sm text-slate mt-4">
+      Walk-ins welcome · Free consultations · Satisfaction guaranteed
+    </p>
+    ```
 
 ### 3.4 Conversion Elements (Truthful + Non-Intrusive)
 
@@ -521,25 +1115,69 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: no overlap with mobile nav or footer
 - Deps: booking link defined
 
+  - Refs:
+    - [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx)
+    - [apps/web/components/Navigation.tsx](apps/web/components/Navigation.tsx)
+  - Snip:
+    ```tsx
+    <Link href="/contact">
+      <Button variant="primary" size="large">
+        Book Appointment
+      </Button>
+    </Link>
+    ```
+
 - [ ] CTA component + tracking
 - Deliverables: CTA component wired to event bus
 - DoD: click emits canonical event without PII
 - Deps: event bus
+
+  - Refs:
+    - [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx)
+    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+  - Snip:
+    ```ts
+    export function trackCTAClick(ctaText: string) {
+      trackEvent({ action: 'cta_click', category: 'engagement', label: ctaText });
+    }
+    ```
 
 - [ ] Urgency and activity rules
 - Deliverables: system-sourced checks + neutral fallback copy
 - DoD: no fabricated numbers displayed
 - Deps: booking/CRM data source
 
+  - Refs:
+    - [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx)
+  - Snip:
+    ```tsx
+    <p className="text-lg text-white/90 mb-8 leading-relaxed">
+    ```
+
 - [ ] Lead capture banner
 - Deliverables: inline/bottom banner variant
 - DoD: banner used on mobile; non-intrusive
 - Deps: contact endpoint
 
+  - Refs:
+    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+  - Snip:
+    ```tsx
+    <div className="fixed bottom-4 left-4 right-4">
+    ```
+
 - [ ] Exit intent experiment
 - Deliverables: desktop-only experiment flag
 - DoD: disabled by default; no mobile interstitials
 - Deps: analytics events
+  - Refs:
+    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+  - Snip:
+    ```ts
+    if (isDevelopment() || isTest()) {
+      logInfo('Analytics event', { action, category, label, value });
+    }
+    ```
 
 ---
 
@@ -554,25 +1192,68 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: non-admins cannot access admin pages
 - Deps: admin role model
 
+  - Refs:
+    - [apps/web/app](apps/web/app)
+    - [apps/web/middleware.ts](apps/web/middleware.ts)
+  - Snip:
+    ```ts
+    export function middleware(request: NextRequest) {
+      const response = NextResponse.next();
+      return response;
+    }
+    ```
+
 - [ ] Upload tooling
 - Deliverables: admin upload UI, validation, optimization, thumbnails
 - DoD: upload produces optimized assets + thumbnails
 - Deps: storage buckets ready
+
+  - Refs:
+    - [apps/web/components](apps/web/components)
+  - Snip:
+    ```tsx
+    <input type="file" accept="image/*" />
+    ```
 
 - [ ] Moderation workflow
 - Deliverables: pending/approved/rejected status UI and filters
 - DoD: only approved content renders publicly
 - Deps: review/testimonial schemas
 
+  - Refs:
+    - [apps/web/features/supabase/lib/supabase-leads.ts](apps/web/features/supabase/lib/supabase-leads.ts)
+  - Snip:
+    ```ts
+    export async function updateSupabaseLead(leadId: string, updates: Record<string, unknown>) {
+      // update status fields
+    }
+    ```
+
 - [ ] Audit log
 - Deliverables: lightweight audit table and admin activity log view
 - DoD: admin actions recorded and viewable
 - Deps: admin routes
 
+  - Refs:
+    - [apps/web/lib/logger.ts](apps/web/lib/logger.ts)
+  - Snip:
+    ```ts
+    export function logInfo(message: string, context?: LogContext) {
+      log('info', message, context);
+    }
+    ```
+
 - [ ] Media takedown tooling
 - Deliverables: revoke + purge flow for consented media
 - DoD: revoked assets removed from UI and CDN
 - Deps: storage buckets + revocation fields
+  - Refs:
+    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+    - [infrastructure/](infrastructure/)
+  - Snip:
+    ```tsx
+    const portfolioItems = [{ id: 1, category: 'Color', title: 'Platinum Blonde Transformation' }];
+    ```
 
 ---
 
@@ -585,30 +1266,76 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: events visible in GA4 debug view
 - Deps: integration platform layer
 
+  - Refs:
+    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+  - Snip:
+    ```tsx
+    <Script src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`} />
+    ```
+
 - [ ] GTM optional
 - Deliverables: GTM loader with consent gating
 - DoD: GTM loads only when enabled
 - Deps: script loader
+
+  - Refs:
+    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+  - Snip:
+    ```tsx
+    <Script id="ga4-init" strategy="afterInteractive" nonce={nonce}>
+    ```
 
 - [ ] Google Ads conversion (client)
 - Deliverables: conversion tag mapping to events
 - DoD: conversion fires on lead submit or booking click
 - Deps: event taxonomy
 
+  - Refs:
+    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+  - Snip:
+    ```ts
+    trackEvent({ action: 'cta_click', category: 'engagement', label: ctaText });
+    ```
+
 - [ ] Meta Pixel (client)
 - Deliverables: pixel tag with consent gating
 - DoD: pixel fires only on consent
 - Deps: script loader
+
+  - Refs:
+    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+  - Snip:
+    ```tsx
+    const canLoadAnalytics = shouldLoadAnalytics(consent, analyticsId);
+    ```
 
 - [ ] Turnstile on forms
 - Deliverables: Turnstile widget + server verification
 - DoD: form rejects invalid tokens
 - Deps: form endpoints
 
+  - Refs:
+    - [apps/web/features/contact/components/ContactForm.tsx](apps/web/features/contact/components/ContactForm.tsx)
+    - [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts)
+  - Snip:
+    ```tsx
+    <form onSubmit={handleSubmit(onSubmit)}>
+    ```
+
 - [ ] Booking providers (deep links + embeds)
 - Deliverables: provider adapter + link/embed templates
 - DoD: booking CTA opens correct provider link
 - Deps: integration registry
+  - Refs:
+    - [apps/web/app/book/page.tsx](apps/web/app/book/page.tsx)
+    - [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx)
+  - Snip:
+    ```tsx
+    <Link href="/book">
+      <Button variant="primary">Book Now</Button>
+    </Link>
+    ```
 
 ### Tier 2
 
@@ -617,15 +1344,37 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: test events show in Meta test console
 - Deps: event bus
 
+  - Refs:
+    - [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts)
+  - Snip:
+    ```ts
+    return withServerSpan({ name: 'contact_form.submit', op: 'action' }, async () => {
+    ```
+
 - [ ] Stripe payment links + webhooks
 - Deliverables: payment link config + webhook handler
 - DoD: webhook verified and logged
 - Deps: server env secrets
 
+  - Refs:
+    - [apps/web/app/api](apps/web/app/api)
+    - [apps/web/lib/logger.ts](apps/web/lib/logger.ts)
+  - Snip:
+    ```ts
+    logInfo('Webhook received', { provider: 'stripe' });
+    ```
+
 - [ ] Email routing adapters
 - Deliverables: server adapters for Mailchimp/Brevo/etc.
 - DoD: lead submit routes to selected provider
 - Deps: lead schema
+  - Refs:
+    - [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts)
+    - [apps/web/lib/actions/helpers.ts](apps/web/lib/actions/helpers.ts)
+  - Snip:
+    ```ts
+    const sanitized = buildSanitizedContactData(validatedData, clientIp);
+    ```
 
 ### Tier 3
 
@@ -634,15 +1383,36 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: reviews update without blocking page render
 - Deps: background job runner
 
+  - Refs:
+    - [infrastructure/](infrastructure/)
+  - Snip:
+    ```ts
+    // TODO: schedule review sync jobs
+    ```
+
 - [ ] CMS adapters
 - Deliverables: optional adapters for Sanity/Contentful/Strapi/Payload
 - DoD: content reads from selected CMS when enabled
 - Deps: integration registry
 
+  - Refs:
+    - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts)
+  - Snip:
+    ```ts
+    const postsDirectory = path.join(process.cwd(), 'content/blog');
+    ```
+
 - [ ] Advanced chat widgets / session replay
 - Deliverables: chat and replay tags gated by marketing consent
 - DoD: no scripts load without consent
 - Deps: script loader
+  - Refs:
+    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+    - [apps/web/lib/csp.ts](apps/web/lib/csp.ts)
+  - Snip:
+    ```ts
+    const scriptSources = ["'self'", `'nonce-${nonce}'`];
+    ```
 
 ---
 
