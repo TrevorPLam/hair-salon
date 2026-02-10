@@ -28,14 +28,14 @@
  * - last_audited: 2026-02-09
  */
 
-import {
+const {
   escapeHtml,
   sanitizeEmailSubject,
   textToHtmlParagraphs,
   sanitizeEmail,
   sanitizeName,
   sanitizeUrl,
-} from '../sanitize';
+} = require('../sanitize');
 
 describe('lib/sanitize', () => {
   // ─────────────────────────────────────────────────────────────────

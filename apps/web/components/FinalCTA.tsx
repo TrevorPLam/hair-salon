@@ -55,18 +55,18 @@ function FinalCTA() {
             Book an appointment today and experience the difference.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/contact">
+            <Link href="/book">
               <Button variant="primary" size="large">
                 Book Appointment
               </Button>
             </Link>
-            <Link href="/services">
+            <Link href="/contact">
               <Button
                 variant="secondary"
                 size="large"
                 className="border-white text-charcoal bg-white hover:bg-off-white"
               >
-                View Services
+                Contact Us
               </Button>
             </Link>
           </div>

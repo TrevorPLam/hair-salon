@@ -136,6 +136,42 @@ const createEnvSchema = (nodeEnv: string) =>
      */
     HUBSPOT_PRIVATE_APP_TOKEN:
       nodeEnv === 'production' ? z.string().trim().min(1) : z.string().trim().min(1).optional(),
+
+    /**
+     * Mindbody API key (optional, server-only).
+     * Used for external booking provider integration.
+     */
+    MINDBODY_API_KEY: z.string().trim().min(1).optional(),
+
+    /**
+     * Mindbody business ID (optional, server-only).
+     * Used for external booking provider integration.
+     */
+    MINDBODY_BUSINESS_ID: z.string().trim().min(1).optional(),
+
+    /**
+     * Vagaro API key (optional, server-only).
+     * Used for external booking provider integration.
+     */
+    VAGARO_API_KEY: z.string().trim().min(1).optional(),
+
+    /**
+     * Vagaro business ID (optional, server-only).
+     * Used for external booking provider integration.
+     */
+    VAGARO_BUSINESS_ID: z.string().trim().min(1).optional(),
+
+    /**
+     * Square API key (optional, server-only).
+     * Used for external booking provider integration.
+     */
+    SQUARE_API_KEY: z.string().trim().min(1).optional(),
+
+    /**
+     * Square business ID (optional, server-only).
+     * Used for external booking provider integration.
+     */
+    SQUARE_BUSINESS_ID: z.string().trim().min(1).optional(),
   });
 
 const envSchema = createEnvSchema(process.env.NODE_ENV || 'development');
@@ -172,6 +208,12 @@ const env = envSchema.safeParse({
   SUPABASE_URL: process.env.SUPABASE_URL,
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   HUBSPOT_PRIVATE_APP_TOKEN: process.env.HUBSPOT_PRIVATE_APP_TOKEN,
+  MINDBODY_API_KEY: process.env.MINDBODY_API_KEY,
+  MINDBODY_BUSINESS_ID: process.env.MINDBODY_BUSINESS_ID,
+  VAGARO_API_KEY: process.env.VAGARO_API_KEY,
+  VAGARO_BUSINESS_ID: process.env.VAGARO_BUSINESS_ID,
+  SQUARE_API_KEY: process.env.SQUARE_API_KEY,
+  SQUARE_BUSINESS_ID: process.env.SQUARE_BUSINESS_ID,
 });
 
 if (!env.success) {

@@ -41,8 +41,9 @@
  */
 
 import type { Metadata } from 'next';
-import { Container, Section, Card, Button, Input, Select, Textarea } from '@repo/ui';
-import { Calendar, Clock, Scissors } from 'lucide-react';
+import { Container, Section, Card } from '@repo/ui';
+import { Clock, Scissors } from 'lucide-react';
+import { BookingForm } from '@/features/booking';
 
 export const metadata: Metadata = {
   title: 'Book an Appointment | Hair Salon Template',
@@ -69,95 +70,7 @@ export default function BookPage() {
           <div className="grid lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {/* Booking Form */}
             <div className="lg:col-span-2">
-              <Card variant="default" className="p-8">
-                <h2 className="text-2xl font-bold text-charcoal mb-6 flex items-center gap-2">
-                  <Calendar className="w-6 h-6 text-teal" />
-                  Request an Appointment
-                </h2>
-
-                <form className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        First Name
-                      </label>
-                      <Input placeholder="Jane" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Last Name
-                      </label>
-                      <Input placeholder="Doe" />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Email Address
-                      </label>
-                      <Input type="email" placeholder="jane@example.com" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Phone Number
-                      </label>
-                      <Input type="tel" placeholder="(555) 123-4567" />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Service Type
-                    </label>
-                    <Select
-                      options={[
-                        { value: 'haircut-style', label: 'Haircut & Style' },
-                        { value: 'color-highlights', label: 'Color & Highlights' },
-                        { value: 'treatment', label: 'Treatment' },
-                        { value: 'special-occasion', label: 'Special Occasion' },
-                        { value: 'consultation', label: 'Consultation' },
-                      ]}
-                    />
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Preferred Date
-                      </label>
-                      <Input type="date" />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Preferred Time
-                      </label>
-                      <Select
-                        options={[
-                          { value: 'morning', label: 'Morning (9am - 12pm)' },
-                          { value: 'afternoon', label: 'Afternoon (12pm - 4pm)' },
-                          { value: 'evening', label: 'Evening (4pm - 8pm)' },
-                        ]}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Notes for Stylist (Optional)
-                    </label>
-                    <Textarea placeholder="Any specific requests or hair history..." rows={3} />
-                  </div>
-
-                  <Button variant="primary" size="large" className="w-full">
-                    Request Appointment
-                  </Button>
-
-                  <p className="text-xs text-slate-500 text-center mt-4">
-                    By booking, you agree to our cancellation policy (24-hour notice required).
-                  </p>
-                </form>
-              </Card>
+              <BookingForm />
             </div>
 
             {/* Sidebar Info */}

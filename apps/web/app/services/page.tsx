@@ -124,7 +124,7 @@ export default function ServicesPage() {
               Experience professional hair care in a relaxing environment. Our expert stylists are
               dedicated to making you look and feel your best.
             </p>
-            <Link href="/contact">
+            <Link href="/book">
               <Button variant="primary" size="large">
                 Book an Appointment
               </Button>
@@ -219,7 +219,7 @@ export default function ServicesPage() {
               Schedule your appointment today and let our experts take care of the rest.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact">
+              <Link href="/book">
                 <Button variant="primary" size="large">
                   Book Now
                 </Button>

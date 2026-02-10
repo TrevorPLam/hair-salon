@@ -30,12 +30,12 @@
  */
 
 // Set up required env vars BEFORE mocking/importing env module
-import './env-setup';
+require('./env-setup');
 
 // Mock 'server-only' to allow testing in Node environment
 jest.mock('server-only', () => ({}));
 
-import { validatedEnv, getNodeEnvironment, isProduction, isDevelopment, isTest } from '../env';
+const { validatedEnv, getNodeEnvironment, isProduction, isDevelopment, isTest } = require('../env');
 
 describe('lib/env - Environment Validation', () => {
   const originalEnv = { ...process.env };
