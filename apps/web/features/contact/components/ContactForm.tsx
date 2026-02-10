@@ -14,8 +14,8 @@
  * - External: lucide-react
  * - Internal: @repo/ui (Input, Select, Textarea, Button)
  * - Internal: @/lib/actions (submitContactForm)
- * - Internal: @/lib/contact-form-schema
- * - Internal: @/lib/analytics
+ * - Internal: @/features/contact/lib/contact-form-schema
+ * - Internal: @/features/analytics/lib/analytics
  * - Internal: @/lib/constants
  * - Internal: @/lib/sentry-client
  *
@@ -50,8 +50,11 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { submitContactForm } from '@/lib/actions';
-import { contactFormSchema, type ContactFormData } from '@/lib/contact-form-schema';
-import { trackFormSubmission } from '@/lib/analytics';
+import {
+  contactFormSchema,
+  type ContactFormData,
+} from '@/features/contact/lib/contact-form-schema';
+import { trackFormSubmission } from '@/features/analytics/lib/analytics';
 import { UI_TIMING } from '@/lib/constants';
 import { Input, Select, Textarea, Button } from '@repo/ui';
 import { Loader2 } from 'lucide-react';

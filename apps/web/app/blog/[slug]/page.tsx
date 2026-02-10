@@ -16,10 +16,10 @@
  * - External: next/link
  * - External: next/navigation (notFound)
  * - External: lucide-react
- * - Internal: @/lib/blog (getAllPosts, getPostBySlug)
- * - Internal: @/lib/blog-images (getBlogPostImageUrl)
+ * - Internal: @/features/blog/lib/blog (getAllPosts, getPostBySlug)
+ * - Internal: @/features/blog/lib/blog-images (getBlogPostImageUrl)
  * - Internal: @/lib/env.public (getPublicBaseUrl)
- * - Internal: @/components/BlogPostContent
+ * - Internal: @/features/blog/components/BlogPostContent
  *
  * @used_by
  * - Next.js app router
@@ -36,7 +36,7 @@
  * - Slug must resolve to a post; otherwise notFound()
  *
  * @issues
- * - [severity:med] @/lib/blog and @/lib/blog-images aliases appear unresolved; verify alias mapping.
+ * - [severity:low] None observed in-file.
  *
  * @verification
  * - Visit /blog/{slug} and confirm metadata and JSON-LD output.
@@ -51,11 +51,11 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Calendar, Clock } from 'lucide-react';
-import { getAllPosts, getPostBySlug } from '@/lib/blog';
-import { getBlogPostImageUrl } from '@/lib/blog-images';
+import { getAllPosts, getPostBySlug } from '@/features/blog/lib/blog';
+import { getBlogPostImageUrl } from '@/features/blog/lib/blog-images';
 import { getPublicBaseUrl } from '@/lib/env.public';
 
-const BlogPostContent = dynamic(() => import('@/components/BlogPostContent'), {
+const BlogPostContent = dynamic(() => import('@/features/blog/components/BlogPostContent'), {
   loading: () => <div className="sr-only">Loading article content…</div>,
   ssr: true,
 });

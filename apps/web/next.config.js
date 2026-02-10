@@ -1,69 +1,30 @@
 /**
- * ═══════════════════════════════════════════════════════════════════════════════
- * Next.js Configuration
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @file apps/web/next.config.js
+ * @role config
+ * @summary Next.js build configuration for the web app.
  *
- * Purpose:
- * - Configure Next.js framework behavior and build settings
- * - Enable monorepo package transpilation for @repo/* packages
- * - Enforce TypeScript and ESLint checks during build
+ * @entrypoints
+ * - nextConfig
  *
- * Responsibilities:
- * - Owns: Build-time configuration (transpilation, checks)
- * - Owns: Package resolution for monorepo workspaces
- * - Does NOT own: Runtime behavior (use middleware or env vars)
+ * @exports
+ * - module.exports
  *
- * Key Flows:
- * - Build: Next.js reads config → transpiles packages → runs checks → generates output
- * - Dev: Next.js watches files → hot reloads → serves pages
+ * @depends_on
+ * - External: next
  *
- * Inputs/Outputs:
- * - Input: Source files in app/, components/, features/
- * - Output: .next/ build directory with optimized bundles
- * - Side effects: None (readonly config)
+ * @used_by
+ * - Next.js build and dev server
  *
- * Dependencies:
- * - External: next (framework)
- * - Internal: @repo/ui, @repo/utils (monorepo packages)
+ * @runtime
+ * - environment: build
+ * - side_effects: none
  *
- * State & Invariants:
- * - Invariant: transpilePackages must include all @repo/* dependencies
- * - Invariant: Both TS and ESLint checks enabled in production builds
- * - Assumption: All packages follow Next.js-compatible export patterns
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * Error Handling:
- * - Missing transpilePackages: Build fails with "Cannot find module" error
- * - Type errors: Build fails if ignoreBuildErrors=false (intentional)
- * - Lint errors: Build fails if ignoreDuringBuilds=false (intentional)
- *
- * Performance Notes:
- * - transpilePackages adds ~500ms to build (one-time cost)
- * - Running checks during build prevents CI failures
- * - Production builds optimized with SWC compiler
- *
- * Security Notes:
- * - No security implications (build-time config)
- * - Type/lint checks help prevent bugs
- *
- * Testing Notes:
- * - Test: Run `npm run build`, verify no errors
- * - Test: Verify @repo/* imports resolve correctly
- * - Mock: Not applicable (declarative config)
- *
- * Change Risks:
- * - Disabling checks may allow bugs to reach production
- * - Missing transpilePackages breaks monorepo imports
- * - Invalid config syntax breaks all builds
- *
- * Owner Boundaries:
- * - Monorepo config: turbo.json, pnpm-workspace.yaml
- * - TypeScript config: tsconfig.json
- * - ESLint config: eslint.config.mjs
- *
- * AI Navigation Tags:
- * #nextjs #build #config #monorepo #transpile
- *
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 /** @type {import('next').NextConfig} */

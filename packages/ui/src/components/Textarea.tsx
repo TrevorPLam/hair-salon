@@ -1,18 +1,50 @@
-import React, { useId } from 'react'
-import { cn } from '@repo/utils'
-import { CheckCircle2 } from 'lucide-react'
+/**
+ * @file packages/ui/src/components/Textarea.tsx
+ * @role runtime
+ * @summary Labeled textarea with validation styling.
+ *
+ * @entrypoints
+ * - Textarea
+ *
+ * @exports
+ * - default Textarea
+ * - TextareaProps
+ *
+ * @depends_on
+ * - External: react
+ * - External: lucide-react
+ * - Internal: @repo/utils (cn)
+ *
+ * @used_by
+ * - Contact form and booking form
+ *
+ * @runtime
+ * - environment: shared
+ * - side_effects: none
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
+import React, { useId } from 'react';
+import { cn } from '@repo/utils';
+import { CheckCircle2 } from 'lucide-react';
 
 // Textarea sibling to Input with identical validation/success affordances for multi-line fields
 export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string
-  error?: string
-  isValid?: boolean
+  label?: string;
+  error?: string;
+  isValid?: boolean;
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, label, error, isValid, id, ...props }, ref) => {
-    const generatedId = useId()
-    const textareaId = id || props.name || generatedId
+    const generatedId = useId();
+    const textareaId = id || props.name || generatedId;
 
     return (
       <div className="mb-4">
@@ -46,10 +78,10 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         </div>
         {error && <p className="mt-1 text-sm text-error">{error}</p>}
       </div>
-    )
+    );
   }
-)
+);
 
-Textarea.displayName = 'Textarea'
+Textarea.displayName = 'Textarea';
 
-export default Textarea
+export default Textarea;

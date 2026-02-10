@@ -1,32 +1,49 @@
 /**
- * Test suite for lib/env.ts - Environment Validation
+ * @file apps/web/lib/__tests__/env.test.ts
+ * @role test
+ * @summary Tests for server env validation helpers.
  *
- * Tests verify that:
- * - Required env vars are validated
- * - Defaults are applied for optional vars
- * - Production safety checks pass
- * - Invalid configs are rejected with clear errors
+ * @entrypoints
+ * - Jest test suite
  *
- * Note: These tests use Node process.env which is global.
- * Each test must clean up properly to avoid side effects.
+ * @exports
+ * - None
+ *
+ * @depends_on
+ * - Jest
+ * - Internal: ../env
+ * - Internal: ./env-setup
+ *
+ * @used_by
+ * - Test runner
+ *
+ * @runtime
+ * - environment: test
+ * - side_effects: mutates process.env
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 // Set up required env vars BEFORE mocking/importing env module
-import './env-setup'
+import './env-setup';
 
 // Mock 'server-only' to allow testing in Node environment
-jest.mock('server-only', () => ({}))
+jest.mock('server-only', () => ({}));
 
-import { validatedEnv, getNodeEnvironment, isProduction, isDevelopment, isTest } from '../env'
-
+import { validatedEnv, getNodeEnvironment, isProduction, isDevelopment, isTest } from '../env';
 
 describe('lib/env - Environment Validation', () => {
-  const originalEnv = { ...process.env }
+  const originalEnv = { ...process.env };
 
   // Clean up after each test
   afterEach(() => {
-    process.env.NODE_ENV = originalEnv.NODE_ENV
-  })
+    process.env.NODE_ENV = originalEnv.NODE_ENV;
+  });
 
   // ─────────────────────────────────────────────────────────────────
   // validatedEnv - Exported Environment Variables
@@ -34,43 +51,42 @@ describe('lib/env - Environment Validation', () => {
 
   describe('validatedEnv - exported variables', () => {
     test('NEXT_PUBLIC_SITE_URL is set', () => {
-      expect(validatedEnv.NEXT_PUBLIC_SITE_URL).toBeDefined()
-      expect(typeof validatedEnv.NEXT_PUBLIC_SITE_URL).toBe('string')
-    })
+      expect(validatedEnv.NEXT_PUBLIC_SITE_URL).toBeDefined();
+      expect(typeof validatedEnv.NEXT_PUBLIC_SITE_URL).toBe('string');
+    });
 
     test('NEXT_PUBLIC_SITE_NAME is set', () => {
-      expect(validatedEnv.NEXT_PUBLIC_SITE_NAME).toBeDefined()
-      expect(typeof validatedEnv.NEXT_PUBLIC_SITE_NAME).toBe('string')
-    })
+      expect(validatedEnv.NEXT_PUBLIC_SITE_NAME).toBeDefined();
+      expect(typeof validatedEnv.NEXT_PUBLIC_SITE_NAME).toBe('string');
+    });
 
     test('SUPABASE_URL is set', () => {
-      expect(validatedEnv.SUPABASE_URL).toBeDefined()
-      expect(typeof validatedEnv.SUPABASE_URL).toBe('string')
-      expect(validatedEnv.SUPABASE_URL).toMatch(/^https?:\/\//)
-    })
+      expect(validatedEnv.SUPABASE_URL).toBeDefined();
+      expect(typeof validatedEnv.SUPABASE_URL).toBe('string');
+      expect(validatedEnv.SUPABASE_URL).toMatch(/^https?:\/\//);
+    });
 
     test('SUPABASE_SERVICE_ROLE_KEY is set', () => {
-      expect(validatedEnv.SUPABASE_SERVICE_ROLE_KEY).toBeDefined()
-      expect(typeof validatedEnv.SUPABASE_SERVICE_ROLE_KEY).toBe('string')
-      expect(validatedEnv.SUPABASE_SERVICE_ROLE_KEY.length).toBeGreaterThan(0)
-    })
+      expect(validatedEnv.SUPABASE_SERVICE_ROLE_KEY).toBeDefined();
+      expect(typeof validatedEnv.SUPABASE_SERVICE_ROLE_KEY).toBe('string');
+      expect(validatedEnv.SUPABASE_SERVICE_ROLE_KEY.length).toBeGreaterThan(0);
+    });
 
     test('HUBSPOT_PRIVATE_APP_TOKEN is set', () => {
-      expect(validatedEnv.HUBSPOT_PRIVATE_APP_TOKEN).toBeDefined()
-      expect(typeof validatedEnv.HUBSPOT_PRIVATE_APP_TOKEN).toBe('string')
-      expect(validatedEnv.HUBSPOT_PRIVATE_APP_TOKEN.length).toBeGreaterThan(0)
-    })
+      expect(validatedEnv.HUBSPOT_PRIVATE_APP_TOKEN).toBeDefined();
+      expect(typeof validatedEnv.HUBSPOT_PRIVATE_APP_TOKEN).toBe('string');
+      expect(validatedEnv.HUBSPOT_PRIVATE_APP_TOKEN.length).toBeGreaterThan(0);
+    });
 
     test('NODE_ENV is set', () => {
-      expect(validatedEnv.NODE_ENV).toBeDefined()
-      expect(['development', 'production', 'test']).toContain(validatedEnv.NODE_ENV)
-    })
+      expect(validatedEnv.NODE_ENV).toBeDefined();
+      expect(['development', 'production', 'test']).toContain(validatedEnv.NODE_ENV);
+    });
 
     test('NEXT_PUBLIC_ANALYTICS_ID is optional (may be undefined)', () => {
-      // No assertion needed - just verify it doesn't crash
-      expect(validatedEnv.NEXT_PUBLIC_ANALYTICS_ID).toBeDefined()
-    })
-  })
+      expect(validatedEnv.NEXT_PUBLIC_ANALYTICS_ID).toBeUndefined();
+    });
+  });
 
   // ─────────────────────────────────────────────────────────────────
   // getNodeEnvironment - Environment Detection
@@ -78,18 +94,18 @@ describe('lib/env - Environment Validation', () => {
 
   describe('getNodeEnvironment()', () => {
     test('returns current NODE_ENV', () => {
-      process.env.NODE_ENV = 'test'
-      const env = getNodeEnvironment()
-      expect(env).toBe('test')
-    })
+      process.env.NODE_ENV = 'test';
+      const env = getNodeEnvironment();
+      expect(env).toBe('test');
+    });
 
     test('defaults to development when not set', () => {
       // Note: In actual execution, NODE_ENV should be set
       // This test verifies the function works
-      const env = getNodeEnvironment()
-      expect(['development', 'production', 'test']).toContain(env)
-    })
-  })
+      const env = getNodeEnvironment();
+      expect(['development', 'production', 'test']).toContain(env);
+    });
+  });
 
   // ─────────────────────────────────────────────────────────────────
   // isProduction - Production Mode Check
@@ -97,20 +113,20 @@ describe('lib/env - Environment Validation', () => {
 
   describe('isProduction()', () => {
     test('returns true when NODE_ENV is production', () => {
-      process.env.NODE_ENV = 'production'
-      expect(isProduction()).toBe(true)
-    })
+      process.env.NODE_ENV = 'production';
+      expect(isProduction()).toBe(true);
+    });
 
     test('returns false when NODE_ENV is development', () => {
-      process.env.NODE_ENV = 'development'
-      expect(isProduction()).toBe(false)
-    })
+      process.env.NODE_ENV = 'development';
+      expect(isProduction()).toBe(false);
+    });
 
     test('returns false when NODE_ENV is test', () => {
-      process.env.NODE_ENV = 'test'
-      expect(isProduction()).toBe(false)
-    })
-  })
+      process.env.NODE_ENV = 'test';
+      expect(isProduction()).toBe(false);
+    });
+  });
 
   // ─────────────────────────────────────────────────────────────────
   // isDevelopment - Development Mode Check
@@ -118,20 +134,20 @@ describe('lib/env - Environment Validation', () => {
 
   describe('isDevelopment()', () => {
     test('returns true when NODE_ENV is development', () => {
-      process.env.NODE_ENV = 'development'
-      expect(isDevelopment()).toBe(true)
-    })
+      process.env.NODE_ENV = 'development';
+      expect(isDevelopment()).toBe(true);
+    });
 
     test('returns false when NODE_ENV is production', () => {
-      process.env.NODE_ENV = 'production'
-      expect(isDevelopment()).toBe(false)
-    })
+      process.env.NODE_ENV = 'production';
+      expect(isDevelopment()).toBe(false);
+    });
 
     test('returns false when NODE_ENV is test', () => {
-      process.env.NODE_ENV = 'test'
-      expect(isDevelopment()).toBe(false)
-    })
-  })
+      process.env.NODE_ENV = 'test';
+      expect(isDevelopment()).toBe(false);
+    });
+  });
 
   // ─────────────────────────────────────────────────────────────────
   // isTest - Test Mode Check
@@ -139,26 +155,26 @@ describe('lib/env - Environment Validation', () => {
 
   describe('isTest()', () => {
     test('returns true when NODE_ENV is test', () => {
-      process.env.NODE_ENV = 'test'
-      expect(isTest()).toBe(true)
-    })
+      process.env.NODE_ENV = 'test';
+      expect(isTest()).toBe(true);
+    });
 
     test('returns false when NODE_ENV is development', () => {
-      process.env.NODE_ENV = 'development'
-      expect(isTest()).toBe(false)
-    })
+      process.env.NODE_ENV = 'development';
+      expect(isTest()).toBe(false);
+    });
 
     test('returns false when NODE_ENV is production', () => {
-      process.env.NODE_ENV = 'production'
-      expect(isTest()).toBe(false)
-    })
+      process.env.NODE_ENV = 'production';
+      expect(isTest()).toBe(false);
+    });
 
     // Note: This test already runs with NODE_ENV=test during test execution
     test('test environment is properly detected during test run', () => {
-      expect(isTest()).toBe(true)
-      expect(isProduction()).toBe(false)
-    })
-  })
+      expect(isTest()).toBe(true);
+      expect(isProduction()).toBe(false);
+    });
+  });
 
   // ─────────────────────────────────────────────────────────────────
   // Validation Schema Tests
@@ -167,23 +183,23 @@ describe('lib/env - Environment Validation', () => {
   describe('Environment Schema Validation', () => {
     test('NEXT_PUBLIC_SITE_URL must be valid URL', () => {
       // Current value should be valid
-      expect(validatedEnv.NEXT_PUBLIC_SITE_URL).toMatch(/^https?:\/\/.+/)
-    })
+      expect(validatedEnv.NEXT_PUBLIC_SITE_URL).toMatch(/^https?:\/\/.+/);
+    });
 
     test('SUPABASE_URL must be valid URL', () => {
-      expect(validatedEnv.SUPABASE_URL).toMatch(/^https?:\/\/.+/)
-    })
+      expect(validatedEnv.SUPABASE_URL).toMatch(/^https?:\/\/.+/);
+    });
 
     test('Required string vars are not empty', () => {
-      expect(validatedEnv.SUPABASE_SERVICE_ROLE_KEY).toBeTruthy()
-      expect(validatedEnv.HUBSPOT_PRIVATE_APP_TOKEN).toBeTruthy()
-    })
+      expect(validatedEnv.SUPABASE_SERVICE_ROLE_KEY).toBeTruthy();
+      expect(validatedEnv.HUBSPOT_PRIVATE_APP_TOKEN).toBeTruthy();
+    });
 
     test('NODE_ENV is one of allowed values', () => {
-      const validModes = ['development', 'production', 'test']
-      expect(validModes).toContain(validatedEnv.NODE_ENV)
-    })
-  })
+      const validModes = ['development', 'production', 'test'];
+      expect(validModes).toContain(validatedEnv.NODE_ENV);
+    });
+  });
 
   // ─────────────────────────────────────────────────────────────────
   // Production Safety Checks
@@ -192,23 +208,23 @@ describe('lib/env - Environment Validation', () => {
   describe('Production Safety (Issue #005 - Rate Limiting)', () => {
     test('allows production without Redis in test mode', () => {
       // This test verifies that test environment doesn't enforce Redis
-      process.env.NODE_ENV = 'test'
-      expect(isTest()).toBe(true)
+      process.env.NODE_ENV = 'test';
+      expect(isTest()).toBe(true);
       // No error should be thrown
-    })
+    });
 
     test('development mode allows optional Redis', () => {
-      process.env.NODE_ENV = 'development'
-      expect(isDevelopment()).toBe(true)
+      process.env.NODE_ENV = 'development';
+      expect(isDevelopment()).toBe(true);
       // No error should be thrown
-    })
+    });
 
     test('production mode with proper env vars works', () => {
       // Verify that production with all required vars is valid
-      process.env.NODE_ENV = 'production'
+      process.env.NODE_ENV = 'production';
       // If we get here without error, production safety checks passed
-      expect(isProduction()).toBe(true)
-    })
+      expect(isProduction()).toBe(true);
+    });
 
     // Note: Cannot easily test the actual production error without mocking module load
     // because env validation happens at module load time. This is tested by:
@@ -216,11 +232,11 @@ describe('lib/env - Environment Validation', () => {
     // - CI will fail if production doesn't have Redis vars
     test('production safety check documentation exists', () => {
       // This is a smoke test for the safety mechanism
-      expect(validatedEnv.NODE_ENV).toBeDefined()
-      expect(validatedEnv.UPSTASH_REDIS_REST_URL).toBeDefined()
-      expect(validatedEnv.UPSTASH_REDIS_REST_TOKEN).toBeDefined()
-    })
-  })
+      expect(validatedEnv.NODE_ENV).toBeDefined();
+      expect(validatedEnv.UPSTASH_REDIS_REST_URL).toBeDefined();
+      expect(validatedEnv.UPSTASH_REDIS_REST_TOKEN).toBeDefined();
+    });
+  });
 
   // ─────────────────────────────────────────────────────────────────
   // Edge Cases and Robustness
@@ -229,19 +245,19 @@ describe('lib/env - Environment Validation', () => {
   describe('Edge Cases', () => {
     test('handles NODE_ENV with various cases (normalized)', () => {
       // ZodENUM is case-sensitive, so only lowercase works
-      process.env.NODE_ENV = 'test'
-      expect(getNodeEnvironment()).toBe('test')
-    })
+      process.env.NODE_ENV = 'test';
+      expect(getNodeEnvironment()).toBe('test');
+    });
 
     test('NEXT_PUBLIC_SITE_URL has default fallback', () => {
       // Even if not set, it should have a default
-      expect(validatedEnv.NEXT_PUBLIC_SITE_URL).toBeTruthy()
-    })
+      expect(validatedEnv.NEXT_PUBLIC_SITE_URL).toBeTruthy();
+    });
 
     test('Upstash vars are optional in non-production', () => {
-      process.env.NODE_ENV = 'development'
+      process.env.NODE_ENV = 'development';
       // Should not throw even if Redis not configured
-      expect(isDevelopment()).toBe(true)
-    })
-  })
-})
+      expect(isDevelopment()).toBe(true);
+    });
+  });
+});

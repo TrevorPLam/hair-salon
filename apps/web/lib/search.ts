@@ -11,7 +11,7 @@
  * - getSearchIndex
  *
  * @depends_on
- * - Internal: @/lib/blog (getAllPosts)
+ * - Internal: @/features/blog/lib/blog (getAllPosts)
  *
  * @used_by
  * - apps/web/app/search/page.tsx
@@ -29,7 +29,7 @@
  * - last_audited: 2026-02-09
  */
 
-import { getAllPosts } from '@/lib/blog';
+import { getAllPosts } from '@/features/blog/lib/blog';
 
 export type SearchItem = {
   id: string;

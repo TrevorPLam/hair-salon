@@ -15,7 +15,7 @@
  * - External: next/link
  * - External: lucide-react
  * - Internal: @repo/ui (Container)
- * - Internal: @/lib/blog (getAllPosts, getAllCategories)
+ * - Internal: @/features/blog/lib/blog (getAllPosts, getAllCategories)
  *
  * @used_by
  * - Next.js app router
@@ -32,7 +32,7 @@
  * - Blog data must include slug, title, date, description
  *
  * @issues
- * - [severity:med] @/lib/blog alias appears unresolved; verify alias mapping.
+ * - [severity:low] None observed in-file.
  *
  * @verification
  * - Visit /blog and confirm categories and cards render correctly.
@@ -44,7 +44,7 @@
 
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { getAllPosts, getAllCategories } from '@/lib/blog';
+import { getAllPosts, getAllCategories } from '@/features/blog/lib/blog';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
 import { Container } from '@repo/ui';
 

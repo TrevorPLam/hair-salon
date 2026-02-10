@@ -1,67 +1,30 @@
 /**
- * ═══════════════════════════════════════════════════════════════════════════════
- * ESLint Configuration for UI Package
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @file packages/ui/eslint.config.mjs
+ * @role config
+ * @summary ESLint config for UI package using shared library rules.
  *
- * Purpose:
- * - Extend shared base ESLint configuration from @repo/eslint-config
- * - Apply library-specific linting rules (not Next.js-specific)
- * - Ensure consistent code quality for reusable UI components
+ * @entrypoints
+ * - Default export (flat config array)
  *
- * Responsibilities:
- * - Owns: Config inheritance (delegates to shared config)
- * - Does NOT own: Actual linting rules (defined in packages/config/eslint-config/library.js)
+ * @exports
+ * - ESLint config
  *
- * Key Flows:
- * - ESLint reads this file → imports shared config → applies rules to package
- * - CI/dev: Runs `eslint .` → validates component code → reports issues
+ * @depends_on
+ * - Internal: @repo/eslint-config
  *
- * Inputs/Outputs:
- * - Input: React component files (.tsx), utility files (.ts)
- * - Output: Lint warnings/errors
- * - Side effects: None (readonly config)
+ * @used_by
+ * - ESLint runner
  *
- * Dependencies:
- * - External: eslint (linter)
- * - Internal: @repo/eslint-config (shared library rules)
+ * @runtime
+ * - environment: build
+ * - side_effects: none
  *
- * State & Invariants:
- * - Invariant: Must import from @repo/eslint-config (not /next variant)
- * - Invariant: File must use .mjs extension (ESM module)
- * - Assumption: UI package is framework-agnostic (no Next.js rules)
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * Error Handling:
- * - Missing shared config: ESLint fails with "Cannot find module" error
- * - Invalid syntax: ESLint fails with parse error
- * - Lint violations: Reports errors based on shared rules
- *
- * Performance Notes:
- * - Fast linting (small package scope)
- * - ESLint caching speeds up repeated runs
- *
- * Security Notes:
- * - No security implications (build-time config)
- * - Linting rules help catch React-specific issues (hooks, props)
- *
- * Testing Notes:
- * - Test: Run `npm run lint`, verify no errors
- * - Test: Introduce lint violation, verify it's caught
- * - Mock: Not applicable (declarative config)
- *
- * Change Risks:
- * - Changing to /next import adds unnecessary Next.js rules
- * - Removing config leaves package unlinted (dangerous)
- * - Wrong extension (.js vs .mjs) breaks ESM import
- *
- * Owner Boundaries:
- * - Shared rules: packages/config/eslint-config/library.js
- * - Component source: packages/ui/src/components/
- * - CI linting: .github/workflows/ci.yml
- *
- * AI Navigation Tags:
- * #eslint #lint #config #ui #library #react
- *
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 // Extend from shared base ESLint configuration

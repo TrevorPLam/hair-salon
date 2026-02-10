@@ -13,7 +13,7 @@
  * - External: react
  * - External: next/script
  * - Internal: @repo/ui (Button)
- * - Internal: @/lib/analytics-consent
+ * - Internal: @/features/analytics/lib/analytics-consent
  *
  * @used_by
  * - apps/web/app/layout.tsx
@@ -49,7 +49,7 @@ import {
   getAnalyticsConsent,
   setAnalyticsConsent,
   type AnalyticsConsentState,
-} from '@/lib/analytics-consent';
+} from '@/features/analytics/lib/analytics-consent';
 
 interface AnalyticsConsentBannerProps {
   analyticsId?: string;

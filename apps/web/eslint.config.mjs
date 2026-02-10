@@ -1,67 +1,30 @@
 /**
- * ═══════════════════════════════════════════════════════════════════════════════
- * ESLint Configuration for Next.js App
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @file apps/web/eslint.config.mjs
+ * @role config
+ * @summary ESLint config for Next.js app using shared rules.
  *
- * Purpose:
- * - Extend shared Next.js-specific ESLint configuration from @repo/eslint-config
- * - Inherit linting rules without duplication
- * - Enable consistent code quality across the app
+ * @entrypoints
+ * - Default export (flat config array)
  *
- * Responsibilities:
- * - Owns: Config inheritance (delegates to shared config)
- * - Does NOT own: Actual linting rules (defined in packages/config/eslint-config/next.js)
+ * @exports
+ * - ESLint config
  *
- * Key Flows:
- * - ESLint reads this file → imports shared config → applies rules to workspace
- * - CI/dev: Runs `eslint .` → validates code → reports issues
+ * @depends_on
+ * - Internal: @repo/eslint-config/next
  *
- * Inputs/Outputs:
- * - Input: Source files (.ts, .tsx, .js, .jsx)
- * - Output: Lint warnings/errors
- * - Side effects: None (readonly config)
+ * @used_by
+ * - ESLint runner
  *
- * Dependencies:
- * - External: eslint (linter)
- * - Internal: @repo/eslint-config/next (shared Next.js rules)
+ * @runtime
+ * - environment: build
+ * - side_effects: none
  *
- * State & Invariants:
- * - Invariant: Must import from @repo/eslint-config/next (not /library)
- * - Invariant: File must use .mjs extension (ESM module)
- * - Assumption: Shared config is properly published to monorepo
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * Error Handling:
- * - Missing shared config: ESLint fails with "Cannot find module" error
- * - Invalid syntax: ESLint fails with parse error
- * - Lint violations: Reports errors based on shared rules
- *
- * Performance Notes:
- * - Minimal overhead (delegates to shared config)
- * - Caching enabled by default in ESLint
- *
- * Security Notes:
- * - No security implications (build-time config)
- * - Linting rules help catch security issues (XSS, injection)
- *
- * Testing Notes:
- * - Test: Run `npm run lint`, verify no errors
- * - Test: Introduce lint violation, verify it's caught
- * - Mock: Not applicable (declarative config)
- *
- * Change Risks:
- * - Changing import path breaks linting
- * - Removing config leaves app unlinted (dangerous)
- * - Wrong extension (.js vs .mjs) breaks ESM import
- *
- * Owner Boundaries:
- * - Shared rules: packages/config/eslint-config/next.js
- * - Base rules: packages/config/eslint-config/library.js
- * - CI linting: .github/workflows/ci.yml
- *
- * AI Navigation Tags:
- * #eslint #lint #config #nextjs #code-quality
- *
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 // Extend from shared Next.js ESLint configuration

@@ -11,7 +11,7 @@
  *
  * @depends_on
  * - External: next/headers, zod
- * - Internal: ../contact-form-schema
+ * - Internal: @/features/contact/lib/contact-form-schema
  * - Internal: ../logger
  * - Internal: ../request-context.server
  * - Internal: ../sentry-server
@@ -39,7 +39,10 @@
 
 import { headers } from 'next/headers';
 import { z } from 'zod';
-import { contactFormSchema, type ContactFormData } from '@/lib/contact-form-schema';
+import {
+  contactFormSchema,
+  type ContactFormData,
+} from '@/features/contact/lib/contact-form-schema';
 import { logError } from '../logger';
 import { runWithRequestId } from '../request-context.server';
 import { withServerSpan } from '../sentry-server';

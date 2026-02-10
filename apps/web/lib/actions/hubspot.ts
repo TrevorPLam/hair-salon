@@ -12,7 +12,7 @@
  * - HubSpot sync helpers
  *
  * @depends_on
- * - Internal: ../hubspot-client
+ * - Internal: @/features/hubspot/lib/hubspot-client
  * - Internal: ../sentry-server
  * - Internal: ../constants
  * - Internal: ./helpers
@@ -38,7 +38,7 @@ import {
   searchHubSpotContact,
   upsertHubSpotContact,
   type HubSpotContactResponse,
-} from '../hubspot-client';
+} from '@/features/hubspot/lib/hubspot-client';
 import { HUBSPOT } from '../constants';
 import type { SanitizedContactData } from './types';
 import { hashSpanValue, splitName, normalizeError } from './helpers';

@@ -13,8 +13,8 @@
  * - upsertHubSpotContact
  *
  * @depends_on
- * - Internal: ./logger (logError)
- * - Internal: ./env (validatedEnv)
+ * - Internal: @/lib/logger (logError)
+ * - Internal: @/lib/env (validatedEnv)
  *
  * @used_by
  * - apps/web/lib/actions.ts
@@ -38,8 +38,8 @@
  * - last_audited: 2026-02-09
  */
 
-import { logError } from './logger';
-import { validatedEnv } from './env';
+import { logError } from '@/lib/logger';
+import { validatedEnv } from '@/lib/env';
 
 const HUBSPOT_API_BASE_URL = 'https://api.hubapi.com';
 

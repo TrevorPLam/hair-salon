@@ -34,7 +34,7 @@
  */
 
 import { createHash } from 'crypto';
-import type { ContactFormData } from '@/lib/contact-form-schema';
+import type { ContactFormData } from '@/features/contact/lib/contact-form-schema';
 import { escapeHtml, sanitizeEmail, sanitizeName } from '../sanitize';
 import { logError, logWarn } from '../logger';
 import { validateOrigin } from '../request-validation';

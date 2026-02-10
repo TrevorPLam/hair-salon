@@ -1,17 +1,48 @@
-import React, { useId } from 'react'
-import { cn } from '@repo/utils'
+/**
+ * @file packages/ui/src/components/Select.tsx
+ * @role runtime
+ * @summary Labeled select input with validation styling.
+ *
+ * @entrypoints
+ * - Select
+ *
+ * @exports
+ * - default Select
+ * - SelectProps
+ *
+ * @depends_on
+ * - External: react
+ * - Internal: @repo/utils (cn)
+ *
+ * @used_by
+ * - Contact and booking forms
+ *
+ * @runtime
+ * - environment: shared
+ * - side_effects: none
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
+import React, { useId } from 'react';
+import { cn } from '@repo/utils';
 
 // Labeled select with error styling; keeps forms consistent with Input/Textarea
 export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string
-  error?: string
-  options: { value: string; label: string }[]
+  label?: string;
+  error?: string;
+  options: { value: string; label: string }[];
 }
 
 const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, label, error, options, id, ...props }, ref) => {
-    const generatedId = useId()
-    const selectId = id || props.name || generatedId
+    const generatedId = useId();
+    const selectId = id || props.name || generatedId;
 
     return (
       <div className="mb-4">
@@ -32,7 +63,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           )}
           {...props}
         >
-          {options.map(option => (
+          {options.map((option) => (
             <option key={option.value} value={option.value}>
               {option.label}
             </option>
@@ -40,10 +71,10 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         </select>
         {error && <p className="mt-1 text-sm text-error">{error}</p>}
       </div>
-    )
+    );
   }
-)
+);
 
-Select.displayName = 'Select'
+Select.displayName = 'Select';
 
-export default Select
+export default Select;

@@ -1,3 +1,36 @@
+/**
+ * @file apps/web/middleware.ts
+ * @role runtime
+ * @summary Middleware applying CSP nonce and security headers.
+ *
+ * @entrypoints
+ * - middleware
+ * - config
+ *
+ * @exports
+ * - middleware
+ * - config
+ *
+ * @depends_on
+ * - External: next/server (NextRequest, NextResponse)
+ * - Internal: @/lib/csp
+ * - Internal: @/lib/security-headers
+ *
+ * @used_by
+ * - Next.js edge middleware pipeline
+ *
+ * @runtime
+ * - environment: edge
+ * - side_effects: response header mutation
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { buildContentSecurityPolicy, CSP_NONCE_HEADER, createCspNonce } from '@/lib/csp';

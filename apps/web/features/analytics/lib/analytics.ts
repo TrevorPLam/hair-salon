@@ -12,7 +12,7 @@
  * - trackCTAClick
  *
  * @depends_on
- * - Internal: ./logger (logInfo)
+ * - Internal: @/lib/logger (logInfo)
  * - Internal: ./analytics-consent (hasAnalyticsConsent)
  *
  * @used_by
@@ -37,7 +37,7 @@
  * - last_audited: 2026-02-09
  */
 
-import { logInfo } from './logger';
+import { logInfo } from '@/lib/logger';
 import { hasAnalyticsConsent } from './analytics-consent';
 
 function isDevelopment(): boolean {

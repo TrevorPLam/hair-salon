@@ -79,6 +79,94 @@ Status: INCOMPLETE. Will be updated as files are audited.
   - [apps/web/app/services/treatments/page.tsx](apps/web/app/services/treatments/page.tsx): Treatments service detail.
   - [apps/web/app/team/page.tsx](apps/web/app/team/page.tsx): Team bios and hiring CTA.
   - [apps/web/app/terms/page.tsx](apps/web/app/terms/page.tsx): Terms of Service template content.
+  - [apps/web/app/api/og/route.tsx](apps/web/app/api/og/route.tsx): Open Graph image generation route.
+- apps/web
+  - [apps/web/eslint.config.mjs](apps/web/eslint.config.mjs): App-specific ESLint config.
+  - [apps/web/middleware.ts](apps/web/middleware.ts): CSP nonce injection, security headers, and request context.
+  - [apps/web/next.config.js](apps/web/next.config.js): Next.js config for images, headers, and build options.
+  - [apps/web/postcss.config.js](apps/web/postcss.config.js): PostCSS config for Tailwind and autoprefixer.
+  - [apps/web/tailwind.config.js](apps/web/tailwind.config.js): Tailwind theme and content sources.
+- apps/web/components
+  - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx): Consent gating UI for analytics activation.
+  - [apps/web/components/Breadcrumbs.tsx](apps/web/components/Breadcrumbs.tsx): Breadcrumb navigation for interior routes.
+  - [apps/web/components/ErrorBoundary.tsx](apps/web/components/ErrorBoundary.tsx): Client error boundary wrapper.
+  - [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx): Final CTA marketing block.
+  - [apps/web/components/Footer.tsx](apps/web/components/Footer.tsx): Site footer navigation and contact info.
+  - [apps/web/components/Hero.tsx](apps/web/components/Hero.tsx): Homepage hero section.
+  - [apps/web/components/InstallPrompt.tsx](apps/web/components/InstallPrompt.tsx): PWA install prompt handler.
+  - [apps/web/components/Navigation.tsx](apps/web/components/Navigation.tsx): Global navigation bar.
+  - [apps/web/components/SkipToContent.tsx](apps/web/components/SkipToContent.tsx): Accessibility skip link.
+  - [apps/web/components/SocialProof.tsx](apps/web/components/SocialProof.tsx): Testimonials and ratings block.
+  - [apps/web/components/ValueProps.tsx](apps/web/components/ValueProps.tsx): Value proposition marketing grid.
+- apps/web/features
+  - [apps/web/features/analytics/index.ts](apps/web/features/analytics/index.ts): Analytics feature exports.
+  - [apps/web/features/analytics/lib/analytics-consent.ts](apps/web/features/analytics/lib/analytics-consent.ts): Consent storage and evaluation helpers.
+  - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts): Analytics initialization and tracking helpers.
+  - [apps/web/features/blog/index.ts](apps/web/features/blog/index.ts): Blog feature exports.
+  - [apps/web/features/blog/components/BlogPostContent.tsx](apps/web/features/blog/components/BlogPostContent.tsx): Blog post content renderer.
+  - [apps/web/features/blog/lib/blog-images.ts](apps/web/features/blog/lib/blog-images.ts): Blog image lookup helpers.
+  - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts): Blog post data access helpers.
+  - [apps/web/features/contact/index.ts](apps/web/features/contact/index.ts): Contact feature exports.
+  - [apps/web/features/contact/components/ContactForm.tsx](apps/web/features/contact/components/ContactForm.tsx): Contact form UI and validation wiring.
+  - [apps/web/features/contact/lib/contact-form-schema.ts](apps/web/features/contact/lib/contact-form-schema.ts): Contact form schema and validation rules.
+  - [apps/web/features/hubspot/index.ts](apps/web/features/hubspot/index.ts): HubSpot integration exports.
+  - [apps/web/features/hubspot/lib/hubspot-client.ts](apps/web/features/hubspot/lib/hubspot-client.ts): HubSpot API client helper.
+  - [apps/web/features/search/index.ts](apps/web/features/search/index.ts): Search feature exports.
+  - [apps/web/features/search/components/SearchDialog.tsx](apps/web/features/search/components/SearchDialog.tsx): Site-wide search dialog UI.
+  - [apps/web/features/search/components/SearchPage.tsx](apps/web/features/search/components/SearchPage.tsx): Search results UI.
+  - [apps/web/features/services/index.ts](apps/web/features/services/index.ts): Services feature exports.
+  - [apps/web/features/services/components/ServiceDetailLayout.tsx](apps/web/features/services/components/ServiceDetailLayout.tsx): Service detail layout wrapper.
+  - [apps/web/features/services/components/ServicesOverview.tsx](apps/web/features/services/components/ServicesOverview.tsx): Services overview content block.
+  - [apps/web/features/supabase/index.ts](apps/web/features/supabase/index.ts): Supabase integration exports.
+  - [apps/web/features/supabase/lib/supabase-leads.ts](apps/web/features/supabase/lib/supabase-leads.ts): Supabase lead capture helper.
+- apps/web/lib
+  - [apps/web/lib/actions.ts](apps/web/lib/actions.ts): Exported server actions.
+  - [apps/web/lib/constants.ts](apps/web/lib/constants.ts): Site constants and defaults.
+  - [apps/web/lib/csp.ts](apps/web/lib/csp.ts): CSP nonce and security policy helpers.
+  - [apps/web/lib/env.public.ts](apps/web/lib/env.public.ts): Public env schema and validation.
+  - [apps/web/lib/env.ts](apps/web/lib/env.ts): Server env schema and validation.
+  - [apps/web/lib/logger.ts](apps/web/lib/logger.ts): Logging utilities with Sentry hooks.
+  - [apps/web/lib/rate-limit.ts](apps/web/lib/rate-limit.ts): Upstash rate limiting helpers.
+  - [apps/web/lib/request-context.server.ts](apps/web/lib/request-context.server.ts): Per-request context storage (server).
+  - [apps/web/lib/request-context.ts](apps/web/lib/request-context.ts): Per-request context helpers.
+  - [apps/web/lib/request-validation.ts](apps/web/lib/request-validation.ts): Request validation and shaping helpers.
+  - [apps/web/lib/sanitize.ts](apps/web/lib/sanitize.ts): Input sanitization helpers.
+  - [apps/web/lib/search.ts](apps/web/lib/search.ts): Search index helpers.
+  - [apps/web/lib/security-headers.ts](apps/web/lib/security-headers.ts): Security header definitions.
+  - [apps/web/lib/sentry-client.ts](apps/web/lib/sentry-client.ts): Sentry browser initialization.
+  - [apps/web/lib/sentry-sanitize.ts](apps/web/lib/sentry-sanitize.ts): Sentry data scrubbing helpers.
+  - [apps/web/lib/sentry-server.ts](apps/web/lib/sentry-server.ts): Sentry server initialization.
+  - [apps/web/lib/utils.ts](apps/web/lib/utils.ts): Utility helpers.
+  - [apps/web/lib/actions/helpers.ts](apps/web/lib/actions/helpers.ts): Server action helpers.
+  - [apps/web/lib/actions/hubspot.ts](apps/web/lib/actions/hubspot.ts): HubSpot submission action.
+  - [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts): Contact form submission orchestrator.
+  - [apps/web/lib/actions/supabase.ts](apps/web/lib/actions/supabase.ts): Supabase submission action.
+  - [apps/web/lib/actions/types.ts](apps/web/lib/actions/types.ts): Shared action types.
+  - [apps/web/lib/**tests**/env-setup.ts](apps/web/lib/__tests__/env-setup.ts): Test env setup.
+  - [apps/web/lib/**tests**/env.test.ts](apps/web/lib/__tests__/env.test.ts): Env validation tests.
+  - [apps/web/lib/**tests**/sanitize.test.ts](apps/web/lib/__tests__/sanitize.test.ts): Sanitize helper tests.
+- packages/config/eslint-config
+  - [packages/config/eslint-config/library.js](packages/config/eslint-config/library.js): Shared ESLint config for library packages.
+  - [packages/config/eslint-config/next.js](packages/config/eslint-config/next.js): Shared ESLint config for Next.js apps.
+- packages/ui
+  - [packages/ui/eslint.config.mjs](packages/ui/eslint.config.mjs): UI package ESLint config.
+- packages/ui/src/components
+  - [packages/ui/src/components/index.ts](packages/ui/src/components/index.ts): UI component exports.
+  - [packages/ui/src/components/Accordion.tsx](packages/ui/src/components/Accordion.tsx): Accordion component.
+  - [packages/ui/src/components/Button.tsx](packages/ui/src/components/Button.tsx): Button component.
+  - [packages/ui/src/components/Card.tsx](packages/ui/src/components/Card.tsx): Card component.
+  - [packages/ui/src/components/Container.tsx](packages/ui/src/components/Container.tsx): Layout container component.
+  - [packages/ui/src/components/Input.tsx](packages/ui/src/components/Input.tsx): Input component.
+  - [packages/ui/src/components/Section.tsx](packages/ui/src/components/Section.tsx): Section layout component.
+  - [packages/ui/src/components/Select.tsx](packages/ui/src/components/Select.tsx): Select component.
+  - [packages/ui/src/components/Skeleton.tsx](packages/ui/src/components/Skeleton.tsx): Skeleton loading component.
+  - [packages/ui/src/components/Textarea.tsx](packages/ui/src/components/Textarea.tsx): Textarea component.
+  - [packages/ui/src/components/**tests**/index.test.ts](packages/ui/src/components/__tests__/index.test.ts): UI component tests.
+- packages/utils
+  - [packages/utils/eslint.config.mjs](packages/utils/eslint.config.mjs): Utils package ESLint config.
+- packages/utils/src
+  - [packages/utils/src/index.ts](packages/utils/src/index.ts): Shared utility exports.
+  - [packages/utils/src/**tests**/index.test.ts](packages/utils/src/__tests__/index.test.ts): Utils package tests.
 
 ## Quality Dashboard
 
@@ -87,4 +175,4 @@ Status: INCOMPLETE. Will be updated as files are audited.
 
 ## Audit Progress
 
-- In progress. Completed: [package.json](package.json), [pnpm-workspace.yaml](pnpm-workspace.yaml), [turbo.json](turbo.json), [.pnpmrc](.pnpmrc), [.npmrc](.npmrc), [.editorconfig](.editorconfig), [.env.example](.env.example), [.eslintignore](.eslintignore), [.gitignore](.gitignore), [.markdownlint.json](.markdownlint.json), [.prettierignore](.prettierignore), [.prettierrc](.prettierrc), [ANALYSIS.md](ANALYSIS.md), [CONFIG.md](CONFIG.md), [CONTRIBUTING.md](CONTRIBUTING.md), [docker-compose.yml](docker-compose.yml), [jest.config.js](jest.config.js), [jest.helpers.ts](jest.helpers.ts), [jest.setup.js](jest.setup.js), [LICENSE](LICENSE), [README.md](README.md), [SECURITY.md](SECURITY.md), [tasks.md](tasks.md), [TODO.md](TODO.md), [tsconfig.base.json](tsconfig.base.json), [tsconfig.json](tsconfig.json), [apps/web/app/layout.tsx](apps/web/app/layout.tsx), [apps/web/app/page.tsx](apps/web/app/page.tsx), [apps/web/app/providers.tsx](apps/web/app/providers.tsx), [apps/web/app/loading.tsx](apps/web/app/loading.tsx), [apps/web/app/not-found.tsx](apps/web/app/not-found.tsx), [apps/web/app/robots.ts](apps/web/app/robots.ts), [apps/web/app/sitemap.ts](apps/web/app/sitemap.ts), [apps/web/app/about/page.tsx](apps/web/app/about/page.tsx), [apps/web/app/blog/page.tsx](apps/web/app/blog/page.tsx), [apps/web/app/blog/[slug]/page.tsx](apps/web/app/blog/[slug]/page.tsx), [apps/web/app/book/page.tsx](apps/web/app/book/page.tsx), [apps/web/app/contact/page.tsx](apps/web/app/contact/page.tsx), [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx), [apps/web/app/pricing/page.tsx](apps/web/app/pricing/page.tsx), [apps/web/app/privacy/page.tsx](apps/web/app/privacy/page.tsx), [apps/web/app/search/page.tsx](apps/web/app/search/page.tsx), [apps/web/app/services/page.tsx](apps/web/app/services/page.tsx), [apps/web/app/services/coloring/page.tsx](apps/web/app/services/coloring/page.tsx), [apps/web/app/services/haircuts/page.tsx](apps/web/app/services/haircuts/page.tsx), [apps/web/app/services/special-occasions/page.tsx](apps/web/app/services/special-occasions/page.tsx), [apps/web/app/services/treatments/page.tsx](apps/web/app/services/treatments/page.tsx), [apps/web/app/team/page.tsx](apps/web/app/team/page.tsx), [apps/web/app/terms/page.tsx](apps/web/app/terms/page.tsx).
+- In progress. Completed: [package.json](package.json), [pnpm-workspace.yaml](pnpm-workspace.yaml), [turbo.json](turbo.json), [.pnpmrc](.pnpmrc), [.npmrc](.npmrc), [.editorconfig](.editorconfig), [.env.example](.env.example), [.eslintignore](.eslintignore), [.gitignore](.gitignore), [.markdownlint.json](.markdownlint.json), [.prettierignore](.prettierignore), [.prettierrc](.prettierrc), [ANALYSIS.md](ANALYSIS.md), [CONFIG.md](CONFIG.md), [CONTRIBUTING.md](CONTRIBUTING.md), [docker-compose.yml](docker-compose.yml), [jest.config.js](jest.config.js), [jest.helpers.ts](jest.helpers.ts), [jest.setup.js](jest.setup.js), [LICENSE](LICENSE), [README.md](README.md), [SECURITY.md](SECURITY.md), [tasks.md](tasks.md), [TODO.md](TODO.md), [tsconfig.base.json](tsconfig.base.json), [tsconfig.json](tsconfig.json), [apps/web/app/layout.tsx](apps/web/app/layout.tsx), [apps/web/app/page.tsx](apps/web/app/page.tsx), [apps/web/app/providers.tsx](apps/web/app/providers.tsx), [apps/web/app/loading.tsx](apps/web/app/loading.tsx), [apps/web/app/not-found.tsx](apps/web/app/not-found.tsx), [apps/web/app/robots.ts](apps/web/app/robots.ts), [apps/web/app/sitemap.ts](apps/web/app/sitemap.ts), [apps/web/app/about/page.tsx](apps/web/app/about/page.tsx), [apps/web/app/blog/page.tsx](apps/web/app/blog/page.tsx), [apps/web/app/blog/[slug]/page.tsx](apps/web/app/blog/[slug]/page.tsx), [apps/web/app/book/page.tsx](apps/web/app/book/page.tsx), [apps/web/app/contact/page.tsx](apps/web/app/contact/page.tsx), [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx), [apps/web/app/pricing/page.tsx](apps/web/app/pricing/page.tsx), [apps/web/app/privacy/page.tsx](apps/web/app/privacy/page.tsx), [apps/web/app/search/page.tsx](apps/web/app/search/page.tsx), [apps/web/app/services/page.tsx](apps/web/app/services/page.tsx), [apps/web/app/services/coloring/page.tsx](apps/web/app/services/coloring/page.tsx), [apps/web/app/services/haircuts/page.tsx](apps/web/app/services/haircuts/page.tsx), [apps/web/app/services/special-occasions/page.tsx](apps/web/app/services/special-occasions/page.tsx), [apps/web/app/services/treatments/page.tsx](apps/web/app/services/treatments/page.tsx), [apps/web/app/team/page.tsx](apps/web/app/team/page.tsx), [apps/web/app/terms/page.tsx](apps/web/app/terms/page.tsx), [apps/web/app/api/og/route.tsx](apps/web/app/api/og/route.tsx), [apps/web/eslint.config.mjs](apps/web/eslint.config.mjs), [apps/web/middleware.ts](apps/web/middleware.ts), [apps/web/next.config.js](apps/web/next.config.js), [apps/web/postcss.config.js](apps/web/postcss.config.js), [apps/web/tailwind.config.js](apps/web/tailwind.config.js), [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx), [apps/web/components/Breadcrumbs.tsx](apps/web/components/Breadcrumbs.tsx), [apps/web/components/ErrorBoundary.tsx](apps/web/components/ErrorBoundary.tsx), [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx), [apps/web/components/Footer.tsx](apps/web/components/Footer.tsx), [apps/web/components/Hero.tsx](apps/web/components/Hero.tsx), [apps/web/components/InstallPrompt.tsx](apps/web/components/InstallPrompt.tsx), [apps/web/components/Navigation.tsx](apps/web/components/Navigation.tsx), [apps/web/components/SkipToContent.tsx](apps/web/components/SkipToContent.tsx), [apps/web/components/SocialProof.tsx](apps/web/components/SocialProof.tsx), [apps/web/components/ValueProps.tsx](apps/web/components/ValueProps.tsx), [apps/web/features/analytics/index.ts](apps/web/features/analytics/index.ts), [apps/web/features/analytics/lib/analytics-consent.ts](apps/web/features/analytics/lib/analytics-consent.ts), [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts), [apps/web/features/blog/index.ts](apps/web/features/blog/index.ts), [apps/web/features/blog/components/BlogPostContent.tsx](apps/web/features/blog/components/BlogPostContent.tsx), [apps/web/features/blog/lib/blog-images.ts](apps/web/features/blog/lib/blog-images.ts), [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts), [apps/web/features/contact/index.ts](apps/web/features/contact/index.ts), [apps/web/features/contact/components/ContactForm.tsx](apps/web/features/contact/components/ContactForm.tsx), [apps/web/features/contact/lib/contact-form-schema.ts](apps/web/features/contact/lib/contact-form-schema.ts), [apps/web/features/hubspot/index.ts](apps/web/features/hubspot/index.ts), [apps/web/features/hubspot/lib/hubspot-client.ts](apps/web/features/hubspot/lib/hubspot-client.ts), [apps/web/features/search/index.ts](apps/web/features/search/index.ts), [apps/web/features/search/components/SearchDialog.tsx](apps/web/features/search/components/SearchDialog.tsx), [apps/web/features/search/components/SearchPage.tsx](apps/web/features/search/components/SearchPage.tsx), [apps/web/features/services/index.ts](apps/web/features/services/index.ts), [apps/web/features/services/components/ServiceDetailLayout.tsx](apps/web/features/services/components/ServiceDetailLayout.tsx), [apps/web/features/services/components/ServicesOverview.tsx](apps/web/features/services/components/ServicesOverview.tsx), [apps/web/features/supabase/index.ts](apps/web/features/supabase/index.ts), [apps/web/features/supabase/lib/supabase-leads.ts](apps/web/features/supabase/lib/supabase-leads.ts), [apps/web/lib/actions.ts](apps/web/lib/actions.ts), [apps/web/lib/constants.ts](apps/web/lib/constants.ts), [apps/web/lib/csp.ts](apps/web/lib/csp.ts), [apps/web/lib/env.public.ts](apps/web/lib/env.public.ts), [apps/web/lib/env.ts](apps/web/lib/env.ts), [apps/web/lib/logger.ts](apps/web/lib/logger.ts), [apps/web/lib/rate-limit.ts](apps/web/lib/rate-limit.ts), [apps/web/lib/request-context.server.ts](apps/web/lib/request-context.server.ts), [apps/web/lib/request-context.ts](apps/web/lib/request-context.ts), [apps/web/lib/request-validation.ts](apps/web/lib/request-validation.ts), [apps/web/lib/sanitize.ts](apps/web/lib/sanitize.ts), [apps/web/lib/search.ts](apps/web/lib/search.ts), [apps/web/lib/security-headers.ts](apps/web/lib/security-headers.ts), [apps/web/lib/sentry-client.ts](apps/web/lib/sentry-client.ts), [apps/web/lib/sentry-sanitize.ts](apps/web/lib/sentry-sanitize.ts), [apps/web/lib/sentry-server.ts](apps/web/lib/sentry-server.ts), [apps/web/lib/utils.ts](apps/web/lib/utils.ts), [apps/web/lib/actions/helpers.ts](apps/web/lib/actions/helpers.ts), [apps/web/lib/actions/hubspot.ts](apps/web/lib/actions/hubspot.ts), [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts), [apps/web/lib/actions/supabase.ts](apps/web/lib/actions/supabase.ts), [apps/web/lib/actions/types.ts](apps/web/lib/actions/types.ts), [apps/web/lib/**tests**/env-setup.ts](apps/web/lib/__tests__/env-setup.ts), [apps/web/lib/**tests**/env.test.ts](apps/web/lib/__tests__/env.test.ts), [apps/web/lib/**tests**/sanitize.test.ts](apps/web/lib/__tests__/sanitize.test.ts), [packages/config/eslint-config/library.js](packages/config/eslint-config/library.js), [packages/config/eslint-config/next.js](packages/config/eslint-config/next.js), [packages/ui/eslint.config.mjs](packages/ui/eslint.config.mjs), [packages/ui/src/components/index.ts](packages/ui/src/components/index.ts), [packages/ui/src/components/Accordion.tsx](packages/ui/src/components/Accordion.tsx), [packages/ui/src/components/Button.tsx](packages/ui/src/components/Button.tsx), [packages/ui/src/components/Card.tsx](packages/ui/src/components/Card.tsx), [packages/ui/src/components/Container.tsx](packages/ui/src/components/Container.tsx), [packages/ui/src/components/Input.tsx](packages/ui/src/components/Input.tsx), [packages/ui/src/components/Section.tsx](packages/ui/src/components/Section.tsx), [packages/ui/src/components/Select.tsx](packages/ui/src/components/Select.tsx), [packages/ui/src/components/Skeleton.tsx](packages/ui/src/components/Skeleton.tsx), [packages/ui/src/components/Textarea.tsx](packages/ui/src/components/Textarea.tsx), [packages/ui/src/components/**tests**/index.test.ts](packages/ui/src/components/__tests__/index.test.ts), [packages/utils/eslint.config.mjs](packages/utils/eslint.config.mjs), [packages/utils/src/index.ts](packages/utils/src/index.ts), [packages/utils/src/**tests**/index.test.ts](packages/utils/src/__tests__/index.test.ts).

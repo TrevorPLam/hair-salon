@@ -1,10 +1,34 @@
 /**
- * Smoke tests for @repo/ui component exports.
+ * @file packages/ui/src/components/__tests__/index.test.ts
+ * @role test
+ * @summary Smoke tests for @repo/ui component exports.
  *
- * Verifies that all components are exported and have expected structure.
+ * @entrypoints
+ * - Jest test suite
+ *
+ * @exports
+ * - None
+ *
+ * @depends_on
+ * - Jest
+ * - Internal: ../index
+ *
+ * @used_by
+ * - Test runner
+ *
+ * @runtime
+ * - environment: test
+ * - side_effects: none
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
-import * as UI from '../index'
+import * as UI from '../index';
 
 describe('@repo/ui component exports', () => {
   test('exports all components', () => {
@@ -19,27 +43,27 @@ describe('@repo/ui component exports', () => {
       UI.Select,
       UI.Skeleton,
       UI.Textarea,
-    ]
+    ];
 
     components.forEach((component) => {
-      const componentType = typeof component
-      expect(['function', 'object']).toContain(componentType)
-      expect(component).toBeDefined()
-    })
-  })
+      const componentType = typeof component;
+      expect(['function', 'object']).toContain(componentType);
+      expect(component).toBeDefined();
+    });
+  });
 
   test('all components are accessible without error', () => {
     // Just verify they don't throw when accessed
     expect(() => {
-      void UI.Button
-      void UI.Card
-      void UI.Container
-      void UI.Input
-      void UI.Section
-      void UI.Select
-      void UI.Skeleton
-      void UI.Textarea
-      void UI.Accordion
-    }).not.toThrow()
-  })
-})
+      void UI.Button;
+      void UI.Card;
+      void UI.Container;
+      void UI.Input;
+      void UI.Section;
+      void UI.Select;
+      void UI.Skeleton;
+      void UI.Textarea;
+      void UI.Accordion;
+    }).not.toThrow();
+  });
+});

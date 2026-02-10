@@ -18,8 +18,8 @@ Status: INCOMPLETE. Populate as routes are audited.
   - Robots metadata: [apps/web/app/robots.ts](apps/web/app/robots.ts)
 - /sitemap.xml
   - Sitemap metadata: [apps/web/app/sitemap.ts](apps/web/app/sitemap.ts)
-- /about
-  - About page: [apps/web/app/about/page.tsx](apps/web/app/about/page.tsx)
+- /api/og
+  - Open Graph image generation: [apps/web/app/api/og/route.tsx](apps/web/app/api/og/route.tsx)
 - /blog
   - Blog index: [apps/web/app/blog/page.tsx](apps/web/app/blog/page.tsx)
 - /blog/[slug]

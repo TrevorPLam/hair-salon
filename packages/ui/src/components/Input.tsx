@@ -1,18 +1,50 @@
-import React, { useId } from 'react'
-import { cn } from '@repo/utils'
-import { CheckCircle2 } from 'lucide-react'
+/**
+ * @file packages/ui/src/components/Input.tsx
+ * @role runtime
+ * @summary Labeled input with validation styling.
+ *
+ * @entrypoints
+ * - Input
+ *
+ * @exports
+ * - default Input
+ * - InputProps
+ *
+ * @depends_on
+ * - External: react
+ * - External: lucide-react
+ * - Internal: @repo/utils (cn)
+ *
+ * @used_by
+ * - Contact and booking forms
+ *
+ * @runtime
+ * - environment: shared
+ * - side_effects: none
+ *
+ * @issues
+ * - [severity:low] None observed in-file.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
+ */
+
+import React, { useId } from 'react';
+import { cn } from '@repo/utils';
+import { CheckCircle2 } from 'lucide-react';
 
 // Labeled input with optional validation state and success icon for form UX consistency
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  label?: string
-  error?: string
-  isValid?: boolean
+  label?: string;
+  error?: string;
+  isValid?: boolean;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, label, error, isValid, type = 'text', id, ...props }, ref) => {
-    const generatedId = useId()
-    const inputId = id || props.name || generatedId
+    const generatedId = useId();
+    const inputId = id || props.name || generatedId;
 
     return (
       <div className="mb-4">
@@ -47,10 +79,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         </div>
         {error && <p className="mt-1 text-sm text-error">{error}</p>}
       </div>
-    )
+    );
   }
-)
+);
 
-Input.displayName = 'Input'
+Input.displayName = 'Input';
 
-export default Input
+export default Input;

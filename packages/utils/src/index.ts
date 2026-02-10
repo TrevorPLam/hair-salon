@@ -1,65 +1,31 @@
 /**
- * Utility functions for class name merging and common operations.
+ * @file packages/utils/src/index.ts
+ * @role runtime
+ * @summary Shared utility exports (class name merging).
  *
- * @module utils
+ * @entrypoints
+ * - cn
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - cn
  *
- * **FILE PURPOSE**: Shared utility functions used across all packages.
- * Provides class name merging with Tailwind conflict resolution.
+ * @depends_on
+ * - External: clsx
+ * - External: tailwind-merge
  *
- * **MAIN EXPORT**: `cn()` function for conditional class merging
- * - Combines clsx (conditional classes) with tailwind-merge (conflict resolution)
- * - Essential for dynamic styling with Tailwind CSS
+ * @used_by
+ * - UI components and apps
  *
- * **USAGE EXAMPLES**:
- * ```tsx
- * cn('px-4 py-2', isActive && 'bg-blue-500', 'text-white')
- * // Resolves conflicts: cn('px-2', 'px-4') → 'px-4'
+ * @runtime
+ * - environment: shared
+ * - side_effects: none
  *
- * cn('button', variant === 'primary' && 'bg-teal', variant === 'secondary' && 'bg-gray')
- * ```
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * **AI ITERATION HINTS**:
- * - Adding new utility? Export from this index file for consistency
- * - This is the main export point for all shared utilities
- * - All packages import from here: `@repo/utils`
- *
- * **DEPENDENCIES**:
- * - clsx: Conditional class name utility
- * - tailwind-merge: Tailwind CSS conflict resolution
- *
- * ═══════════════════════════════════════════════════════════════════════════════
- *
- * **Purpose:**
- * - Provide utility functions for common operations across the monorepo
- * - Enable conditional class name merging with Tailwind conflict resolution
- *
- * **Main Function:**
- * - `cn()`: Merges class names while resolving Tailwind conflicts
- *   - Uses clsx for conditional class logic
- *   - Uses tailwind-merge to resolve conflicting Tailwind classes
- *
- * **Usage:**
- * ```tsx
- * import { cn } from '@repo/utils'
- *
- * // Basic merging
- * cn('px-4 py-2', 'bg-blue-500')
- *
- * // Conditional classes
- * cn('button', isActive && 'bg-blue-500', isDisabled && 'opacity-50')
- *
- * // Conflict resolution (last one wins)
- * cn('px-2', 'px-4') // Results in 'px-4'
- * ```
- *
- * **Why This Matters:**
- * - Prevents CSS specificity issues with Tailwind
- * - Enables dynamic styling based on component state
- * - Maintains consistent styling patterns across the app
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 import { ClassValue, clsx } from 'clsx';

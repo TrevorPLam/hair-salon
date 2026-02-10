@@ -14,7 +14,7 @@
  * @depends_on
  * - Internal: ../logger
  * - Internal: ../sentry-server
- * - Internal: ../supabase-leads
+ * - Internal: @/features/supabase/lib/supabase-leads
  * - Internal: ./helpers
  * - Internal: ./hubspot
  *
@@ -35,7 +35,11 @@
 
 import { logWarn, logInfo, logError } from '../logger';
 import { withServerSpan } from '../sentry-server';
-import { insertSupabaseLead, updateSupabaseLead, type SupabaseLeadRow } from '../supabase-leads';
+import {
+  insertSupabaseLead,
+  updateSupabaseLead,
+  type SupabaseLeadRow,
+} from '@/features/supabase/lib/supabase-leads';
 import type { SanitizedContactData } from './types';
 import { buildLeadSpanAttributes, buildHubSpotIdempotencyKey, normalizeError } from './helpers';
 import { retryHubSpotUpsert, buildHubSpotProperties } from './hubspot';

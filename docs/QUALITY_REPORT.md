@@ -17,3 +17,5 @@ Status: INCOMPLETE. Findings will be added during audits.
 - [severity:low] Booking form is static without a submission handler. Evidence: [apps/web/app/book/page.tsx](apps/web/app/book/page.tsx)
 - [severity:low] Gallery portfolio uses placeholder data and imagery. Evidence: [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
 - [severity:low] Team social links are placeholders. Evidence: [apps/web/app/team/page.tsx](apps/web/app/team/page.tsx)
+- [severity:med] Open Graph image route has no rate limiting, leaving it exposed to abuse. Evidence: [apps/web/app/api/og/route.tsx](apps/web/app/api/og/route.tsx)
+- [severity:low] Footer social links are placeholders. Evidence: [apps/web/components/Footer.tsx](apps/web/components/Footer.tsx)

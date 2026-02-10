@@ -1,76 +1,32 @@
 /**
- * Reusable button component with consistent styling.
+ * @file packages/ui/src/components/Button.tsx
+ * @role runtime
+ * @summary Shared button component with variants and sizes.
  *
- * @component Button
+ * @entrypoints
+ * - Button
  *
- * ═══════════════════════════════════════════════════════════════════════════════
- * 🤖 AI METACODE — Quick Reference for AI Agents
- * ═══════════════════════════════════════════════════════════════════════════════
+ * @exports
+ * - default Button
+ * - ButtonProps
  *
- * **FILE PURPOSE**: Centralized button component for consistent UI/UX.
- * Used across all apps in the monorepo for design system consistency.
+ * @depends_on
+ * - External: react
+ * - Internal: @repo/utils (cn)
  *
- * **VARIANTS**:
- * - primary: Teal background with white text (main CTAs)
- * - secondary: Transparent with charcoal border (secondary actions)
- * - text: Teal text only (subtle actions)
+ * @used_by
+ * - apps/web and packages/ui consumers
  *
- * **SIZES**:
- * - small: Compact buttons (forms, tight spaces)
- * - medium: Default size (most use cases)
- * - large: Hero section CTAs, prominent actions
+ * @runtime
+ * - environment: shared
+ * - side_effects: none
  *
- * **DESIGN TOKENS**:
- * - Colors: teal (primary), charcoal (secondary), off-white (hover)
- * - Focus: teal ring with offset for accessibility
- * - Typography: font-semibold, responsive text sizing
+ * @issues
+ * - [severity:low] None observed in-file.
  *
- * **USAGE EXAMPLES**:
- * ```tsx
- * <Button variant="primary" size="large">Book Now</Button>
- * <Button variant="secondary" size="medium">Learn More</Button>
- * <Button variant="text" size="small">Cancel</Button>
- * ```
- *
- * **AI ITERATION HINTS**:
- * - Adding new variant? Update variants object and ButtonProps interface
- * - Changing colors? Update design tokens in variants object
- * - Focus styles follow WCAG AA contrast requirements
- * - All variants support disabled state via HTML attributes
- *
- * **DEPENDENCIES**:
- * - @repo/utils/cn for conditional class merging
- * - Uses forwardRef for ref forwarding (important for forms)
- *
- * ═══════════════════════════════════════════════════════════════════════════════
- *
- * **Purpose:**
- * - Provide consistent button styling across the application
- * - Support multiple variants (primary, secondary, text) and sizes
- * - Ensure accessibility with proper focus management
- *
- * **Variants:**
- * - primary: Teal background, white text (main actions)
- * - secondary: Transparent with charcoal border (secondary actions)
- * - text: Teal text only, no background (subtle actions)
- *
- * **Sizes:**
- * - small: Compact (py-2 px-4, text-sm)
- * - medium: Default (py-3 px-6, text-base)
- * - large: Prominent (py-4 px-8, text-lg)
- *
- * **Features:**
- * - Focus ring with teal color for accessibility
- * - Disabled state with reduced opacity
- * - Forward ref support for form integration
- * - Transition effects for hover states
- *
- * @example
- * ```tsx
- * <Button variant="primary" size="large" onClick={handleClick}>
- *   Book Appointment
- * </Button>
- * ```
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
 
 import React from 'react';

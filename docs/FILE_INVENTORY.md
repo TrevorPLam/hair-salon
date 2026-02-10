@@ -73,14 +73,14 @@ Status key: pending | in-progress | done
 | Path                          | Role    | Criticality   | Status  |
 | ----------------------------- | ------- | ------------- | ------- |
 | apps/web/Dockerfile           | infra   | important     | pending |
-| apps/web/eslint.config.mjs    | config  | important     | pending |
-| apps/web/middleware.ts        | runtime | critical path | pending |
+| apps/web/eslint.config.mjs    | config  | important     | done    |
+| apps/web/middleware.ts        | runtime | critical path | done    |
 | apps/web/next-env.d.ts        | config  | optional      | pending |
-| apps/web/next.config.js       | config  | important     | pending |
+| apps/web/next.config.js       | config  | important     | done    |
 | apps/web/package.json         | config  | critical path | pending |
 | apps/web/package.json.bak     | docs    | optional      | pending |
-| apps/web/postcss.config.js    | config  | important     | pending |
-| apps/web/tailwind.config.js   | config  | important     | pending |
+| apps/web/postcss.config.js    | config  | important     | done    |
+| apps/web/tailwind.config.js   | config  | important     | done    |
 | apps/web/tsconfig.json        | config  | important     | pending |
 | apps/web/tsconfig.tsbuildinfo | asset   | optional      | pending |
 
@@ -97,7 +97,7 @@ Status key: pending | in-progress | done
 | apps/web/app/robots.ts                           | runtime | important     | done    |
 | apps/web/app/sitemap.ts                          | runtime | important     | done    |
 | apps/web/app/about/page.tsx                      | runtime | important     | done    |
-| apps/web/app/api/og/route.tsx                    | runtime | important     | pending |
+| apps/web/app/api/og/route.tsx                    | runtime | important     | done    |
 | apps/web/app/blog/page.tsx                       | runtime | important     | done    |
 | apps/web/app/blog/[slug]/page.tsx                | runtime | important     | done    |
 | apps/web/app/book/page.tsx                       | runtime | important     | done    |
@@ -116,74 +116,74 @@ Status key: pending | in-progress | done
 
 ### apps/web/components
 
-| Path                                           | Role    | Criticality   | Status  |
-| ---------------------------------------------- | ------- | ------------- | ------- |
-| apps/web/components/AnalyticsConsentBanner.tsx | runtime | critical path | pending |
-| apps/web/components/Breadcrumbs.tsx            | runtime | important     | pending |
-| apps/web/components/ErrorBoundary.tsx          | runtime | important     | pending |
-| apps/web/components/FinalCTA.tsx               | runtime | optional      | pending |
-| apps/web/components/Footer.tsx                 | runtime | important     | pending |
-| apps/web/components/Hero.tsx                   | runtime | important     | pending |
-| apps/web/components/InstallPrompt.tsx          | runtime | optional      | pending |
-| apps/web/components/Navigation.tsx             | runtime | important     | pending |
-| apps/web/components/SkipToContent.tsx          | runtime | important     | pending |
-| apps/web/components/SocialProof.tsx            | runtime | optional      | pending |
-| apps/web/components/ValueProps.tsx             | runtime | important     | pending |
+| Path                                           | Role    | Criticality   | Status |
+| ---------------------------------------------- | ------- | ------------- | ------ |
+| apps/web/components/AnalyticsConsentBanner.tsx | runtime | critical path | done   |
+| apps/web/components/Breadcrumbs.tsx            | runtime | important     | done   |
+| apps/web/components/ErrorBoundary.tsx          | runtime | important     | done   |
+| apps/web/components/FinalCTA.tsx               | runtime | optional      | done   |
+| apps/web/components/Footer.tsx                 | runtime | important     | done   |
+| apps/web/components/Hero.tsx                   | runtime | important     | done   |
+| apps/web/components/InstallPrompt.tsx          | runtime | optional      | done   |
+| apps/web/components/Navigation.tsx             | runtime | important     | done   |
+| apps/web/components/SkipToContent.tsx          | runtime | important     | done   |
+| apps/web/components/SocialProof.tsx            | runtime | optional      | done   |
+| apps/web/components/ValueProps.tsx             | runtime | important     | done   |
 
 ### apps/web/features
 
-| Path                                                          | Role    | Criticality   | Status  |
-| ------------------------------------------------------------- | ------- | ------------- | ------- |
-| apps/web/features/analytics/index.ts                          | runtime | important     | pending |
-| apps/web/features/analytics/lib/analytics-consent.ts          | runtime | critical path | pending |
-| apps/web/features/analytics/lib/analytics.ts                  | runtime | critical path | pending |
-| apps/web/features/blog/index.ts                               | runtime | important     | pending |
-| apps/web/features/blog/components/BlogPostContent.tsx         | runtime | important     | pending |
-| apps/web/features/blog/lib/blog-images.ts                     | runtime | important     | pending |
-| apps/web/features/blog/lib/blog.ts                            | runtime | important     | pending |
-| apps/web/features/contact/index.ts                            | runtime | important     | pending |
-| apps/web/features/contact/components/ContactForm.tsx          | runtime | important     | pending |
-| apps/web/features/contact/lib/contact-form-schema.ts          | runtime | important     | pending |
-| apps/web/features/hubspot/index.ts                            | runtime | important     | pending |
-| apps/web/features/hubspot/lib/hubspot-client.ts               | runtime | important     | pending |
-| apps/web/features/search/index.ts                             | runtime | important     | pending |
-| apps/web/features/search/components/SearchDialog.tsx          | runtime | important     | pending |
-| apps/web/features/search/components/SearchPage.tsx            | runtime | important     | pending |
-| apps/web/features/services/index.ts                           | runtime | important     | pending |
-| apps/web/features/services/components/ServiceDetailLayout.tsx | runtime | important     | pending |
-| apps/web/features/services/components/ServicesOverview.tsx    | runtime | important     | pending |
-| apps/web/features/supabase/index.ts                           | runtime | important     | pending |
-| apps/web/features/supabase/lib/supabase-leads.ts              | runtime | important     | pending |
+| Path                                                          | Role    | Criticality   | Status |
+| ------------------------------------------------------------- | ------- | ------------- | ------ |
+| apps/web/features/analytics/index.ts                          | runtime | important     | done   |
+| apps/web/features/analytics/lib/analytics-consent.ts          | runtime | critical path | done   |
+| apps/web/features/analytics/lib/analytics.ts                  | runtime | critical path | done   |
+| apps/web/features/blog/index.ts                               | runtime | important     | done   |
+| apps/web/features/blog/components/BlogPostContent.tsx         | runtime | important     | done   |
+| apps/web/features/blog/lib/blog-images.ts                     | runtime | important     | done   |
+| apps/web/features/blog/lib/blog.ts                            | runtime | important     | done   |
+| apps/web/features/contact/index.ts                            | runtime | important     | done   |
+| apps/web/features/contact/components/ContactForm.tsx          | runtime | important     | done   |
+| apps/web/features/contact/lib/contact-form-schema.ts          | runtime | important     | done   |
+| apps/web/features/hubspot/index.ts                            | runtime | important     | done   |
+| apps/web/features/hubspot/lib/hubspot-client.ts               | runtime | important     | done   |
+| apps/web/features/search/index.ts                             | runtime | important     | done   |
+| apps/web/features/search/components/SearchDialog.tsx          | runtime | important     | done   |
+| apps/web/features/search/components/SearchPage.tsx            | runtime | important     | done   |
+| apps/web/features/services/index.ts                           | runtime | important     | done   |
+| apps/web/features/services/components/ServiceDetailLayout.tsx | runtime | important     | done   |
+| apps/web/features/services/components/ServicesOverview.tsx    | runtime | important     | done   |
+| apps/web/features/supabase/index.ts                           | runtime | important     | done   |
+| apps/web/features/supabase/lib/supabase-leads.ts              | runtime | important     | done   |
 
 ### apps/web/lib
 
-| Path                                    | Role    | Criticality   | Status  |
-| --------------------------------------- | ------- | ------------- | ------- |
-| apps/web/lib/actions.ts                 | runtime | important     | pending |
-| apps/web/lib/constants.ts               | runtime | important     | pending |
-| apps/web/lib/csp.ts                     | runtime | critical path | pending |
-| apps/web/lib/env.public.ts              | runtime | critical path | pending |
-| apps/web/lib/env.ts                     | runtime | critical path | pending |
-| apps/web/lib/logger.ts                  | runtime | important     | pending |
-| apps/web/lib/rate-limit.ts              | runtime | important     | pending |
-| apps/web/lib/request-context.server.ts  | runtime | important     | pending |
-| apps/web/lib/request-context.ts         | runtime | important     | pending |
-| apps/web/lib/request-validation.ts      | runtime | important     | pending |
-| apps/web/lib/sanitize.ts                | runtime | important     | pending |
-| apps/web/lib/search.ts                  | runtime | important     | pending |
-| apps/web/lib/security-headers.ts        | runtime | important     | pending |
-| apps/web/lib/sentry-client.ts           | runtime | important     | pending |
-| apps/web/lib/sentry-sanitize.ts         | runtime | important     | pending |
-| apps/web/lib/sentry-server.ts           | runtime | important     | pending |
-| apps/web/lib/utils.ts                   | runtime | important     | pending |
-| apps/web/lib/actions/helpers.ts         | runtime | important     | pending |
-| apps/web/lib/actions/hubspot.ts         | runtime | important     | pending |
-| apps/web/lib/actions/submit.ts          | runtime | important     | pending |
-| apps/web/lib/actions/supabase.ts        | runtime | important     | pending |
-| apps/web/lib/actions/types.ts           | runtime | important     | pending |
-| apps/web/lib/**tests**/env-setup.ts     | test    | optional      | pending |
-| apps/web/lib/**tests**/env.test.ts      | test    | important     | pending |
-| apps/web/lib/**tests**/sanitize.test.ts | test    | important     | pending |
+| Path                                    | Role    | Criticality   | Status |
+| --------------------------------------- | ------- | ------------- | ------ |
+| apps/web/lib/actions.ts                 | runtime | important     | done   |
+| apps/web/lib/constants.ts               | runtime | important     | done   |
+| apps/web/lib/csp.ts                     | runtime | critical path | done   |
+| apps/web/lib/env.public.ts              | runtime | critical path | done   |
+| apps/web/lib/env.ts                     | runtime | critical path | done   |
+| apps/web/lib/logger.ts                  | runtime | important     | done   |
+| apps/web/lib/rate-limit.ts              | runtime | important     | done   |
+| apps/web/lib/request-context.server.ts  | runtime | important     | done   |
+| apps/web/lib/request-context.ts         | runtime | important     | done   |
+| apps/web/lib/request-validation.ts      | runtime | important     | done   |
+| apps/web/lib/sanitize.ts                | runtime | important     | done   |
+| apps/web/lib/search.ts                  | runtime | important     | done   |
+| apps/web/lib/security-headers.ts        | runtime | important     | done   |
+| apps/web/lib/sentry-client.ts           | runtime | important     | done   |
+| apps/web/lib/sentry-sanitize.ts         | runtime | important     | done   |
+| apps/web/lib/sentry-server.ts           | runtime | important     | done   |
+| apps/web/lib/utils.ts                   | runtime | important     | done   |
+| apps/web/lib/actions/helpers.ts         | runtime | important     | done   |
+| apps/web/lib/actions/hubspot.ts         | runtime | important     | done   |
+| apps/web/lib/actions/submit.ts          | runtime | important     | done   |
+| apps/web/lib/actions/supabase.ts        | runtime | important     | done   |
+| apps/web/lib/actions/types.ts           | runtime | important     | done   |
+| apps/web/lib/**tests**/env-setup.ts     | test    | optional      | done   |
+| apps/web/lib/**tests**/env.test.ts      | test    | important     | done   |
+| apps/web/lib/**tests**/sanitize.test.ts | test    | important     | done   |
 
 ## docs
 
@@ -210,8 +210,8 @@ Status key: pending | in-progress | done
 | Path                                           | Role   | Criticality | Status  |
 | ---------------------------------------------- | ------ | ----------- | ------- |
 | packages/config/package.json                   | config | important   | pending |
-| packages/config/eslint-config/library.js       | config | important   | pending |
-| packages/config/eslint-config/next.js          | config | important   | pending |
+| packages/config/eslint-config/library.js       | config | important   | done    |
+| packages/config/eslint-config/next.js          | config | important   | done    |
 | packages/config/eslint-config/package.json     | config | important   | pending |
 | packages/config/typescript-config/base.json    | config | important   | pending |
 | packages/config/typescript-config/node.json    | config | important   | pending |
@@ -223,27 +223,27 @@ Status key: pending | in-progress | done
 | Path                                               | Role    | Criticality | Status  |
 | -------------------------------------------------- | ------- | ----------- | ------- |
 | packages/ui/.ai-context.md                         | docs    | optional    | pending |
-| packages/ui/eslint.config.mjs                      | config  | important   | pending |
+| packages/ui/eslint.config.mjs                      | config  | important   | done    |
 | packages/ui/package.json                           | config  | important   | pending |
 | packages/ui/tsconfig.json                          | config  | important   | pending |
-| packages/ui/src/components/Accordion.tsx           | runtime | important   | pending |
-| packages/ui/src/components/Button.tsx              | runtime | important   | pending |
-| packages/ui/src/components/Card.tsx                | runtime | important   | pending |
-| packages/ui/src/components/Container.tsx           | runtime | important   | pending |
-| packages/ui/src/components/index.ts                | runtime | important   | pending |
-| packages/ui/src/components/Input.tsx               | runtime | important   | pending |
-| packages/ui/src/components/Section.tsx             | runtime | important   | pending |
-| packages/ui/src/components/Select.tsx              | runtime | important   | pending |
-| packages/ui/src/components/Skeleton.tsx            | runtime | important   | pending |
-| packages/ui/src/components/Textarea.tsx            | runtime | important   | pending |
-| packages/ui/src/components/**tests**/index.test.ts | test    | optional    | pending |
+| packages/ui/src/components/Accordion.tsx           | runtime | important   | done    |
+| packages/ui/src/components/Button.tsx              | runtime | important   | done    |
+| packages/ui/src/components/Card.tsx                | runtime | important   | done    |
+| packages/ui/src/components/Container.tsx           | runtime | important   | done    |
+| packages/ui/src/components/index.ts                | runtime | important   | done    |
+| packages/ui/src/components/Input.tsx               | runtime | important   | done    |
+| packages/ui/src/components/Section.tsx             | runtime | important   | done    |
+| packages/ui/src/components/Select.tsx              | runtime | important   | done    |
+| packages/ui/src/components/Skeleton.tsx            | runtime | important   | done    |
+| packages/ui/src/components/Textarea.tsx            | runtime | important   | done    |
+| packages/ui/src/components/**tests**/index.test.ts | test    | optional    | done    |
 
 ## packages/utils
 
 | Path                                       | Role    | Criticality | Status  |
 | ------------------------------------------ | ------- | ----------- | ------- |
-| packages/utils/eslint.config.mjs           | config  | important   | pending |
+| packages/utils/eslint.config.mjs           | config  | important   | done    |
 | packages/utils/package.json                | config  | important   | pending |
 | packages/utils/tsconfig.json               | config  | important   | pending |
-| packages/utils/src/index.ts                | runtime | important   | pending |
-| packages/utils/src/**tests**/index.test.ts | test    | optional    | pending |
+| packages/utils/src/index.ts                | runtime | important   | done    |
+| packages/utils/src/**tests**/index.test.ts | test    | optional    | done    |

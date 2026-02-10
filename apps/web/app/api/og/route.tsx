@@ -1,49 +1,71 @@
 /**
- * Dynamic OG image generation route.
+ * @file apps/web/app/api/og/route.tsx
+ * @role runtime
+ * @summary Edge route that generates dynamic OG images.
  *
- * **Security:**
- * - Input validation via Zod schema (max lengths enforced)
- * - HTML escaping via escapeHtml() to prevent XSS
- * - Edge runtime for performance and isolation
- * - Returns 400 for invalid parameters
+ * @entrypoints
+ * - Route: /api/og
  *
- * **Rate Limiting:**
- * - Currently no rate limiting (GET endpoint, low abuse risk)
- * - Consider adding if abuse detected (e.g., 100 req/min per IP)
+ * @exports
+ * - runtime
+ * - GET
  *
- * **Usage:**
- * - /api/og?title=Custom%20Title&description=Custom%20Description
- * - Used by app/layout.tsx for default OG image
+ * @depends_on
+ * - External: next/og
+ * - External: next/server
+ * - External: zod
+ * - Internal: @/lib/sanitize (escapeHtml)
+ *
+ * @used_by
+ * - OpenGraph metadata and social share previews
+ *
+ * @runtime
+ * - environment: edge
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: query params (title, description)
+ * - outputs: ImageResponse
+ *
+ * @issues
+ * - [severity:low] No rate limiting on this GET endpoint.
+ *
+ * @verification
+ * - Visit /api/og?title=Test&description=Hello and verify image renders.
+ *
+ * @status
+ * - confidence: high
+ * - last_audited: 2026-02-09
  */
-import { ImageResponse } from 'next/og'
-import { NextRequest } from 'next/server'
-import { z } from 'zod'
+import { ImageResponse } from 'next/og';
+import { NextRequest } from 'next/server';
+import { z } from 'zod';
 
-import { escapeHtml } from '@/lib/sanitize'
+import { escapeHtml } from '@/lib/sanitize';
 
-export const runtime = 'edge'
+export const runtime = 'edge';
 
 const ogQuerySchema = z.object({
   title: z.string().max(200).optional(),
   description: z.string().max(500).optional(),
-})
+});
 
 export async function GET(request: NextRequest) {
-  const { searchParams } = new URL(request.url)
+  const { searchParams } = new URL(request.url);
   const parseResult = ogQuerySchema.safeParse({
     title: searchParams.get('title') ?? undefined,
     description: searchParams.get('description') ?? undefined,
-  })
+  });
 
   if (!parseResult.success) {
-    return new Response('Invalid query parameters', { status: 400 })
+    return new Response('Invalid query parameters', { status: 400 });
   }
 
-  const title = escapeHtml(parseResult.data.title ?? 'Salon Template')
+  const title = escapeHtml(parseResult.data.title ?? 'Salon Template');
   const description = escapeHtml(
     parseResult.data.description ??
       'Professional hair salon services tailored to your style. Cuts, color, treatments, and more.'
-  )
+  );
 
   return new ImageResponse(
     (
@@ -84,7 +106,9 @@ export async function GET(request: NextRequest) {
         </div>
 
         <div style={{ fontSize: 56, fontWeight: 800, lineHeight: 1.1 }}>{title}</div>
-        <div style={{ fontSize: 22, color: 'rgba(255,255,255,0.85)', maxWidth: 900 }}>{description}</div>
+        <div style={{ fontSize: 22, color: 'rgba(255,255,255,0.85)', maxWidth: 900 }}>
+          {description}
+        </div>
 
         <div style={{ display: 'flex', gap: 16, fontSize: 18, color: 'rgba(255,255,255,0.75)' }}>
           <span>Haircuts</span>
@@ -99,5 +123,5 @@ export async function GET(request: NextRequest) {
       width: 1200,
       height: 630,
     }
-  )
+  );
 }

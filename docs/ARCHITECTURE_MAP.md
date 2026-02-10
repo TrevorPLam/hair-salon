@@ -43,3 +43,23 @@ Status: INCOMPLETE. Populate as files are audited.
 - Metadata routes
   - robots.txt is generated in [apps/web/app/robots.ts](apps/web/app/robots.ts).
   - sitemap.xml is generated in [apps/web/app/sitemap.ts](apps/web/app/sitemap.ts).
+- Open Graph route
+  - Open Graph images are rendered in [apps/web/app/api/og/route.tsx](apps/web/app/api/og/route.tsx).
+- Middleware and security
+  - CSP nonce injection, security headers, and request context are managed in [apps/web/middleware.ts](apps/web/middleware.ts).
+- Shared UI components
+  - Global navigation, footer, and hero content are built from [apps/web/components/Navigation.tsx](apps/web/components/Navigation.tsx), [apps/web/components/Footer.tsx](apps/web/components/Footer.tsx), and [apps/web/components/Hero.tsx](apps/web/components/Hero.tsx).
+  - Consent gating UI is handled in [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx).
+- Feature modules
+  - Analytics consent and tracking live in [apps/web/features/analytics/lib/analytics-consent.ts](apps/web/features/analytics/lib/analytics-consent.ts) and [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts).
+  - Blog data and rendering helpers live in [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts) and [apps/web/features/blog/components/BlogPostContent.tsx](apps/web/features/blog/components/BlogPostContent.tsx).
+  - Contact form UI and schema live in [apps/web/features/contact/components/ContactForm.tsx](apps/web/features/contact/components/ContactForm.tsx) and [apps/web/features/contact/lib/contact-form-schema.ts](apps/web/features/contact/lib/contact-form-schema.ts).
+  - HubSpot integration is built in [apps/web/features/hubspot/lib/hubspot-client.ts](apps/web/features/hubspot/lib/hubspot-client.ts).
+  - Search UI is composed in [apps/web/features/search/components/SearchDialog.tsx](apps/web/features/search/components/SearchDialog.tsx) and [apps/web/features/search/components/SearchPage.tsx](apps/web/features/search/components/SearchPage.tsx).
+  - Services layout components live in [apps/web/features/services/components/ServiceDetailLayout.tsx](apps/web/features/services/components/ServiceDetailLayout.tsx).
+  - Supabase lead capture lives in [apps/web/features/supabase/lib/supabase-leads.ts](apps/web/features/supabase/lib/supabase-leads.ts).
+- Shared server utilities
+  - Env validation is handled in [apps/web/lib/env.ts](apps/web/lib/env.ts) and [apps/web/lib/env.public.ts](apps/web/lib/env.public.ts).
+  - CSP helpers live in [apps/web/lib/csp.ts](apps/web/lib/csp.ts) with security headers in [apps/web/lib/security-headers.ts](apps/web/lib/security-headers.ts).
+  - Server actions orchestrate submissions in [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts).
+  - Rate limiting helpers live in [apps/web/lib/rate-limit.ts](apps/web/lib/rate-limit.ts).

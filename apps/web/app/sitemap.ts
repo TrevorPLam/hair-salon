@@ -11,7 +11,7 @@
  *
  * @depends_on
  * - Internal: apps/web/lib/env.public.ts
- * - Internal: @/lib/blog (alias; verify target file)
+ * - Internal: @/features/blog/lib/blog
  * - External: next (MetadataRoute)
  *
  * @used_by
@@ -32,7 +32,7 @@
  * - Blog import alias must resolve to the real blog module
  *
  * @issues
- * - [severity:med] @/lib/blog appears unresolved; verify alias mapping and file location.
+ * - [severity:low] None observed in-file.
  *
  * @opportunities
  * - Consider centralizing static routes to avoid drift
@@ -46,8 +46,7 @@
  */
 
 import { MetadataRoute } from 'next';
-// TODO(verify): Ensure @/lib/blog resolves to the blog module in features/blog.
-import { getAllPosts } from '@/lib/blog';
+import { getAllPosts } from '@/features/blog/lib/blog';
 import { getPublicBaseUrl } from '@/lib/env.public';
 
 export default function sitemap(): MetadataRoute.Sitemap {
