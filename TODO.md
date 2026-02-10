@@ -78,6 +78,16 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: no `Module not found` errors for `@/lib/*`, `@/features/*`, `@/components/*`
 - Deps: none
 
+- [ ] Canonical feature import surface
+- Deliverables: add a single feature barrel (e.g., `apps/web/lib/feature-index.ts`) and update imports to use it
+- DoD: fewer direct deep imports; alias drift reduced
+- Deps: module alias audit
+
+- [ ] Align local env template with runtime schema
+- Deliverables: update `.env.example` to match `apps/web/lib/env.ts` + `apps/web/lib/env.public.ts`
+- DoD: new devs can copy `.env.example` without immediate schema failures
+- Deps: none
+
 - [ ] Dependency install + verify
 - Deliverables: add MDX + forms deps to `apps/web/package.json`, lockfile updated
 - DoD: build passes and a sample MDX file renders in dev
@@ -106,6 +116,46 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - [ ] Type hygiene cleanup
 - Deliverables: remove unused `requestId`, fix implicit `any` types
 - DoD: `pnpm type-check` passes without new errors
+- Deps: none
+
+- [ ] CI tests must be blocking
+- Deliverables: remove `continue-on-error` from tests in `.github/workflows/ci.yml`
+- DoD: CI fails when tests fail
+- Deps: none
+
+- [ ] Verification command log update
+- Deliverables: run `pnpm install`, `pnpm lint`, `pnpm type-check`, `pnpm test`, `pnpm test:coverage`, `pnpm build`, and `pnpm --filter @repo/web start` (or `docker-compose up -d`) then record outputs in `docs/TESTING_STATUS.md`
+- DoD: command log includes outputs and dates for each run
+- Deps: none
+
+- [ ] Fix .vscode ignore negation ordering
+- Deliverables: adjust `.gitignore` ordering so `.vscode/settings.json` is included as intended
+- DoD: git treats `.vscode/settings.json` as tracked per policy
+- Deps: none
+
+- [ ] Relax local env schema for optional integrations
+- Deliverables: allow Supabase/HubSpot vars to be optional in local dev while remaining required in production
+- DoD: local `pnpm dev` runs without setting optional integration keys; prod still validates
+- Deps: env schema alignment
+
+- [x] Fix blog import paths (resolved)
+- Deliverables: corrected blog/search/sitemap imports in `apps/web/app/blog/[slug]/page.tsx`, `apps/web/app/blog/page.tsx`, `apps/web/app/search/page.tsx`, `apps/web/app/sitemap.ts`
+- DoD: no module resolution errors for blog/search/sitemap routes
+- Deps: none
+
+- [x] Fix contact + analytics import paths (resolved)
+- Deliverables: corrected imports in `apps/web/features/contact/lib/submit.ts`, `apps/web/features/contact/lib/helpers.ts`, `apps/web/features/contact/components/ContactForm.tsx`, `apps/web/components/AnalyticsConsentBanner.tsx`
+- DoD: contact form modules resolve without alias errors
+- Deps: none
+
+- [x] Fix HubSpot/Supabase adapter imports (resolved)
+- Deliverables: corrected imports in `apps/web/features/hubspot/hubspot.ts`, `apps/web/features/supabase/supabase.ts`, `apps/web/features/hubspot/hubspot-client.ts`, `apps/web/features/supabase/supabase-leads.ts`
+- DoD: server actions resolve at runtime
+- Deps: none
+
+- [x] Fix optional analytics env test (resolved)
+- Deliverables: update `apps/web/lib/env.test.ts` to expect `undefined` for optional analytics ID
+- DoD: env tests pass with no analytics ID set
 - Deps: none
 
 ---
@@ -141,6 +191,46 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deliverables: lint/type/test, Lighthouse CI on key routes (95+ targets), bundle size budgets (strict), a11y checks (95+), secret scan
 - DoD: PRs fail when budgets or checks fail; artifacts stored
 - Deps: CI baseline
+
+- [ ] Security contact accuracy
+- Deliverables: replace placeholder security email in `SECURITY.md`
+- DoD: security reports go to a monitored address
+- Deps: maintainers sign-off
+
+- [ ] Documentation evidence reconciliation
+- Deliverables: reconcile README/CONFIG/ANALYSIS/QUALITY_REPORT with evidence links and update TESTING_STATUS after running commands
+- DoD: verified facts are linked; UNVERIFIED sections reduced or removed
+- Deps: Phase 0 commands run
+
+- [ ] Verify legacy analysis claims
+- Deliverables: audit `ANALYSIS.md` and add evidence links or mark as deprecated
+- DoD: legacy analysis is verified or clearly archived
+- Deps: none
+
+- [ ] Verify README/CONFIG/CONTRIBUTING claims
+- Deliverables: audit `README.md`, `CONFIG.md`, and `CONTRIBUTING.md` for unverified statements and add evidence links
+- DoD: unverified claims are updated or explicitly marked
+- Deps: none
+
+- [ ] Refresh audit checklist
+- Deliverables: update `tasks.md` to reflect current audit progress
+- DoD: audit checklist matches current state
+- Deps: none
+
+- [ ] Verify backlog against codebase
+- Deliverables: review `TODO.md` items against current implementation and update statuses
+- DoD: backlog reflects current codebase state
+- Deps: none
+
+- [ ] Trace analytics/consent flow
+- Deliverables: document consent and analytics flow from code into docs
+- DoD: audit entry exists with evidence references
+- Deps: none
+
+- [ ] Populate remediation plan
+- Deliverables: prioritize fixes and add them to `docs/REMEDIATION_PLAN.md`
+- DoD: remediation plan lists prioritized fixes with owners/targets
+- Deps: issues documented
 
 - [ ] Consent gating E2E tests
 - Deliverables: e2e tests for consent denied -> no scripts; consent granted -> only enabled scripts
@@ -184,6 +274,16 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: `/blog` renders 3 sample posts; one post renders code blocks
 - Deps: MDX deps installed
 
+- [ ] Blog: category filtering
+- Deliverables: filter `/blog?category=` results using `getPostsByCategory`
+- DoD: category links change the visible list; empty state shown when none
+- Deps: blog lib exists
+
+- [ ] Terms of Service placeholder cleanup
+- Deliverables: replace placeholder and TO BE UPDATED content in `/terms`
+- DoD: terms page reads as production-ready copy
+- Deps: content owner input
+
 - [ ] Blog: metadata types + validation
 - Deliverables: blog frontmatter types and validation in blog lib
 - DoD: invalid frontmatter fails fast in dev
@@ -199,20 +299,65 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: submit success and error paths display correctly
 - Deps: contact schema exists
 
+- [ ] Booking form submission handler
+- Deliverables: add a submission handler or explicit provider redirect flow for `/book`
+- DoD: booking CTA has a functional submission or redirect path
+- Deps: booking flow decision
+
+- [ ] Contact: spam policy for CRM sync
+- Deliverables: define behavior when rate limit fails (e.g., skip HubSpot sync)
+- DoD: suspicious submissions do not reach CRM without explicit override
+- Deps: rate limiting in place
+
+- [ ] Rate limit fallback policy in production
+- Deliverables: decide fail-closed vs hard error when Upstash init fails in prod
+- DoD: production behavior documented and enforced in `apps/web/lib/rate-limit.ts`
+- Deps: rate limiting in place
+
 - [ ] Services: data model + pages
 - Deliverables: services data, `ServiceDetailLayout`, `/services/*` pages
 - DoD: all service pages render with pricing and booking link
 - Deps: services data defined
+
+- [ ] Gallery placeholder data replacement
+- Deliverables: replace placeholder portfolio data and imagery
+- DoD: gallery shows real or seeded data with consistent metadata
+- Deps: media assets available
 
 - [ ] Search: index + UX
 - Deliverables: search index includes blog + services; search dialog hotkey
 - DoD: Ctrl/Cmd+K opens dialog; results include blog and services
 - Deps: blog and services pages exist
 
+- [ ] Search index caching
+- Deliverables: memoize `getSearchIndex()` with server cache helper
+- DoD: repeated renders do not re-read blog files
+- Deps: blog lib exists
+
+- [ ] Blog data caching
+- Deliverables: memoize `getAllPosts()` and related helpers
+- DoD: repeated calls avoid redundant fs reads during SSR
+- Deps: blog lib exists
+
+- [ ] OG image route protection
+- Deliverables: lightweight rate limit or cache for `/api/og`
+- DoD: basic abuse protection without breaking social previews
+- Deps: rate limiting util or edge cache strategy
+
 - [ ] Book page: MVP flow
 - Deliverables: booking CTA, service and stylist selection placeholders
 - DoD: booking CTA routes correctly; selection UI renders
 - Deps: services + team data available
+
+- [ ] Team social links replacement
+- Deliverables: replace placeholder social links in the team page
+- DoD: team social links point to real profiles or are removed
+- Deps: content owner input
+
+- [ ] Footer social links replacement
+- Deliverables: replace placeholder footer social links or remove them
+- DoD: footer links are real or intentionally omitted
+- Deps: content owner input
 
 - [ ] Seed data
 - Deliverables: sample services, stylists, blog posts
@@ -514,18 +659,29 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 ## Appendix A - Task Index (Full)
 
 - Module alias + re-export audit
+- Canonical feature import surface
+- Align local env template with runtime schema
 - Dependency install + verify
 - ESLint config resolution
 - Tailwind tokens + SearchDialog palette
 - Consent persistence smoke test
 - Component fixups
 - Type hygiene cleanup
+- CI tests must be blocking
+- Security contact accuracy
+- Documentation evidence reconciliation
 - Blog: MDX parsing
+- Blog: category filtering
 - Blog: metadata types + validation
 - Contact form: schema + UI
 - Contact form: submission + spam baseline
+- Contact: spam policy for CRM sync
+- Rate limit fallback policy in production
 - Services: data model + pages
 - Search: index + UX
+- Search index caching
+- Blog data caching
+- OG image route protection
 - Book page: MVP flow
 - Seed data
 - Integration registry + schema validation
