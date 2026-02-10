@@ -5,6 +5,7 @@ This directory contains superseded documentation from earlier configuration audi
 ## Archived Files
 
 ### CONFIGURATION_AUDIT.md
+
 - **Date Archived:** February 9, 2026
 - **Status:** Outdated - contained earlier audit findings from initial configuration review
 - **Why Archived:** Replaced with comprehensive modular audit reports that provide:
@@ -12,7 +13,7 @@ This directory contains superseded documentation from earlier configuration audi
   - Evidence-based conflict detection
   - Specific version auditing
   - Prioritized fix recommendations
-- **Replaced By:** 
+- **Replaced By:**
   - [CONFIG_MAP.md](../../CONFIG_MAP.md) — Complete configuration inventory
   - [CONFIG_CONFLICTS.md](../../CONFIG_CONFLICTS.md) — Conflict and drift analysis
   - [CONFIG_VERSIONS.md](../../CONFIG_VERSIONS.md) — Version policy and pinning
@@ -21,10 +22,11 @@ This directory contains superseded documentation from earlier configuration audi
   - [VERIFICATION_EVIDENCE.md](../../VERIFICATION_EVIDENCE.md) — Test results
 
 ### INFRASTRUCTURE.md
+
 - **Date Archived:** February 9, 2026
 - **Status:** Outdated - contained earlier infrastructure checklist
 - **Why Archived:** Content superseded by detailed verification evidence and current status documentation
-- **Replaced By:** 
+- **Replaced By:**
   - [VERIFICATION_EVIDENCE.md](../../VERIFICATION_EVIDENCE.md) — Current status with proof
   - [CONFIG_MAP.md](../../CONFIG_MAP.md) — Configuration inventory
   - [CONFIG_VERSIONS.md](../../CONFIG_VERSIONS.md) — Version details
@@ -37,15 +39,15 @@ These files are preserved for historical reference. **Do not use them for curren
 
 Refer to these root-level documents instead:
 
-| Topic | Document | Purpose |
-|-------|----------|---------|
-| **Overview** | [EXECUTIVE_SUMMARY.md](../../EXECUTIVE_SUMMARY.md) | Top findings and priorities |
-| **Inventory** | [CONFIG_MAP.md](../../CONFIG_MAP.md) | All config files and ownership |
-| **Issues** | [CONFIG_CONFLICTS.md](../../CONFIG_CONFLICTS.md) | Conflicts and duplication |
-| **Versions** | [CONFIG_VERSIONS.md](../../CONFIG_VERSIONS.md) | Version policy and updates |
-| **Coverage** | [CONFIG_GAPS.md](../../CONFIG_GAPS.md) | Best practices gaps |
-| **Fixes** | [PATCH_PLAN.md](../../PATCH_PLAN.md) | Implementation steps |
-| **Proof** | [VERIFICATION_EVIDENCE.md](../../VERIFICATION_EVIDENCE.md) | Test results and status |
+| Topic         | Document                                                   | Purpose                        |
+| ------------- | ---------------------------------------------------------- | ------------------------------ |
+| **Overview**  | [EXECUTIVE_SUMMARY.md](../../EXECUTIVE_SUMMARY.md)         | Top findings and priorities    |
+| **Inventory** | [CONFIG_MAP.md](../../CONFIG_MAP.md)                       | All config files and ownership |
+| **Issues**    | [CONFIG_CONFLICTS.md](../../CONFIG_CONFLICTS.md)           | Conflicts and duplication      |
+| **Versions**  | [CONFIG_VERSIONS.md](../../CONFIG_VERSIONS.md)             | Version policy and updates     |
+| **Coverage**  | [CONFIG_GAPS.md](../../CONFIG_GAPS.md)                     | Best practices gaps            |
+| **Fixes**     | [PATCH_PLAN.md](../../PATCH_PLAN.md)                       | Implementation steps           |
+| **Proof**     | [VERIFICATION_EVIDENCE.md](../../VERIFICATION_EVIDENCE.md) | Test results and status        |
 
 ### For General Development
 

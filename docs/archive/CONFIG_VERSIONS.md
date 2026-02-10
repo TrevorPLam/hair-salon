@@ -8,15 +8,15 @@
 
 ## Quick Reference — Version Policy
 
-| Category | Current Policy | Recommended | Rationale |
-|----------|---|---|---|
-| **Runtime** | Node 20+ (enforced) | >=20.0.0 (LTS) | Modern, security, tooling support |
-| **Package Manager** | pnpm 10.29.2 (exact) | Exact pin | Reproducibility, monorepo best practice |
-| **Core Tools** | typescript, turbo, prettier | Exact pins | Consistency across team |
-| **Frameworks** | next, react | Exact pins in monorepo | Precision in source exports |
-| **Libraries** | clsx, zod, lucide-react | Exact pins | Dependency tree stability |
-| **DevTools** | eslint, eslint plugins | Should be exact | Build reproducibility |
-| **Peer Deps** | @repo/ui: React ^19.0.0 | Caret allowed | Consumer flexibility |
+| Category            | Current Policy              | Recommended            | Rationale                               |
+| ------------------- | --------------------------- | ---------------------- | --------------------------------------- |
+| **Runtime**         | Node 20+ (enforced)         | >=20.0.0 (LTS)         | Modern, security, tooling support       |
+| **Package Manager** | pnpm 10.29.2 (exact)        | Exact pin              | Reproducibility, monorepo best practice |
+| **Core Tools**      | typescript, turbo, prettier | Exact pins             | Consistency across team                 |
+| **Frameworks**      | next, react                 | Exact pins in monorepo | Precision in source exports             |
+| **Libraries**       | clsx, zod, lucide-react     | Exact pins             | Dependency tree stability               |
+| **DevTools**        | eslint, eslint plugins      | Should be exact        | Build reproducibility                   |
+| **Peer Deps**       | @repo/ui: React ^19.0.0     | Caret allowed          | Consumer flexibility                    |
 
 ---
 
@@ -24,19 +24,21 @@
 
 ### Node.js
 
-| Version | Status | Recommendation |
-|---------|--------|-----------------|
-| **19.0.0** | EOL (Dec 2023) | ❌ Don't use |
-| **20.13.0+** | LTS (Fermium) | ✅ **Use this** |
-| **22.x** | Current | ✅ Compatible |
+| Version      | Status         | Recommendation  |
+| ------------ | -------------- | --------------- |
+| **19.0.0**   | EOL (Dec 2023) | ❌ Don't use    |
+| **20.13.0+** | LTS (Fermium)  | ✅ **Use this** |
+| **22.x**     | Current        | ✅ Compatible   |
 
 **Current Setting:**
+
 ```json
 // package.json
 "engines": { "node": ">=20.0.0" }
 ```
 
 **Status:** ✅ **CORRECT**
+
 - Allows Node 20+ and 22+
 - LTS release, security patches receiving updates
 - Good support for ES2022, modern npm features
@@ -50,25 +52,28 @@
 
 #### pnpm
 
-| Version | Status | Monorepo Ready | Recommendation |
-|---------|--------|---|---|
-| 8.x | EOL (2024) | ⚠️ Older features | ❌ Update |
-| 9.x | Deprecated | ✅ Good monorepos | 🟡 Maintain only |
-| **10.x** | Current | ✅ Latest features | ✅ **Use this** |
+| Version  | Status     | Monorepo Ready     | Recommendation   |
+| -------- | ---------- | ------------------ | ---------------- |
+| 8.x      | EOL (2024) | ⚠️ Older features  | ❌ Update        |
+| 9.x      | Deprecated | ✅ Good monorepos  | 🟡 Maintain only |
+| **10.x** | Current    | ✅ Latest features | ✅ **Use this**  |
 
 **Current Setting:**
+
 ```json
 // package.json
 "packageManager": "pnpm@10.29.2"
 ```
 
 **Status:** ✅ **OPTIMAL**
+
 - Latest stable version
 - Includes all modern monorepo features
 - Lock file is 209 KB (reasonable)
 - No known issues
 
 **Pinning:** ‼️ **EXACT PIN REQUIRED**
+
 ```json
 "packageManager": "pnpm@10.29.2"  // ✅ Correct (exact)
 ```
@@ -81,11 +86,11 @@
 
 ### npm Registry
 
-| Setting | Current | Recommended |
-|---------|---------|---|
-| **Registry** | (default npmjs.org) | Explicit |
-| **Config File** | ❌ Missing | ✅ Create .npmrc |
-| **Content** | N/A | `registry=https://registry.npmjs.org/` |
+| Setting         | Current             | Recommended                            |
+| --------------- | ------------------- | -------------------------------------- |
+| **Registry**    | (default npmjs.org) | Explicit                               |
+| **Config File** | ❌ Missing          | ✅ Create .npmrc                       |
+| **Content**     | N/A                 | `registry=https://registry.npmjs.org/` |
 
 **Current Status:** ✅ **Works**, but ⚠️ **Not explicit**
 
@@ -97,13 +102,14 @@
 
 ### TypeScript
 
-| Version | Status | ES2022? | Strict Mode? | Recommendation |
-|---------|--------|---|---|---|
-| 5.0-5.6 | Older | ✅ Yes | ✅ Yes | 🟡 Outdated |
-| **5.7.2** | Current | ✅ Yes | ✅ Yes | ✅ **Use this** |
-| 5.8+ | Future | ✅ Yes | ✅ Yes | ⏳ When released |
+| Version   | Status  | ES2022? | Strict Mode? | Recommendation   |
+| --------- | ------- | ------- | ------------ | ---------------- |
+| 5.0-5.6   | Older   | ✅ Yes  | ✅ Yes       | 🟡 Outdated      |
+| **5.7.2** | Current | ✅ Yes  | ✅ Yes       | ✅ **Use this**  |
+| 5.8+      | Future  | ✅ Yes  | ✅ Yes       | ⏳ When released |
 
 **Current Setting:**
+
 ```json
 // package.json (root)
 "typescript": "5.7.2"       // ✅ Exact pin
@@ -121,6 +127,7 @@
 **Status:** ✅ **CONSISTENT ACROSS ALL PACKAGES**
 
 **Compatibility Check:**
+
 - ES2022 target ✅ (tsconfig.base.json: `"target": "ES2022"`)
 - Strict mode ✅ (`"strict": true`)
 - noUnusedLocals ✅
@@ -128,7 +135,8 @@
 
 **Pinning Policy:** ✅ **Exact pins required** (5.7.2 everywhere)
 
-**Recommendation:** 
+**Recommendation:**
+
 - Keep at 5.7.2
 - Plan upgrade to 5.8+ when released (non-breaking usually)
 - Update aligned across all packages
@@ -139,19 +147,21 @@
 
 ### Prettier
 
-| Version | Status | Config Format | Recommendation |
-|---------|--------|---|---|
-| 3.0-3.1 | Older | ✅ Works | 🟡 Outdated |
-| **3.2.5** | Current | ✅ JSON/RC | ✅ **Use this** |
-| 4.0+ | Future | ✅ TBD | ⏳ Monitor |
+| Version   | Status  | Config Format | Recommendation  |
+| --------- | ------- | ------------- | --------------- |
+| 3.0-3.1   | Older   | ✅ Works      | 🟡 Outdated     |
+| **3.2.5** | Current | ✅ JSON/RC    | ✅ **Use this** |
+| 4.0+      | Future  | ✅ TBD        | ⏳ Monitor      |
 
 **Current Setting:**
+
 ```json
 // package.json (root)
 "prettier": "3.2.5"  // ✅ Exact pin
 ```
 
 **Config File:**
+
 ```json
 // .prettierrc
 {
@@ -167,6 +177,7 @@
 ```
 
 **Status:** ✅ **CORRECT**
+
 - Version: pinned exactly ✅
 - Config: Single source of truth (.prettierrc at root) ✅
 - Settings: Sensible for modern JS/TS ✅
@@ -181,11 +192,11 @@
 
 ### ESLint & @typescript-eslint
 
-| Tool | Root | packages/ui | packages/utils | Status |
-|------|------|-------|-------|--------|
-| **eslint** | 9.18.0 | 9.18.0 | 9.18.0 | ✅ Aligned |
-| **@typescript-eslint/parser** | ^8.55.0 | 8.19.1 | 8.19.1 | 🟡 Range vs Exact |
-| **@typescript-eslint/eslint-plugin** | ^8.55.0 | 8.19.1 | 8.19.1 | 🟡 Range vs Exact |
+| Tool                                 | Root    | packages/ui | packages/utils | Status            |
+| ------------------------------------ | ------- | ----------- | -------------- | ----------------- |
+| **eslint**                           | 9.18.0  | 9.18.0      | 9.18.0         | ✅ Aligned        |
+| **@typescript-eslint/parser**        | ^8.55.0 | 8.19.1      | 8.19.1         | 🟡 Range vs Exact |
+| **@typescript-eslint/eslint-plugin** | ^8.55.0 | 8.19.1      | 8.19.1         | 🟡 Range vs Exact |
 
 **Current Status:**
 
@@ -206,10 +217,12 @@
 **Issues Found:**
 
 1. ❌ **Root claims 8.55.0 but doesn't exist**
+
    - Caret ^8.55.0 would allow 8.55.0+ (but 8.55.0 wasn't released)
    - pnpm-lock.yaml locks to 8.19.1 (latest at lock time)
 
 2. 🟡 **Inconsistent pinning: root has caret, packages have exact**
+
    - Root: `"^8.55.0"` (range, unclear intent)
    - Packages: `"8.19.1"` (exact, monorepo best practice)
 
@@ -218,6 +231,7 @@
    - Packages are using newer rules than claimed at root
 
 **Compatibility:**
+
 - ✅ ESLint v9 (flat config) supported by all versions
 - ✅ TypeScript 5.7.2 support ✅ (verified in release notes)
 - ✅ @typescript-eslint 8.19.1 has all features needed
@@ -225,7 +239,9 @@
 **Recommendation:** 🔧 **FIX REQUIRED**
 
 **Fix:**
+
 1. Update root package.json to exact pin matching packages:
+
 ```json
 "@typescript-eslint/eslint-plugin": "8.19.1",
 "@typescript-eslint/parser": "8.19.1",
@@ -243,24 +259,27 @@
 
 ### Next.js
 
-| Version | Status | App Router? | React 19 Support? | Recommendation |
-|---------|--------|---|---|---|
-| 14.x | LTS | ✅ Yes | 🟡 Partial | 🟡 Maintain only |
-| **15.1.6** | Latest | ✅ Yes | ✅ Full | ✅ **Use this** |
+| Version    | Status | App Router? | React 19 Support? | Recommendation   |
+| ---------- | ------ | ----------- | ----------------- | ---------------- |
+| 14.x       | LTS    | ✅ Yes      | 🟡 Partial        | 🟡 Maintain only |
+| **15.1.6** | Latest | ✅ Yes      | ✅ Full           | ✅ **Use this**  |
 
 **Current Setting:**
+
 ```json
 // apps/web/package.json
 "next": "15.1.6"  // ✅ Exact pin
 ```
 
 **Status:** ✅ **OPTIMAL**
+
 - Latest stable version
 - Full React 19 support
 - App Router ready
 - Production-ready
 
 **Compatibility Checks:**
+
 - ✅ Node 20+
 - ✅ React 19.0.0
 - ✅ TypeScript 5.7.2
@@ -276,12 +295,13 @@
 
 ### React & React-DOM
 
-| Version | Status | Server Components? | Recommendation |
-|---------|--------|---|---|
-| 18.x | Older | ✅ Yes | 🟡 Outdated |
-| **19.0.0** | Latest | ✅ Yes | ✅ **Use this** |
+| Version    | Status | Server Components? | Recommendation  |
+| ---------- | ------ | ------------------ | --------------- |
+| 18.x       | Older  | ✅ Yes             | 🟡 Outdated     |
+| **19.0.0** | Latest | ✅ Yes             | ✅ **Use this** |
 
 **Current Setting:**
+
 ```json
 // apps/web/package.json
 "react": "19.0.0",
@@ -289,6 +309,7 @@
 ```
 
 **Peer Dependency in @repo/ui:**
+
 ```json
 // packages/ui/package.json
 "peerDependencies": {
@@ -302,11 +323,13 @@
 ```
 
 **Status:** ✅ **CORRECT**
+
 - Exact pins in consuming app (apps/web)
 - Peer ranges allow consumer flexibility
 - Dev defaults match (19.0.0)
 
-**Pinning Policy:** 
+**Pinning Policy:**
+
 - Apps: **Exact pins** ✅
 - Libraries: **Peer ranges** (caret allowed) ✅
 
@@ -320,12 +343,13 @@
 
 ### Tailwind CSS
 
-| Version | Status | JIT? | CSS Variables? | Recommendation |
-|---------|--------|---|---|---|
-| 3.0-3.3 | Older | ✅ Yes | ✅ Yes | 🟡 Outdated |
-| **3.4.17** | Latest | ✅ Yes | ✅ Yes | ✅ **Use this** |
+| Version    | Status | JIT?   | CSS Variables? | Recommendation  |
+| ---------- | ------ | ------ | -------------- | --------------- |
+| 3.0-3.3    | Older  | ✅ Yes | ✅ Yes         | 🟡 Outdated     |
+| **3.4.17** | Latest | ✅ Yes | ✅ Yes         | ✅ **Use this** |
 
 **Current Setting:**
+
 ```json
 // apps/web/package.json (devDependencies)
 "tailwindcss": "3.4.17"         // ✅ Exact pin
@@ -334,19 +358,18 @@
 ```
 
 **Config:**
+
 ```javascript
 // apps/web/tailwind.config.js
 module.exports = {
-  content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    '../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  content: ['./app/**/*.{js,ts,jsx,tsx,mdx}', '../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: { extend: {} },
   plugins: [],
-}
+};
 ```
 
 **Status:** ✅ **CORRECT**
+
 - Version: pinned exactly ✅
 - Content paths: include shared packages ✅
 - PostCSS pipeline: properly configured ✅
@@ -359,12 +382,13 @@ module.exports = {
 
 ### Lucide React Icons
 
-| Version | Status | Tree Shakeable? | Type Safety? | Recommendation |
-|---------|--------|---|---|---|
-| 0.263.1 | Older (2024-01) | ✅ Yes | ✅ Yes | 🟡 Outdated |
-| **0.344.0** | Current (2025-02) | ✅ Yes | ✅ Yes | ✅ **Use this** |
+| Version     | Status            | Tree Shakeable? | Type Safety? | Recommendation  |
+| ----------- | ----------------- | --------------- | ------------ | --------------- |
+| 0.263.1     | Older (2024-01)   | ✅ Yes          | ✅ Yes       | 🟡 Outdated     |
+| **0.344.0** | Current (2025-02) | ✅ Yes          | ✅ Yes       | ✅ **Use this** |
 
 **Current Setting:**
+
 ```json
 // apps/web/package.json
 "lucide-react": "0.344.0"  // ✅ Exact pin
@@ -374,6 +398,7 @@ module.exports = {
 ```
 
 **Status:** ✅ **ALIGNED**
+
 - Same version in both app and library ✅
 - Recent version with many icons ✅
 - Tree-shakeable (only used icons bundled) ✅
@@ -382,7 +407,8 @@ module.exports = {
 
 **Recommendation:** Keep at 0.344.0. Update monthly or when design needs more icons.
 
-**Documentation Fix Needed:** 
+**Documentation Fix Needed:**
+
 - ❌ CONFIG.md claims 0.544.0 (doesn't exist)
 - ✅ Fix: Update to 0.344.0
 
@@ -390,18 +416,20 @@ module.exports = {
 
 ### Zod (Schema Validation)
 
-| Version | Status | Tree Shakeable | ESM? | Recommendation |
-|---------|--------|---|---|---|
-| 3.20+ | Stable | ✅ Yes | ✅ Yes | ✅ Use latest 3.x |
-| **3.22.4** | Current | ✅ Yes | ✅ Yes | ✅ **Use this** |
+| Version    | Status  | Tree Shakeable | ESM?   | Recommendation    |
+| ---------- | ------- | -------------- | ------ | ----------------- |
+| 3.20+      | Stable  | ✅ Yes         | ✅ Yes | ✅ Use latest 3.x |
+| **3.22.4** | Current | ✅ Yes         | ✅ Yes | ✅ **Use this**   |
 
 **Current Setting:**
+
 ```json
 // apps/web/package.json
 "zod": "3.22.4"  // ✅ Exact pin
 ```
 
 **Status:** ✅ **CORRECT**
+
 - Recent version
 - All modern features
 - Great TypeScript support
@@ -414,18 +442,20 @@ module.exports = {
 
 ### Sentry
 
-| Version | Status | React Support? | Error Boundary? | Recommendation |
-|---------|--------|---|---|---|
-| 7.x | Older | ✅ Yes | ⚠️ Limited | 🟡 Outdated |
-| **8.0.0** | Current | ✅ Yes | ✅ Full | ✅ **Use this** |
+| Version   | Status  | React Support? | Error Boundary? | Recommendation  |
+| --------- | ------- | -------------- | --------------- | --------------- |
+| 7.x       | Older   | ✅ Yes         | ⚠️ Limited      | 🟡 Outdated     |
+| **8.0.0** | Current | ✅ Yes         | ✅ Full         | ✅ **Use this** |
 
 **Current Setting:**
+
 ```json
 // apps/web/package.json
 "@sentry/nextjs": "8.0.0"  // ✅ Exact pin
 ```
 
 **Status:** ✅ **OPTIMAL**
+
 - Version 8 is production-ready
 - Full React 19 support
 - Server-side error tracking
@@ -439,12 +469,13 @@ module.exports = {
 
 ### Clsx & tailwind-merge
 
-| Package | Version | Purpose | Status | Pinning |
-|---------|---------|---------|--------|---------|
-| **clsx** | 2.1.1 | Conditional classnames | ✅ Current | Exact ✅ |
-| **tailwind-merge** | 2.6.1 | Merge Tailwind classes | ✅ Current | Exact ✅ |
+| Package            | Version | Purpose                | Status     | Pinning  |
+| ------------------ | ------- | ---------------------- | ---------- | -------- |
+| **clsx**           | 2.1.1   | Conditional classnames | ✅ Current | Exact ✅ |
+| **tailwind-merge** | 2.6.1   | Merge Tailwind classes | ✅ Current | Exact ✅ |
 
 **Current Setting:**
+
 ```json
 // apps/web/package.json
 "clsx": "2.1.1",               // ✅ Exact pin
@@ -458,6 +489,7 @@ module.exports = {
 **Status:** ✅ **CONSISTENT ACROSS PACKAGES**
 
 **Documentation Fix Needed:**
+
 - ❌ CONFIG.md claims tailwind-merge 2.7.0 (doesn't exist)
 - ✅ Fix: Update to 2.6.1
 
@@ -471,25 +503,25 @@ module.exports = {
 
 ## Version Pin Summary Table
 
-| Component | Current | Type | Location | Status |
-|-----------|---------|------|----------|--------|
-| **Node.js** | >=20.0.0 | Range | engines | ✅ Correct |
-| **pnpm** | 10.29.2 | Exact | packageManager | ✅ Optimal |
-| **TypeScript** | 5.7.2 | Exact | Root + all pkgs | ✅ Aligned |
-| **Prettier** | 3.2.5 | Exact | Root | ✅ Correct |
-| **ESLint** | 9.18.0 | Exact | Root + all pkgs | ✅ Aligned |
-| **@typescript-eslint/parser** | ^8.55.0 (root) / 8.19.1 (pkgs) | Mixed | Root ❌ / Pkgs ✅ | 🔧 **FIX** |
-| **@typescript-eslint/eslint-plugin** | ^8.55.0 (root) / 8.19.1 (pkgs) | Mixed | Root ❌ / Pkgs ✅ | 🔧 **FIX** |
-| **Turbo** | 2.2.3 | Exact | Root | ✅ Correct |
-| **Next.js** | 15.1.6 | Exact | apps/web | ✅ Optimal |
-| **React** | 19.0.0 | Exact (app) / ^19.0.0 (peer) | apps/web / @repo/ui | ✅ Correct |
-| **react-dom** | 19.0.0 | Exact (app) / ^19.0.0 (peer) | apps/web / @repo/ui | ✅ Correct |
-| **Tailwind CSS** | 3.4.17 | Exact | apps/web | ✅ Optimal |
-| **Lucide React** | 0.344.0 | Exact | apps/web + @repo/ui | ✅ Aligned |
-| **Zod** | 3.22.4 | Exact | apps/web | ✅ Current |
-| **@sentry/nextjs** | 8.0.0 | Exact | apps/web | ✅ Optimal |
-| **Clsx** | 2.1.1 | Exact | apps/web + @repo/utils | ✅ Aligned |
-| **tailwind-merge** | 2.6.1 | Exact | apps/web + @repo/utils | ✅ Aligned |
+| Component                            | Current                        | Type                         | Location               | Status     |
+| ------------------------------------ | ------------------------------ | ---------------------------- | ---------------------- | ---------- |
+| **Node.js**                          | >=20.0.0                       | Range                        | engines                | ✅ Correct |
+| **pnpm**                             | 10.29.2                        | Exact                        | packageManager         | ✅ Optimal |
+| **TypeScript**                       | 5.7.2                          | Exact                        | Root + all pkgs        | ✅ Aligned |
+| **Prettier**                         | 3.2.5                          | Exact                        | Root                   | ✅ Correct |
+| **ESLint**                           | 9.18.0                         | Exact                        | Root + all pkgs        | ✅ Aligned |
+| **@typescript-eslint/parser**        | ^8.55.0 (root) / 8.19.1 (pkgs) | Mixed                        | Root ❌ / Pkgs ✅      | 🔧 **FIX** |
+| **@typescript-eslint/eslint-plugin** | ^8.55.0 (root) / 8.19.1 (pkgs) | Mixed                        | Root ❌ / Pkgs ✅      | 🔧 **FIX** |
+| **Turbo**                            | 2.2.3                          | Exact                        | Root                   | ✅ Correct |
+| **Next.js**                          | 15.1.6                         | Exact                        | apps/web               | ✅ Optimal |
+| **React**                            | 19.0.0                         | Exact (app) / ^19.0.0 (peer) | apps/web / @repo/ui    | ✅ Correct |
+| **react-dom**                        | 19.0.0                         | Exact (app) / ^19.0.0 (peer) | apps/web / @repo/ui    | ✅ Correct |
+| **Tailwind CSS**                     | 3.4.17                         | Exact                        | apps/web               | ✅ Optimal |
+| **Lucide React**                     | 0.344.0                        | Exact                        | apps/web + @repo/ui    | ✅ Aligned |
+| **Zod**                              | 3.22.4                         | Exact                        | apps/web               | ✅ Current |
+| **@sentry/nextjs**                   | 8.0.0                          | Exact                        | apps/web               | ✅ Optimal |
+| **Clsx**                             | 2.1.1                          | Exact                        | apps/web + @repo/utils | ✅ Aligned |
+| **tailwind-merge**                   | 2.6.1                          | Exact                        | apps/web + @repo/utils | ✅ Aligned |
 
 ---
 
@@ -498,27 +530,32 @@ module.exports = {
 ### Updates by Category
 
 #### 🔴 Security & Runtime (Update Immediately)
+
 - **Node.js patches** (20.14 → 20.15) — Same month released
 - **pnpm patches** (10.29.2 → 10.29.3) — Same week released
 - **Security advisories** (any package) — Test + deploy within 72h
 
 #### 🟠 Core Tools (Update Quarterly)
+
 - **TypeScript** (5.7 → 5.8) — New major minor versions
 - **ESLint** (bugfixes, minor features) — Monthly or with config changes
 - **Prettier** (patch updates) — Monthly
 
 #### 🟡 Frameworks (Update Every 2-3 Months)
+
 - **Next.js** (15.1 → 15.2) — Minor and patch versions
 - **React** (19.0 → 19.1) — Patch versions; major versions (19 → 20) = major testing
 - **Tailwind** (3.4 → 3.5) — Minor and patch versions
 
 #### 🟢 Utilities (Update Opportunistically)
+
 - **lucide-react**, **clsx**, **zod**, **@sentry** — Update with framework updates
 - No dependency on specific versions; stable APIs
 
 ### Update Process
 
 1. **In development branch:**
+
    - `pnpm add package@version` (single package)
    - `pnpm update --recursive` (all to latest matching range)
    - Run `pnpm build` and `pnpm type-check`
@@ -526,16 +563,19 @@ module.exports = {
    - Manual testing in `pnpm dev`
 
 2. **Lock file:**
+
    - Only commit `pnpm-lock.yaml` changes from above commands
    - Don't manually edit lock file
 
 3. **Testing:**
+
    - Local build must pass
    - CI must pass
    - Type checks must pass
    - Visual testing (Storybook/dev server)
 
 4. **Commit message:**
+
    ```
    chore(deps): update next.js from 15.1.6 to 15.2.0
 
@@ -548,33 +588,37 @@ module.exports = {
 
 ## Deprecation & EOL Tracking
 
-| Tool | Current Version | EOL Date | Action |
-|------|---|---|---|
-| Node 20.x | 20.13.0+ | April 2026 | Plan upgrade to 22+ by Q2 2026 |
-| pnpm 10.x | 10.29.2 | TBD (recent) | Monitor for 11.x |
-| TypeScript 5.7 | 5.7.2 | TBD (recent) | Update to 5.8+ when released |
-| ESLint 9 | 9.18.0 | TBD (recent) | Stable for 2+ years |
-| Next.js 15 | 15.1.6 | ~April 2026 | Update path: 15 → 16 in Q2 2026 |
+| Tool           | Current Version | EOL Date     | Action                          |
+| -------------- | --------------- | ------------ | ------------------------------- |
+| Node 20.x      | 20.13.0+        | April 2026   | Plan upgrade to 22+ by Q2 2026  |
+| pnpm 10.x      | 10.29.2         | TBD (recent) | Monitor for 11.x                |
+| TypeScript 5.7 | 5.7.2           | TBD (recent) | Update to 5.8+ when released    |
+| ESLint 9       | 9.18.0          | TBD (recent) | Stable for 2+ years             |
+| Next.js 15     | 15.1.6          | ~April 2026  | Update path: 15 → 16 in Q2 2026 |
 
 ---
 
 ## Recommendation Summary
 
 ### Immediate Actions (This Sprint)
+
 - 🔧 **FIX:** Update root @typescript-eslint from `^8.55.0` to `8.19.1` (exact pin)
 - 📝 **UPDATE:** CONFIG.md version claims (pnpm, TypeScript, lucide-react, tailwind-merge)
 
 ### Near-Term (Next 2 Weeks)
+
 - 🔧 **CREATE:** `.npmrc` with explicit registry
 - 🔧 **CREATE:** `.pnpmrc` with strict peer dependency settings
 - 📝 **CREATE:** `.env.example` with all required variables
 
 ### Medium-Term (Next Month)
+
 - 🔧 **CONSOLIDATE:** ESLint configs into shared packages/config/eslint-config/
 - ➕ **ADD:** GitHub Actions CI/CD workflows
 - 📝 **DOCUMENT:** Update CONTRIBUTING.md with version update guidelines
 
 ### Long-Term (Quarterly)
+
 - 📊 **MONITOR:** Node 20 EOL (April 2026) — plan 22 upgrade
 - 📊 **MONITOR:** Next.js 16 release — evaluate for upgrade
 - 📊 **REVIEW:** New versions monthly; update patch versions quarterly
@@ -602,4 +646,3 @@ npx tsc --version              # Should be 5.7.2
 # Verify ESLint version
 pnpm exec eslint --version     # Should use 9.18.0
 ```
-

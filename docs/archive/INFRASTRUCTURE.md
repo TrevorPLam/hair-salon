@@ -9,6 +9,7 @@ Complete infrastructure verification for hair-salon-template monorepo.
 ## Configuration Files
 
 ### Root Configuration
+
 - ✅ `package.json` - Workspace config, engines: Node >=20.0.0, pnpm 10.29.2
 - ✅ `pnpm-workspace.yaml` - Workspace package globs
 - ✅ `tsconfig.json` - Root TypeScript config with composite build
@@ -22,13 +23,16 @@ Complete infrastructure verification for hair-salon-template monorepo.
 - ✅ `.eslintignore` - ESLint ignore patterns
 
 ### IDE & Editor Configuration
+
 - ✅ `.vscode/settings.json` - VS Code workspace settings (Prettier, ESLint, TypeScript)
 - ✅ `.vscode/extensions.json` - Recommended VS Code extensions
 
 ### Environment Configuration
+
 - ✅ `.env.example` - Environment variable template (HubSpot, Sentry, analytics, etc.)
 
 ### Docker Configuration
+
 - ✅ `Dockerfile` - Multi-stage production build
 - ✅ `docker-compose.yml` - Development environment setup
 
@@ -37,6 +41,7 @@ Complete infrastructure verification for hair-salon-template monorepo.
 ## Package Configurations
 
 ### Root Package (`package.json`)
+
 - ✅ Engines field enforces Node >=20.0.0
 - ✅ packageManager set to pnpm v10.29.2
 - ✅ Workspaces configured: `apps/*`, `packages/*`
@@ -44,15 +49,17 @@ Complete infrastructure verification for hair-salon-template monorepo.
 - ✅ Turbo task definitions for dev, build, lint, type-check, test, format
 
 ### Apps/Web Package
+
 - ✅ Name: `@repo/web`
 - ✅ Dependencies: Next.js 15.1.6, React 19.0.0, react-dom 19.0.0
-- ✅ Shared packages: `@repo/ui`, `@repo/utils` (workspace:*)
+- ✅ Shared packages: `@repo/ui`, `@repo/utils` (workspace:\*)
 - ✅ Includes: zod, @sentry/nextjs, lucide-react
 - ✅ TypeScript configuration with path aliases
 - ✅ ESLint with flat config (ESLint v9+)
 - ✅ Tailwind CSS 3.4.17, PostCSS, Autoprefixer
 
 ### Packages/UI Package
+
 - ✅ Name: `@repo/ui`
 - ✅ React as peerDependencies (signals consumer provides React)
 - ✅ React also in devDependencies (for local development)
@@ -61,12 +68,14 @@ Complete infrastructure verification for hair-salon-template monorepo.
 - ✅ Includes lucide-react
 
 ### Packages/Utils Package
+
 - ✅ Name: `@repo/utils`
 - ✅ Exports utility functions
 - ✅ Includes: clsx, tailwind-merge
 - ✅ ESLint and TypeScript build tools
 
 ### Packages/Config Package
+
 - ✅ Workspaces: typescript-config, eslint-config
 - ✅ `typescript-config/` provides shared TS configs (base.json, react.json, node.json)
 - ✅ `eslint-config/` provides shared ESLint configs (library.js, next.js)
@@ -76,6 +85,7 @@ Complete infrastructure verification for hair-salon-template monorepo.
 ## Dependency Alignment
 
 ### Version Consistency
+
 - ✅ TypeScript: 5.7.2 across all packages
 - ✅ React: 19.0.0 (@repo/ui has peerDependencies, apps provide it)
 - ✅ ESLint: 9.18.0
@@ -84,12 +94,14 @@ Complete infrastructure verification for hair-salon-template monorepo.
 - ✅ Tailwind CSS: 3.4.17 in @repo/web
 
 ### Dependency Types
+
 - ✅ Internal packages use `workspace:*` protocol
 - ✅ React/React-DOM: peerDependencies in @repo/ui
 - ✅ No exact version mismatches
 - ✅ No caret/tilde ranges that conflict
 
 ### Peer Dependencies
+
 - ✅ @repo/ui declares React ^19.0.0 as peer (prevents duplication)
 - ✅ apps/web provides React 19.0.0 runtime
 - ✅ Consumers aware of dependency requirements
@@ -99,6 +111,7 @@ Complete infrastructure verification for hair-salon-template monorepo.
 ## TypeScript Configuration
 
 ### Base Compiler Options
+
 - ✅ target: ES2022
 - ✅ module: ESNext
 - ✅ moduleResolution: bundler
@@ -110,6 +123,7 @@ Complete infrastructure verification for hair-salon-template monorepo.
 - ✅ skipLibCheck: true
 
 ### Path Aliases
+
 - ✅ apps/web: `@/*` (app root), `@repo/ui`, `@repo/utils`
 - ✅ All packages extend tsconfig.base.json
 
@@ -118,13 +132,15 @@ Complete infrastructure verification for hair-salon-template monorepo.
 ## ESLint Configuration
 
 ### Setup
+
 - ✅ Flat config format (ESLint v9+)
 - ✅ @eslint/eslintrc for compatibility with legacy configs
 - ✅ Next.js recommended configs included
 
 ### Rules
+
 - ✅ TypeScript strict checking enabled
-- ✅ Unused variables flagged (argsIgnorePattern: ^_)
+- ✅ Unused variables flagged (argsIgnorePattern: ^\_)
 - ✅ react/no-unescaped-entities enforced
 - ✅ @typescript-eslint/no-unused-vars rules active
 
@@ -133,18 +149,21 @@ Complete infrastructure verification for hair-salon-template monorepo.
 ## Code Quality Tools
 
 ### Prettier
+
 - ✅ Version 3.2.5
 - ✅ Config: printWidth 100, single quotes, trailing commas (es5)
 - ✅ Globally configured and used in all packages
 - ✅ .prettierignore excludes build/lock files
 
 ### TypeScript
+
 - ✅ Version 5.7.2 (compatible with @typescript-eslint v8)
 - ✅ Strict mode enabled project-wide
 - ✅ Type checking via tsc --noEmit
 - ✅ Turbo caches type-check results
 
 ### Linting
+
 - ✅ ESLint 9.18.0 with flat config
 - ✅ Next.js ESLint config extended
 - ✅ All files passing lint checks (as of configuration update)
@@ -154,12 +173,14 @@ Complete infrastructure verification for hair-salon-template monorepo.
 ## Build & Task Orchestration
 
 ### Turbo
+
 - ✅ Version 2.2.3
 - ✅ Tasks configured: build, dev, lint, type-check, test, format
 - ✅ Caching enabled for build outputs and type-check
 - ✅ Dependency ordering (^build, ^lint, etc.)
 
 ### pnpm
+
 - ✅ Version 10.29.2
 - ✅ Workspace protocol (`workspace:*`) for internal packages
 - ✅ Lock file (pnpm-lock.yaml) 209KB, generated and committed
@@ -193,6 +214,7 @@ Complete infrastructure verification for hair-salon-template monorepo.
 ## Resolved Issues
 
 ### Configuration
+
 1. ✅ npm registry (was Taobao mirror with expired SSL) → official registry
 2. ✅ pnpm bootstrap conflict (fixed packageManager field)
 3. ✅ TypeScript version (5.9.3 → 5.7.2 for @typescript-eslint compatibility)
@@ -200,6 +222,7 @@ Complete infrastructure verification for hair-salon-template monorepo.
 5. ✅ .prettierrc.js conflict (removed in favor of .prettierrc)
 
 ### Dependencies
+
 1. ✅ React peerDependencies (moved to peerDeps in @repo/ui)
 2. ✅ Missing @repo/utils in apps/web (added)
 3. ✅ Missing lucide-react (added to @repo/ui)
@@ -207,6 +230,7 @@ Complete infrastructure verification for hair-salon-template monorepo.
 5. ✅ Missing @sentry/nextjs (added to apps/web)
 
 ### Code Quality
+
 1. ✅ TypeScript isolatedModules exports (fixed export type syntax)
 2. ✅ Linting errors (10+ files - all HTML entity escaping fixed)
 3. ✅ Unused imports (removed from privacy, contact pages)

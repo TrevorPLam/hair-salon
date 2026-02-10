@@ -350,11 +350,13 @@ If any checklist item cannot be completed:
 ### Common Exemptions
 
 1. **Testing:** Sometimes full test coverage cannot be added immediately
+
    - Document why (legacy code, test infrastructure missing)
    - Create follow-up task with priority
    - Include minimal smoke test if possible
 
 2. **Documentation:** Some documentation may be deferred
+
    - Only for internal/experimental code
    - Must have follow-up task
    - Basic inline comments still required
@@ -456,16 +458,16 @@ Track these metrics to ensure quality:
 
 ### Per Task
 
-- Time to complete checklist: _____ minutes
-- Checklist items failed first time: _____
-- Follow-up tasks created: _____
+- Time to complete checklist: **\_** minutes
+- Checklist items failed first time: **\_**
+- Follow-up tasks created: **\_**
 
 ### Per Session
 
-- Tasks completed: _____
-- Average checklist time: _____ minutes
-- Total follow-ups created: _____
-- Quality gate failures: _____
+- Tasks completed: **\_**
+- Average checklist time: **\_** minutes
+- Total follow-ups created: **\_**
+- Quality gate failures: **\_**
 
 ## Tips for Success
 

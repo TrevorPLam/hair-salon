@@ -129,6 +129,7 @@ Execute this loop for each task in the batch:
 **Steps:**
 
 1. **Run relevant checks:**
+
    - Unit tests: `pnpm test`
    - Type checking: `pnpm type-check`
    - Linting: `pnpm lint`
@@ -136,11 +137,13 @@ Execute this loop for each task in the batch:
    - Security scan (if applicable)
 
 2. **Add verification if missing:**
+
    - If no automated checks exist, add minimum viable verification
    - Even a smoke test is better than no test
    - Document why full testing is deferred (if applicable)
 
 3. **Manual testing:**
+
    - Run the application: `pnpm dev`
    - Exercise new code paths
    - Verify UI changes visually
@@ -166,6 +169,7 @@ Execute this loop for each task in the batch:
 **Required documentation updates:**
 
 1. **Meta headers** (for code files):
+
    ```typescript
    /**
     * @file <filename>
@@ -214,6 +218,7 @@ Execute this loop for each task in the batch:
    ```
 
 2. **Inline commentary** (only for non-obvious logic):
+
    - Why, not what
    - Complex algorithms
    - Non-obvious workarounds
@@ -240,18 +245,21 @@ Execute this loop for each task in the batch:
 **Analysis questions:**
 
 1. **What else needs fixing?**
+
    - Edge cases not handled
    - Error handling gaps
    - Performance issues
    - Accessibility concerns
 
 2. **What's missing?**
+
    - Test coverage gaps
    - Missing documentation
    - Observability/logging
    - Monitoring/alerts
 
 3. **What could be better?**
+
    - Refactoring opportunities
    - Simplification possibilities
    - Performance optimizations
@@ -284,12 +292,14 @@ Execute this loop for each task in the batch:
 ### Before Promoting
 
 1. **Clean the backlog:**
+
    - Remove duplicates
    - Archive obsolete items
    - Update stale descriptions
    - Verify dependencies
 
 2. **Split large tasks:**
+
    - Break into session-sized units
    - Each subtask should be completable in one session
    - Maintain logical grouping
@@ -322,24 +332,28 @@ Execute this loop for each task in the batch:
 For each archived task, include:
 
 1. **What changed:**
+
    - Files/modules touched
    - Key code modifications
    - Configuration updates
    - Dependencies added/removed
 
 2. **Why it changed:**
+
    - Original intent/problem
    - Design decisions
    - Tradeoffs made
    - Alternative approaches considered
 
 3. **How it was verified:**
+
    - Commands run and results
    - Manual testing performed
    - Screenshots/evidence
    - Known limitations
 
 4. **Follow-up tasks:**
+
    - New tasks created
    - Rationale for each
    - Priority assignments
@@ -418,15 +432,18 @@ A task is "done" ONLY when:
 [Clear description of what needs to be done]
 
 **Acceptance Criteria:**
+
 - [ ] [Specific, testable criterion 1]
 - [ ] [Specific, testable criterion 2]
 - [ ] [Specific, testable criterion 3]
 
 **Files to Modify:**
+
 - [file1.ts]
 - [file2.tsx]
 
 **Verification:**
+
 - [How to verify this works]
 
 **Notes:**
@@ -439,30 +456,36 @@ A task is "done" ONLY when:
 ### [Task Title] - Completed [YYYY-MM-DD]
 
 **What Changed:**
+
 - Files touched: [list]
 - Key modifications: [summary]
 - Dependencies: [added/removed/updated]
 
 **Why:**
+
 - Intent: [original problem]
 - Decision rationale: [key decisions]
 - Tradeoffs: [what was sacrificed]
 
 **Verification:**
+
 - Commands: [commands run]
 - Results: [summary of results]
 - Manual tests: [what was tested]
 - Screenshots: [if applicable]
 
 **Follow-ups Created:**
+
 1. [Task 1] - [rationale] - [priority]
 2. [Task 2] - [rationale] - [priority]
 
 **Limitations/Risks:**
+
 - [Known limitation 1]
 - [Known risk 1]
 
 **Session Context:**
+
 - Time spent: [estimate]
 - Complexity: [High|Medium|Low]
 - Challenges: [key challenges faced]

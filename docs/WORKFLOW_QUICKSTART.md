@@ -158,11 +158,13 @@ pnpm dev
 [What needs to be done]
 
 **Acceptance Criteria:**
+
 - [ ] Criterion 1
 - [ ] Criterion 2
 - [ ] Criterion 3
 
 **Files to Modify:**
+
 - file1.ts
 - file2.tsx
 
@@ -179,21 +181,26 @@ pnpm dev
 ### [Task Title] - Completed [YYYY-MM-DD]
 
 **What Changed:**
+
 - Files: [list]
 - Modifications: [summary]
 
 **Why:**
+
 - Intent: [problem]
 - Decisions: [rationale]
 
 **Verification:**
+
 - Commands: [what was run]
 - Results: [summary]
 
 **Follow-ups:**
+
 1. [Task] - [rationale] - [priority]
 
 **Limitations:**
+
 - [Known limitation 1]
 ```
 

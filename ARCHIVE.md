@@ -94,7 +94,7 @@ This file contains completed tasks with detailed session notes. These notes are 
 **Verification:**
 
 - Commands: N/A (documentation-only changes)
-- Manual review: 
+- Manual review:
   - Verified all workflow steps align with problem statement
   - Confirmed Definition of Done covers all required quality gates
   - Validated templates are comprehensive and actionable
@@ -130,12 +130,13 @@ This file contains completed tasks with detailed session notes. These notes are 
 
 Use this template when archiving tasks:
 
-```markdown
+````markdown
 ### [Task Title] - Completed [YYYY-MM-DD]
 
 **Status:** ✅ Completed / ❌ Abandoned / 🔄 Superseded
 
 **What Changed:**
+
 - Files touched: [list with paths]
 - Key modifications: [brief summary]
 - Dependencies: [added/removed/updated]
@@ -143,6 +144,7 @@ Use this template when archiving tasks:
 - Database: [migrations, schema changes]
 
 **Why:**
+
 - Intent: [original problem/requirement]
 - Decision rationale: [key decisions and reasoning]
 - Tradeoffs: [what was sacrificed or compromised]
@@ -150,6 +152,7 @@ Use this template when archiving tasks:
 - Constraints: [limitations that influenced design]
 
 **Verification:**
+
 - Commands run:
   ```bash
   pnpm test
@@ -157,28 +160,34 @@ Use this template when archiving tasks:
   pnpm lint
   pnpm build
   ```
+````
+
 - Results: [summary of command outputs]
 - Manual tests: [steps taken to verify functionality]
 - Screenshots: [link to or description of visual evidence]
 - Performance: [metrics if relevant]
 
 **Follow-ups Created:**
+
 1. [Task 1 title] - [rationale] - [priority] - Link: BACKLOG.md#task-1
 2. [Task 2 title] - [rationale] - [priority] - Link: BACKLOG.md#task-2
 
 **Limitations/Risks:**
+
 - [Known limitation 1]
 - [Known risk 1]
 - [Edge case not handled]
 - [Performance consideration]
 
 **Session Context:**
+
 - Time spent: [estimate]
 - Complexity: [High|Medium|Low]
 - Challenges: [key difficulties encountered]
 - Lessons learned: [insights for future work]
 - References: [links to related tasks, docs, or resources]
-```
+
+````
 
 ## Archive Maintenance
 
@@ -212,7 +221,7 @@ grep -A 20 "filename.ts" ARCHIVE.md
 
 # Search by priority
 grep -B 5 "High priority" ARCHIVE.md
-```
+````
 
 ## Metrics & Insights
 

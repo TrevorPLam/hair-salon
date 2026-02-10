@@ -140,11 +140,13 @@ Use this template when adding tasks to backlog:
 [Why this task is needed and why it's important]
 
 **Acceptance Criteria:**
+
 - [ ] [Specific, testable criterion 1]
 - [ ] [Specific, testable criterion 2]
 - [ ] [Specific, testable criterion 3]
 
 **Files to Modify:**
+
 - [file1.ts]
 - [file2.tsx]
 
