@@ -98,9 +98,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const baseUrl = getPublicBaseUrl().replace(/\/$/, '');
+  const imageUrl = getBlogPostImageUrl(baseUrl, post.slug);
+  const dateValues = getPostDateValues(post.date);
+
   return {
     title: `${post.title} | Blog | Hair Salon Template`,
     description: post.description,
+    alternates: {
+      canonical: `${baseUrl}/blog/${post.slug}`,
+    },
+    openGraph: {
+      type: 'article',
+      title: post.title,
+      description: post.description,
+      url: `${baseUrl}/blog/${post.slug}`,
+      ...(imageUrl ? { images: [{ url: imageUrl }] } : {}),
+      ...(dateValues.hasValidDate && dateValues.isoDate
+        ? { publishedTime: dateValues.isoDate, modifiedTime: dateValues.isoDate }
+        : {}),
+      authors: [post.author],
+      section: post.category,
+    },
+    twitter: {
+      card: imageUrl ? 'summary_large_image' : 'summary',
+      title: post.title,
+      description: post.description,
+      ...(imageUrl ? { images: [imageUrl] } : {}),
+    },
   };
 }
 

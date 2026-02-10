@@ -78,17 +78,17 @@ This remediation plan prioritizes fixes based on impact and effort to complete t
 
 1. **Build-Time Environment Validation (BLOCKING)**
 
-   - **Problem:** `validatedEnv` imported at module level causes production build failures
+   - **Problem:** Server-only env validation executes at build time when booking modules are imported.
    - **Error:** "Invalid environment variables: { SUPABASE_URL: [ 'Required' ] }"
-   - **Root Cause:** Environment validation happens during build, not runtime
-   - **Files Affected:** `booking-providers.ts`, `booking-actions.ts`
-   - **Solution Needed:** Make environment validation runtime-only
+   - **Root Cause:** Module-level `validatedEnv` usage forces validation during build/static evaluation.
+   - **Files Affected:** `booking-providers.ts`, `booking-actions.ts`, booking barrel export.
+   - **Solution Needed:** Move provider env reads to runtime-only paths (server actions / lazy getters).
 
 2. **Test Configuration Issues (BLOCKING)**
-   - **Problem:** Jest can't parse TypeScript ES modules
+   - **Problem:** Jest runs in CJS while ts-jest emits ESM from TS config.
    - **Error:** "Cannot use import statement outside a module"
    - **Files Affected:** `env.test.ts`, `sanitize.test.ts`
-   - **Solution Needed:** Update Jest config or use require syntax
+   - **Solution Needed:** Align Jest runtime with TS output (either enable ESM in Jest or force CJS for tests).
 
 **📁 FILES CREATED/MODIFIED:**
 
@@ -139,17 +139,34 @@ This remediation plan prioritizes fixes based on impact and effort to complete t
 
 **Immediate (Critical Path):**
 
-1. **Fix Build Issue:** Modify `booking-providers.ts` to use `process.env` directly instead of `validatedEnv`
-2. **Fix Test Configuration:** Update Jest to handle ES modules or convert to CommonJS
-3. **Verify Build:** Ensure `pnpm build` succeeds with environment fixes
-4. **End-to-End Test:** Test complete booking flow from service page to confirmation
+1. **Move env validation to runtime:**
+   - Read provider config from `process.env` at request time (server-only).
+   - Remove any module-level instantiation that forces validation during build.
+   - Ensure provider toggles are optional and do not throw during builds.
+2. **Fix test configuration:**
+   - Choose one: enable Jest ESM (`extensionsToTreatAsEsm` + ts-jest `useESM`) or force CJS output for tests.
+   - Keep transforms consistent with Node test environment.
+3. **Align provider config schema:**
+   - Add `*_ENABLED`, `*_API_SECRET`, `*_WEBHOOK_URL` to env schema or read as optional runtime vars.
+   - Validate presence only when the provider is enabled.
+4. **Verify build + tests:**
+   - Confirm `pnpm build` passes in CI-like environment.
+   - Confirm `pnpm test` passes with updated Jest config.
+5. **End-to-end booking validation:**
+   - Submit from service page -> /book -> confirmation UI.
+   - Confirm provider failures are non-blocking and errors are user-safe.
 
 **Short Term (Next Session):**
 
-1. **Analytics Integration:** Uncomment and implement booking analytics tracking
-2. **Email Notifications:** Add booking confirmation email system
-3. **Database Integration:** Replace in-memory storage with real database
-4. **Admin Dashboard:** Build booking management interface
+1. **Analytics Integration:**
+   - Implement client analytics init (instrumentation-client) and booking event tracking.
+   - Use `sendBeacon` fallback for reliability.
+2. **Provider hardening:**
+   - Add idempotency keys for external booking creation.
+   - Add webhook handling for provider status updates.
+3. **Email Notifications:** Add booking confirmation email system
+4. **Database Integration:** Replace in-memory storage with real database
+5. **Admin Dashboard:** Build booking management interface
 
 **Evidence Required:**
 
@@ -159,6 +176,8 @@ This remediation plan prioritizes fixes based on impact and effort to complete t
 - [ ] Booking analytics events fire correctly
 - [ ] Booking confirmation displays properly
 - [ ] All service booking CTAs are functional
+- [ ] Provider toggles behave correctly with missing env vars
+- [ ] Rate limits return user-safe errors with proper status handling
 
 **Dependencies:** Service pages implementation (✅ Complete)
 
@@ -176,10 +195,11 @@ This remediation plan prioritizes fixes based on impact and effort to complete t
 - Environment validation needs to be runtime-only
 - Test configuration needs ES module support
 - Analytics integration needs to be completed
+- Provider env schema needs to match runtime usage
 
 **Recommended Approach for Next Session:**
 
-1. Start with fixing the build-time environment validation issue
+1. Fix runtime env validation and provider config alignment
 2. Update test configuration to resolve CI failures
 3. Complete end-to-end testing of booking flow
 4. Implement analytics tracking once core flow is working

@@ -29,6 +29,9 @@
  * - last_audited: 2026-02-09
  */
 
+import { cache } from 'react';
+import { getAllPosts } from '@/features/blog/lib/blog';
+
 export type SearchItem = {
   id: string;
   title: string;
@@ -121,8 +124,26 @@ const staticPages: SearchItem[] = [
   },
 ];
 
+const buildSearchIndex = cache((): SearchItem[] => {
+  const posts = getAllPosts();
+  const blogItems: SearchItem[] = posts.map((post) => {
+    const tags = ['blog', post.category, post.author].filter(
+      (tag): tag is string => Boolean(tag)
+    );
+
+    return {
+      id: `blog-${post.slug}`,
+      title: post.title,
+      description: post.description,
+      href: `/blog/${post.slug}`,
+      type: 'Blog',
+      tags,
+    };
+  });
+
+  return [...staticPages, ...blogItems];
+});
+
 export async function getSearchIndex(): Promise<SearchItem[]> {
-  // TODO: Integrate blog posts once build constraints are resolved
-  // Blog content is successfully created and functional
-  return staticPages;
+  return buildSearchIndex();
 }

@@ -53,9 +53,19 @@ export const metadata: Metadata = {
   description: 'Hair care tips, trends, and salon news.',
 };
 
-export default function BlogPage() {
+interface BlogPageProps {
+  searchParams?: { category?: string };
+}
+
+export default function BlogPage({ searchParams }: BlogPageProps) {
   const posts = getAllPosts();
   const categories = getAllCategories();
+  const requestedCategory = searchParams?.category?.trim();
+  const activeCategory =
+    requestedCategory && categories.includes(requestedCategory) ? requestedCategory : undefined;
+  const filteredPosts = activeCategory
+    ? posts.filter((post) => post.category === activeCategory)
+    : posts;
 
   return (
     <div className="min-h-screen">
@@ -79,7 +89,11 @@ export default function BlogPage() {
             <div className="flex flex-wrap gap-3 justify-center">
               <Link
                 href="/blog"
-                className="px-4 py-2 bg-charcoal text-white rounded-full font-medium hover:bg-slate-800 transition-colors"
+                className={`px-4 py-2 rounded-full font-medium transition-colors ${
+                  !activeCategory
+                    ? 'bg-charcoal text-white hover:bg-slate-800'
+                    : 'bg-off-white text-charcoal hover:bg-slate-200'
+                }`}
               >
                 All Posts
               </Link>
@@ -87,7 +101,11 @@ export default function BlogPage() {
                 <Link
                   key={category}
                   href={`/blog?category=${encodeURIComponent(category)}`}
-                  className="px-4 py-2 bg-off-white text-charcoal rounded-full font-medium hover:bg-slate-200 transition-colors"
+                  className={`px-4 py-2 rounded-full font-medium transition-colors ${
+                    activeCategory === category
+                      ? 'bg-charcoal text-white hover:bg-slate-800'
+                      : 'bg-off-white text-charcoal hover:bg-slate-200'
+                  }`}
                 >
                   {category}
                 </Link>
@@ -100,15 +118,21 @@ export default function BlogPage() {
       {/* Blog Posts */}
       <section className="py-20 bg-off-white">
         <Container>
-          {posts.length === 0 ? (
+          {filteredPosts.length === 0 ? (
             <div className="max-w-2xl mx-auto text-center">
-              <p className="text-slate text-lg">
-                No blog posts yet. Check back soon for hair care tips!
-              </p>
+              {activeCategory ? (
+                <p className="text-slate text-lg">
+                  No posts found for {activeCategory}. Check back soon for more updates.
+                </p>
+              ) : (
+                <p className="text-slate text-lg">
+                  No blog posts yet. Check back soon for hair care tips!
+                </p>
+              )}
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map((post) => (
+              {filteredPosts.map((post) => (
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
@@ -170,7 +194,7 @@ export default function BlogPage() {
               Book your appointment today and let our experts take care of you.
             </p>
             <Link
-              href="/contact"
+              href="/book"
               className="inline-flex items-center justify-center px-8 py-4 bg-teal text-white font-semibold rounded-lg hover:bg-teal-dark transition-all shadow-lg hover:shadow-xl"
             >
               Book Appointment

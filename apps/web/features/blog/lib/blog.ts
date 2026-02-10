@@ -47,6 +47,8 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import readingTime from 'reading-time';
+import { cache } from 'react';
+import { z } from 'zod';
 
 /** Absolute path to blog content directory */
 const postsDirectory = path.join(process.cwd(), 'content/blog');
@@ -78,40 +80,58 @@ const normalizeBlogDate = (value: unknown): { value: string; date: Date } | null
   return { value, date: parsed };
 };
 
+const blogFrontmatterSchema = z.object({
+  title: z.string().min(2).max(200).trim(),
+  description: z.string().min(10).max(300).trim(),
+  date: z.union([z.string(), z.date()]),
+  author: z.string().min(2).max(80).trim().optional(),
+  category: z.string().min(2).max(40).trim().optional(),
+  featured: z.boolean().optional(),
+});
+
+const formatFrontmatterErrors = (error: z.ZodError) =>
+  JSON.stringify(error.flatten().fieldErrors);
+
+const reportFrontmatterError = (slug: string, details: string) => {
+  const message = `Invalid frontmatter for blog post "${slug}": ${details}`;
+
+  if (process.env.NODE_ENV === 'production') {
+    console.warn(message);
+    return;
+  }
+
+  throw new Error(message);
+};
+
 const buildPost = (
   slug: string,
   data: Record<string, unknown>,
   content: string
 ): BlogPost | null => {
-  const hasRequiredFields =
-    Object.hasOwn(data, 'title') &&
-    Object.hasOwn(data, 'description') &&
-    Object.hasOwn(data, 'date');
+  const parsed = blogFrontmatterSchema.safeParse(data);
 
-  if (!hasRequiredFields) {
-    // WHY: Require explicit frontmatter fields to avoid silently accepting malformed posts.
+  if (!parsed.success) {
+    reportFrontmatterError(slug, formatFrontmatterErrors(parsed.error));
     return null;
   }
 
-  const title = isNonEmptyString(data.title) ? data.title : null;
-  const description = isNonEmptyString(data.description) ? data.description : null;
-  const normalizedDate = normalizeBlogDate(data.date);
+  const normalizedDate = normalizeBlogDate(parsed.data.date);
 
-  if (!title || !description || !normalizedDate) {
-    // WHY: Skip invalid frontmatter to keep blog rendering stable.
+  if (!normalizedDate) {
+    reportFrontmatterError(slug, 'date must be YYYY-MM-DD and a valid calendar date');
     return null;
   }
 
   return {
     slug,
-    title,
-    description,
+    title: parsed.data.title,
+    description: parsed.data.description,
     date: normalizedDate.value,
-    author: isNonEmptyString(data.author) ? data.author : 'Hair Salon Template Team',
-    category: isNonEmptyString(data.category) ? data.category : 'Hair Care',
+    author: parsed.data.author ?? 'Hair Salon Template Team',
+    category: parsed.data.category ?? 'Hair Care',
     readingTime: readingTime(content).text,
     content,
-    featured: typeof data.featured === 'boolean' ? data.featured : false,
+    featured: parsed.data.featured ?? false,
   };
 };
 
@@ -159,7 +179,7 @@ export interface BlogPost {
  * const posts = getAllPosts()
  * // Use in getStaticProps or generateStaticParams
  */
-export function getAllPosts(): BlogPost[] {
+const readAllPosts = cache((): BlogPost[] => {
   // Create directory if it doesn't exist
   if (!fs.existsSync(postsDirectory)) {
     return [];
@@ -180,6 +200,10 @@ export function getAllPosts(): BlogPost[] {
 
   // Sort posts by date
   return allPosts.sort((a, b) => Date.parse(b.date) - Date.parse(a.date));
+});
+
+export function getAllPosts(): BlogPost[] {
+  return readAllPosts();
 }
 
 /**
@@ -194,16 +218,12 @@ export function getAllPosts(): BlogPost[] {
  *   notFound() // Next.js 404
  * }
  */
-export function getPostBySlug(slug: string): BlogPost | undefined {
-  try {
-    const fullPath = path.join(postsDirectory, `${slug}.mdx`);
-    const fileContents = fs.readFileSync(fullPath, 'utf8');
-    const { data, content } = matter(fileContents);
+const readPostBySlug = cache((slug: string): BlogPost | undefined =>
+  readAllPosts().find((post) => post.slug === slug)
+);
 
-    return buildPost(slug, data, content) ?? undefined;
-  } catch {
-    return undefined;
-  }
+export function getPostBySlug(slug: string): BlogPost | undefined {
+  return readPostBySlug(slug);
 }
 
 /**
