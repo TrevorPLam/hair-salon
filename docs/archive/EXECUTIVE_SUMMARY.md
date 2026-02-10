@@ -14,18 +14,18 @@ Completed comprehensive configuration audit of hair-salon-template monorepo. Rep
 
 ## Top 10 Issues by Risk
 
-| # | Issue | Severity | Impact | Effort | Status |
-|---|-------|----------|--------|--------|--------|
-| **1** | Missing CI/CD pipeline | 🔴 Critical | Untested code merges | 15 min | TODO |
-| **2** | Missing secret scanning | 🔴 Critical | Exposed credentials | 20 min | TODO |
-| **3** | Missing dependency scanning | 🔴 Critical | Undetected vulnerabilities | 10 min | TODO |
-| **4** | Version drift in docs | 🟠 High | Developer confusion | 5 min | TODO |
-| **5** | ESLint config duplication | 🟠 High | Maintenance burden | 30 min | TODO |
-| **6** | Missing environment template | 🟡 Medium | Onboarding friction | 10 min | TODO |
-| **7** | Missing .pnpmrc | 🟡 Medium | Isolation not enforced | 5 min | TODO |
-| **8** | Missing npm registry pin | 🟡 Medium | Supply chain unclear | 5 min | TODO |
-| **9** | Outdated @typescript-eslint | 🟢 Low | Version consistency | 10 min | TODO |
-| **10** | Missing testing setup | 🟡 Medium | No regression detection | 2-4 hours | TODO |
+| #      | Issue                        | Severity    | Impact                     | Effort    | Status |
+| ------ | ---------------------------- | ----------- | -------------------------- | --------- | ------ |
+| **1**  | Missing CI/CD pipeline       | 🔴 Critical | Untested code merges       | 15 min    | TODO   |
+| **2**  | Missing secret scanning      | 🔴 Critical | Exposed credentials        | 20 min    | TODO   |
+| **3**  | Missing dependency scanning  | 🔴 Critical | Undetected vulnerabilities | 10 min    | TODO   |
+| **4**  | Version drift in docs        | 🟠 High     | Developer confusion        | 5 min     | TODO   |
+| **5**  | ESLint config duplication    | 🟠 High     | Maintenance burden         | 30 min    | TODO   |
+| **6**  | Missing environment template | 🟡 Medium   | Onboarding friction        | 10 min    | TODO   |
+| **7**  | Missing .pnpmrc              | 🟡 Medium   | Isolation not enforced     | 5 min     | TODO   |
+| **8**  | Missing npm registry pin     | 🟡 Medium   | Supply chain unclear       | 5 min     | TODO   |
+| **9**  | Outdated @typescript-eslint  | 🟢 Low      | Version consistency        | 10 min    | TODO   |
+| **10** | Missing testing setup        | 🟡 Medium   | No regression detection    | 2-4 hours | TODO   |
 
 ---
 
@@ -34,11 +34,13 @@ Completed comprehensive configuration audit of hair-salon-template monorepo. Rep
 ### 🔴 Security & Compliance Gaps
 
 1. **No CI/CD Pipeline**
+
    - No automated lint/build/type-check on PRs
    - Broken code can be merged to main
    - **Fix:** Create `.github/workflows/ci.yml` (15 min)
 
 2. **No Secret Scanning**
+
    - Accidentally committed secrets undetected
    - Risk: API keys, tokens, credentials exposed
    - **Fix:** Enable GitHub secret scanning or GitGuardian (20 min)
@@ -51,6 +53,7 @@ Completed comprehensive configuration audit of hair-salon-template monorepo. Rep
 ### 🟠 High-Risk Issues
 
 4. **Version Drift in Documentation**
+
    - CONFIG.md claims wrong versions:
      - pnpm: claims 9.15.4, actual is 10.29.2
      - TypeScript: claims 5.9.3, actual is 5.7.2
@@ -68,12 +71,14 @@ Completed comprehensive configuration audit of hair-salon-template monorepo. Rep
 ### 🟡 Medium-Risk Issues
 
 6. **Missing Configuration Files**
+
    - No `.env.example` (template for required environment variables)
    - No `.pnpmrc` (monorepo best practices not enforced)
    - No `.npmrc` (registry not explicitly pinned)
    - **Fix:** Create all 3 files (20 min)
 
 7. **No Testing Infrastructure**
+
    - `test` script just echoes "No tests configured"
    - No unit test framework (Jest, Vitest)
    - No E2E framework (Playwright, Cypress)
@@ -90,12 +95,12 @@ Completed comprehensive configuration audit of hair-salon-template monorepo. Rep
 ## What's Working Well ✅
 
 - ✅ **Package management:** pnpm 10.29.2 at optimal version
-- ✅ **Monorepo structure:** Workspace config correct (apps/*, packages/*)
+- ✅ **Monorepo structure:** Workspace config correct (apps/_, packages/_)
 - ✅ **TypeScript:** Strict mode enforced, aligned across packages (5.7.2)
 - ✅ **Code formatting:** Prettier configured globally (3.2.5)
 - ✅ **Build orchestration:** Turbo properly configured (2.2.3)
 - ✅ **Framework versions:** Next.js 15.1.6, React 19.0.0 optimal
-- ✅ **Dependency isolation:** workspace:* protocol correct, React peer dependencies set
+- ✅ **Dependency isolation:** workspace:\* protocol correct, React peer dependencies set
 - ✅ **Docker:** Multi-stage Dockerfile for production
 - ✅ **Documentation:** CONFIG.md, CONTRIBUTING.md exist (just need updates)
 
@@ -104,6 +109,7 @@ Completed comprehensive configuration audit of hair-salon-template monorepo. Rep
 ## What Needs Fixing 🔧
 
 ### Immediate (This Sprint) — 1-2 hours
+
 1. Update CONFIG.md versions (5 min)
 2. Create `.env.example` (10 min)
 3. Create `.pnpmrc` (5 min)
@@ -114,11 +120,13 @@ Completed comprehensive configuration audit of hair-salon-template monorepo. Rep
 8. Update @typescript-eslint root versions (10 min)
 
 ### Near-Term (Next 2 Weeks) — 4-6 hours
+
 1. Consolidate ESLint configs (30 min)
 2. Implement Jest testing setup (1-2 hours)
 3. Write initial test examples (2-3 hours)
 
 ### Long-Term (Next Month+) — 20-30 hours
+
 1. Write comprehensive test coverage (ongoing)
 2. Add E2E test suite (Playwright)
 3. Setup pre-commit hooks (Husky)
@@ -128,24 +136,25 @@ Completed comprehensive configuration audit of hair-salon-template monorepo. Rep
 
 ## Verification Status
 
-| Check | Status | Notes |
-|-------|--------|-------|
-| ✅ **Install** | Working | `pnpm install` succeeds |
-| ✅ **Build** | Working | `pnpm build` succeeds (feature gaps only) |
-| ✅ **Lint** | Working | `pnpm lint` passes all packages |
-| ✅ **Type-check** | Working | `pnpm type-check` passes |
-| ✅ **Format** | Working | Prettier configured, works globally |
-| ✅ **Dev server** | Working | `pnpm dev` → Next.js runs on localhost:3000 |
-| ✅ **Lock file** | Valid | pnpm-lock.yaml 209 KB, reproducible |
-| ⚠️ **Tests** | Not configured | `pnpm test` → echo placeholder |
-| ❌ **CI/CD** | Missing | No GitHub Actions workflows |
-| ❌ **Security** | Not scanned | No automated vulnerability detection |
+| Check             | Status         | Notes                                       |
+| ----------------- | -------------- | ------------------------------------------- |
+| ✅ **Install**    | Working        | `pnpm install` succeeds                     |
+| ✅ **Build**      | Working        | `pnpm build` succeeds (feature gaps only)   |
+| ✅ **Lint**       | Working        | `pnpm lint` passes all packages             |
+| ✅ **Type-check** | Working        | `pnpm type-check` passes                    |
+| ✅ **Format**     | Working        | Prettier configured, works globally         |
+| ✅ **Dev server** | Working        | `pnpm dev` → Next.js runs on localhost:3000 |
+| ✅ **Lock file**  | Valid          | pnpm-lock.yaml 209 KB, reproducible         |
+| ⚠️ **Tests**      | Not configured | `pnpm test` → echo placeholder              |
+| ❌ **CI/CD**      | Missing        | No GitHub Actions workflows                 |
+| ❌ **Security**   | Not scanned    | No automated vulnerability detection        |
 
 ---
 
 ## Risk Assessment
 
 ### Current State: 🟡 YELLOW (Operational but Vulnerable)
+
 - ✅ Local development works
 - ✅ Single developer can build/deploy
 - ❌ **Not ready for team development** (no CI quality gates)
@@ -153,6 +162,7 @@ Completed comprehensive configuration audit of hair-salon-template monorepo. Rep
 - ⚠️ **Vulnerable to drift** (documentation outdated, no locking mechanisms)
 
 ### After Immediate Fixes: 🟢 GREEN (Team Ready)
+
 - ✅ CI/CD gates on PRs
 - ✅ Automated security scanning
 - ✅ Documentation accurate
@@ -215,12 +225,12 @@ Patch 3.3: Setup CODEOWNERS
 
 ## Time Investment
 
-| Phase | Scope | Time | Blocker |
-|-------|-------|------|---------|
-| **Phase 1** | Security + Quality gates | 1-2 hours | ✅ **CRITICAL** |
-| **Phase 2** | Testing | 4-6 hours | ⚠️ **HIGH** |
-| **Phase 3** | DX Polish | 2-3 hours | 🟢 Low |
-| **Total** | Complete hardening | **7-11 hours** | — |
+| Phase       | Scope                    | Time           | Blocker         |
+| ----------- | ------------------------ | -------------- | --------------- |
+| **Phase 1** | Security + Quality gates | 1-2 hours      | ✅ **CRITICAL** |
+| **Phase 2** | Testing                  | 4-6 hours      | ⚠️ **HIGH**     |
+| **Phase 3** | DX Polish                | 2-3 hours      | 🟢 Low          |
+| **Total**   | Complete hardening       | **7-11 hours** | —               |
 
 **Current state takes 5 min to verify (pnpm install), optimal state takes 30 min including tests.**
 
@@ -229,16 +239,19 @@ Patch 3.3: Setup CODEOWNERS
 ## Recommendations
 
 ### Before This Week (Critical Path)
+
 - [ ] Implement Phase 1 patches (security + CI/CD)
 - [ ] Review audit findings with team
 - [ ] Commit all patches to feature branch
 
 ### Before End of Month
+
 - [ ] Implement Phase 2 patches (testing)
 - [ ] Achieve 70%+ test coverage for critical paths
 - [ ] Document testing guidelines in CONTRIBUTING.md
 
 ### Ongoing (Quarterly)
+
 - [ ] Review dependency updates (Dependabot PRs)
 - [ ] Monitor version drift (CONFIG.md vs actual)
 - [ ] Update to new major versions of Next.js, React, TypeScript
@@ -256,13 +269,14 @@ Patch 3.3: Setup CODEOWNERS
 ✅ Dependencies auto-updated with Dependabot  
 ✅ ESLint/TypeScript configs consolidated  
 ✅ Environment variables templated  
-✅ Tests exist for critical paths  
+✅ Tests exist for critical paths
 
 ---
 
 ## Questions or Concerns?
 
 See detailed analysis in:
+
 - **Conflicts detail:** CONFIG_CONFLICTS.md
 - **Versions detail:** CONFIG_VERSIONS.md
 - **Gaps detail:** CONFIG_GAPS.md

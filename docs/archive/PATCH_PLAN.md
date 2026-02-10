@@ -20,18 +20,19 @@ This document lists all patches needed to harden the configuration. Patches are 
 
 **Changes:**
 
-| Line | Current | Correct | Reason |
-|------|---------|---------|--------|
-| 6 | "pnpm 9.15.4" | "pnpm 10.29.2" | Actual packageManager version |
-| 7 | "TypeScript 5.9.3" | "TypeScript 5.7.2" | Actual package.json version |
-| 24 | "lucide-react 0.544.0" | "lucide-react 0.344.0" | Actual version (0.544 doesn't exist) |
-| 26 | "tailwind-merge 2.7.0" | "tailwind-merge 2.6.1" | Actual version (2.7 doesn't exist) |
+| Line | Current                | Correct                | Reason                               |
+| ---- | ---------------------- | ---------------------- | ------------------------------------ |
+| 6    | "pnpm 9.15.4"          | "pnpm 10.29.2"         | Actual packageManager version        |
+| 7    | "TypeScript 5.9.3"     | "TypeScript 5.7.2"     | Actual package.json version          |
+| 24   | "lucide-react 0.544.0" | "lucide-react 0.344.0" | Actual version (0.544 doesn't exist) |
+| 26   | "tailwind-merge 2.7.0" | "tailwind-merge 2.6.1" | Actual version (2.7 doesn't exist)   |
 
 **Time:** 5 minutes  
 **Risk:** 🟢 **Low** — Documentation only  
-**Rollback:** Revert file from git  
+**Rollback:** Revert file from git
 
 **Proof:**
+
 ```bash
 # Verify current versions
 grep -A2 '"packageManager"' package.json
@@ -58,7 +59,8 @@ grep '"tailwind-merge"' apps/web/package.json
 + "@typescript-eslint/parser": "8.19.1",
 ```
 
-**Why:** 
+**Why:**
+
 - Version 8.55.0 doesn't exist (caret ^8.55.0 allows 8.55.0+ which was never released)
 - Packages ui and utils use 8.19.1 exactly
 - pnpm-lock.yaml enforces 8.19.1 anyway
@@ -66,7 +68,7 @@ grep '"tailwind-merge"' apps/web/package.json
 
 **Time:** 5 minutes  
 **Risk:** 🟢 **Low** — Already effectively pinned by lock  
-**Rollback:** Revert and re-run `pnpm install`  
+**Rollback:** Revert and re-run `pnpm install`
 
 ---
 
@@ -99,6 +101,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 **Why:**
+
 - Developers know which environment variables are available
 - Template for setting up local development
 - Documentation for team onboarding
@@ -106,7 +109,7 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 **Time:** 5 minutes  
 **Risk:** 🟢 **Low** — Non-code, documentation only  
-**Rollback:** Delete file  
+**Rollback:** Delete file
 
 ---
 
@@ -138,6 +141,7 @@ recursive-install=true
 ```
 
 **Why:**
+
 - Enforces monorepo best practices
 - Prevents React duplication in @repo/ui
 - Ensures reproducible installs in CI
@@ -145,7 +149,7 @@ recursive-install=true
 
 **Time:** 5 minutes  
 **Risk:** 🟢 **Low** — Makes existing behavior explicit  
-**Rollback:** Delete file (pnpm defaults are already good)  
+**Rollback:** Delete file (pnpm defaults are already good)
 
 ---
 
@@ -160,6 +164,7 @@ registry=https://registry.npmjs.org/
 ```
 
 **Why:**
+
 - Explicitly pins npm registry (supply chain clarity)
 - Prevents accidental registry changes
 - Documents intended registry
@@ -167,7 +172,7 @@ registry=https://registry.npmjs.org/
 
 **Time:** 2 minutes  
 **Risk:** 🟢 **Low** — Explicit version of default  
-**Rollback:** Delete file  
+**Rollback:** Delete file
 
 ---
 
@@ -228,10 +233,10 @@ jobs:
       - name: Test
         run: pnpm test
         continue-on-error: true
-
 ```
 
 **Why:**
+
 - Prevents broken code from merging to main
 - Catches lint/type errors before they reach developers
 - Verifies build succeeds
@@ -239,9 +244,10 @@ jobs:
 
 **Time:** 15 minutes  
 **Risk:** 🟢 **Low** — Read-only workflow, no side effects  
-**Rollback:** Delete file  
+**Rollback:** Delete file
 
 **Notes:**
+
 - `continue-on-error: true` on test because test script just echoes placeholder (will implement in Phase 2)
 - Matrix uses Node 20.x (matches engines field)
 - Locked to pnpm 10.29.2 (matches packageManager)
@@ -263,11 +269,11 @@ updates:
     schedule:
       interval: weekly
       day: monday
-      time: "03:00"
+      time: '03:00'
     reviewers:
       - your-github-username
     commit-message:
-      prefix: "chore(deps):"
+      prefix: 'chore(deps):'
     allow:
       - dependency-type: all
     groups:
@@ -286,15 +292,15 @@ updates:
     schedule:
       interval: weekly
       day: monday
-      time: "04:00"
+      time: '04:00'
     reviewers:
       - your-github-username
     commit-message:
-      prefix: "chore(ci):"
-
+      prefix: 'chore(ci):'
 ```
 
 **Why:**
+
 - Auto-creates PRs for dependency updates
 - Security patches discovered and updated weekly
 - Reduces manual dependency management burden
@@ -302,9 +308,10 @@ updates:
 
 **Time:** 10 minutes  
 **Risk:** 🟢 **Low** — Auto-creates PRs only (manual merge)  
-**Rollback:** Delete file  
+**Rollback:** Delete file
 
 **Notes:**
+
 - Replace `your-github-username` with actual GitHub username
 - Schedule: Monday 3 AM UTC (customize as needed)
 - Grouped updates reduce PR spam
@@ -316,20 +323,23 @@ updates:
 **Manual Step (Not a file patch)**
 
 **Action:** In GitHub repo settings:
+
 1. Navigate to **Settings** → **Security and analysis**
 2. Enable **Secret scanning** (if using GitHub Advanced Security)
 3. Or: Install **GitGuardian** app from GitHub Marketplace
 
 **Why:**
+
 - Prevents accidentally committed secrets (API keys, tokens, credentials)
 - Blocks push containing known secret patterns
 - Critical for security compliance
 
 **Time:** 5 minutes (admin only)  
 **Risk:** 🟢 **Low** — Can be tested before enforcement  
-**Rollback:** Disable in settings  
+**Rollback:** Disable in settings
 
 **Alternative (Free):** Use GitGuardian:
+
 - Create `.github/workflows/secret-scan.yml`
 - Signup for free GitGuardian API key
 - Runs on every push/PR
@@ -341,6 +351,7 @@ updates:
 ### Patch 2.1: Consolidate ESLint Configs
 
 **Files Affected:**
+
 - `packages/config/package.json` (modify workspaces)
 - `packages/config/eslint-config/package.json` (new)
 - `packages/config/eslint-config/library.js` (new)
@@ -351,7 +362,7 @@ updates:
 
 **Time:** 30 minutes + testing  
 **Risk:** 🟡 **Medium** — Changes linting behavior; requires full test  
-**Rollback:** Revert all 7 files from git  
+**Rollback:** Revert all 7 files from git
 
 **Note:** Implementation provided in Phase 2 details below.
 
@@ -360,6 +371,7 @@ updates:
 ### Patch 2.2: Implement Jest Testing Framework
 
 **Files:**
+
 - `package.json` (add scripts)
 - `jest.config.js` (new)
 - `jest.setup.js` (new)
@@ -379,11 +391,7 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-  collectCoverageFrom: [
-    'src/**/*.{ts,tsx}',
-    '!src/**/*.d.ts',
-    '!src/**/*.stories.tsx',
-  ],
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*.d.ts', '!src/**/*.stories.tsx'],
   moduleNameMapper: {
     '@/(.*)': '<rootDir>/src/$1',
   },
@@ -398,7 +406,7 @@ module.exports = {
 
 **Time:** 1-2 hours  
 **Risk:** 🟡 **Medium** — New dependencies, requires testing  
-**Rollback:** Delete files, revert package.json  
+**Rollback:** Delete files, revert package.json
 
 ---
 
@@ -421,7 +429,7 @@ module.exports = {
 
 **Time:** 5 minutes  
 **Risk:** 🟢 **Low** — Just adds task metadata  
-**Rollback:** Revert file  
+**Rollback:** Revert file
 
 ---
 
@@ -430,12 +438,13 @@ module.exports = {
 ### Patch 3.1: Setup Git Pre-commit Hooks (Husky)
 
 **Files:**
+
 - `.husky/pre-commit` (new)
 - `.git/hooks/pre-commit` (installed)
 
 **Time:** 20 minutes  
 **Risk:** 🟢 **Low** — Local developer only  
-**Rollback:** Delete .husky directory  
+**Rollback:** Delete .husky directory
 
 **Note:** Optional; improves productivity but not required.
 
@@ -444,13 +453,14 @@ module.exports = {
 ### Patch 3.2: Create Issue & PR Templates
 
 **Files:**
+
 - `.github/ISSUE_TEMPLATE/bug_report.md` (new)
 - `.github/ISSUE_TEMPLATE/feature_request.md` (new)
 - `.github/pull_request_template.md` (new)
 
 **Time:** 15 minutes  
 **Risk:** 🟢 **Low** — Non-functional templates only  
-**Rollback:** Delete files  
+**Rollback:** Delete files
 
 ---
 
@@ -473,7 +483,7 @@ module.exports = {
 
 **Time:** 10 minutes  
 **Risk:** 🟢 **Low** — Administrative setup only  
-**Rollback:** Delete file  
+**Rollback:** Delete file
 
 ---
 
@@ -572,6 +582,7 @@ pnpm dev
 ## Success Criteria
 
 ### After Phase 1
+
 - ✅ All files created and committed
 - ✅ CI/CD workflow runs on all PRs
 - ✅ Lint/build/type-check pass in CI
@@ -579,12 +590,14 @@ pnpm dev
 - ✅ SECRET SCANNING enabled and active
 
 ### After Phase 2
+
 - ✅ Tests run (pnpm test)
 - ✅ CI includes test step
 - ✅ ESLint configs consolidated
 - ✅ Build/lint/test all pass
 
 ### After Phase 3
+
 - ✅ Pre-commit hooks configured
 - ✅ Issue/PR templates in place
 - ✅ CODEOWNERS assigned
@@ -594,20 +607,20 @@ pnpm dev
 
 ## Effort Summary
 
-| Phase | Tasks | Time | Priority |
-|-------|-------|------|----------|
-| **1** | 8 config files + security setup | 1-2 hours | 🔴 CRITICAL |
-| **2** | Testing + config consolidation | 4-6 hours | 🟠 HIGH |
-| **3** | Hooks + templates + governance | 2-3 hours | 🟢 LOW |
-| **Total** | Complete hardening | **7-11 hours** | — |
+| Phase     | Tasks                           | Time           | Priority    |
+| --------- | ------------------------------- | -------------- | ----------- |
+| **1**     | 8 config files + security setup | 1-2 hours      | 🔴 CRITICAL |
+| **2**     | Testing + config consolidation  | 4-6 hours      | 🟠 HIGH     |
+| **3**     | Hooks + templates + governance  | 2-3 hours      | 🟢 LOW      |
+| **Total** | Complete hardening              | **7-11 hours** | —           |
 
 ---
 
 ## Questions?
 
 See detailed analysis:
+
 - Conflicts: [CONFIG_CONFLICTS.md](CONFIG_CONFLICTS.md)
 - Versions: [CONFIG_VERSIONS.md](CONFIG_VERSIONS.md)
 - Gaps: [CONFIG_GAPS.md](CONFIG_GAPS.md)
 - Map: [CONFIG_MAP.md](CONFIG_MAP.md)
-

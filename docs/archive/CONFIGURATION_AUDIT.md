@@ -28,7 +28,8 @@ All configuration files have been systematically reviewed and corrected to follo
 }
 ```
 
-**Why:** 
+**Why:**
+
 - Prevents developers from using incompatible Node or pnpm versions
 - Avoids environment-specific issues (native modules, API changes)
 - `pnpm@9.15.4` is already enforced via `packageManager` field; this makes it explicit in engines
@@ -43,6 +44,7 @@ All configuration files have been systematically reviewed and corrected to follo
 **Change:** Moved React from `dependencies` to `peerDependencies` + `devDependencies`
 
 **Before:**
+
 ```json
 "dependencies": {
   "@repo/utils": "workspace:*",
@@ -56,6 +58,7 @@ All configuration files have been systematically reviewed and corrected to follo
 ```
 
 **After:**
+
 ```json
 "dependencies": {
   "@repo/utils": "workspace:*"
@@ -74,6 +77,7 @@ All configuration files have been systematically reviewed and corrected to follo
 ```
 
 **Why:**
+
 - **peerDependencies:** Signals that consuming apps must provide React. Prevents duplicate React instances in memory.
 - **devDependencies:** React still needed locally for development, linting, and type checking within the package.
 - Follows npm/monorepo best practices: component libraries declare peer deps for framework dependencies.
@@ -88,6 +92,7 @@ All configuration files have been systematically reviewed and corrected to follo
 **Change:** Added missing `@repo/utils` dependency
 
 **Before:**
+
 ```json
 "dependencies": {
   ...
@@ -96,6 +101,7 @@ All configuration files have been systematically reviewed and corrected to follo
 ```
 
 **After:**
+
 ```json
 "dependencies": {
   ...
@@ -105,8 +111,9 @@ All configuration files have been systematically reviewed and corrected to follo
 ```
 
 **Why:**
+
 - `apps/web/tsconfig.json` already has path alias for `@repo/utils`
-- Next.js next.config.js already transpiles `@repo/utils` 
+- Next.js next.config.js already transpiles `@repo/utils`
 - Package.json must declare explicit dependency for proper pnpm resolution
 - Missing declaration can cause module resolution warnings or failures
 
@@ -117,6 +124,7 @@ All configuration files have been systematically reviewed and corrected to follo
 **File:** `.pnpmrc` (newly created)
 
 **Content:**
+
 ```pnpm
 strict-peer-dependencies=true
 auto-install-peers=true
@@ -127,6 +135,7 @@ node-linker=pnpm
 ```
 
 **Why:**
+
 - **strict-peer-dependencies:** Enforces peerDependencies requirements; fails if missing
 - **auto-install-peers:** Automatically installs declared peer dependencies
 - **shamefully-hoist=false:** Monorepo best practice; prevents unintended hoisting that breaks isolation
@@ -141,11 +150,13 @@ node-linker=pnpm
 **File:** `packages/config/eslint-config/` (newly created)
 
 **Files Created:**
+
 - `package.json` — Declares ESLint config package with exports
 - `library.js` — Base ESLint config for TypeScript libraries
 - `next.js` — Next.js-specific config using ESLint v9 flat config format
 
 **Why:**
+
 - Centralizes ESLint configuration in shared package (DRY principle)
 - Provides consistent linting rules across all packages
 - Flat config format is ESLint v9 standard (modern, simpler syntax)
@@ -163,6 +174,7 @@ node-linker=pnpm
 **Change:** Fixed JSX handling to match base configuration strategy
 
 **Before:**
+
 ```json
 "compilerOptions": {
   "jsx": "react-jsx",
@@ -171,6 +183,7 @@ node-linker=pnpm
 ```
 
 **After:**
+
 ```json
 "compilerOptions": {
   "jsx": "preserve",
@@ -179,6 +192,7 @@ node-linker=pnpm
 ```
 
 **Why:**
+
 - Base tsconfig.json uses `"jsx": "preserve"` (exports JSX as-is for bundler/transpiler to handle)
 - `@repo/ui` exports source TypeScript files, relying on Next.js `transpilePackages` to transpile JSX
 - `"react-jsx"` would transform JSX to React function calls during compilation, conflicting with source export strategy
@@ -193,11 +207,13 @@ node-linker=pnpm
 **Content:** Multi-stage Docker build
 
 **Stages:**
+
 1. **deps** — Install dependencies
 2. **builder** — Build Next.js application
 3. **runtime** — Final production image with only necessary files
 
 **Why:**
+
 - Referenced by `docker-compose.yml` which previously pointed to non-existent Dockerfile
 - Multi-stage build reduces final image size (excludes build tools, source code)
 - Follows production best practices for Next.js containerization
@@ -211,6 +227,7 @@ node-linker=pnpm
 **File:** `.prettierrc` (newly created)
 
 **Configuration:**
+
 ```json
 {
   "semi": true,
@@ -225,6 +242,7 @@ node-linker=pnpm
 ```
 
 **Why:**
+
 - Enforces consistent code style across entire monorepo
 - Repository already has Prettier 3.2.5 in root devDependencies
 - `.prettierrc` makes configuration explicit and tool-independent
@@ -237,12 +255,14 @@ node-linker=pnpm
 **File:** `.eslintignore` (newly created)
 
 **Ignores:**
+
 - Build outputs (`.next/`, `dist/`, `build/`)
 - Dependencies (`node_modules/`)
 - Generated files (`*.tsbuildinfo`, `next-env.d.ts`)
 - Lock files and environment files
 
 **Why:**
+
 - Prevents linting performance issues on large directories
 - Avoids errors on generated/non-source files
 - ESLint should focus only on source code
@@ -254,6 +274,7 @@ node-linker=pnpm
 #### Updated: `README.md`
 
 **Changes:**
+
 - Added Prerequisites section (Node >=20, pnpm 9.15.4)
 - Expanded Technology Stack with versions
 - Added Docker instructions
@@ -267,6 +288,7 @@ node-linker=pnpm
 #### Updated: `CONTRIBUTING.md`
 
 **Changes:**
+
 - Replaced unrelated ALIGNMENT standards content with hair-salon-specific guidelines
 - Added Setup section with pnpm instructions
 - Development Workflow with commands
@@ -282,6 +304,7 @@ node-linker=pnpm
 #### Created: `CONFIG.md`
 
 **Content:**
+
 - Overview of tools and versions
 - Detailed explanation of every configuration file
 - Package structure and dependency relationships
@@ -297,23 +320,24 @@ node-linker=pnpm
 
 ## Best Practices Applied
 
-| Practice | Implementation |
-|----------|-----------------|
-| **Strict version enforcement** | `engines` field + exact pinning (no ^/~) |
-| **Dependency isolation** | `peerDependencies` for React, `workspace:*` for internal packages |
-| **Monorepo configuration** | `.pnpmrc` with strict peers, no hoisting |
-| **Shared configurations** | Centralized in `packages/config` (eslint, typescript) |
-| **Build optimization** | Turbo caching, multi-stage Docker builds |
-| **Code quality** | ESLint v9 flat config, Prettier, strict TypeScript |
-| **Documentation** | CONFIG.md, CONTRIBUTING.md, inline comments in configs |
-| **Source exports** | TypeScript source with `transpilePackages` (no separate build step for libs) |
-| **Monorepo scripts** | Root-level pnpm commands using Turbo |
+| Practice                       | Implementation                                                               |
+| ------------------------------ | ---------------------------------------------------------------------------- |
+| **Strict version enforcement** | `engines` field + exact pinning (no ^/~)                                     |
+| **Dependency isolation**       | `peerDependencies` for React, `workspace:*` for internal packages            |
+| **Monorepo configuration**     | `.pnpmrc` with strict peers, no hoisting                                     |
+| **Shared configurations**      | Centralized in `packages/config` (eslint, typescript)                        |
+| **Build optimization**         | Turbo caching, multi-stage Docker builds                                     |
+| **Code quality**               | ESLint v9 flat config, Prettier, strict TypeScript                           |
+| **Documentation**              | CONFIG.md, CONTRIBUTING.md, inline comments in configs                       |
+| **Source exports**             | TypeScript source with `transpilePackages` (no separate build step for libs) |
+| **Monorepo scripts**           | Root-level pnpm commands using Turbo                                         |
 
 ---
 
 ## What This Fixes
 
 Before these fixes, the repository had:
+
 - ❌ No Node.js version constraint (environment mismatch risk)
 - ❌ React as direct dependency in @repo/ui (potential duplicate React instances)
 - ❌ Missing @repo/utils in apps/web (module resolution issues)
@@ -334,6 +358,7 @@ Now all of these are properly configured following industry standards.
 After these config fixes, you can:
 
 1. **Verify** installation works:
+
    ```bash
    pnpm install
    pnpm build
@@ -342,6 +367,7 @@ After these config fixes, you can:
    ```
 
 2. **Test** development:
+
    ```bash
    pnpm dev
    ```
@@ -358,6 +384,7 @@ All dependencies should resolve correctly now that configuration files are prope
 ## Files Changed Summary
 
 ### Modified
+
 - `package.json` — Added engines field
 - `packages/ui/package.json` — React to peerDependencies
 - `apps/web/package.json` — Added @repo/utils
@@ -368,6 +395,7 @@ All dependencies should resolve correctly now that configuration files are prope
 - `CONTRIBUTING.md` — Complete rewrite for hair-salon
 
 ### Created
+
 - `.pnpmrc` — pnpm monorepo configuration
 - `.prettierrc` — Prettier code formatting configuration
 - `.eslintignore` — ESLint ignore rules
@@ -378,8 +406,9 @@ All dependencies should resolve correctly now that configuration files are prope
 - `apps/web/Dockerfile` — Production Docker image
 
 ### Total Changes
+
 - **14 files** modified or created
-- **0 files** deleted (kept package.json.bak as git already ignores *.bak)
+- **0 files** deleted (kept package.json.bak as git already ignores \*.bak)
 - **All changes** follow industry standards for TypeScript/Node.js monorepos
 
 ---
