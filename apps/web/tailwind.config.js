@@ -37,7 +37,16 @@ module.exports = {
     '../../packages/ui/src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'off-white': 'var(--off-white)',
+        charcoal: 'var(--charcoal)',
+        slate: 'var(--slate)',
+        teal: 'var(--teal)',
+        'teal-dark': 'var(--teal-dark)',
+        'teal-light': 'var(--teal-light)',
+      },
+    },
   },
   plugins: [],
 };

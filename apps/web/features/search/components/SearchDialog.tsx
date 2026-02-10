@@ -47,32 +47,54 @@ import { Button } from '@repo/ui';
 import type { SearchItem } from '@/lib/search';
 
 interface SearchDialogProps {
-  items: SearchItem[];
+  items?: SearchItem[];
   variant?: 'desktop' | 'mobile';
 }
 
 const shortcutHint = '⌘K';
 
-export default function SearchDialog({ items, variant = 'desktop' }: SearchDialogProps) {
+export default function SearchDialog({ items = [], variant = 'desktop' }: SearchDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [searchItems, setSearchItems] = useState<SearchItem[]>(items);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // Load search items on mount
+  useEffect(() => {
+    if (items.length > 0) {
+      setSearchItems(items);
+      return;
+    }
+
+    const loadSearchItems = async () => {
+      try {
+        const { getSearchIndex } = await import('@/lib/search');
+        const index = await getSearchIndex();
+        setSearchItems(index);
+      } catch (error) {
+        console.warn('Failed to load search index:', error);
+        setSearchItems([]);
+      }
+    };
+
+    loadSearchItems();
+  }, [items]);
 
   // Case-insensitive substring match across title/description/tags; default to a small sample when empty to avoid overwhelming the dialog
   const filteredItems = useMemo(() => {
     const normalized = query.trim().toLowerCase();
     if (!normalized) {
-      return items.slice(0, 6);
+      return searchItems.slice(0, 6);
     }
 
-    return items.filter((item) => {
+    return searchItems.filter((item) => {
       const tagText = Array.isArray(item.tags)
         ? item.tags.filter((tag) => typeof tag === 'string' && tag.trim().length > 0).join(' ')
         : '';
       const haystack = [item.title, item.description, tagText].join(' ').toLowerCase();
       return haystack.includes(normalized);
     });
-  }, [items, query]);
+  }, [searchItems, query]);
 
   useEffect(() => {
     // Allow Cmd/Ctrl+K to open and Escape to close so the dialog matches site-wide shortcut expectations
@@ -156,7 +178,7 @@ export default function SearchDialog({ items, variant = 'desktop' }: SearchDialo
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search blog posts, services, and pages"
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-200"
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
                 aria-label="Search"
               />
             </div>
@@ -170,12 +192,12 @@ export default function SearchDialog({ items, variant = 'desktop' }: SearchDialo
                     <li key={item.id}>
                       <Link
                         href={item.href}
-                        className="block rounded-lg border border-gray-200 px-4 py-3 transition hover:border-purple-200 hover:bg-purple-50"
+                        className="block rounded-lg border border-gray-200 px-4 py-3 transition hover:border-teal-200 hover:bg-teal-50"
                         onClick={() => setIsOpen(false)}
                       >
                         <div className="flex items-center justify-between">
                           <span className="font-semibold text-gray-900">{item.title}</span>
-                          <span className="text-xs uppercase tracking-wide text-purple-600">
+                          <span className="text-xs uppercase tracking-wide text-teal-600">
                             {item.type}
                           </span>
                         </div>

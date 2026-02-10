@@ -55,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 export default async function SearchRoute() {
-  const items = getSearchIndex();
+  const items = await getSearchIndex();
 
   return (
     <Suspense>

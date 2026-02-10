@@ -100,8 +100,6 @@ coverage/
 *.lcov
 
 # IDE
-# AUDIT: .vscode/ below overrides earlier negations for settings.json.
-.vscode/
 .idea/
 
 # Python

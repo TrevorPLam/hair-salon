@@ -71,10 +71,10 @@ const navLinks = [
 /**
  * Navigation component props.
  *
- * @property searchItems - Search index from lib/search.ts
+ * @property searchItems - Search index from lib/search.ts (optional)
  */
 interface NavigationProps {
-  searchItems: SearchItem[];
+  searchItems?: SearchItem[];
 }
 
 /**
@@ -194,7 +194,7 @@ export default function Navigation({ searchItems }: NavigationProps) {
               ref={mobileToggleButtonRef}
               className="text-white p-2 hover:bg-white/10 rounded-lg transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
               aria-label="Toggle mobile menu"
-              aria-expanded={isMobileMenuOpen}
+              aria-expanded={isMobileMenuOpen ? 'true' : 'false'}
               aria-controls="mobile-menu"
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -222,7 +222,8 @@ export default function Navigation({ searchItems }: NavigationProps) {
             }
 
             const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
+            const lastElement =
+              focusableElements.length > 0 ? focusableElements[focusableElements.length - 1] : null;
             const activeElement = document.activeElement as HTMLElement | null;
 
             if (!firstElement || !lastElement) {
@@ -253,7 +254,7 @@ export default function Navigation({ searchItems }: NavigationProps) {
                 {link.label}
               </Link>
             ))}
-            <Link href="/book" onClick={() => setIsMobileMenuOpen(false)}>
+            <Link href="/book" onClick={() => setIsMobileMenuOpen(false)} role="menuitem">
               <Button variant="primary" size="medium" className="w-full">
                 Book Now
               </Button>

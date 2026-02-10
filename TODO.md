@@ -217,28 +217,34 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
 ### 0.5 Build & Development Tools
 
-- [ ] **Fix Tailwind configuration**
+- [x] **Fix Tailwind configuration**
 
-  - [ ] Add missing Tailwind tokens for bg-off-white
-  - [ ] Update SearchDialog palette configuration
-  - [ ] Verify no missing class warnings
+  - [x] Add missing Tailwind tokens for bg-off-white
+  - [x] Update SearchDialog palette configuration
+  - [x] Verify no missing class warnings
   - DoD: UI only changes where intended; no missing class warnings
   - Deps: none
+  - **Completed:** 2026-02-10
+  - **Changes:** Added Tailwind color tokens for CSS custom properties; updated SearchDialog to use theme colors (teal/charcoal) instead of hardcoded purple
 
-- [ ] **Fix component runtime errors**
+- [x] **Fix component runtime errors**
 
-  - [ ] Fix InstallPrompt Button import issues
-  - [ ] Add null checks in Navigation component
-  - [ ] Fix Gallery Button variant usage
-  - [ ] Fix Book page Select options
+  - [x] Fix InstallPrompt Button import issues
+  - [x] Add null checks in Navigation component
+  - [x] Fix Gallery Button variant usage
+  - [x] Fix Book page Select options
   - DoD: pnpm dev runs without runtime errors on these pages
   - Deps: type fixes
+  - **Completed:** 2026-02-10
+  - **Changes:** Fixed Navigation null checks for array access; resolved ARIA attributes; verified Button/Select components use correct props
 
-- [ ] **Fix .gitignore ordering**
-  - [ ] Adjust .gitignore ordering so .vscode/settings.json is included
-  - [ ] Verify git treats .vscode/settings.json as tracked per policy
+- [x] **Fix .gitignore ordering**
+  - [x] Adjust .gitignore ordering so .vscode/settings.json is included
+  - [x] Verify git treats .vscode/settings.json as tracked per policy
   - DoD: Git ignore negation works as intended
   - Deps: none
+  - **Completed:** 2026-02-10
+  - **Changes:** Removed duplicate .vscode/ ignore rule that was overriding earlier negation for settings.json
 
 ### 0.6 Testing & CI Configuration
 

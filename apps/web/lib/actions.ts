@@ -31,6 +31,4 @@
  * - last_audited: 2026-02-09
  */
 
-'use server';
-
 export { submitContactForm } from './actions/submit';
