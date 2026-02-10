@@ -31,7 +31,6 @@ Object.assign(process.env, {
   NODE_ENV: 'test',
   NEXT_PUBLIC_SITE_URL: 'http://localhost:3000',
   NEXT_PUBLIC_SITE_NAME: 'Test Hair Salon',
-  SUPABASE_URL: 'https://test-project.supabase.co',
-  SUPABASE_SERVICE_ROLE_KEY: 'test-secret-key-123',
+  // Note: Supabase and HubSpot variables are optional in test mode
+  // They will be set by individual tests that need them
 });
-process.env.HUBSPOT_PRIVATE_APP_TOKEN = 'pat-test-token-abc';

@@ -51,7 +51,7 @@ Status: INCOMPLETE. Will be updated as files are audited.
   - [LICENSE](LICENSE): MIT license text. See [docs/file-meta/LICENSE.md](docs/file-meta/LICENSE.md) for metaheader.
   - [README.md](README.md): Root overview with partial verification notes.
   - [SECURITY.md](SECURITY.md): Security policy (placeholder contact noted).
-  - [tasks.md](tasks.md): Audit task tracker checklist.
+  - [tasks.md](tasks.md): Active audit task checklist with 2026 standards and completion metrics.
   - [TODO.md](TODO.md): Implementation backlog (UNVERIFIED).
   - [tsconfig.base.json](tsconfig.base.json): Shared TypeScript compiler options. See [docs/file-meta/tsconfig.base.json.md](docs/file-meta/tsconfig.base.json.md) for metaheader.
   - [tsconfig.json](tsconfig.json): Root TypeScript config. See [docs/file-meta/tsconfig.json.md](docs/file-meta/tsconfig.json.md) for metaheader.

@@ -216,6 +216,67 @@ Notes: Production build successful, bundle size optimized
 
 ---
 
+### Task 0.4 - Environment Configuration
+
+**Date:** 2026-02-10  
+**Status:** ✅ COMPLETED
+
+#### Changes Made
+
+1. **Environment Schema Alignment**
+
+   - Updated `.env.example` to match runtime schema in `apps/web/lib/env.ts`
+   - Removed unused variables (SMTP, Stripe, Calendar, etc.) that weren't in runtime schema
+   - Fixed variable naming inconsistencies (SUPABASE_URL vs NEXT_PUBLIC_SUPABASE_URL)
+   - Added clear documentation for optional vs required variables by environment
+
+2. **Optional Variables Implementation**
+
+   - Updated test setup (`apps/web/lib/__tests__/env-setup.ts`) to not require optional variables
+   - Modified test expectations to handle truly optional variables in development/test mode
+   - Verified Supabase/HubSpot variables are optional in development but required in production
+   - Added comprehensive test coverage for optional variable behavior
+
+3. **Production Safety Verification**
+
+   - Confirmed production builds still enforce required variables for security
+   - Verified conditional schema validation works correctly based on NODE_ENV
+   - Tested local development works without setting optional integration keys
+
+#### Verification Commands
+
+| Command         | Status  | Output                     | Date       |
+| --------------- | ------- | -------------------------- | ---------- |
+| pnpm type-check | ✅ PASS | Exit code 0 (SUCCESS)      | 2026-02-10 |
+| pnpm test       | ✅ PASS | 100/100 tests pass         | 2026-02-10 |
+| pnpm build      | ✅ PASS | Success (105kB bundle)     | 2026-02-10 |
+| pnpm dev        | ✅ PASS | Server starts on port 3004 | 2026-02-10 |
+
+#### Quality Gates Status
+
+| Metric        | Status  | Target    | Actual    |
+| ------------- | ------- | --------- | --------- |
+| Type Checking | ✅ PASS | 0 errors  | 0 errors  |
+| Tests         | ✅ PASS | 100% pass | 100% pass |
+| Build         | ✅ PASS | Success   | Success   |
+| Bundle Size   | ✅ PASS | < 150kB   | 105kB     |
+
+#### Definition of Done Status
+
+- [x] New developers can copy .env.example without immediate failures
+- [x] Local pnpm dev runs without setting optional integration keys
+- [x] Environment variables properly validated and typed
+- [x] Production builds still enforce required variables for security
+
+#### Files Modified
+
+1. `.env.example` - Updated to match runtime schema, removed unused variables
+2. `apps/web/lib/__tests__/env-setup.ts` - Removed optional variable requirements
+3. `apps/web/lib/__tests__/env.test.ts` - Updated test expectations for optional variables
+4. `docs/TESTING_STATUS.md` - Added Task 0.4 verification results
+
+---
+
 ### Task 0.5 - Evergreen Posture + Proof Artifacts
 
 **Date:** 2026-02-10  

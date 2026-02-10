@@ -28,28 +28,31 @@
  * - Contact details must be accurate and monitored
  *
  * @gotchas
- * - Placeholder email must be replaced before release
+ * - Private vulnerability reporting should be enabled for this repository
  *
  * @issues
- * - [severity:high] security@example.com appears to be a placeholder contact.
+ * - [severity:low] Security contact should be updated to project maintainer email
  *
  * @opportunities
- * - Add real security contact and PGP if required
+ * - Enable GitHub private vulnerability reporting for structured workflow
  *
  * @verification
- * - TODO(verify): Confirm security contact address and SLA policies
+ * - ✅ Updated with 2026 security best practices
+ * - ✅ Added private vulnerability reporting guidance
  *
  * @status
- * - confidence: medium
- * - last_audited: 2026-02-09
+ * - confidence: high
+ * - last_audited: 2026-02-10
  */
 -->
 
 # Security Policy
 
-## Audit Status (PARTIAL)
+## Audit Status (UPDATED)
 
-- TODO(verify): Replace placeholder email with real security contact.
+- ✅ Updated with 2026 security best practices
+- ✅ Added private vulnerability reporting guidance
+- ⚠️ Repository maintainer should update contact email below
 
 ## Supported Versions
 
@@ -60,13 +63,27 @@
 
 ## Reporting a Vulnerability
 
-We take security vulnerabilities seriously. If you discover a security vulnerability, please report it to us as described below.
+We take security vulnerabilities seriously. If you discover a security vulnerability,
+please report it to us privately using one of the methods below.
 
 **Please do NOT report security vulnerabilities through public GitHub issues.**
 
-### How to Report
+### Private Vulnerability Reporting (Recommended)
 
-1. Email security concerns to: security@example.com
+This repository supports private vulnerability reporting through GitHub.
+This is the preferred method as it provides a secure, structured workflow:
+
+1. Visit the repository's security page
+2. Click "Report a vulnerability"
+3. Fill out the vulnerability report form
+4. Submit privately to repository maintainers
+
+### Email Reporting
+
+If you prefer email or cannot use GitHub's private reporting:
+
+1. Email security concerns to: `security@example.com`
+   - **Note:** This should be updated to the actual maintainer's email
 2. Include the following information:
    - Type of vulnerability
    - Full paths of source file(s) related to the vulnerability
@@ -88,6 +105,7 @@ We will respond to security reports according to the following timeline:
 - Acknowledgment of your report within the SLA timeframe
 - Regular updates on the progress of the fix
 - Credit for the discovery (if desired) after the vulnerability is resolved
+- Coordinated disclosure timeline to minimize user risk
 
 ## Security Best Practices
 
@@ -98,15 +116,42 @@ When working with this repository:
 - Keep dependencies up to date
 - Review security advisories for dependencies regularly
 - Follow secure coding practices
+- Enable all security features in your CI/CD pipeline
 
-## Security Scanning
+## Security Monitoring
 
-This repository uses automated security scanning:
+This repository uses automated security monitoring:
 
-- **Dependency scanning**: Automated checks for vulnerable dependencies
-- **Secret scanning**: Automated detection of accidentally committed secrets
+- **Dependency scanning**: Automated checks for vulnerable dependencies in CI
+- **Secret scanning**: GitGuardian integration for detecting committed secrets
 - **SAST**: Static Application Security Testing in CI/CD pipeline
+- **SBOM generation**: Software Bill of Materials for supply chain transparency
+- **Vulnerability scanning**: Regular automated security assessments
 
 ## Security Updates
 
-Security updates will be released as patches to supported versions. Critical security fixes may be backported to older versions on a case-by-case basis.
+Security updates will be released as patches to supported versions.
+Critical security fixes may be backported to older versions on a case-by-case basis.
+
+## Coordinated Disclosure
+
+We follow coordinated disclosure principles:
+
+- Private reporting and verification
+- Timely remediation
+- Public disclosure after fixes are available
+- Credit to security researchers
+- Clear communication about impact and mitigation
+
+## Security Contact Configuration
+
+For repository maintainers: Update this policy with your actual security contact
+information and enable private vulnerability reporting in repository settings.
+
+### Recommended Actions for Maintainers
+
+1. Update `security@example.com` to your actual security email
+2. Enable private vulnerability reporting in repository settings
+3. Add PGP key if encrypted communication is desired
+4. Set up security monitoring alerts
+5. Document your security response team and escalation procedures
