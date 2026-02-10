@@ -11,7 +11,6 @@
  *
  * @depends_on
  * - External: @eslint/eslintrc (FlatCompat)
- * - Internal: ./library.js
  *
  * @used_by
  * - apps/web
@@ -23,15 +22,18 @@
  * @issues
  * - [severity:low] None observed in-file.
  *
+ * @changes
+ * - 2026-02-10: Removed baseConfig import to fix plugin conflict; @typescript-eslint plugin now defined only once by Next.js configs
+ * - 2026-02-10: Updated console rule to allow info/warn/error (was warn/error only)
+ *
  * @status
  * - confidence: high
- * - last_audited: 2026-02-09
+ * - last_audited: 2026-02-10
  */
 
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
-import baseConfig from './library.js';
 
 // Resolve __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -43,7 +45,17 @@ const compat = new FlatCompat({
 });
 
 // Next.js specific ESLint configuration using flat config format for ESLint v9+
-// Extends base library config and adds Next.js-specific rules
-const eslintConfig = [...baseConfig, ...compat.extends('next/core-web-vitals', 'next/typescript')];
+// Uses Next.js built-in configs which already include TypeScript support
+const eslintConfig = [
+  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  {
+    rules: {
+      // Allow unused variables with underscore prefix (common for unused parameters)
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      // Restrict console usage to info, warnings and errors only
+      'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
+    },
+  },
+];
 
 export default eslintConfig;

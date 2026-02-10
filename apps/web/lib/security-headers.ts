@@ -27,9 +27,12 @@
  * @issues
  * - [severity:low] None observed in-file.
  *
+ * @changes
+ * - 2026-02-10: Refactored getSecurityHeaders to actually use env parameter; moved HSTS logic into function
+ *
  * @status
  * - confidence: high
- * - last_audited: 2026-02-09
+ * - last_audited: 2026-02-10
  */
 
 export const securityHeaders = {
@@ -39,11 +42,6 @@ export const securityHeaders = {
   'Permissions-Policy': ['camera=()', 'microphone=()', 'geolocation=()', 'interest-cohort=()'].join(
     ', '
   ),
-
-  ...(process.env.NODE_ENV === 'production' && {
-    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
-  }),
-
   'X-DNS-Prefetch-Control': 'on',
   'X-Download-Options': 'noopen',
   'X-Permitted-Cross-Domain-Policies': 'none',
@@ -51,6 +49,11 @@ export const securityHeaders = {
 
 export function getSecurityHeaders(env: 'development' | 'production' = 'production') {
   const headers = { ...securityHeaders };
+
+  // Only enable HSTS in production
+  if (env === 'production') {
+    headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains; preload';
+  }
 
   return headers;
 }

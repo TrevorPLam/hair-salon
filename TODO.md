@@ -78,54 +78,62 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
 - [x] **Fix @repo/eslint-config package resolution**
 
-  - [ ] Verify package.json exports in packages/config/eslint-config/
+  - [x] Verify package.json exports in packages/config/eslint-config/
     - File: packages/config/eslint-config/package.json
     - Snip:
       ```json
       { "main": "./library.js", "exports": { ".": "./library.js", "./next": "./next.js" } }
       ```
-  - [ ] Ensure workspace dependencies are properly linked
-  - [ ] Test eslint config resolution in all packages
-  - DoD: `pnpm lint` runs without "Cannot find package '@repo/eslint-config'" errors
+  - [x] Ensure workspace dependencies are properly linked
+  - [x] Test eslint config resolution in all packages
+  - DoD: `pnpm lint` runs without "Cannot find package '@repo/eslint-config'" errors ✅
   - Deps: none
+  - **Completed:** 2026-02-10
+  - **Changes:** Added @repo/eslint-config as devDependency to all consuming packages; fixed plugin conflict in next.js config by removing baseConfig import; updated console rules to allow info/warn/error
 
 - [x] **Install missing MDX dependencies**
 
-  - [ ] Add `next-mdx-remote`, `gray-matter`, `reading-time`, `remark-gfm`, `rehype-slug`, `rehype-pretty-code` to apps/web/package.json
+  - [x] Add `next-mdx-remote`, `gray-matter`, `reading-time`, `remark-gfm`, `rehype-slug`, `rehype-pretty-code` to apps/web/package.json
     - File: apps/web/package.json (dependencies)
     - Snip:
       ```json
       { "dependencies": { "next": "15.1.6", "react": "19.0.0" } }
       ```
-  - [ ] Update lockfile and verify installation
-  - [ ] Test MDX compilation in development
-  - DoD: MDX files parse without import errors
+  - [x] Update lockfile and verify installation
+  - [x] Test MDX compilation in development
+  - DoD: MDX files parse without import errors ✅
   - Deps: none
+  - **Completed:** 2026-02-10 (verified already installed)
+  - **Status:** All dependencies present and imported in blog components
 
 - [x] **Install missing form dependencies**
 
-  - [ ] Add `react-hook-form`, `@hookform/resolvers/zod` to apps/web/package.json
+  - [x] Add `react-hook-form`, `@hookform/resolvers/zod` to apps/web/package.json
     - File: apps/web/package.json (dependencies)
     - Snip:
       ```json
       { "dependencies": { "zod": "3.22.4" } }
       ```
-  - [ ] Update lockfile and verify installation
-  - [ ] Test form validation imports
-  - DoD: Contact form imports resolve without errors
+  - [x] Update lockfile and verify installation
+  - [x] Test form validation imports
+  - DoD: Contact form imports resolve without errors ✅
   - Deps: none
+  - **Completed:** 2026-02-10 (verified already installed)
+  - **Status:** Dependencies present and imported in ContactForm component
 
 - [x] **Install missing rate limiting dependencies**
-  - [ ] Add `@upstash/ratelimit`, `@upstash/redis` to apps/web/package.json
+  - [x] Add `@upstash/ratelimit`, `@upstash/redis` to apps/web/package.json
     - File: apps/web/package.json (dependencies)
     - Snip:
       ```json
       { "dependencies": { "@sentry/nextjs": "8.0.0" } }
       ```
-  - [ ] Update lockfile and verify installation
-  - [ ] Test rate limiting imports
-  - DoD: Rate limiting module imports resolve without errors
+  - [x] Update lockfile and verify installation
+  - [x] Test rate limiting imports
+  - DoD: Rate limiting module imports resolve without errors ✅
   - Deps: none
+  - **Completed:** 2026-02-10 (verified already installed)
+  - **Status:** Dependencies present and dynamically imported in rate-limit module
 
 ### 0.2 Module Resolution & Import Fixes
 

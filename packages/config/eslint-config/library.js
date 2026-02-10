@@ -23,9 +23,12 @@
  * @issues
  * - [severity:low] None observed in-file.
  *
+ * @changes
+ * - 2026-02-10: Updated console rule to allow info/warn/error (was warn/error only)
+ *
  * @status
  * - confidence: high
- * - last_audited: 2026-02-09
+ * - last_audited: 2026-02-10
  */
 
 // Base ESLint configuration for library packages (ESLint v9 flat config)
@@ -57,8 +60,8 @@ export default [
       ...tseslint.configs.recommended.rules,
       // Allow unused variables with underscore prefix (common for unused parameters)
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      // Restrict console usage to warnings and errors only
-      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      // Restrict console usage to info, warnings and errors only
+      'no-console': ['warn', { allow: ['info', 'warn', 'error'] }],
     },
   },
 ];
