@@ -9,7 +9,9 @@
   "workspaces": [
     "apps/*",
     "packages/*",
-    "packages/config/*"
+    "packages/config/*",
+    "templates/*",
+    "clients/*"
   ],
   "scripts": {
     "dev": "turbo run dev",

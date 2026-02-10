@@ -68,7 +68,7 @@
 - Secret Scanning: `.github/workflows/secret-scan.yml`
 - Security Policy: `SECURITY.md`
 - SBOM Generation: `.github/workflows/sbom-generation.yml`
-- Package Updates: `apps/web/package.json` (Next.js 15.2.9)
+- Package Updates: `templates/hair-salon/package.json` (Next.js 15.2.9)
 
 ### Compliance Status
 

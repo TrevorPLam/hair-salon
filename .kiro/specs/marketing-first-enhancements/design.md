@@ -50,7 +50,7 @@ This design document outlines the technical implementation for enhancing the hai
 The enhancements follow a feature-based architecture pattern, creating new features while extending existing ones:
 
 ```
-apps/web/
+templates/hair-salon/
 ├── features/
 │   ├── testimonials/          # NEW: Social proof system
 │   ├── portfolio/             # NEW: Before/after gallery

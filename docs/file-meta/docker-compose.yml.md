@@ -14,7 +14,7 @@
 -
 - @depends_on
 - - External: Docker Engine / Docker Compose
-- - Internal: apps/web/Dockerfile
+- - Internal: templates/hair-salon/Dockerfile
 -
 - @used_by
 - - Local development workflows

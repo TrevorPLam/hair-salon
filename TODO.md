@@ -93,8 +93,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
 - [x] **Install missing MDX dependencies**
 
-  - [x] Add `next-mdx-remote`, `gray-matter`, `reading-time`, `remark-gfm`, `rehype-slug`, `rehype-pretty-code` to apps/web/package.json
-    - File: apps/web/package.json (dependencies)
+  - [x] Add `next-mdx-remote`, `gray-matter`, `reading-time`, `remark-gfm`, `rehype-slug`, `rehype-pretty-code` to templates/hair-salon/package.json
+    - File: templates/hair-salon/package.json (dependencies)
     - Snip:
       ```json
       { "dependencies": { "next": "15.1.6", "react": "19.0.0" } }
@@ -108,8 +108,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
 - [x] **Install missing form dependencies**
 
-  - [x] Add `react-hook-form`, `@hookform/resolvers/zod` to apps/web/package.json
-    - File: apps/web/package.json (dependencies)
+  - [x] Add `react-hook-form`, `@hookform/resolvers/zod` to templates/hair-salon/package.json
+    - File: templates/hair-salon/package.json (dependencies)
     - Snip:
       ```json
       { "dependencies": { "zod": "3.22.4" } }
@@ -122,8 +122,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - **Status:** Dependencies present and imported in ContactForm component
 
 - [x] **Install missing rate limiting dependencies**
-  - [x] Add `@upstash/ratelimit`, `@upstash/redis` to apps/web/package.json
-    - File: apps/web/package.json (dependencies)
+  - [x] Add `@upstash/ratelimit`, `@upstash/redis` to templates/hair-salon/package.json
+    - File: templates/hair-salon/package.json (dependencies)
     - Snip:
       ```json
       { "dependencies": { "@sentry/nextjs": "8.0.0" } }
@@ -140,7 +140,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - [x] **Fix component barrel exports**
 
   - [x] Audit all `features/*/index.ts` files for missing exports
-    - Files: apps/web/features/blog/index.ts, apps/web/features/contact/index.ts, apps/web/features/search/index.ts, apps/web/features/services/index.ts
+    - Files: templates/hair-salon/features/blog/index.ts, templates/hair-salon/features/contact/index.ts, templates/hair-salon/features/search/index.ts, templates/hair-salon/features/services/index.ts
   - [x] Fix BlogPostContent export in features/blog/index.ts
   - [x] Fix ContactForm export in features/contact/index.ts
   - [x] Fix SearchDialog and SearchPage exports in features/search/index.ts
@@ -154,7 +154,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
   - [x] Create or fix ServicesOverview component import in app/page.tsx
   - [x] Create or fix SearchDialog component import in components/Navigation.tsx
-    - File: apps/web/components/Navigation.tsx
+    - File: templates/hair-salon/components/Navigation.tsx
     - Snip:
       ```tsx
       import { SearchDialog } from '@/features/search';
@@ -202,7 +202,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
 - [x] **Align local env template with runtime schema**
 
-  - [x] Compare .env.example with apps/web/lib/env.ts and apps/web/lib/env.public.ts
+  - [x] Compare .env.example with templates/hair-salon/lib/env.ts and templates/hair-salon/lib/env.public.ts
   - [x] Update .env.example to match current schema requirements
   - [x] Add missing optional integration variables
   - DoD: New developers can copy .env.example without immediate failures ✅
@@ -268,7 +268,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - [x] **Update verification command log**
 
   - [x] Run pnpm install, pnpm lint, pnpm type-check, pnpm test, pnpm test:coverage, pnpm build
-  - [x] Run pnpm --filter @repo/web start (or docker-compose up -d)
+  - [x] Run pnpm --filter @templates/hair-salon start (or docker-compose up -d)
   - [x] Record all outputs in docs/TESTING_STATUS.md
   - [x] Include dates and success/failure status
   - DoD: Command log includes outputs and dates for each run ✅
@@ -289,22 +289,22 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
     documented consent persistence behavior
 
 - [x] Fix blog import paths (resolved)
-- Deliverables: corrected blog/search/sitemap imports in `apps/web/app/blog/[slug]/page.tsx`, `apps/web/app/blog/page.tsx`, `apps/web/app/search/page.tsx`, `apps/web/app/sitemap.ts`
+- Deliverables: corrected blog/search/sitemap imports in `templates/hair-salon/app/blog/[slug]/page.tsx`, `templates/hair-salon/app/blog/page.tsx`, `templates/hair-salon/app/search/page.tsx`, `templates/hair-salon/app/sitemap.ts`
 - DoD: no module resolution errors for blog/search/sitemap routes
 - Deps: none
 
 - [x] Fix contact + analytics import paths (resolved)
-- Deliverables: corrected imports in `apps/web/features/contact/lib/submit.ts`, `apps/web/features/contact/lib/helpers.ts`, `apps/web/features/contact/components/ContactForm.tsx`, `apps/web/components/AnalyticsConsentBanner.tsx`
+- Deliverables: corrected imports in `templates/hair-salon/features/contact/lib/submit.ts`, `templates/hair-salon/features/contact/lib/helpers.ts`, `templates/hair-salon/features/contact/components/ContactForm.tsx`, `templates/hair-salon/components/AnalyticsConsentBanner.tsx`
 - DoD: contact form modules resolve without alias errors
 - Deps: none
 
 - [x] Fix HubSpot/Supabase adapter imports (resolved)
-- Deliverables: corrected imports in `apps/web/features/hubspot/hubspot.ts`, `apps/web/features/supabase/supabase.ts`, `apps/web/features/hubspot/hubspot-client.ts`, `apps/web/features/supabase/supabase-leads.ts`
+- Deliverables: corrected imports in `templates/hair-salon/features/hubspot/hubspot.ts`, `templates/hair-salon/features/supabase/supabase.ts`, `templates/hair-salon/features/hubspot/hubspot-client.ts`, `templates/hair-salon/features/supabase/supabase-leads.ts`
 - DoD: server actions resolve at runtime
 - Deps: none
 
 - [x] Fix optional analytics env test (resolved)
-- Deliverables: update `apps/web/lib/env.test.ts` to expect `undefined` for optional analytics ID
+- Deliverables: update `templates/hair-salon/lib/env.test.ts` to expect `undefined` for optional analytics ID
 - DoD: env tests pass with no analytics ID set
 - Deps: none
 
@@ -520,15 +520,15 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
 - [x] **Blog: MDX parsing and rendering**
 
-  - [x] Implement MDX parsing in `apps/web/features/blog/lib/`
+  - [x] Implement MDX parsing in `templates/hair-salon/features/blog/lib/`
   - [x] Create `app/blog/page.tsx` for blog index
   - [x] Create `app/blog/[slug]/page.tsx` for individual posts
   - [ ] Add sample blog posts with proper frontmatter
   - [x] Test code blocks and markdown rendering
   - Refs:
-    - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts)
-    - [apps/web/app/blog/page.tsx](apps/web/app/blog/page.tsx)
-    - [apps/web/app/blog/[slug]/page.tsx](apps/web/app/blog/%5Bslug%5D/page.tsx)
+    - [templates/hair-salon/features/blog/lib/blog.ts](templates/hair-salon/features/blog/lib/blog.ts)
+    - [templates/hair-salon/app/blog/page.tsx](templates/hair-salon/app/blog/page.tsx)
+    - [templates/hair-salon/app/blog/[slug]/page.tsx](templates/hair-salon/app/blog/%5Bslug%5D/page.tsx)
   - Snip:
     ```ts
     const posts = getAllPosts();
@@ -546,8 +546,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [x] Add category links and filtering logic
   - [x] Implement empty state for filtered results
   - Refs:
-    - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts)
-    - [apps/web/app/blog/page.tsx](apps/web/app/blog/page.tsx)
+    - [templates/hair-salon/features/blog/lib/blog.ts](templates/hair-salon/features/blog/lib/blog.ts)
+    - [templates/hair-salon/app/blog/page.tsx](templates/hair-salon/app/blog/page.tsx)
   - Snip:
     ```ts
     export function getPostsByCategory(category: string): BlogPost[] {
@@ -566,7 +566,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [x] Add validation error handling in development
   - [ ] Create sample posts with valid metadata
   - Refs:
-    - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts)
+    - [templates/hair-salon/features/blog/lib/blog.ts](templates/hair-salon/features/blog/lib/blog.ts)
   - Snip:
     ```ts
     export interface BlogPost {
@@ -583,14 +583,14 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
 - [x] **Blog: content creation and directory setup**
 
-  - [x] Create `apps/web/content/blog/` directory structure
+  - [x] Create `templates/hair-salon/content/blog/` directory structure
   - [x] Add sample blog posts with proper frontmatter
   - [x] Include posts with code blocks for testing
   - [x] Add posts across different categories
   - [x] Test blog rendering with actual content
   - Refs:
-    - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts)
-    - [apps/web/app/blog/page.tsx](apps/web/app/blog/page.tsx)
+    - [templates/hair-salon/features/blog/lib/blog.ts](templates/hair-salon/features/blog/lib/blog.ts)
+    - [templates/hair-salon/app/blog/page.tsx](templates/hair-salon/app/blog/page.tsx)
   - Snip:
     ```ts
     const posts = getAllPosts();
@@ -609,7 +609,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Add server-side caching for blog data
   - [ ] Optimize MDX compilation caching
   - Refs:
-    - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts)
+    - [templates/hair-salon/features/blog/lib/blog.ts](templates/hair-salon/features/blog/lib/blog.ts)
   - Snip:
     ```ts
     export function getAllPosts(): BlogPost[] {
@@ -629,8 +629,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [x] Add clear error states and validation messages
   - [x] Implement form submission loading states
   - Refs:
-    - [apps/web/features/contact/lib/contact-form-schema.ts](apps/web/features/contact/lib/contact-form-schema.ts)
-    - [apps/web/features/contact/components/ContactForm.tsx](apps/web/features/contact/components/ContactForm.tsx)
+    - [templates/hair-salon/features/contact/lib/contact-form-schema.ts](templates/hair-salon/features/contact/lib/contact-form-schema.ts)
+    - [templates/hair-salon/features/contact/components/ContactForm.tsx](templates/hair-salon/features/contact/components/ContactForm.tsx)
   - Snip:
     ```ts
     export const contactFormSchema = z.object({
@@ -650,9 +650,9 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [x] Create success and error response handling
   - [x] Add email notification system
   - Refs:
-    - [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts)
-    - [apps/web/lib/rate-limit.ts](apps/web/lib/rate-limit.ts)
-    - [apps/web/features/contact/components/ContactForm.tsx](apps/web/features/contact/components/ContactForm.tsx)
+    - [templates/hair-salon/lib/actions/submit.ts](templates/hair-salon/lib/actions/submit.ts)
+    - [templates/hair-salon/lib/rate-limit.ts](templates/hair-salon/lib/rate-limit.ts)
+    - [templates/hair-salon/features/contact/components/ContactForm.tsx](templates/hair-salon/features/contact/components/ContactForm.tsx)
   - Snip:
     ```ts
     export async function submitContactForm(data: ContactFormData) {
@@ -669,9 +669,9 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Implement suspicious submission detection
   - [ ] Add CRM sync error handling and logging
   - Refs:
-    - [apps/web/lib/actions/supabase.ts](apps/web/lib/actions/supabase.ts)
-    - [apps/web/lib/actions/hubspot.ts](apps/web/lib/actions/hubspot.ts)
-    - [apps/web/lib/actions/helpers.ts](apps/web/lib/actions/helpers.ts)
+    - [templates/hair-salon/lib/actions/supabase.ts](templates/hair-salon/lib/actions/supabase.ts)
+    - [templates/hair-salon/lib/actions/hubspot.ts](templates/hair-salon/lib/actions/hubspot.ts)
+    - [templates/hair-salon/lib/actions/helpers.ts](templates/hair-salon/lib/actions/helpers.ts)
   - Snip:
     ```ts
     const lead = await insertLeadWithSpan(sanitized, isSuspicious);
@@ -689,9 +689,9 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Implement individual service pages (`/services/*`)
   - [ ] Add pricing information and booking links
   - Refs:
-    - [apps/web/features/services/components/ServiceDetailLayout.tsx](apps/web/features/services/components/ServiceDetailLayout.tsx)
-    - [apps/web/features/services/components/ServicesOverview.tsx](apps/web/features/services/components/ServicesOverview.tsx)
-    - [apps/web/app/services/page.tsx](apps/web/app/services/page.tsx)
+    - [templates/hair-salon/features/services/components/ServiceDetailLayout.tsx](templates/hair-salon/features/services/components/ServiceDetailLayout.tsx)
+    - [templates/hair-salon/features/services/components/ServicesOverview.tsx](templates/hair-salon/features/services/components/ServicesOverview.tsx)
+    - [templates/hair-salon/app/services/page.tsx](templates/hair-salon/app/services/page.tsx)
   - Snip:
     ```tsx
     export interface ServiceDetailProps {
@@ -709,8 +709,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Add provider redirect flow if needed
   - [ ] Create booking confirmation system
   - Refs:
-    - [apps/web/app/book/page.tsx](apps/web/app/book/page.tsx)
-    - [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx)
+    - [templates/hair-salon/app/book/page.tsx](templates/hair-salon/app/book/page.tsx)
+    - [templates/hair-salon/components/FinalCTA.tsx](templates/hair-salon/components/FinalCTA.tsx)
   - Snip:
     ```tsx
     <Link href="/book">
@@ -729,9 +729,9 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [x] Add search results highlighting and navigation
   - [x] Create search page for full search experience
   - Refs:
-    - [apps/web/lib/search.ts](apps/web/lib/search.ts)
-    - [apps/web/features/search/components/SearchDialog.tsx](apps/web/features/search/components/SearchDialog.tsx)
-    - [apps/web/features/search/components/SearchPage.tsx](apps/web/features/search/components/SearchPage.tsx)
+    - [templates/hair-salon/lib/search.ts](templates/hair-salon/lib/search.ts)
+    - [templates/hair-salon/features/search/components/SearchDialog.tsx](templates/hair-salon/features/search/components/SearchDialog.tsx)
+    - [templates/hair-salon/features/search/components/SearchPage.tsx](templates/hair-salon/features/search/components/SearchPage.tsx)
   - Snip:
     ```ts
     export function getSearchIndex(): SearchItem[] {
@@ -748,7 +748,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Add search result caching strategies
   - [ ] Optimize search algorithm performance
   - Refs:
-    - [apps/web/lib/search.ts](apps/web/lib/search.ts)
+    - [templates/hair-salon/lib/search.ts](templates/hair-salon/lib/search.ts)
   - Snip:
     ```ts
     const posts = getAllPosts().map((post) => ({
@@ -766,7 +766,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Update imagery with consistent metadata
   - [ ] Add alt text and accessibility features
   - Refs:
-    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+    - [templates/hair-salon/app/gallery/page.tsx](templates/hair-salon/app/gallery/page.tsx)
   - Snip:
     ```tsx
     <section className="py-20 bg-off-white">
@@ -781,8 +781,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Write production-ready terms copy
   - [ ] Add legal disclaimers and privacy references
   - Refs:
-    - [apps/web/app/terms/page.tsx](apps/web/app/terms/page.tsx)
-    - [apps/web/app/privacy/page.tsx](apps/web/app/privacy/page.tsx)
+    - [templates/hair-salon/app/terms/page.tsx](templates/hair-salon/app/terms/page.tsx)
+    - [templates/hair-salon/app/privacy/page.tsx](templates/hair-salon/app/privacy/page.tsx)
   - Snip:
     ```tsx
     export const metadata: Metadata = {
@@ -797,8 +797,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Update footer social links or remove if not needed
   - [ ] Verify all social links point to real profiles
   - Refs:
-    - [apps/web/app/team/page.tsx](apps/web/app/team/page.tsx)
-    - [apps/web/components/Footer.tsx](apps/web/components/Footer.tsx)
+    - [templates/hair-salon/app/team/page.tsx](templates/hair-salon/app/team/page.tsx)
+    - [templates/hair-salon/components/Footer.tsx](templates/hair-salon/components/Footer.tsx)
   - Snip:
     ```tsx
     <Link href="/team" className="text-white/70">
@@ -816,8 +816,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Implement caching strategy for OG images
   - [ ] Add error handling for OG image generation
   - Refs:
-    - [apps/web/app/api/og/route.tsx](apps/web/app/api/og/route.tsx)
-    - [apps/web/lib/rate-limit.ts](apps/web/lib/rate-limit.ts)
+    - [templates/hair-salon/app/api/og/route.tsx](templates/hair-salon/app/api/og/route.tsx)
+    - [templates/hair-salon/lib/rate-limit.ts](templates/hair-salon/lib/rate-limit.ts)
   - Snip:
     ```ts
     export async function GET(request: Request) {
@@ -832,14 +832,14 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Implement fallback behavior in production
   - [ ] Document production rate limiting behavior
   - Refs:
-    - [apps/web/lib/rate-limit.ts](apps/web/lib/rate-limit.ts)
+    - [templates/hair-salon/lib/rate-limit.ts](templates/hair-salon/lib/rate-limit.ts)
   - Snip:
     ```ts
     if (missingUpstashKeys.length === 0) {
       // init Upstash
     }
     ```
-  - DoD: Production behavior documented and enforced in `apps/web/lib/rate-limit.ts`
+  - DoD: Production behavior documented and enforced in `templates/hair-salon/lib/rate-limit.ts`
   - Deps: rate limiting in place
 
 ### 1.7 Seed Data and Testing
@@ -850,9 +850,9 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Create sample blog posts
   - [ ] Add sample gallery images
   - Refs:
-    - [apps/web/features/services/components/ServicesOverview.tsx](apps/web/features/services/components/ServicesOverview.tsx)
-    - [apps/web/app/team/page.tsx](apps/web/app/team/page.tsx)
-    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+    - [templates/hair-salon/features/services/components/ServicesOverview.tsx](templates/hair-salon/features/services/components/ServicesOverview.tsx)
+    - [templates/hair-salon/app/team/page.tsx](templates/hair-salon/app/team/page.tsx)
+    - [templates/hair-salon/app/gallery/page.tsx](templates/hair-salon/app/gallery/page.tsx)
   - Snip:
     ```ts
     const services = [{ title: 'Haircuts & Styling', href: '/services/haircuts' }];
@@ -890,8 +890,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Create per-provider schemas with required fields
   - [ ] Add validation error handling for missing keys
   - Refs:
-    - [apps/web/lib/env.ts](apps/web/lib/env.ts)
-    - [apps/web/lib/env.public.ts](apps/web/lib/env.public.ts)
+    - [templates/hair-salon/lib/env.ts](templates/hair-salon/lib/env.ts)
+    - [templates/hair-salon/lib/env.public.ts](templates/hair-salon/lib/env.public.ts)
   - Snip:
     ```ts
     export const validatedEnv = envSchema.parse(process.env);
@@ -906,7 +906,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Create server-side event emitter wrapper
   - [ ] Add event validation and logging
   - Refs:
-    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+    - [templates/hair-salon/features/analytics/lib/analytics.ts](templates/hair-salon/features/analytics/lib/analytics.ts)
   - Snip:
     ```ts
     export function trackEvent({ action, category, label, value }: AnalyticsEvent) {
@@ -924,8 +924,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Wire consent banner to consent model
   - [ ] Add per-category consent tracking (unknown/granted/denied)
   - Refs:
-    - [apps/web/features/analytics/lib/analytics-consent.ts](apps/web/features/analytics/lib/analytics-consent.ts)
-    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+    - [templates/hair-salon/features/analytics/lib/analytics-consent.ts](templates/hair-salon/features/analytics/lib/analytics-consent.ts)
+    - [templates/hair-salon/components/AnalyticsConsentBanner.tsx](templates/hair-salon/components/AnalyticsConsentBanner.tsx)
   - Snip:
     ```ts
     export type AnalyticsConsentState = 'granted' | 'denied' | 'unknown';
@@ -940,7 +940,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Create script loading queue management
   - [ ] Add script removal and cleanup functionality
   - Refs:
-    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+    - [templates/hair-salon/components/AnalyticsConsentBanner.tsx](templates/hair-salon/components/AnalyticsConsentBanner.tsx)
   - Snip:
     ```tsx
     <Script src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`} />
@@ -955,8 +955,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Add CSP domain configuration per provider
   - [ ] Create event subscription system for providers
   - Refs:
-    - [apps/web/lib/csp.ts](apps/web/lib/csp.ts)
-    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+    - [templates/hair-salon/lib/csp.ts](templates/hair-salon/lib/csp.ts)
+    - [templates/hair-salon/features/analytics/lib/analytics.ts](templates/hair-salon/features/analytics/lib/analytics.ts)
   - Snip:
     ```ts
     const scriptSources = ["'self'", `'nonce-${nonce}'`, 'https://www.googletagmanager.com'];
@@ -970,8 +970,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Add CSP validation and testing
   - [ ] Update CSP only for enabled integrations
   - Refs:
-    - [apps/web/lib/csp.ts](apps/web/lib/csp.ts)
-    - [apps/web/middleware.ts](apps/web/middleware.ts)
+    - [templates/hair-salon/lib/csp.ts](templates/hair-salon/lib/csp.ts)
+    - [templates/hair-salon/middleware.ts](templates/hair-salon/middleware.ts)
   - Snip:
     ```ts
     const csp = buildContentSecurityPolicy({ nonce, isDevelopment });
@@ -989,7 +989,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Add unit tests for event bus and script loader
   - [ ] Test integration registry validation
   - Refs:
-    - [apps/web/lib/**tests**/env.test.ts](apps/web/lib/__tests__/env.test.ts)
+    - [templates/hair-salon/lib/**tests**/env.test.ts](templates/hair-salon/lib/__tests__/env.test.ts)
     - [jest.config.js](jest.config.js)
   - Snip:
     ```ts
@@ -1006,8 +1006,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
   - [ ] Verify consent persistence across sessions
   - [ ] Test consent category-specific behavior
   - Refs:
-    - [apps/web/features/analytics/lib/analytics-consent.ts](apps/web/features/analytics/lib/analytics-consent.ts)
-    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+    - [templates/hair-salon/features/analytics/lib/analytics-consent.ts](templates/hair-salon/features/analytics/lib/analytics-consent.ts)
+    - [templates/hair-salon/components/AnalyticsConsentBanner.tsx](templates/hair-salon/components/AnalyticsConsentBanner.tsx)
   - Snip:
     ```ts
     export function setAnalyticsConsent(consent: AnalyticsConsentState) {
@@ -1032,7 +1032,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 
   - Refs:
     - [infrastructure/](infrastructure/)
-    - [apps/web/features/supabase/lib/supabase-leads.ts](apps/web/features/supabase/lib/supabase-leads.ts)
+    - [templates/hair-salon/features/supabase/lib/supabase-leads.ts](templates/hair-salon/features/supabase/lib/supabase-leads.ts)
   - Snip:
     ```ts
     const SUPABASE_LEADS_PATH = '/rest/v1/leads';
@@ -1068,7 +1068,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: auth strategy defined
 
   - Refs:
-    - [apps/web/middleware.ts](apps/web/middleware.ts)
+    - [templates/hair-salon/middleware.ts](templates/hair-salon/middleware.ts)
   - Snip:
     ```ts
     export const config = { matcher: ['/((?!_next/static).*)'] };
@@ -1099,7 +1099,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: data layer ready
 
   - Refs:
-    - [apps/web/components/SocialProof.tsx](apps/web/components/SocialProof.tsx)
+    - [templates/hair-salon/components/SocialProof.tsx](templates/hair-salon/components/SocialProof.tsx)
   - Snip:
     ```ts
     const testimonials = [{ quote: '...', author: '...', title: '...' }];
@@ -1111,7 +1111,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: schema and seed data
 
   - Refs:
-    - [apps/web/components/SocialProof.tsx](apps/web/components/SocialProof.tsx)
+    - [templates/hair-salon/components/SocialProof.tsx](templates/hair-salon/components/SocialProof.tsx)
   - Snip:
     ```tsx
     <div className="grid md:grid-cols-3 gap-8 mb-16">
@@ -1123,7 +1123,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: no iframe loads until interaction
 - Deps: testimonial UI exists
   - Refs:
-    - [apps/web/components/SocialProof.tsx](apps/web/components/SocialProof.tsx)
+    - [templates/hair-salon/components/SocialProof.tsx](templates/hair-salon/components/SocialProof.tsx)
   - Snip:
     ```tsx
     <Card key={testimonial.author} variant="testimonial">
@@ -1137,7 +1137,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: data layer ready
 
   - Refs:
-    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+    - [templates/hair-salon/app/gallery/page.tsx](templates/hair-salon/app/gallery/page.tsx)
   - Snip:
     ```tsx
     <section className="py-20 bg-off-white">
@@ -1149,7 +1149,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: transformation data seeded
 
   - Refs:
-    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+    - [templates/hair-salon/app/gallery/page.tsx](templates/hair-salon/app/gallery/page.tsx)
   - Snip:
     ```tsx
     <div className="grid md:grid-cols-3 gap-8">
@@ -1161,7 +1161,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: gallery MVP
 
   - Refs:
-    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+    - [templates/hair-salon/app/gallery/page.tsx](templates/hair-salon/app/gallery/page.tsx)
   - Snip:
     ```tsx
     <div className={`w-full h-full ${item.image} flex items-center justify-center`}>
@@ -1188,7 +1188,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: data layer ready
 
   - Refs:
-    - [apps/web/app/about/page.tsx](apps/web/app/about/page.tsx)
+    - [templates/hair-salon/app/about/page.tsx](templates/hair-salon/app/about/page.tsx)
   - Snip:
     ```tsx
     <h2 className="text-3xl font-bold text-charcoal">Our Story</h2>
@@ -1200,8 +1200,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: trust models seeded
 
   - Refs:
-    - [apps/web/components/ValueProps.tsx](apps/web/components/ValueProps.tsx)
-    - [apps/web/app/services/page.tsx](apps/web/app/services/page.tsx)
+    - [templates/hair-salon/components/ValueProps.tsx](templates/hair-salon/components/ValueProps.tsx)
+    - [templates/hair-salon/app/services/page.tsx](templates/hair-salon/app/services/page.tsx)
   - Snip:
     ```tsx
     <div className="grid md:grid-cols-3 gap-8">
@@ -1212,7 +1212,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: only data-backed claims render
 - Deps: business data source
   - Refs:
-    - [apps/web/components/Hero.tsx](apps/web/components/Hero.tsx)
+    - [templates/hair-salon/components/Hero.tsx](templates/hair-salon/components/Hero.tsx)
   - Snip:
     ```tsx
     <p className="text-sm text-slate mt-4">
@@ -1228,8 +1228,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: booking link defined
 
   - Refs:
-    - [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx)
-    - [apps/web/components/Navigation.tsx](apps/web/components/Navigation.tsx)
+    - [templates/hair-salon/components/FinalCTA.tsx](templates/hair-salon/components/FinalCTA.tsx)
+    - [templates/hair-salon/components/Navigation.tsx](templates/hair-salon/components/Navigation.tsx)
   - Snip:
     ```tsx
     <Link href="/contact">
@@ -1245,8 +1245,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: event bus
 
   - Refs:
-    - [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx)
-    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+    - [templates/hair-salon/components/FinalCTA.tsx](templates/hair-salon/components/FinalCTA.tsx)
+    - [templates/hair-salon/features/analytics/lib/analytics.ts](templates/hair-salon/features/analytics/lib/analytics.ts)
   - Snip:
     ```ts
     export function trackCTAClick(ctaText: string) {
@@ -1260,7 +1260,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: booking/CRM data source
 
   - Refs:
-    - [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx)
+    - [templates/hair-salon/components/FinalCTA.tsx](templates/hair-salon/components/FinalCTA.tsx)
   - Snip:
     ```tsx
     <p className="text-lg text-white/90 mb-8 leading-relaxed">
@@ -1272,7 +1272,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: contact endpoint
 
   - Refs:
-    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+    - [templates/hair-salon/components/AnalyticsConsentBanner.tsx](templates/hair-salon/components/AnalyticsConsentBanner.tsx)
   - Snip:
     ```tsx
     <div className="fixed bottom-4 left-4 right-4">
@@ -1283,7 +1283,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: disabled by default; no mobile interstitials
 - Deps: analytics events
   - Refs:
-    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+    - [templates/hair-salon/features/analytics/lib/analytics.ts](templates/hair-salon/features/analytics/lib/analytics.ts)
   - Snip:
     ```ts
     if (isDevelopment() || isTest()) {
@@ -1305,8 +1305,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: admin role model
 
   - Refs:
-    - [apps/web/app](apps/web/app)
-    - [apps/web/middleware.ts](apps/web/middleware.ts)
+    - [templates/hair-salon/app](templates/hair-salon/app)
+    - [templates/hair-salon/middleware.ts](templates/hair-salon/middleware.ts)
   - Snip:
     ```ts
     export function middleware(request: NextRequest) {
@@ -1321,7 +1321,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: storage buckets ready
 
   - Refs:
-    - [apps/web/components](apps/web/components)
+    - [templates/hair-salon/components](templates/hair-salon/components)
   - Snip:
     ```tsx
     <input type="file" accept="image/*" />
@@ -1333,7 +1333,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: review/testimonial schemas
 
   - Refs:
-    - [apps/web/features/supabase/lib/supabase-leads.ts](apps/web/features/supabase/lib/supabase-leads.ts)
+    - [templates/hair-salon/features/supabase/lib/supabase-leads.ts](templates/hair-salon/features/supabase/lib/supabase-leads.ts)
   - Snip:
     ```ts
     export async function updateSupabaseLead(leadId: string, updates: Record<string, unknown>) {
@@ -1347,7 +1347,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: admin routes
 
   - Refs:
-    - [apps/web/lib/logger.ts](apps/web/lib/logger.ts)
+    - [templates/hair-salon/lib/logger.ts](templates/hair-salon/lib/logger.ts)
   - Snip:
     ```ts
     export function logInfo(message: string, context?: LogContext) {
@@ -1360,7 +1360,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: revoked assets removed from UI and CDN
 - Deps: storage buckets + revocation fields
   - Refs:
-    - [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+    - [templates/hair-salon/app/gallery/page.tsx](templates/hair-salon/app/gallery/page.tsx)
     - [infrastructure/](infrastructure/)
   - Snip:
     ```tsx
@@ -1379,8 +1379,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: integration platform layer
 
   - Refs:
-    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
-    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+    - [templates/hair-salon/components/AnalyticsConsentBanner.tsx](templates/hair-salon/components/AnalyticsConsentBanner.tsx)
+    - [templates/hair-salon/features/analytics/lib/analytics.ts](templates/hair-salon/features/analytics/lib/analytics.ts)
   - Snip:
     ```tsx
     <Script src={`https://www.googletagmanager.com/gtag/js?id=${analyticsId}`} />
@@ -1392,7 +1392,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: script loader
 
   - Refs:
-    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+    - [templates/hair-salon/components/AnalyticsConsentBanner.tsx](templates/hair-salon/components/AnalyticsConsentBanner.tsx)
   - Snip:
     ```tsx
     <Script id="ga4-init" strategy="afterInteractive" nonce={nonce}>
@@ -1404,7 +1404,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: event taxonomy
 
   - Refs:
-    - [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts)
+    - [templates/hair-salon/features/analytics/lib/analytics.ts](templates/hair-salon/features/analytics/lib/analytics.ts)
   - Snip:
     ```ts
     trackEvent({ action: 'cta_click', category: 'engagement', label: ctaText });
@@ -1416,7 +1416,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: script loader
 
   - Refs:
-    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
+    - [templates/hair-salon/components/AnalyticsConsentBanner.tsx](templates/hair-salon/components/AnalyticsConsentBanner.tsx)
   - Snip:
     ```tsx
     const canLoadAnalytics = shouldLoadAnalytics(consent, analyticsId);
@@ -1428,8 +1428,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: form endpoints
 
   - Refs:
-    - [apps/web/features/contact/components/ContactForm.tsx](apps/web/features/contact/components/ContactForm.tsx)
-    - [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts)
+    - [templates/hair-salon/features/contact/components/ContactForm.tsx](templates/hair-salon/features/contact/components/ContactForm.tsx)
+    - [templates/hair-salon/lib/actions/submit.ts](templates/hair-salon/lib/actions/submit.ts)
   - Snip:
     ```tsx
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -1440,8 +1440,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: booking CTA opens correct provider link
 - Deps: integration registry
   - Refs:
-    - [apps/web/app/book/page.tsx](apps/web/app/book/page.tsx)
-    - [apps/web/components/FinalCTA.tsx](apps/web/components/FinalCTA.tsx)
+    - [templates/hair-salon/app/book/page.tsx](templates/hair-salon/app/book/page.tsx)
+    - [templates/hair-salon/components/FinalCTA.tsx](templates/hair-salon/components/FinalCTA.tsx)
   - Snip:
     ```tsx
     <Link href="/book">
@@ -1457,7 +1457,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: event bus
 
   - Refs:
-    - [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts)
+    - [templates/hair-salon/lib/actions/submit.ts](templates/hair-salon/lib/actions/submit.ts)
   - Snip:
     ```ts
     return withServerSpan({ name: 'contact_form.submit', op: 'action' }, async () => {
@@ -1469,8 +1469,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: server env secrets
 
   - Refs:
-    - [apps/web/app/api](apps/web/app/api)
-    - [apps/web/lib/logger.ts](apps/web/lib/logger.ts)
+    - [templates/hair-salon/app/api](templates/hair-salon/app/api)
+    - [templates/hair-salon/lib/logger.ts](templates/hair-salon/lib/logger.ts)
   - Snip:
     ```ts
     logInfo('Webhook received', { provider: 'stripe' });
@@ -1481,8 +1481,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: lead submit routes to selected provider
 - Deps: lead schema
   - Refs:
-    - [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts)
-    - [apps/web/lib/actions/helpers.ts](apps/web/lib/actions/helpers.ts)
+    - [templates/hair-salon/lib/actions/submit.ts](templates/hair-salon/lib/actions/submit.ts)
+    - [templates/hair-salon/lib/actions/helpers.ts](templates/hair-salon/lib/actions/helpers.ts)
   - Snip:
     ```ts
     const sanitized = buildSanitizedContactData(validatedData, clientIp);
@@ -1508,7 +1508,7 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - Deps: integration registry
 
   - Refs:
-    - [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts)
+    - [templates/hair-salon/features/blog/lib/blog.ts](templates/hair-salon/features/blog/lib/blog.ts)
   - Snip:
     ```ts
     const postsDirectory = path.join(process.cwd(), 'content/blog');
@@ -1519,8 +1519,8 @@ Work is phased to avoid thrash: **do not start a lower phase until the previous 
 - DoD: no scripts load without consent
 - Deps: script loader
   - Refs:
-    - [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx)
-    - [apps/web/lib/csp.ts](apps/web/lib/csp.ts)
+    - [templates/hair-salon/components/AnalyticsConsentBanner.tsx](templates/hair-salon/components/AnalyticsConsentBanner.tsx)
+    - [templates/hair-salon/lib/csp.ts](templates/hair-salon/lib/csp.ts)
   - Snip:
     ```ts
     const scriptSources = ["'self'", `'nonce-${nonce}'`];

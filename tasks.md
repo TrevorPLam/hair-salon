@@ -53,7 +53,7 @@ by impact priority and follows the 7-step 2026 audit methodology.
   - [x] Development env optional variables
   - [x] Secret management validation
   - [x] CSP nonce implementation
-  - **Evidence:** `apps/web/lib/env.ts`, security headers
+  - **Evidence:** `templates/hair-salon/lib/env.ts`, security headers
   - **Last Verified:** 2026-02-10
   - **Status:** ✅ PASS - Environment aligned
 

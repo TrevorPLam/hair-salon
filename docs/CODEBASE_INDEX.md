@@ -67,31 +67,31 @@ Status: INCOMPLETE. Entries will be added as each file is audited.
 - [tsconfig.json](tsconfig.json)
   - Meta: [docs/file-meta/tsconfig.json.md](docs/file-meta/tsconfig.json.md)
   - Role: root TypeScript config
-- [apps/web/app/layout.tsx](apps/web/app/layout.tsx)
+- [templates/hair-salon/app/layout.tsx](templates/hair-salon/app/layout.tsx)
   - Role: Next.js root layout shell and metadata
-- [apps/web/app/page.tsx](apps/web/app/page.tsx)
+- [templates/hair-salon/app/page.tsx](templates/hair-salon/app/page.tsx)
   - Role: home page composition
-- [apps/web/app/providers.tsx](apps/web/app/providers.tsx)
+- [templates/hair-salon/app/providers.tsx](templates/hair-salon/app/providers.tsx)
   - Role: client providers wrapper and error boundary
-- [apps/web/app/loading.tsx](apps/web/app/loading.tsx)
+- [templates/hair-salon/app/loading.tsx](templates/hair-salon/app/loading.tsx)
   - Role: global loading UI for route segments
-- [apps/web/app/not-found.tsx](apps/web/app/not-found.tsx)
+- [templates/hair-salon/app/not-found.tsx](templates/hair-salon/app/not-found.tsx)
   - Role: custom 404 UI
-- [apps/web/app/robots.ts](apps/web/app/robots.ts)
+- [templates/hair-salon/app/robots.ts](templates/hair-salon/app/robots.ts)
   - Role: robots.txt metadata route
-- [apps/web/app/sitemap.ts](apps/web/app/sitemap.ts)
+- [templates/hair-salon/app/sitemap.ts](templates/hair-salon/app/sitemap.ts)
   - Role: sitemap.xml metadata route
-- [apps/web/app/api/og/route.tsx](apps/web/app/api/og/route.tsx)
+- [templates/hair-salon/app/api/og/route.tsx](templates/hair-salon/app/api/og/route.tsx)
   - Role: Open Graph image generation route
-- [apps/web/app/about/page.tsx](apps/web/app/about/page.tsx)
+- [templates/hair-salon/app/about/page.tsx](templates/hair-salon/app/about/page.tsx)
   - Role: about page story, values, and CTAs
-- [apps/web/app/blog/page.tsx](apps/web/app/blog/page.tsx)
+- [templates/hair-salon/app/blog/page.tsx](templates/hair-salon/app/blog/page.tsx)
   - Role: blog index and category filters
-- [apps/web/app/blog/[slug]/page.tsx](apps/web/app/blog/[slug]/page.tsx)
+- [templates/hair-salon/app/blog/[slug]/page.tsx](templates/hair-salon/app/blog/[slug]/page.tsx)
   - Role: blog post detail view
-- [apps/web/app/book/page.tsx](apps/web/app/book/page.tsx)
+- [templates/hair-salon/app/book/page.tsx](templates/hair-salon/app/book/page.tsx)
   - Role: booking request page
-- [apps/web/app/contact/page.tsx](apps/web/app/contact/page.tsx)
+- [templates/hair-salon/app/contact/page.tsx](templates/hair-salon/app/contact/page.tsx)
 
   # Codebase Index
 

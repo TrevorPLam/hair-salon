@@ -16,7 +16,7 @@ This document records the outputs and status of verification commands run during
    - Added `@repo/eslint-config: "workspace:*"` as devDependency to:
      - `packages/utils/package.json`
      - `packages/ui/package.json`
-     - `apps/web/package.json`
+     - `templates/hair-salon/package.json`
    - Fixed plugin conflict in `packages/config/eslint-config/next.js`:
      - Removed baseConfig import that was causing duplicate `@typescript-eslint` plugin definition
      - Next.js built-in configs already provide TypeScript support
@@ -26,7 +26,7 @@ This document records the outputs and status of verification commands run during
 
 2. **Code Quality Fixes**
 
-   - Fixed unused parameter in `apps/web/lib/security-headers.ts`:
+   - Fixed unused parameter in `templates/hair-salon/lib/security-headers.ts`:
      - Refactored `getSecurityHeaders()` to actually use the `env` parameter
      - Moved HSTS conditional logic from object spread into function body
      - More testable and explicit environment handling
@@ -69,7 +69,7 @@ Status: ✅ SUCCESS
 Output:
   @repo/utils:lint - ✅ No ESLint errors
   @repo/ui:lint - ✅ No ESLint errors
-  @repo/web:lint - ✅ No ESLint warnings or errors
+  @templates/hair-salon:lint - ✅ No ESLint warnings or errors
 Time: 6.669s
 Notes: All packages pass linting with no warnings or errors
 ```
@@ -82,10 +82,10 @@ Status: ⚠️ PARTIAL SUCCESS
 Output:
   @repo/utils:type-check - ✅ PASS
   @repo/ui:type-check - ✅ PASS
-  @repo/web:type-check - ❌ FAIL (24 errors)
+  @templates/hair-salon:type-check - ❌ FAIL (24 errors)
 Time: 6.202s
 Notes:
-  - @repo/web has TypeScript errors (separate from Task 0.1)
+  - @templates/hair-salon has TypeScript errors (separate from Task 0.1)
   - Errors related to:
     - Missing component exports (Task 0.2)
     - Module resolution issues (Task 0.2)
@@ -105,10 +105,10 @@ Notes:
 
 1. `packages/utils/package.json` - Added @repo/eslint-config devDependency
 2. `packages/ui/package.json` - Added @repo/eslint-config devDependency
-3. `apps/web/package.json` - Added @repo/eslint-config devDependency
+3. `templates/hair-salon/package.json` - Added @repo/eslint-config devDependency
 4. `packages/config/eslint-config/next.js` - Fixed plugin conflict, updated console rules
 5. `packages/config/eslint-config/library.js` - Updated console rules
-6. `apps/web/lib/security-headers.ts` - Fixed unused env parameter
+6. `templates/hair-salon/lib/security-headers.ts` - Fixed unused env parameter
 7. `TODO.md` - Marked Task 0.1 and all subtasks as completed
 8. `docs/TESTING_STATUS.md` - Created (this file)
 
@@ -133,7 +133,7 @@ Task 0.2 - Module Resolution & Import Fixes should be addressed next to resolve 
 
 2. **Test Fixes**
 
-   - Updated environment variable test expectations in `apps/web/lib/__tests__/env.test.ts`
+   - Updated environment variable test expectations in `templates/hair-salon/lib/__tests__/env.test.ts`
    - Fixed tests to match Task 0.4's optional variable logic
    - All 100 tests now pass (was 3 failed, 97 passed)
 
@@ -176,7 +176,7 @@ Notes: Production build successful, bundle size optimized
 
 #### Consent Persistence Analysis
 
-**Implementation:** `apps/web/features/analytics/lib/analytics-consent.ts`
+**Implementation:** `templates/hair-salon/features/analytics/lib/analytics-consent.ts`
 
 - **Storage Key:** `ydm_analytics_consent`
 - **States:** unknown, granted, denied
@@ -211,7 +211,7 @@ Notes: Production build successful, bundle size optimized
 #### Files Modified
 
 1. `.github/workflows/ci.yml` - Removed continue-on-error from test step
-2. `apps/web/lib/__tests__/env.test.ts` - Updated test expectations for optional variables
+2. `templates/hair-salon/lib/__tests__/env.test.ts` - Updated test expectations for optional variables
 3. `docs/TESTING_STATUS.md` - Added Task 0.6 verification results
 
 ---
@@ -225,14 +225,14 @@ Notes: Production build successful, bundle size optimized
 
 1. **Environment Schema Alignment**
 
-   - Updated `.env.example` to match runtime schema in `apps/web/lib/env.ts`
+   - Updated `.env.example` to match runtime schema in `templates/hair-salon/lib/env.ts`
    - Removed unused variables (SMTP, Stripe, Calendar, etc.) that weren't in runtime schema
    - Fixed variable naming inconsistencies (SUPABASE_URL vs NEXT_PUBLIC_SUPABASE_URL)
    - Added clear documentation for optional vs required variables by environment
 
 2. **Optional Variables Implementation**
 
-   - Updated test setup (`apps/web/lib/__tests__/env-setup.ts`) to not require optional variables
+   - Updated test setup (`templates/hair-salon/lib/__tests__/env-setup.ts`) to not require optional variables
    - Modified test expectations to handle truly optional variables in development/test mode
    - Verified Supabase/HubSpot variables are optional in development but required in production
    - Added comprehensive test coverage for optional variable behavior
@@ -271,8 +271,8 @@ Notes: Production build successful, bundle size optimized
 #### Files Modified
 
 1. `.env.example` - Updated to match runtime schema, removed unused variables
-2. `apps/web/lib/__tests__/env-setup.ts` - Removed optional variable requirements
-3. `apps/web/lib/__tests__/env.test.ts` - Updated test expectations for optional variables
+2. `templates/hair-salon/lib/__tests__/env-setup.ts` - Removed optional variable requirements
+3. `templates/hair-salon/lib/__tests__/env.test.ts` - Updated test expectations for optional variables
 4. `docs/TESTING_STATUS.md` - Added Task 0.4 verification results
 
 ---
@@ -331,7 +331,7 @@ Status: ✅ SUCCESS
 Output:
   @repo/utils:lint - ✅ No ESLint errors
   @repo/ui:lint - ✅ No ESLint errors
-  @repo/web:lint - ✅ No ESLint warnings or errors
+  @templates/hair-salon:lint - ✅ No ESLint warnings or errors
 Time: 7.279s
 Notes: Renovate configuration passes lint validation
 ```
@@ -344,7 +344,7 @@ Status: ✅ SUCCESS
 Output:
   @repo/utils:type-check - ✅ PASS
   @repo/ui:type-check - ✅ PASS
-  @repo/web:type-check - ✅ PASS
+  @templates/hair-salon:type-check - ✅ PASS
 Time: 6.422s
 Notes: All TypeScript compilation successful with new Node.js requirements
 ```

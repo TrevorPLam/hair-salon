@@ -1,6 +1,8 @@
 # Architecture Decision Records (ADRs)
 
-This directory contains Architecture Decision Records (ADRs) for the Hair Salon project. ADRs document important architectural decisions made during the development process.
+This directory contains Architecture Decision Records (ADRs) for the multi-template monorepo project. ADRs document important architectural decisions made during the development process.
+
+**Note:** Some ADRs were created for the original single-app structure. ADR-011 documents the restructuring to multi-template architecture.
 
 ## What is an ADR?
 
@@ -18,18 +20,19 @@ Each ADR follows this structure:
 
 ## ADR Index
 
-| ADR | Title | Status | Date |
-|-----|-------|--------|------|
-| [ADR-001](./001-technology-stack.md) | Technology Stack Selection | Accepted | 2024-06-15 |
-| [ADR-002](./002-nextjs-framework.md) | Next.js Framework Choice | Accepted | 2024-06-15 |
-| [ADR-003](./003-database-selection.md) | Database Selection (Supabase) | Accepted | 2024-06-15 |
-| [ADR-004](./004-styling-approach.md) | Styling Approach (Tailwind CSS) | Accepted | 2024-06-15 |
-| [ADR-005](./005-content-management.md) | Content Management Strategy (MDX) | Accepted | 2024-06-15 |
-| [ADR-006](./006-search-implementation.md) | Search Implementation (Client-side) | Accepted | 2024-06-15 |
-| [ADR-007](./007-analytics-consent.md) | Analytics and Consent Management | Accepted | 2024-06-15 |
-| [ADR-008](./008-monorepo-structure.md) | Monorepo Structure (Turborepo) | Accepted | 2024-06-15 |
-| [ADR-009](./009-testing-strategy.md) | Testing Strategy (Jest + RTL) | Accepted | 2024-06-15 |
-| [ADR-010](./010-deployment-strategy.md) | Deployment Strategy (Vercel/Netlify) | Accepted | 2024-06-15 |
+| ADR                                             | Title                                     | Status   | Date       |
+| ----------------------------------------------- | ----------------------------------------- | -------- | ---------- |
+| [ADR-001](./001-technology-stack.md)            | Technology Stack Selection                | Accepted | 2024-06-15 |
+| [ADR-002](./002-nextjs-framework.md)            | Next.js Framework Choice                  | Accepted | 2024-06-15 |
+| [ADR-003](./003-database-selection.md)          | Database Selection (Supabase)             | Accepted | 2024-06-15 |
+| [ADR-004](./004-styling-approach.md)            | Styling Approach (Tailwind CSS)           | Accepted | 2024-06-15 |
+| [ADR-005](./005-content-management.md)          | Content Management Strategy (MDX)         | Accepted | 2024-06-15 |
+| [ADR-006](./006-search-implementation.md)       | Search Implementation (Client-side)       | Accepted | 2024-06-15 |
+| [ADR-007](./007-analytics-consent.md)           | Analytics and Consent Management          | Accepted | 2024-06-15 |
+| [ADR-008](./008-monorepo-structure.md)          | Monorepo Structure (Turborepo)            | Accepted | 2024-06-15 |
+| [ADR-009](./009-testing-strategy.md)            | Testing Strategy (Jest + RTL)             | Accepted | 2024-06-15 |
+| [ADR-010](./010-deployment-strategy.md)         | Deployment Strategy (Vercel/Netlify)      | Accepted | 2024-06-15 |
+| [ADR-011](./011-multi-template-architecture.md) | Multi-Template, Multi-Client Architecture | Accepted | 2026-02-10 |
 
 ## How to Add a New ADR
 
@@ -44,15 +47,19 @@ Each ADR follows this structure:
 # ADR-XXX: [Title]
 
 ## Status
+
 [Proposed | Accepted | Deprecated | Superseded]
 
 ## Context
+
 What is the issue that we're facing that motivates this decision?
 
 ## Decision
+
 What are we going to do?
 
 ## Consequences
+
 What becomes easier or harder as a result of this decision?
 ```
 

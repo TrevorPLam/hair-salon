@@ -36,7 +36,9 @@ Strict mode with additional safety:
 
 ```bash
 # Development
-pnpm dev              # Start dev server (http://localhost:3000)
+pnpm dev              # Start dev server for templates (port 3100+) or clients (port 3001+)
+pnpm --filter @templates/hair-salon dev   # Start specific template
+pnpm --filter @clients/example-client dev # Start specific client
 
 # Building
 pnpm build            # Build all packages and apps

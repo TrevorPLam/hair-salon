@@ -17,7 +17,7 @@
 -
 - @used_by
 - - tsconfig.json
-- - apps/web/tsconfig.json
+- - templates/_/tsconfig.json, clients/_/tsconfig.json
 - - packages/\*/tsconfig.json
 -
 - @runtime

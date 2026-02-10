@@ -3,8 +3,11 @@
 ## Monorepo Layout
 
 ```
-├── apps/
-│   └── web/                    # Next.js 15 application
+├── templates/
+│   ├── hair-salon/             # Hair salon template (Next.js 15)
+│   └── shared/                 # Shared template components
+├── clients/
+│   └── example-client/         # Reference client implementation
 ├── packages/
 │   ├── ui/                     # Shared React components
 │   ├── utils/                  # Shared utilities
@@ -14,7 +17,7 @@
 └── scripts/                    # Utility scripts
 ```
 
-## Web App Structure (apps/web/)
+## Template Structure (templates/hair-salon/)
 
 ### App Router Organization
 
@@ -44,7 +47,7 @@ app/
 
 ### Feature-Based Architecture
 
-Features are organized in `apps/web/features/` with consistent structure:
+Features are organized in `templates/hair-salon/features/` with consistent structure:
 
 ```
 features/
@@ -87,7 +90,7 @@ components/
 ## Path Aliases
 
 ```typescript
-'@/*'; // Maps to app root (apps/web/*)
+'@/*'; // Maps to template/client app root (e.g., templates/hair-salon/*)
 '@repo/ui'; // Shared UI components
 '@repo/utils'; // Shared utilities
 ```
@@ -97,7 +100,7 @@ components/
 - **Files:** kebab-case for regular files, PascalCase for React components
 - **Components:** PascalCase (e.g., `BlogPostContent.tsx`)
 - **Utilities:** camelCase (e.g., `blog-images.ts`)
-- **Packages:** `@repo/{package-name}` namespace
+- **Packages:** `@repo/{package-name}`, `@templates/{template-name}`, `@clients/{client-name}` namespace
 - **Features:** kebab-case directories (e.g., `special-occasions/`)
 
 ## Configuration Files

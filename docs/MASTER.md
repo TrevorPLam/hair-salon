@@ -1,9 +1,11 @@
 # Documentation Master Reference
 
-Date: 2026-02-09
+Date: 2026-02-10
 
 This document consolidates current documentation content from the /docs directory.
 Open tasks, issues, and recommendations from the docs have been moved to TODO.md.
+
+**Note:** This repository has been restructured to support multiple templates and clients. The original `templates/hair-salon` has been migrated to `templates/hair-salon`. All references below have been updated accordingly.
 
 ## Architecture Map
 
@@ -12,64 +14,64 @@ Status: INCOMPLETE. Populate as files are audited.
 ### High-Level Components
 
 - App shell
-  - Root layout renders global metadata, CSP nonce JSON-LD, and shared UI wrappers in [apps/web/app/layout.tsx](apps/web/app/layout.tsx).
+  - Root layout renders global metadata, CSP nonce JSON-LD, and shared UI wrappers in [templates/hair-salon/app/layout.tsx](templates/hair-salon/app/layout.tsx).
 - Home route
-  - Homepage composes hero and marketing sections in [apps/web/app/page.tsx](apps/web/app/page.tsx).
+  - Homepage composes hero and marketing sections in [templates/hair-salon/app/page.tsx](templates/hair-salon/app/page.tsx).
 - About route
-  - About page highlights story, values, and CTAs in [apps/web/app/about/page.tsx](apps/web/app/about/page.tsx).
+  - About page highlights story, values, and CTAs in [templates/hair-salon/app/about/page.tsx](templates/hair-salon/app/about/page.tsx).
 - Blog routes
-  - Blog index and categories live in [apps/web/app/blog/page.tsx](apps/web/app/blog/page.tsx).
-  - Blog post detail rendering lives in [apps/web/app/blog/[slug]/page.tsx](apps/web/app/blog/[slug]/page.tsx).
+  - Blog index and categories live in [templates/hair-salon/app/blog/page.tsx](templates/hair-salon/app/blog/page.tsx).
+  - Blog post detail rendering lives in [templates/hair-salon/app/blog/[slug]/page.tsx](templates/hair-salon/app/blog/[slug]/page.tsx).
 - Booking route
-  - Booking request form UI in [apps/web/app/book/page.tsx](apps/web/app/book/page.tsx).
+  - Booking request form UI in [templates/hair-salon/app/book/page.tsx](templates/hair-salon/app/book/page.tsx).
 - Contact route
-  - Contact form and salon info in [apps/web/app/contact/page.tsx](apps/web/app/contact/page.tsx).
+  - Contact form and salon info in [templates/hair-salon/app/contact/page.tsx](templates/hair-salon/app/contact/page.tsx).
 - Gallery route
-  - Portfolio gallery grid in [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx).
+  - Portfolio gallery grid in [templates/hair-salon/app/gallery/page.tsx](templates/hair-salon/app/gallery/page.tsx).
 - Pricing route
-  - Service pricing and FAQs in [apps/web/app/pricing/page.tsx](apps/web/app/pricing/page.tsx).
+  - Service pricing and FAQs in [templates/hair-salon/app/pricing/page.tsx](templates/hair-salon/app/pricing/page.tsx).
 - Privacy route
-  - Privacy policy content in [apps/web/app/privacy/page.tsx](apps/web/app/privacy/page.tsx).
+  - Privacy policy content in [templates/hair-salon/app/privacy/page.tsx](templates/hair-salon/app/privacy/page.tsx).
 - Search route
-  - Search experience in [apps/web/app/search/page.tsx](apps/web/app/search/page.tsx).
+  - Search experience in [templates/hair-salon/app/search/page.tsx](templates/hair-salon/app/search/page.tsx).
 - Services routes
-  - Services overview in [apps/web/app/services/page.tsx](apps/web/app/services/page.tsx).
-  - Coloring detail in [apps/web/app/services/coloring/page.tsx](apps/web/app/services/coloring/page.tsx).
-  - Haircuts detail in [apps/web/app/services/haircuts/page.tsx](apps/web/app/services/haircuts/page.tsx).
-  - Special occasions detail in [apps/web/app/services/special-occasions/page.tsx](apps/web/app/services/special-occasions/page.tsx).
-  - Treatments detail in [apps/web/app/services/treatments/page.tsx](apps/web/app/services/treatments/page.tsx).
+  - Services overview in [templates/hair-salon/app/services/page.tsx](templates/hair-salon/app/services/page.tsx).
+  - Coloring detail in [templates/hair-salon/app/services/coloring/page.tsx](templates/hair-salon/app/services/coloring/page.tsx).
+  - Haircuts detail in [templates/hair-salon/app/services/haircuts/page.tsx](templates/hair-salon/app/services/haircuts/page.tsx).
+  - Special occasions detail in [templates/hair-salon/app/services/special-occasions/page.tsx](templates/hair-salon/app/services/special-occasions/page.tsx).
+  - Treatments detail in [templates/hair-salon/app/services/treatments/page.tsx](templates/hair-salon/app/services/treatments/page.tsx).
 - Team route
-  - Team bios and CTA in [apps/web/app/team/page.tsx](apps/web/app/team/page.tsx).
+  - Team bios and CTA in [templates/hair-salon/app/team/page.tsx](templates/hair-salon/app/team/page.tsx).
 - Terms route
-  - Terms of Service content in [apps/web/app/terms/page.tsx](apps/web/app/terms/page.tsx).
+  - Terms of Service content in [templates/hair-salon/app/terms/page.tsx](templates/hair-salon/app/terms/page.tsx).
 - Client providers
-  - Global error boundary and breadcrumbs live in [apps/web/app/providers.tsx](apps/web/app/providers.tsx).
+  - Global error boundary and breadcrumbs live in [templates/hair-salon/app/providers.tsx](templates/hair-salon/app/providers.tsx).
 - Error and loading UI
-  - 404 experience in [apps/web/app/not-found.tsx](apps/web/app/not-found.tsx).
-  - Suspense loading UI in [apps/web/app/loading.tsx](apps/web/app/loading.tsx).
+  - 404 experience in [templates/hair-salon/app/not-found.tsx](templates/hair-salon/app/not-found.tsx).
+  - Suspense loading UI in [templates/hair-salon/app/loading.tsx](templates/hair-salon/app/loading.tsx).
 - Metadata routes
-  - robots.txt is generated in [apps/web/app/robots.ts](apps/web/app/robots.ts).
-  - sitemap.xml is generated in [apps/web/app/sitemap.ts](apps/web/app/sitemap.ts).
+  - robots.txt is generated in [templates/hair-salon/app/robots.ts](templates/hair-salon/app/robots.ts).
+  - sitemap.xml is generated in [templates/hair-salon/app/sitemap.ts](templates/hair-salon/app/sitemap.ts).
 - Open Graph route
-  - Open Graph images are rendered in [apps/web/app/api/og/route.tsx](apps/web/app/api/og/route.tsx).
+  - Open Graph images are rendered in [templates/hair-salon/app/api/og/route.tsx](templates/hair-salon/app/api/og/route.tsx).
 - Middleware and security
-  - CSP nonce injection, security headers, and request context are managed in [apps/web/middleware.ts](apps/web/middleware.ts).
+  - CSP nonce injection, security headers, and request context are managed in [templates/hair-salon/middleware.ts](templates/hair-salon/middleware.ts).
 - Shared UI components
-  - Global navigation, footer, and hero content are built from [apps/web/components/Navigation.tsx](apps/web/components/Navigation.tsx), [apps/web/components/Footer.tsx](apps/web/components/Footer.tsx), and [apps/web/components/Hero.tsx](apps/web/components/Hero.tsx).
-  - Consent gating UI is handled in [apps/web/components/AnalyticsConsentBanner.tsx](apps/web/components/AnalyticsConsentBanner.tsx).
+  - Global navigation, footer, and hero content are built from [templates/hair-salon/components/Navigation.tsx](templates/hair-salon/components/Navigation.tsx), [templates/hair-salon/components/Footer.tsx](templates/hair-salon/components/Footer.tsx), and [templates/hair-salon/components/Hero.tsx](templates/hair-salon/components/Hero.tsx).
+  - Consent gating UI is handled in [templates/hair-salon/components/AnalyticsConsentBanner.tsx](templates/hair-salon/components/AnalyticsConsentBanner.tsx).
 - Feature modules
-  - Analytics consent and tracking live in [apps/web/features/analytics/lib/analytics-consent.ts](apps/web/features/analytics/lib/analytics-consent.ts) and [apps/web/features/analytics/lib/analytics.ts](apps/web/features/analytics/lib/analytics.ts).
-  - Blog data and rendering helpers live in [apps/web/features/blog/lib/blog.ts](apps/web/features/blog/lib/blog.ts) and [apps/web/features/blog/components/BlogPostContent.tsx](apps/web/features/blog/components/BlogPostContent.tsx).
-  - Contact form UI and schema live in [apps/web/features/contact/components/ContactForm.tsx](apps/web/features/contact/components/ContactForm.tsx) and [apps/web/features/contact/lib/contact-form-schema.ts](apps/web/features/contact/lib/contact-form-schema.ts).
-  - HubSpot integration is built in [apps/web/features/hubspot/lib/hubspot-client.ts](apps/web/features/hubspot/lib/hubspot-client.ts).
-  - Search UI is composed in [apps/web/features/search/components/SearchDialog.tsx](apps/web/features/search/components/SearchDialog.tsx) and [apps/web/features/search/components/SearchPage.tsx](apps/web/features/search/components/SearchPage.tsx).
-  - Services layout components live in [apps/web/features/services/components/ServiceDetailLayout.tsx](apps/web/features/services/components/ServiceDetailLayout.tsx).
-  - Supabase lead capture lives in [apps/web/features/supabase/lib/supabase-leads.ts](apps/web/features/supabase/lib/supabase-leads.ts).
+  - Analytics consent and tracking live in [templates/hair-salon/features/analytics/lib/analytics-consent.ts](templates/hair-salon/features/analytics/lib/analytics-consent.ts) and [templates/hair-salon/features/analytics/lib/analytics.ts](templates/hair-salon/features/analytics/lib/analytics.ts).
+  - Blog data and rendering helpers live in [templates/hair-salon/features/blog/lib/blog.ts](templates/hair-salon/features/blog/lib/blog.ts) and [templates/hair-salon/features/blog/components/BlogPostContent.tsx](templates/hair-salon/features/blog/components/BlogPostContent.tsx).
+  - Contact form UI and schema live in [templates/hair-salon/features/contact/components/ContactForm.tsx](templates/hair-salon/features/contact/components/ContactForm.tsx) and [templates/hair-salon/features/contact/lib/contact-form-schema.ts](templates/hair-salon/features/contact/lib/contact-form-schema.ts).
+  - HubSpot integration is built in [templates/hair-salon/features/hubspot/lib/hubspot-client.ts](templates/hair-salon/features/hubspot/lib/hubspot-client.ts).
+  - Search UI is composed in [templates/hair-salon/features/search/components/SearchDialog.tsx](templates/hair-salon/features/search/components/SearchDialog.tsx) and [templates/hair-salon/features/search/components/SearchPage.tsx](templates/hair-salon/features/search/components/SearchPage.tsx).
+  - Services layout components live in [templates/hair-salon/features/services/components/ServiceDetailLayout.tsx](templates/hair-salon/features/services/components/ServiceDetailLayout.tsx).
+  - Supabase lead capture lives in [templates/hair-salon/features/supabase/lib/supabase-leads.ts](templates/hair-salon/features/supabase/lib/supabase-leads.ts).
 - Shared server utilities
-  - Env validation is handled in [apps/web/lib/env.ts](apps/web/lib/env.ts) and [apps/web/lib/env.public.ts](apps/web/lib/env.public.ts).
-  - CSP helpers live in [apps/web/lib/csp.ts](apps/web/lib/csp.ts) with security headers in [apps/web/lib/security-headers.ts](apps/web/lib/security-headers.ts).
-  - Server actions orchestrate submissions in [apps/web/lib/actions/submit.ts](apps/web/lib/actions/submit.ts).
-  - Rate limiting helpers live in [apps/web/lib/rate-limit.ts](apps/web/lib/rate-limit.ts).
+  - Env validation is handled in [templates/hair-salon/lib/env.ts](templates/hair-salon/lib/env.ts) and [templates/hair-salon/lib/env.public.ts](templates/hair-salon/lib/env.public.ts).
+  - CSP helpers live in [templates/hair-salon/lib/csp.ts](templates/hair-salon/lib/csp.ts) with security headers in [templates/hair-salon/lib/security-headers.ts](templates/hair-salon/lib/security-headers.ts).
+  - Server actions orchestrate submissions in [templates/hair-salon/lib/actions/submit.ts](templates/hair-salon/lib/actions/submit.ts).
+  - Rate limiting helpers live in [templates/hair-salon/lib/rate-limit.ts](templates/hair-salon/lib/rate-limit.ts).
 
 ## Route Catalog
 
@@ -78,62 +80,62 @@ Status: INCOMPLETE. Populate as routes are audited.
 ### Routes
 
 - Global layout
-  - App shell and metadata: [apps/web/app/layout.tsx](apps/web/app/layout.tsx)
+  - App shell and metadata: [templates/hair-salon/app/layout.tsx](templates/hair-salon/app/layout.tsx)
 - /
-  - Home page: [apps/web/app/page.tsx](apps/web/app/page.tsx)
+  - Home page: [templates/hair-salon/app/page.tsx](templates/hair-salon/app/page.tsx)
 - /about
-  - About page: [apps/web/app/about/page.tsx](apps/web/app/about/page.tsx)
+  - About page: [templates/hair-salon/app/about/page.tsx](templates/hair-salon/app/about/page.tsx)
 - Not found
-  - 404 page: [apps/web/app/not-found.tsx](apps/web/app/not-found.tsx)
+  - 404 page: [templates/hair-salon/app/not-found.tsx](templates/hair-salon/app/not-found.tsx)
 - Loading state
-  - Global loading UI: [apps/web/app/loading.tsx](apps/web/app/loading.tsx)
+  - Global loading UI: [templates/hair-salon/app/loading.tsx](templates/hair-salon/app/loading.tsx)
 - /robots.txt
-  - Robots metadata: [apps/web/app/robots.ts](apps/web/app/robots.ts)
+  - Robots metadata: [templates/hair-salon/app/robots.ts](templates/hair-salon/app/robots.ts)
 - /sitemap.xml
-  - Sitemap metadata: [apps/web/app/sitemap.ts](apps/web/app/sitemap.ts)
+  - Sitemap metadata: [templates/hair-salon/app/sitemap.ts](templates/hair-salon/app/sitemap.ts)
 - /api/og
-  - Open Graph image generation: [apps/web/app/api/og/route.tsx](apps/web/app/api/og/route.tsx)
+  - Open Graph image generation: [templates/hair-salon/app/api/og/route.tsx](templates/hair-salon/app/api/og/route.tsx)
 - /blog
-  - Blog index: [apps/web/app/blog/page.tsx](apps/web/app/blog/page.tsx)
+  - Blog index: [templates/hair-salon/app/blog/page.tsx](templates/hair-salon/app/blog/page.tsx)
 - /blog/[slug]
-  - Blog post detail: [apps/web/app/blog/[slug]/page.tsx](apps/web/app/blog/[slug]/page.tsx)
+  - Blog post detail: [templates/hair-salon/app/blog/[slug]/page.tsx](templates/hair-salon/app/blog/[slug]/page.tsx)
 - /book
-  - Booking request: [apps/web/app/book/page.tsx](apps/web/app/book/page.tsx)
+  - Booking request: [templates/hair-salon/app/book/page.tsx](templates/hair-salon/app/book/page.tsx)
 - /contact
-  - Contact page: [apps/web/app/contact/page.tsx](apps/web/app/contact/page.tsx)
+  - Contact page: [templates/hair-salon/app/contact/page.tsx](templates/hair-salon/app/contact/page.tsx)
 - /gallery
-  - Gallery page: [apps/web/app/gallery/page.tsx](apps/web/app/gallery/page.tsx)
+  - Gallery page: [templates/hair-salon/app/gallery/page.tsx](templates/hair-salon/app/gallery/page.tsx)
 - /pricing
-  - Pricing page: [apps/web/app/pricing/page.tsx](apps/web/app/pricing/page.tsx)
+  - Pricing page: [templates/hair-salon/app/pricing/page.tsx](templates/hair-salon/app/pricing/page.tsx)
 - /privacy
-  - Privacy policy: [apps/web/app/privacy/page.tsx](apps/web/app/privacy/page.tsx)
+  - Privacy policy: [templates/hair-salon/app/privacy/page.tsx](templates/hair-salon/app/privacy/page.tsx)
 - /search
-  - Search page: [apps/web/app/search/page.tsx](apps/web/app/search/page.tsx)
+  - Search page: [templates/hair-salon/app/search/page.tsx](templates/hair-salon/app/search/page.tsx)
 - /services
-  - Services overview: [apps/web/app/services/page.tsx](apps/web/app/services/page.tsx)
+  - Services overview: [templates/hair-salon/app/services/page.tsx](templates/hair-salon/app/services/page.tsx)
 - /services/coloring
-  - Coloring service detail: [apps/web/app/services/coloring/page.tsx](apps/web/app/services/coloring/page.tsx)
+  - Coloring service detail: [templates/hair-salon/app/services/coloring/page.tsx](templates/hair-salon/app/services/coloring/page.tsx)
 - /services/haircuts
-  - Haircuts service detail: [apps/web/app/services/haircuts/page.tsx](apps/web/app/services/haircuts/page.tsx)
+  - Haircuts service detail: [templates/hair-salon/app/services/haircuts/page.tsx](templates/hair-salon/app/services/haircuts/page.tsx)
 - /services/special-occasions
-  - Special occasions detail: [apps/web/app/services/special-occasions/page.tsx](apps/web/app/services/special-occasions/page.tsx)
+  - Special occasions detail: [templates/hair-salon/app/services/special-occasions/page.tsx](templates/hair-salon/app/services/special-occasions/page.tsx)
 - /services/treatments
-  - Treatments detail: [apps/web/app/services/treatments/page.tsx](apps/web/app/services/treatments/page.tsx)
+  - Treatments detail: [templates/hair-salon/app/services/treatments/page.tsx](templates/hair-salon/app/services/treatments/page.tsx)
 - /team
-  - Team page: [apps/web/app/team/page.tsx](apps/web/app/team/page.tsx)
+  - Team page: [templates/hair-salon/app/team/page.tsx](templates/hair-salon/app/team/page.tsx)
 - /terms
-  - Terms of Service: [apps/web/app/terms/page.tsx](apps/web/app/terms/page.tsx)
+  - Terms of Service: [templates/hair-salon/app/terms/page.tsx](templates/hair-salon/app/terms/page.tsx)
 
 ## Baseline Snapshot
 
-Date: 2026-02-09
+Date: 2026-02-10
 
 ### Versions and Enforcement
 
 - Node
-  - engines: >=20.0.0 in package.json
+  - engines: >=24.0.0 in package.json (updated from >=20.0.0)
   - CI: actions/setup-node uses 20.x in .github/workflows/ci.yml
-  - Docker: node:20-alpine in apps/web/Dockerfile
+  - Docker: node:20-alpine in templates/hair-salon/Dockerfile
 - pnpm
   - packageManager: pnpm@10.29.2 in package.json
   - CI: pnpm/action-setup uses 10.29.2 in .github/workflows/ci.yml
@@ -143,8 +145,8 @@ Date: 2026-02-09
 
 ### Workspace Graph
 
-- Root workspaces: apps/_ and packages/_ in package.json
-- pnpm-workspace.yaml matches apps/_ and packages/_
+- Root workspaces: templates/\*, clients/\*, packages/\*, and packages/config/\* in package.json
+- pnpm-workspace.yaml matches templates/\*, clients/\*, packages/\*, and packages/config/\*
 
 ### Turbo Pipeline and Cache Behavior
 
@@ -159,12 +161,12 @@ From turbo.json:
 
 ### Next.js Entry Points and Runtime Mode
 
-- App router: apps/web/app/\* (layout.tsx, page.tsx, route files)
-- Middleware: apps/web/middleware.ts
-- Metadata routes: apps/web/app/robots.ts, apps/web/app/sitemap.ts
+- App router: templates/hair-salon/app/\* (layout.tsx, page.tsx, route files)
+- Middleware: templates/hair-salon/middleware.ts
+- Metadata routes: templates/hair-salon/app/robots.ts, templates/hair-salon/app/sitemap.ts
 - Runtime modes (by file intent, verify at runtime):
-  - Server components: apps/web/app/layout.tsx, apps/web/app/page.tsx
-  - Edge middleware: apps/web/middleware.ts (Next.js middleware)
+  - Server components: templates/hair-salon/app/layout.tsx, templates/hair-salon/app/page.tsx
+  - Edge middleware: templates/hair-salon/middleware.ts (Next.js middleware)
 
 ### Pending Verification Commands (Not Executed)
 
@@ -265,16 +267,16 @@ Recommended approach:
 
 The template supports HubSpot by default. If you use a different CRM:
 
-1. Update the server action in apps/web/lib/actions to route leads.
+1. Update the server action in templates/hair-salon/lib/actions to route leads.
 2. Keep the same payload shape for contact form data to avoid UI changes.
 
 ### Customization Checklist
 
-- Update organization details in apps/web/lib/constants.ts
-- Replace logos and social links in apps/web/components/Navigation.tsx and apps/web/components/Footer.tsx
-- Update images in apps/web/public
-- Review sitemap entries in apps/web/app/sitemap.ts
-- Review SEO metadata in apps/web/app/layout.tsx
+- Update organization details in templates/hair-salon/lib/constants.ts
+- Replace logos and social links in templates/hair-salon/components/Navigation.tsx and templates/hair-salon/components/Footer.tsx
+- Update images in templates/hair-salon/public
+- Review sitemap entries in templates/hair-salon/app/sitemap.ts
+- Review SEO metadata in templates/hair-salon/app/layout.tsx
 
 ## Integration Guardrails
 
@@ -452,175 +454,175 @@ Status: INCOMPLETE. Entries will be added as each file is audited.
 - tsconfig.json
   - Meta: docs/file-meta/tsconfig.json.md
   - Role: root TypeScript config
-- apps/web/app/layout.tsx
+- templates/hair-salon/app/layout.tsx
   - Role: Next.js root layout shell and metadata
-- apps/web/app/page.tsx
+- templates/hair-salon/app/page.tsx
   - Role: home page composition
-- apps/web/app/providers.tsx
+- templates/hair-salon/app/providers.tsx
   - Role: client providers wrapper and error boundary
-- apps/web/app/loading.tsx
+- templates/hair-salon/app/loading.tsx
   - Role: global loading UI for route segments
-- apps/web/app/not-found.tsx
+- templates/hair-salon/app/not-found.tsx
   - Role: custom 404 UI
-- apps/web/app/robots.ts
+- templates/hair-salon/app/robots.ts
   - Role: robots.txt metadata route
-- apps/web/app/sitemap.ts
+- templates/hair-salon/app/sitemap.ts
   - Role: sitemap.xml metadata route
-- apps/web/app/api/og/route.tsx
+- templates/hair-salon/app/api/og/route.tsx
   - Role: Open Graph image generation route
-- apps/web/app/about/page.tsx
+- templates/hair-salon/app/about/page.tsx
   - Role: about page story, values, and CTAs
-- apps/web/app/blog/page.tsx
+- templates/hair-salon/app/blog/page.tsx
   - Role: blog index and category filters
-- apps/web/app/blog/[slug]/page.tsx
+- templates/hair-salon/app/blog/[slug]/page.tsx
   - Role: blog post detail view
-- apps/web/app/book/page.tsx
+- templates/hair-salon/app/book/page.tsx
   - Role: booking request page
-- apps/web/app/contact/page.tsx
+- templates/hair-salon/app/contact/page.tsx
   - Role: contact form and salon info
-- apps/web/app/gallery/page.tsx
+- templates/hair-salon/app/gallery/page.tsx
   - Role: gallery grid and portfolio filters
-- apps/web/app/pricing/page.tsx
+- templates/hair-salon/app/pricing/page.tsx
   - Role: pricing menu and FAQs
-- apps/web/app/privacy/page.tsx
+- templates/hair-salon/app/privacy/page.tsx
   - Role: privacy policy
-- apps/web/app/search/page.tsx
+- templates/hair-salon/app/search/page.tsx
   - Role: site search experience
-- apps/web/app/services/page.tsx
+- templates/hair-salon/app/services/page.tsx
   - Role: services overview
-- apps/web/app/services/coloring/page.tsx
+- templates/hair-salon/app/services/coloring/page.tsx
   - Role: service detail - coloring
-- apps/web/app/services/haircuts/page.tsx
+- templates/hair-salon/app/services/haircuts/page.tsx
   - Role: service detail - haircuts
-- apps/web/app/services/special-occasions/page.tsx
+- templates/hair-salon/app/services/special-occasions/page.tsx
   - Role: service detail - special occasions
-- apps/web/app/services/treatments/page.tsx
+- templates/hair-salon/app/services/treatments/page.tsx
   - Role: service detail - treatments
-- apps/web/app/team/page.tsx
+- templates/hair-salon/app/team/page.tsx
   - Role: team bios and CTA
-- apps/web/app/terms/page.tsx
+- templates/hair-salon/app/terms/page.tsx
   - Role: terms of service
-- apps/web/eslint.config.mjs
+- templates/hair-salon/eslint.config.mjs
   - Role: app-specific ESLint configuration
-- apps/web/middleware.ts
+- templates/hair-salon/middleware.ts
   - Role: CSP nonce injection, security headers, and request context
-- apps/web/next.config.js
+- templates/hair-salon/next.config.js
   - Role: Next.js config (images, headers, and build options)
-- apps/web/postcss.config.js
+- templates/hair-salon/postcss.config.js
   - Role: PostCSS plugins for Tailwind and autoprefixer
-- apps/web/tailwind.config.js
+- templates/hair-salon/tailwind.config.js
   - Role: Tailwind design tokens and content globs
-- apps/web/components/AnalyticsConsentBanner.tsx
+- templates/hair-salon/components/AnalyticsConsentBanner.tsx
   - Role: consent gating UI for analytics activation
-- apps/web/components/Breadcrumbs.tsx
+- templates/hair-salon/components/Breadcrumbs.tsx
   - Role: navigation breadcrumbs for interior pages
-- apps/web/components/ErrorBoundary.tsx
+- templates/hair-salon/components/ErrorBoundary.tsx
   - Role: client error boundary wrapper
-- apps/web/components/FinalCTA.tsx
+- templates/hair-salon/components/FinalCTA.tsx
   - Role: final CTA marketing block
-- apps/web/components/Footer.tsx
+- templates/hair-salon/components/Footer.tsx
   - Role: site footer navigation and contact info
-- apps/web/components/Hero.tsx
+- templates/hair-salon/components/Hero.tsx
   - Role: homepage hero section
-- apps/web/components/InstallPrompt.tsx
+- templates/hair-salon/components/InstallPrompt.tsx
   - Role: PWA install prompt handler
-- apps/web/components/Navigation.tsx
+- templates/hair-salon/components/Navigation.tsx
   - Role: global navigation bar
-- apps/web/components/SkipToContent.tsx
+- templates/hair-salon/components/SkipToContent.tsx
   - Role: accessibility skip link
-- apps/web/components/SocialProof.tsx
+- templates/hair-salon/components/SocialProof.tsx
   - Role: testimonials and ratings block
-- apps/web/components/ValueProps.tsx
+- templates/hair-salon/components/ValueProps.tsx
   - Role: value proposition marketing grid
-- apps/web/features/analytics/index.ts
+- templates/hair-salon/features/analytics/index.ts
   - Role: analytics feature exports
-- apps/web/features/analytics/lib/analytics-consent.ts
+- templates/hair-salon/features/analytics/lib/analytics-consent.ts
   - Role: consent storage and evaluation helpers
-- apps/web/features/analytics/lib/analytics.ts
+- templates/hair-salon/features/analytics/lib/analytics.ts
   - Role: analytics initialization and tracking helpers
-- apps/web/features/blog/index.ts
+- templates/hair-salon/features/blog/index.ts
   - Role: blog feature exports
-- apps/web/features/blog/components/BlogPostContent.tsx
+- templates/hair-salon/features/blog/components/BlogPostContent.tsx
   - Role: blog post content renderer
-- apps/web/features/blog/lib/blog-images.ts
+- templates/hair-salon/features/blog/lib/blog-images.ts
   - Role: blog image lookup helpers
-- apps/web/features/blog/lib/blog.ts
+- templates/hair-salon/features/blog/lib/blog.ts
   - Role: blog post data access helpers
-- apps/web/features/contact/index.ts
+- templates/hair-salon/features/contact/index.ts
   - Role: contact feature exports
-- apps/web/features/contact/components/ContactForm.tsx
+- templates/hair-salon/features/contact/components/ContactForm.tsx
   - Role: contact form UI and validation wiring
-- apps/web/features/contact/lib/contact-form-schema.ts
+- templates/hair-salon/features/contact/lib/contact-form-schema.ts
   - Role: contact form schema and validation rules
-- apps/web/features/hubspot/index.ts
+- templates/hair-salon/features/hubspot/index.ts
   - Role: hubspot integration exports
-- apps/web/features/hubspot/lib/hubspot-client.ts
+- templates/hair-salon/features/hubspot/lib/hubspot-client.ts
   - Role: HubSpot API client helper
-- apps/web/features/search/index.ts
+- templates/hair-salon/features/search/index.ts
   - Role: search feature exports
-- apps/web/features/search/components/SearchDialog.tsx
+- templates/hair-salon/features/search/components/SearchDialog.tsx
   - Role: site-wide search dialog UI
-- apps/web/features/search/components/SearchPage.tsx
+- templates/hair-salon/features/search/components/SearchPage.tsx
   - Role: search page results UI
-- apps/web/features/services/index.ts
+- templates/hair-salon/features/services/index.ts
   - Role: services feature exports
-- apps/web/features/services/components/ServiceDetailLayout.tsx
+- templates/hair-salon/features/services/components/ServiceDetailLayout.tsx
   - Role: service detail layout wrapper
-- apps/web/features/services/components/ServicesOverview.tsx
+- templates/hair-salon/features/services/components/ServicesOverview.tsx
   - Role: services overview content block
-- apps/web/features/supabase/index.ts
+- templates/hair-salon/features/supabase/index.ts
   - Role: Supabase integration exports
-- apps/web/features/supabase/lib/supabase-leads.ts
+- templates/hair-salon/features/supabase/lib/supabase-leads.ts
   - Role: Supabase lead capture helper
-- apps/web/lib/actions.ts
+- templates/hair-salon/lib/actions.ts
   - Role: exported server actions
-- apps/web/lib/constants.ts
+- templates/hair-salon/lib/constants.ts
   - Role: site constants and defaults
-- apps/web/lib/csp.ts
+- templates/hair-salon/lib/csp.ts
   - Role: CSP nonce and security policy helpers
-- apps/web/lib/env.public.ts
+- templates/hair-salon/lib/env.public.ts
   - Role: public env schema and validation
-- apps/web/lib/env.ts
+- templates/hair-salon/lib/env.ts
   - Role: server env schema and validation
-- apps/web/lib/logger.ts
+- templates/hair-salon/lib/logger.ts
   - Role: logging utilities with Sentry hooks
-- apps/web/lib/rate-limit.ts
+- templates/hair-salon/lib/rate-limit.ts
   - Role: Upstash rate limiting helpers
-- apps/web/lib/request-context.server.ts
+- templates/hair-salon/lib/request-context.server.ts
   - Role: per-request context storage (server)
-- apps/web/lib/request-context.ts
+- templates/hair-salon/lib/request-context.ts
   - Role: per-request context helpers
-- apps/web/lib/request-validation.ts
+- templates/hair-salon/lib/request-validation.ts
   - Role: form validation and request shaping helpers
-- apps/web/lib/sanitize.ts
+- templates/hair-salon/lib/sanitize.ts
   - Role: input sanitization helpers
-- apps/web/lib/search.ts
+- templates/hair-salon/lib/search.ts
   - Role: search index helpers
-- apps/web/lib/security-headers.ts
+- templates/hair-salon/lib/security-headers.ts
   - Role: security header definitions
-- apps/web/lib/sentry-client.ts
+- templates/hair-salon/lib/sentry-client.ts
   - Role: Sentry browser initialization
-- apps/web/lib/sentry-sanitize.ts
+- templates/hair-salon/lib/sentry-sanitize.ts
   - Role: Sentry data scrubbing helpers
-- apps/web/lib/sentry-server.ts
+- templates/hair-salon/lib/sentry-server.ts
   - Role: Sentry server initialization
-- apps/web/lib/utils.ts
+- templates/hair-salon/lib/utils.ts
   - Role: utility helpers
-- apps/web/lib/actions/helpers.ts
+- templates/hair-salon/lib/actions/helpers.ts
   - Role: server action helpers
-- apps/web/lib/actions/hubspot.ts
+- templates/hair-salon/lib/actions/hubspot.ts
   - Role: HubSpot submission action
-- apps/web/lib/actions/submit.ts
+- templates/hair-salon/lib/actions/submit.ts
   - Role: contact form submission orchestrator
-- apps/web/lib/actions/supabase.ts
+- templates/hair-salon/lib/actions/supabase.ts
   - Role: Supabase submission action
-- apps/web/lib/actions/types.ts
+- templates/hair-salon/lib/actions/types.ts
   - Role: shared action types
-- apps/web/lib/**tests**/env-setup.ts
+- templates/hair-salon/lib/**tests**/env-setup.ts
   - Role: test env setup
-- apps/web/lib/**tests**/env.test.ts
+- templates/hair-salon/lib/**tests**/env.test.ts
   - Role: env validation tests
-- apps/web/lib/**tests**/sanitize.test.ts
+- templates/hair-salon/lib/**tests**/sanitize.test.ts
   - Role: sanitize helper tests
 - packages/config/eslint-config/library.js
   - Role: shared ESLint config for library packages
@@ -727,122 +729,122 @@ Status key: pending | in-progress | done
 | .vscode/extensions.json | config | optional    | pending |
 | .vscode/settings.json   | config | optional    | pending |
 
-### apps/web
+### templates/hair-salon
 
-| Path                          | Role    | Criticality   | Status  |
-| ----------------------------- | ------- | ------------- | ------- |
-| apps/web/Dockerfile           | infra   | important     | pending |
-| apps/web/eslint.config.mjs    | config  | important     | done    |
-| apps/web/middleware.ts        | runtime | critical path | done    |
-| apps/web/next-env.d.ts        | config  | optional      | pending |
-| apps/web/next.config.js       | config  | important     | done    |
-| apps/web/package.json         | config  | critical path | pending |
-| apps/web/package.json.bak     | docs    | optional      | pending |
-| apps/web/postcss.config.js    | config  | important     | done    |
-| apps/web/tailwind.config.js   | config  | important     | done    |
-| apps/web/tsconfig.json        | config  | important     | pending |
-| apps/web/tsconfig.tsbuildinfo | asset   | optional      | pending |
+| Path                                      | Role    | Criticality   | Status  |
+| ----------------------------------------- | ------- | ------------- | ------- |
+| templates/hair-salon/Dockerfile           | infra   | important     | pending |
+| templates/hair-salon/eslint.config.mjs    | config  | important     | done    |
+| templates/hair-salon/middleware.ts        | runtime | critical path | done    |
+| templates/hair-salon/next-env.d.ts        | config  | optional      | pending |
+| templates/hair-salon/next.config.js       | config  | important     | done    |
+| templates/hair-salon/package.json         | config  | critical path | pending |
+| templates/hair-salon/package.json.bak     | docs    | optional      | pending |
+| templates/hair-salon/postcss.config.js    | config  | important     | done    |
+| templates/hair-salon/tailwind.config.js   | config  | important     | done    |
+| templates/hair-salon/tsconfig.json        | config  | important     | pending |
+| templates/hair-salon/tsconfig.tsbuildinfo | asset   | optional      | pending |
 
-#### apps/web/app
+#### templates/hair-salon/app
 
-| Path                                             | Role    | Criticality   | Status  |
-| ------------------------------------------------ | ------- | ------------- | ------- |
-| apps/web/app/globals.css                         | asset   | important     | pending |
-| apps/web/app/layout.tsx                          | runtime | critical path | done    |
-| apps/web/app/loading.tsx                         | runtime | optional      | done    |
-| apps/web/app/not-found.tsx                       | runtime | important     | done    |
-| apps/web/app/page.tsx                            | runtime | critical path | done    |
-| apps/web/app/providers.tsx                       | runtime | important     | done    |
-| apps/web/app/robots.ts                           | runtime | important     | done    |
-| apps/web/app/sitemap.ts                          | runtime | important     | done    |
-| apps/web/app/about/page.tsx                      | runtime | important     | done    |
-| apps/web/app/api/og/route.tsx                    | runtime | important     | done    |
-| apps/web/app/blog/page.tsx                       | runtime | important     | done    |
-| apps/web/app/blog/[slug]/page.tsx                | runtime | important     | done    |
-| apps/web/app/book/page.tsx                       | runtime | important     | done    |
-| apps/web/app/contact/page.tsx                    | runtime | important     | done    |
-| apps/web/app/gallery/page.tsx                    | runtime | important     | done    |
-| apps/web/app/pricing/page.tsx                    | runtime | important     | done    |
-| apps/web/app/privacy/page.tsx                    | runtime | important     | done    |
-| apps/web/app/search/page.tsx                     | runtime | important     | done    |
-| apps/web/app/services/page.tsx                   | runtime | important     | done    |
-| apps/web/app/services/coloring/page.tsx          | runtime | important     | done    |
-| apps/web/app/services/haircuts/page.tsx          | runtime | important     | done    |
-| apps/web/app/services/special-occasions/page.tsx | runtime | important     | done    |
-| apps/web/app/services/treatments/page.tsx        | runtime | important     | done    |
-| apps/web/app/team/page.tsx                       | runtime | important     | done    |
-| apps/web/app/terms/page.tsx                      | runtime | important     | done    |
+| Path                                                         | Role    | Criticality   | Status  |
+| ------------------------------------------------------------ | ------- | ------------- | ------- |
+| templates/hair-salon/app/globals.css                         | asset   | important     | pending |
+| templates/hair-salon/app/layout.tsx                          | runtime | critical path | done    |
+| templates/hair-salon/app/loading.tsx                         | runtime | optional      | done    |
+| templates/hair-salon/app/not-found.tsx                       | runtime | important     | done    |
+| templates/hair-salon/app/page.tsx                            | runtime | critical path | done    |
+| templates/hair-salon/app/providers.tsx                       | runtime | important     | done    |
+| templates/hair-salon/app/robots.ts                           | runtime | important     | done    |
+| templates/hair-salon/app/sitemap.ts                          | runtime | important     | done    |
+| templates/hair-salon/app/about/page.tsx                      | runtime | important     | done    |
+| templates/hair-salon/app/api/og/route.tsx                    | runtime | important     | done    |
+| templates/hair-salon/app/blog/page.tsx                       | runtime | important     | done    |
+| templates/hair-salon/app/blog/[slug]/page.tsx                | runtime | important     | done    |
+| templates/hair-salon/app/book/page.tsx                       | runtime | important     | done    |
+| templates/hair-salon/app/contact/page.tsx                    | runtime | important     | done    |
+| templates/hair-salon/app/gallery/page.tsx                    | runtime | important     | done    |
+| templates/hair-salon/app/pricing/page.tsx                    | runtime | important     | done    |
+| templates/hair-salon/app/privacy/page.tsx                    | runtime | important     | done    |
+| templates/hair-salon/app/search/page.tsx                     | runtime | important     | done    |
+| templates/hair-salon/app/services/page.tsx                   | runtime | important     | done    |
+| templates/hair-salon/app/services/coloring/page.tsx          | runtime | important     | done    |
+| templates/hair-salon/app/services/haircuts/page.tsx          | runtime | important     | done    |
+| templates/hair-salon/app/services/special-occasions/page.tsx | runtime | important     | done    |
+| templates/hair-salon/app/services/treatments/page.tsx        | runtime | important     | done    |
+| templates/hair-salon/app/team/page.tsx                       | runtime | important     | done    |
+| templates/hair-salon/app/terms/page.tsx                      | runtime | important     | done    |
 
-#### apps/web/components
+#### templates/hair-salon/components
 
-| Path                                           | Role    | Criticality   | Status |
-| ---------------------------------------------- | ------- | ------------- | ------ |
-| apps/web/components/AnalyticsConsentBanner.tsx | runtime | critical path | done   |
-| apps/web/components/Breadcrumbs.tsx            | runtime | important     | done   |
-| apps/web/components/ErrorBoundary.tsx          | runtime | important     | done   |
-| apps/web/components/FinalCTA.tsx               | runtime | optional      | done   |
-| apps/web/components/Footer.tsx                 | runtime | important     | done   |
-| apps/web/components/Hero.tsx                   | runtime | important     | done   |
-| apps/web/components/InstallPrompt.tsx          | runtime | optional      | done   |
-| apps/web/components/Navigation.tsx             | runtime | important     | done   |
-| apps/web/components/SkipToContent.tsx          | runtime | important     | done   |
-| apps/web/components/SocialProof.tsx            | runtime | optional      | done   |
-| apps/web/components/ValueProps.tsx             | runtime | important     | done   |
+| Path                                                       | Role    | Criticality   | Status |
+| ---------------------------------------------------------- | ------- | ------------- | ------ |
+| templates/hair-salon/components/AnalyticsConsentBanner.tsx | runtime | critical path | done   |
+| templates/hair-salon/components/Breadcrumbs.tsx            | runtime | important     | done   |
+| templates/hair-salon/components/ErrorBoundary.tsx          | runtime | important     | done   |
+| templates/hair-salon/components/FinalCTA.tsx               | runtime | optional      | done   |
+| templates/hair-salon/components/Footer.tsx                 | runtime | important     | done   |
+| templates/hair-salon/components/Hero.tsx                   | runtime | important     | done   |
+| templates/hair-salon/components/InstallPrompt.tsx          | runtime | optional      | done   |
+| templates/hair-salon/components/Navigation.tsx             | runtime | important     | done   |
+| templates/hair-salon/components/SkipToContent.tsx          | runtime | important     | done   |
+| templates/hair-salon/components/SocialProof.tsx            | runtime | optional      | done   |
+| templates/hair-salon/components/ValueProps.tsx             | runtime | important     | done   |
 
-#### apps/web/features
+#### templates/hair-salon/features
 
-| Path                                                          | Role    | Criticality   | Status |
-| ------------------------------------------------------------- | ------- | ------------- | ------ |
-| apps/web/features/analytics/index.ts                          | runtime | important     | done   |
-| apps/web/features/analytics/lib/analytics-consent.ts          | runtime | critical path | done   |
-| apps/web/features/analytics/lib/analytics.ts                  | runtime | critical path | done   |
-| apps/web/features/blog/index.ts                               | runtime | important     | done   |
-| apps/web/features/blog/components/BlogPostContent.tsx         | runtime | important     | done   |
-| apps/web/features/blog/lib/blog-images.ts                     | runtime | important     | done   |
-| apps/web/features/blog/lib/blog.ts                            | runtime | important     | done   |
-| apps/web/features/contact/index.ts                            | runtime | important     | done   |
-| apps/web/features/contact/components/ContactForm.tsx          | runtime | important     | done   |
-| apps/web/features/contact/lib/contact-form-schema.ts          | runtime | important     | done   |
-| apps/web/features/hubspot/index.ts                            | runtime | important     | done   |
-| apps/web/features/hubspot/lib/hubspot-client.ts               | runtime | important     | done   |
-| apps/web/features/search/index.ts                             | runtime | important     | done   |
-| apps/web/features/search/components/SearchDialog.tsx          | runtime | important     | done   |
-| apps/web/features/search/components/SearchPage.tsx            | runtime | important     | done   |
-| apps/web/features/services/index.ts                           | runtime | important     | done   |
-| apps/web/features/services/components/ServiceDetailLayout.tsx | runtime | important     | done   |
-| apps/web/features/services/components/ServicesOverview.tsx    | runtime | important     | done   |
-| apps/web/features/supabase/index.ts                           | runtime | important     | done   |
-| apps/web/features/supabase/lib/supabase-leads.ts              | runtime | important     | done   |
+| Path                                                                      | Role    | Criticality   | Status |
+| ------------------------------------------------------------------------- | ------- | ------------- | ------ |
+| templates/hair-salon/features/analytics/index.ts                          | runtime | important     | done   |
+| templates/hair-salon/features/analytics/lib/analytics-consent.ts          | runtime | critical path | done   |
+| templates/hair-salon/features/analytics/lib/analytics.ts                  | runtime | critical path | done   |
+| templates/hair-salon/features/blog/index.ts                               | runtime | important     | done   |
+| templates/hair-salon/features/blog/components/BlogPostContent.tsx         | runtime | important     | done   |
+| templates/hair-salon/features/blog/lib/blog-images.ts                     | runtime | important     | done   |
+| templates/hair-salon/features/blog/lib/blog.ts                            | runtime | important     | done   |
+| templates/hair-salon/features/contact/index.ts                            | runtime | important     | done   |
+| templates/hair-salon/features/contact/components/ContactForm.tsx          | runtime | important     | done   |
+| templates/hair-salon/features/contact/lib/contact-form-schema.ts          | runtime | important     | done   |
+| templates/hair-salon/features/hubspot/index.ts                            | runtime | important     | done   |
+| templates/hair-salon/features/hubspot/lib/hubspot-client.ts               | runtime | important     | done   |
+| templates/hair-salon/features/search/index.ts                             | runtime | important     | done   |
+| templates/hair-salon/features/search/components/SearchDialog.tsx          | runtime | important     | done   |
+| templates/hair-salon/features/search/components/SearchPage.tsx            | runtime | important     | done   |
+| templates/hair-salon/features/services/index.ts                           | runtime | important     | done   |
+| templates/hair-salon/features/services/components/ServiceDetailLayout.tsx | runtime | important     | done   |
+| templates/hair-salon/features/services/components/ServicesOverview.tsx    | runtime | important     | done   |
+| templates/hair-salon/features/supabase/index.ts                           | runtime | important     | done   |
+| templates/hair-salon/features/supabase/lib/supabase-leads.ts              | runtime | important     | done   |
 
-#### apps/web/lib
+#### templates/hair-salon/lib
 
-| Path                                    | Role    | Criticality   | Status |
-| --------------------------------------- | ------- | ------------- | ------ |
-| apps/web/lib/actions.ts                 | runtime | important     | done   |
-| apps/web/lib/constants.ts               | runtime | important     | done   |
-| apps/web/lib/csp.ts                     | runtime | critical path | done   |
-| apps/web/lib/env.public.ts              | runtime | critical path | done   |
-| apps/web/lib/env.ts                     | runtime | critical path | done   |
-| apps/web/lib/logger.ts                  | runtime | important     | done   |
-| apps/web/lib/rate-limit.ts              | runtime | important     | done   |
-| apps/web/lib/request-context.server.ts  | runtime | important     | done   |
-| apps/web/lib/request-context.ts         | runtime | important     | done   |
-| apps/web/lib/request-validation.ts      | runtime | important     | done   |
-| apps/web/lib/sanitize.ts                | runtime | important     | done   |
-| apps/web/lib/search.ts                  | runtime | important     | done   |
-| apps/web/lib/security-headers.ts        | runtime | important     | done   |
-| apps/web/lib/sentry-client.ts           | runtime | important     | done   |
-| apps/web/lib/sentry-sanitize.ts         | runtime | important     | done   |
-| apps/web/lib/sentry-server.ts           | runtime | important     | done   |
-| apps/web/lib/utils.ts                   | runtime | important     | done   |
-| apps/web/lib/actions/helpers.ts         | runtime | important     | done   |
-| apps/web/lib/actions/hubspot.ts         | runtime | important     | done   |
-| apps/web/lib/actions/submit.ts          | runtime | important     | done   |
-| apps/web/lib/actions/supabase.ts        | runtime | important     | done   |
-| apps/web/lib/actions/types.ts           | runtime | important     | done   |
-| apps/web/lib/**tests**/env-setup.ts     | test    | optional      | done   |
-| apps/web/lib/**tests**/env.test.ts      | test    | important     | done   |
-| apps/web/lib/**tests**/sanitize.test.ts | test    | important     | done   |
+| Path                                                | Role    | Criticality   | Status |
+| --------------------------------------------------- | ------- | ------------- | ------ |
+| templates/hair-salon/lib/actions.ts                 | runtime | important     | done   |
+| templates/hair-salon/lib/constants.ts               | runtime | important     | done   |
+| templates/hair-salon/lib/csp.ts                     | runtime | critical path | done   |
+| templates/hair-salon/lib/env.public.ts              | runtime | critical path | done   |
+| templates/hair-salon/lib/env.ts                     | runtime | critical path | done   |
+| templates/hair-salon/lib/logger.ts                  | runtime | important     | done   |
+| templates/hair-salon/lib/rate-limit.ts              | runtime | important     | done   |
+| templates/hair-salon/lib/request-context.server.ts  | runtime | important     | done   |
+| templates/hair-salon/lib/request-context.ts         | runtime | important     | done   |
+| templates/hair-salon/lib/request-validation.ts      | runtime | important     | done   |
+| templates/hair-salon/lib/sanitize.ts                | runtime | important     | done   |
+| templates/hair-salon/lib/search.ts                  | runtime | important     | done   |
+| templates/hair-salon/lib/security-headers.ts        | runtime | important     | done   |
+| templates/hair-salon/lib/sentry-client.ts           | runtime | important     | done   |
+| templates/hair-salon/lib/sentry-sanitize.ts         | runtime | important     | done   |
+| templates/hair-salon/lib/sentry-server.ts           | runtime | important     | done   |
+| templates/hair-salon/lib/utils.ts                   | runtime | important     | done   |
+| templates/hair-salon/lib/actions/helpers.ts         | runtime | important     | done   |
+| templates/hair-salon/lib/actions/hubspot.ts         | runtime | important     | done   |
+| templates/hair-salon/lib/actions/submit.ts          | runtime | important     | done   |
+| templates/hair-salon/lib/actions/supabase.ts        | runtime | important     | done   |
+| templates/hair-salon/lib/actions/types.ts           | runtime | important     | done   |
+| templates/hair-salon/lib/**tests**/env-setup.ts     | test    | optional      | done   |
+| templates/hair-salon/lib/**tests**/env.test.ts      | test    | important     | done   |
+| templates/hair-salon/lib/**tests**/sanitize.test.ts | test    | important     | done   |
 
 ## File Inventory - docs
 

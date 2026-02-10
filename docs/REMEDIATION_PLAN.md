@@ -30,7 +30,7 @@ This remediation plan prioritizes fixes based on impact and effort to complete t
 
 **Tasks:**
 
-- [x] Create `apps/web/content/blog/` directory structure
+- [x] Create `templates/hair-salon/content/blog/` directory structure
 - [x] Write 3+ sample blog posts with proper frontmatter (5 created)
 - [x] Include posts with code blocks for testing MDX rendering
 - [x] Add posts across different categories (Hair Care, Styling, Trends)
@@ -94,19 +94,19 @@ This remediation plan prioritizes fixes based on impact and effort to complete t
 
 **New Files:**
 
-- `apps/web/features/booking/lib/booking-schema.ts` - Zod validation with 2026 security patterns
-- `apps/web/features/booking/lib/booking-providers.ts` - External integrations (Mindbody, Vagaro, Square)
-- `apps/web/features/booking/lib/booking-actions.ts` - Server actions with comprehensive security
-- `apps/web/features/booking/components/BookingForm.tsx` - Modern React form with validation
-- `apps/web/features/booking/index.ts` - Barrel export for clean imports
+- `templates/hair-salon/features/booking/lib/booking-schema.ts` - Zod validation with 2026 security patterns
+- `templates/hair-salon/features/booking/lib/booking-providers.ts` - External integrations (Mindbody, Vagaro, Square)
+- `templates/hair-salon/features/booking/lib/booking-actions.ts` - Server actions with comprehensive security
+- `templates/hair-salon/features/booking/components/BookingForm.tsx` - Modern React form with validation
+- `templates/hair-salon/features/booking/index.ts` - Barrel export for clean imports
 
 **Updated Files:**
 
-- `apps/web/app/book/page.tsx` - Now uses new BookingForm component
-- `apps/web/components/FinalCTA.tsx` - Updated to link to /book instead of /contact
-- `apps/web/app/services/page.tsx` - Updated booking CTAs to point to /book
-- `apps/web/lib/env.ts` - Added booking provider environment variables
-- `apps/web/lib/__tests__/env-setup.ts` - Added test environment variables
+- `templates/hair-salon/app/book/page.tsx` - Now uses new BookingForm component
+- `templates/hair-salon/components/FinalCTA.tsx` - Updated to link to /book instead of /contact
+- `templates/hair-salon/app/services/page.tsx` - Updated booking CTAs to point to /book
+- `templates/hair-salon/lib/env.ts` - Added booking provider environment variables
+- `templates/hair-salon/lib/__tests__/env-setup.ts` - Added test environment variables
 
 **🔧 TECHNICAL IMPLEMENTATION DETAILS:**
 

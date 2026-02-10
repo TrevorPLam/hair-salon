@@ -97,7 +97,8 @@ pnpm format:check
 
 ## Project Structure
 
-- **apps/web/** - Next.js web application
+- **templates/** - Reusable business templates (hair-salon, etc.)
+- **clients/** - Client project implementations
 - **packages/ui/** - Shared React UI components
 - **packages/utils/** - Shared utilities
 - **packages/config/** - Shared configuration (ESLint, TypeScript, etc.)

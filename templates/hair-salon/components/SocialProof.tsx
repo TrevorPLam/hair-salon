@@ -1,0 +1,116 @@
+/**
+ * @file apps/web/components/SocialProof.tsx
+ * @role runtime
+ * @summary Testimonials and metrics section for social proof.
+ *
+ * @entrypoints
+ * - Used on the home page
+ *
+ * @exports
+ * - default SocialProof
+ *
+ * @depends_on
+ * - External: react
+ * - Internal: @repo/ui (Container, Section, Card)
+ *
+ * @used_by
+ * - apps/web/app/page.tsx
+ *
+ * @runtime
+ * - environment: server
+ * - side_effects: none
+ *
+ * @data_flow
+ * - inputs: static testimonials and metrics
+ * - outputs: social proof section
+ *
+ * @invariants
+ * - Metrics should match real business numbers
+ *
+ * @issues
+ * - [severity:low] Testimonial data is static placeholder copy.
+ *
+ * @verification
+ * - Confirm testimonial cards render in grid layout.
+ *
+ * @status
+ * - confidence: medium
+ * - last_audited: 2026-02-09
+ */
+
+import React, { memo } from 'react';
+import { Container, Section, Card } from '@repo/ui';
+
+const testimonials = [
+  {
+    quote:
+      "I've never walked out of a salon feeling this confident. The stylists really listen to what you want.",
+    author: 'Sarah Johnson',
+    company: 'Local Resident',
+    title: 'Client since 2023',
+  },
+  {
+    quote:
+      "The atmosphere is so relaxing and the color services are top-notch. I wouldn't trust anyone else with my hair.",
+    author: 'Michael Chen',
+    company: 'Regular Customer',
+    title: 'Client since 2021',
+  },
+  {
+    quote:
+      'Fantastic experience from start to finish. The team is professional, friendly, and incredibly talented.',
+    author: 'Emily Rodriguez',
+    company: 'Wedding Client',
+    title: 'Client since 2024',
+  },
+];
+
+const metrics = [
+  { value: '5k+', label: 'Happy Clients' },
+  { value: '10+', label: 'Years Experience' },
+  { value: '4.9', label: 'Average Rating' },
+];
+
+function SocialProof() {
+  return (
+    <Section className="bg-white">
+      <Container>
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
+            Loved by our clients
+          </h2>
+          <p className="text-lg text-slate max-w-2xl mx-auto">
+            See why we are the top-rated salon in the area.
+          </p>
+        </div>
+
+        {/* Testimonials Grid */}
+        <div className="grid md:grid-cols-3 gap-8 mb-16">
+          {testimonials.map((testimonial) => (
+            <Card key={testimonial.author} variant="testimonial">
+              <p className="text-slate mb-6 italic leading-relaxed">
+                &quot;{testimonial.quote}&quot;
+              </p>
+              <div>
+                <p className="font-semibold text-charcoal">{testimonial.author}</p>
+                <p className="text-slate text-sm">{testimonial.title}</p>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        {/* Metrics */}
+        <div className="grid grid-cols-3 gap-8 text-center">
+          {metrics.map((metric) => (
+            <div key={metric.label}>
+              <div className="text-4xl md:text-5xl font-bold text-teal mb-2">{metric.value}</div>
+              <div className="text-slate font-medium">{metric.label}</div>
+            </div>
+          ))}
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
+export default memo(SocialProof);
