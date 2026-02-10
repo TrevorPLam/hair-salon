@@ -161,9 +161,9 @@ Comprehensive documentation for templates, clients, and architecture.
 
 ### Root Documentation
 
-- [README.md](README.md) - Project overview
+- [README.md](../README.md) - Project overview
 - [CONFIG.md](CONFIG.md) - Configuration docs
-- [CONTRIBUTING.md](CONTRIBUTING.md) - Contribution guidelines
+- [CONTRIBUTING.md](../CONTRIBUTING.md) - Contribution guidelines
 
 ---
 

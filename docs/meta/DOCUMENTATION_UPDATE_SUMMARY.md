@@ -11,7 +11,7 @@ Completed a comprehensive review and update of all documentation across the repo
 
 ### 1. Core Documentation Files ✅
 
-#### [CONFIG.md](CONFIG.md)
+#### [CONFIG.md](../CONFIG.md)
 
 - ✅ Updated audit status to reference `templates/hair-salon/package.json` instead of `apps/web`
 - ✅ Changed document description from "Hair Salon Template monorepo" to "multi-template monorepo"
@@ -25,12 +25,12 @@ Completed a comprehensive review and update of all documentation across the repo
 - ✅ Fixed Docker section to reference template/client ports instead of 3000
 - ✅ Cleaned up duplicate/malformed content in Building section
 
-#### [README.md](README.md)
+#### [README.md](../../README.md)
 
 - ✅ Already updated with multi-template architecture
 - ✅ Fixed Docker section to reference correct ports (3100+, 3001+)
 
-#### [INDEX.md](INDEX.md)
+#### [INDEX.md](../INDEX.md)
 
 - ✅ Already accurate with current structure and cross-links
 

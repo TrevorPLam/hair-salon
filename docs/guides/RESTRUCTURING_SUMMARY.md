@@ -230,8 +230,8 @@ Key migration options:
 
 ### Quick Reference
 
-- [README.md](README.md) - Updated project overview
-- [INDEX.md](INDEX.md) - Repository structure and navigation
+- [README.md](../../README.md) - Updated project overview
+- [INDEX.md](../INDEX.md) - Repository structure and navigation
 
 ### Template Development
 

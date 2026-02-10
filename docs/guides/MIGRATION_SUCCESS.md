@@ -254,8 +254,8 @@ All documentation has been created and linked:
 
 ### Quick Start
 
-- [README.md](README.md) - Updated project overview
-- [INDEX.md](INDEX.md) - Repository structure guide
+- [README.md](../../README.md) - Updated project overview
+- [INDEX.md](../INDEX.md) - Repository structure guide
 - [RESTRUCTURING_SUMMARY.md](RESTRUCTURING_SUMMARY.md) - This summary
 
 ### Templates

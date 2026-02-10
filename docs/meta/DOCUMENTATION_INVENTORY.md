@@ -18,14 +18,14 @@
 
 | File                                                               | Status | Notes                                     | Action Required       |
 | ------------------------------------------------------------------ | ------ | ----------------------------------------- | --------------------- |
-| [README.md](README.md)                                             | ⚠️     | Has `apps/web` refs in tech stack section | Update refs           |
-| [INDEX.md](INDEX.md)                                               | ⚠️     | Has "Migrate apps/web" instruction        | Update historical ref |
-| [CONFIG.md](CONFIG.md)                                             | ⚠️     | Has `apps/web` ref in troubleshooting     | Update ref            |
-| [CONTRIBUTING.md](CONTRIBUTING.md)                                 | ⚠️     | Lists `apps/web/` in repository structure | Update structure      |
-| [TODO.md](TODO.md)                                                 | ⚠️     | Has `@repo/web` ref                       | Update ref            |
-| [tasks.md](tasks.md)                                               | ⚠️     | Has `apps/web` ref in evidence            | Update or archive     |
-| [MIGRATION_SUCCESS.md](MIGRATION_SUCCESS.md)                       | ✅     | Accurate guide post-migration             | Keep as-is            |
-| [RESTRUCTURING_SUMMARY.md](RESTRUCTURING_SUMMARY.md)               | ✅     | Historical record of migration            | Keep as-is            |
+| [README.md](../../README.md)                                       | ⚠️     | Has `apps/web` refs in tech stack section | Update refs           |
+| [INDEX.md](../INDEX.md)                                            | ⚠️     | Has "Migrate apps/web" instruction        | Update historical ref |
+| [CONFIG.md](../CONFIG.md)                                          | ⚠️     | Has `apps/web` ref in troubleshooting     | Update ref            |
+| [CONTRIBUTING.md](../../CONTRIBUTING.md)                           | ⚠️     | Lists `apps/web/` in repository structure | Update structure      |
+| [TODO.md](../../TODO.md)                                           | ⚠️     | Has `@repo/web` ref                       | Update ref            |
+| [tasks.md](../../tasks.md)                                         | ⚠️     | Has `apps/web` ref in evidence            | Update or archive     |
+| [MIGRATION_SUCCESS.md](../guides/MIGRATION_SUCCESS.md)             | ✅     | Accurate guide post-migration             | Keep as-is            |
+| [RESTRUCTURING_SUMMARY.md](../guides/RESTRUCTURING_SUMMARY.md)     | ✅     | Historical record of migration            | Keep as-is            |
 | [DOCUMENTATION_UPDATE_SUMMARY.md](DOCUMENTATION_UPDATE_SUMMARY.md) | ✅     | Recent update summary                     | Keep as-is            |
 | [SECURITY.md](SECURITY.md)                                         | ✅     | Generic security policy                   | Keep as-is            |
 

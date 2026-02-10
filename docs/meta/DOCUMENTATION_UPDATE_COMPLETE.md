@@ -312,28 +312,28 @@ Located in `docs/archive/` - Preserved as historical reference:
 
 | Purpose                 | File                                                                 | Description                       |
 | ----------------------- | -------------------------------------------------------------------- | --------------------------------- |
-| **Repository Overview** | [README.md](README.md)                                               | Main entry point                  |
-| **Structure Guide**     | [INDEX.md](INDEX.md)                                                 | Complete structure and navigation |
-| **Configuration**       | [CONFIG.md](CONFIG.md)                                               | Technical configuration reference |
-| **Migration Guide**     | [MIGRATION_SUCCESS.md](MIGRATION_SUCCESS.md)                         | Post-migration success guide      |
-| **Template Guide**      | [docs/templates/README.md](docs/templates/README.md)                 | Template development              |
-| **Client Guide**        | [docs/clients/README.md](docs/clients/README.md)                     | Client implementation             |
-| **Architecture**        | [docs/architecture/README.md](docs/architecture/README.md)           | System architecture               |
-| **ADRs**                | [docs/adr/README.md](docs/adr/README.md)                             | Architecture decisions            |
+| **Repository Overview** | [README.md](../../README.md)                                         | Main entry point                  |
+| **Structure Guide**     | [INDEX.md](../INDEX.md)                                              | Complete structure and navigation |
+| **Configuration**       | [CONFIG.md](../CONFIG.md)                                            | Technical configuration reference |
+| **Migration Guide**     | [MIGRATION_SUCCESS.md](../guides/MIGRATION_SUCCESS.md)               | Post-migration success guide      |
+| **Template Guide**      | [docs/templates/README.md](../templates/README.md)                   | Template development              |
+| **Client Guide**        | [docs/clients/README.md](../clients/README.md)                       | Client implementation             |
+| **Architecture**        | [docs/architecture/README.md](../architecture/README.md)             | System architecture               |
+| **ADRs**                | [docs/adr/README.md](../adr/README.md)                               | Architecture decisions            |
 | **This Report**         | [DOCUMENTATION_UPDATE_COMPLETE.md](DOCUMENTATION_UPDATE_COMPLETE.md) | This file                         |
 
 ### Finding Information
 
-| **I want to...**                    | **Go to...**                                         |
-| ----------------------------------- | ---------------------------------------------------- |
-| Understand the repository structure | [INDEX.md](INDEX.md)                                 |
-| Create a new template               | [docs/templates/README.md](docs/templates/README.md) |
-| Create a new client project         | [docs/clients/README.md](docs/clients/README.md)     |
-| Understand architecture decisions   | [docs/adr/README.md](docs/adr/README.md)             |
-| Configure the system                | [CONFIG.md](CONFIG.md)                               |
-| Contribute code                     | [CONTRIBUTING.md](CONTRIBUTING.md)                   |
-| Review migration                    | [MIGRATION_SUCCESS.md](MIGRATION_SUCCESS.md)         |
-| Find historical docs                | [docs/archive/README.md](docs/archive/README.md)     |
+| **I want to...**                    | **Go to...**                                           |
+| ----------------------------------- | ------------------------------------------------------ |
+| Understand the repository structure | [INDEX.md](../INDEX.md)                                |
+| Create a new template               | [docs/templates/README.md](../templates/README.md)     |
+| Create a new client project         | [docs/clients/README.md](../clients/README.md)         |
+| Understand architecture decisions   | [docs/adr/README.md](../adr/README.md)                 |
+| Configure the system                | [CONFIG.md](../CONFIG.md)                              |
+| Contribute code                     | [CONTRIBUTING.md](../../CONTRIBUTING.md)               |
+| Review migration                    | [MIGRATION_SUCCESS.md](../guides/MIGRATION_SUCCESS.md) |
+| Find historical docs                | [docs/archive/README.md](../archive/README.md)         |
 
 ---
 
