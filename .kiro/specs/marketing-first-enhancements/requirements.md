@@ -2,13 +2,33 @@
 
 ## Introduction
 
-This document specifies requirements for enhancing a hair salon website with marketing-first best practices aligned with 2026 industry standards. The enhancements focus on conversion optimization, social proof, trust building, and visual portfolio showcasing to drive bookings and client engagement.
+This document specifies requirements for a **multi-industry marketing website template system**
+with marketing-first best practices aligned with 2026 industry standards. The enhancements focus
+on conversion optimization, social proof, trust building, and visual portfolio showcasing to drive
+bookings and client engagement across **service-based businesses** (hair salons, nail salons,
+dental practices, fitness centers, consulting, and similar appointment-based or service-focused
+industries).
 
-The target posture shifts the repo from a template to a productized marketing system with evergreen maintenance, a golden-path setup, repeatable conversion science, and proof artifacts (benchmarks, CI gates, and demos).
+**Scope**: These features are implemented at the **template level** (templates/hair-salon/) and
+are designed to be extracted into **shared components** (templates/shared/) so they can be used
+across **multiple industry templates** (nail salons, tanning, restaurants, law firms, etc.) and
+**deployed independently** for multiple clients (clients/[client-name]/).
 
-The current website has basic functionality (services catalog, blog, contact form, team profiles, gallery, analytics) but lacks critical conversion elements such as robust social proof systems, before/after showcases, trust indicators, and strategic conversion optimization.
+The target posture shifts the repo from a single-template hair salon site to a **productized
+marketing system** with:
 
-Note: As of Feb 2026, Next.js 15 is Maintenance LTS and Next.js 16 is Active LTS. Plan for an upgrade path when scheduling implementation.
+- Multi-industry template reusability
+- Evergreen maintenance and automated dependency management
+- Golden-path initialization and demo modes
+- Repeatable conversion science with quality gates
+- Comprehensive proof artifacts (performance reports, security scans, accessibility audits)
+- Centralized integration platform with consent gating and default-off providers
+
+**Current Status**: Phase 1 (Core Site MVP) - 4/5 features complete. Phase 2+ (Marketing-First
+Enhancements) in planning.
+
+**Note**: As of Feb 2026, Next.js 15 is Maintenance LTS and Next.js 16 is Active LTS. Plan for
+an upgrade path when scheduling implementation.
 
 ## Glossary
 
@@ -40,6 +60,15 @@ Note: As of Feb 2026, Next.js 15 is Maintenance LTS and Next.js 16 is Active LTS
 - **Demo_Mode**: Seeded or routed mode that showcases all features and consent states
 - **Repo_Scorecard**: README badges sourced from CI artifacts and quality gates
 - **Upgrade_Posture**: Policy for evergreen patching and planned major upgrades
+- **Template**: Industry-specific website package (templates/hair-salon/, templates/restaurant/) that serves as a starting point for client projects
+- **Template_Feature**: Feature implemented at the template level (e.g., testimonial display, portfolio gallery) designed to be extracted into shared components for reuse across templates
+- **Shared_Component**: Reusable feature extracted to templates/shared/ for use across multiple industry templates (booking forms, contact forms, analytics integration, social proof components)
+- **Client_Project**: Production website for a specific business deployed from a template with customized branding and content (clients/[client-name]/)
+- **Service_Business**: Business model based on appointments or services (hair salons, dental practices, fitness centers, consulting firms, nail salons, tanning salons)
+- **Multi_Industry_Applicability**: Feature designed to work across multiple service-based industries without industry-specific code
+- **Template_Inheritance**: Client projects inherit template structure, features, and shared components; can override/customize for specific branding
+- **Shared_Extraction**: Process of identifying generic features implemented in one template and moving them to shared components for reuse across templates
+- **Industry_Customization**: Theming, configuration, or feature flags that adapt shared components and templates for specific industry needs
 
 ## Global Constraints
 
@@ -446,3 +475,402 @@ All form inputs (review submissions, admin uploads, contact forms) must be valid
 - Consent management: CMP integration or a custom banner with Consent Mode v2 support
 - Chat and messaging: Intercom, Crisp, Tawk (loaded after consent + interaction)
 - Payments: Stripe, Square, PayPal (as applicable)
+
+## Multi-Industry Requirements
+
+### Requirement 21: Multi-Industry Template Applicability
+
+**User Story:** As a template maintainer, I want all marketing features to work across multiple service-based
+industries with minimal customization, so that I can reuse code across templates (hair salon, nail salon,
+dental practice, fitness center, consulting, etc.) without industry-specific implementations.
+
+#### Acceptance Criteria
+
+1. THE System SHALL use industry-agnostic terminology in components and APIs where possible (e.g., "Service"
+   instead of "Hair Service", "Team Member" instead of "Stylist", "Transformation" instead of "Hair
+   Transformation")
+2. WHEN implementing features, THE System SHALL avoid hardcoded business-logic specific to hair salons; use
+   configuration flags or feature toggles for industry-specific customizations
+3. THE System SHALL provide configuration schemas that separate service-business common patterns from
+   industry-specific ones (booking models, service categories, team specialties)
+4. WHEN a feature requires industry-specific naming or terminology, THE System SHALL document the
+   customization point and provide examples for at least 2 additional service industries
+5. THE System SHALL include a "Shared Component Extraction Checklist" in technical documentation that guides
+   developers on which features can be moved to templates/shared/
+
+### Requirement 22: Shared Component Extraction and Reuse
+
+**User Story:** As a developer adding a new template, I want to reuse social proof, portfolio, and
+conversion components from templates/shared/, so that feature consistency is maintained across templates
+and client projects.
+
+#### Acceptance Criteria
+
+1. WHEN implementing Requirement 1 (Social Proof), THE System SHALL extract generic testimonial/review display
+   components to templates/shared/features/testimonials/
+2. WHEN implementing Requirement 2 (Before/After Gallery), THE System SHALL extract generic gallery,
+   lightbox, and filtering logic to templates/shared/features/portfolio/
+3. WHEN implementing Requirement 3 (Trust Indicators), THE System SHALL extract badge components and schema
+   generation to templates/shared/features/trust-indicators/
+4. WHEN implementing Requirement 4 (Conversion Elements), THE System SHALL extract generic CTA, button, and
+   lead-capture components to templates/shared/features/conversion/
+5. THE System SHALL provide clear import paths and examples for shared components in feature README files
+6. THE System SHALL use TypeScript interfaces and documentation to ensure shared components are configurable
+   for industry-specific needs
+7. WHEN a new template (templates/restaurant/) is created, THE System SHALL demonstrate reuse of at least 3
+   shared components without modification
+
+### Requirement 23: Template Inheritance and Customization Documentation
+
+**User Story:** As a template user creating a new client project, I want to understand how to customize
+template features for a specific salon/business, what can/should not be modified, and how to upgrade when
+the template improves.
+
+#### Acceptance Criteria
+
+1. THE System SHALL document a "Template Customization Guide" for clients that explains:
+   - Which files are "safe to edit" (content, branding, configuration)
+   - Which files should "not be modified" (framework code, hooks)
+   - How to override components or styles
+2. THE System SHALL provide a deprecation policy and upgrade path for template modifications
+3. THE System SHALL include examples showing how to customize:
+   - Service categories and pricing structures
+   - Team member profiles and specialties
+   - Business hours and availability
+   - Booking integrations and CTAs
+4. WHEN implementing shared components, THE System SHALL provide configuration samples for hair salon, nail
+   salon, and dental practice so customization is clear
+
+### Requirement 24: Multi-Client Deployment Architecture
+
+**User Story:** As an operator, I want each client project to deploy independently with their own
+environment configuration, branding, and feature flags, while inheriting marketing features from the template.
+
+#### Acceptance Criteria
+
+1. THE System SHALL define a site.config.ts schema that stores client-specific configuration (business
+   name, hours, location, phone, booking provider choice)
+2. WHEN deploying a client project (clients/[client-name]/), THE System SHALL respect the client's
+   site.config.ts and environment variables; no hardcoded template values should leak
+3. THE System SHALL provide example client projects demonstrating:
+   - Custom branding (logo, colors, fonts)
+   - Industry-specific service setup (hair salon, nail salon)
+   - Custom content (about, services, team)
+   - Integration choices (which booking provider, which analytics, which ads)
+4. THE System SHALL use server-side configuration to prevent client values from appearing in default/template
+   data
+5. THE System SHALL document a "Clone and Customize" workflow for teams setting up new clients
+
+### Requirement 25: Quality Gates Across Templates and Clients
+
+**User Story:** As a reviewer, I want CI to enforce the same performance, accessibility, and security
+standards across all templates and client projects, so that quality is consistent.
+
+#### Acceptance Criteria
+
+1. THE System SHALL define shared Lighthouse CI budgets and configuration file templates/
+   lighthouse-ci-config.yml that applies to all templates and clients
+2. WHEN running CI for any template or client project, THE System SHALL enforce:
+   - Performance >= 95 on key routes
+   - Accessibility >= 95 for all template routes
+   - SEO >= 95 including schema validation
+   - Third-party JS <= 80KB gzip, total JS <= 170KB gzip per route (unless explicitly excepted)
+3. THE System SHALL require bundle size checks for shared components to catch regressions
+4. WHEN a shared component is updated, THE System SHALL verify that dependent templates still pass CI
+   budgets
+5. THE System SHALL publish CI artifacts (reports, budgets, compliance matrices) for each template and
+   client project
+
+---
+
+## Additional Marketing Enhancement Requirements
+
+### Requirement 26: Advanced Lead Management and Nurture
+
+**User Story:** As a salon owner, I want to manage and nurture leads through automated workflows so
+that I can convert more prospects into customers without manual effort.
+
+#### Acceptance Criteria
+
+1. THE System SHALL maintain a lead database with status tracking (new, contacted, qualified, converted,
+   lost)
+2. WHEN a lead is submitted (contact form, chat, etc.), THE System SHALL record the lead source and
+   initial touchpoint
+3. THE System SHALL allow manual lead segmentation by source, location, service interest, and other
+   custom attributes
+4. WHEN a lead's status changes, THE System SHALL trigger notifications to assigned team members
+5. THE System SHALL track lead activity (page views, email opens, form submissions) to determine engagement
+6. WHEN a lead converts to a booking, THE System SHALL update lead status and mark conversion date
+7. THE System SHALL provide a lead dashboard showing:
+   - Total leads by time period
+   - Lead-to-customer conversion rate
+   - Lead source performance
+   - Average time-to-conversion
+   - Lost lead reasons and recovery opportunities
+8. THE System SHALL support lead assignment to team members with customizable routing rules
+9. WHEN a lead hasn't engaged in X days, THE System SHOULD recommend re-engagement actions
+10. THE System SHALL allow exporting lead lists for use in external email marketing tools
+
+### Requirement 27: Marketing Automation and Email Workflows
+
+**User Story:** As a salon owner, I want to create automated email sequences triggered by customer
+actions, so that I can nurture leads and retain customers at scale without manual outreach.
+
+#### Acceptance Criteria
+
+1. THE System SHALL provide a workflow builder UI for creating automated email sequences
+2. WHEN a lead submits a contact form, THE System SHALL automatically send a confirmation email
+3. THE System SHALL support trigger types: new lead, booking completed, abandoned lead (X days inactive),
+   post-appointment follow-up
+4. THE System SHALL allow customizing email templates with dynamic fields (name, service, date, etc.)
+5. WHEN an email is sent, THE System SHALL track open rate, click rate, and unsubscribe events
+6. THE System SHALL support email scheduling at optimal times (per recipient timezone if available)
+7. THE System SHALL allow setting delays between emails in a sequence (e.g., send day 1, day 3, day 7)
+8. WHEN a recipient takes a desired action (books appointment, clicks link), THE System SHALL exit the
+   sequence
+9. THE System SHALL maintain an unsubscribe list and respect opt-out preferences
+10. THE System SHALL provide analytics on workflow performance (open rate, conversion rate, ROI)
+
+### Requirement 28: Advanced Form Optimization
+
+**User Story:** As a salon owner, I want to optimize contact and lead capture forms to maximize
+conversions and reduce abandonment.
+
+#### Acceptance Criteria
+
+1. THE System SHALL track form abandonment (incomplete submissions) and notify administrators
+2. THE System SHALL display form field completion progress on multi-step forms
+3. THE System SHALL support conditional logic (show/hide fields based on previous answers)
+4. WHEN a user has interacted with the form before, THE System SHOULD pre-fill known fields
+5. THE System SHALL support dynamic field ranking (important fields first, helpful fields later)
+6. WHEN a user hovers over a form field, THE System SHOULD display helpful context or examples
+7. THE System SHALL provide field-level validation with helpful error messages
+8. WHEN a form has >3 fields, THE System SHOULD use progressive profiling (show 2-3 fields initially,
+   more later)
+9. THE System SHALL allow exit-intent modal experiments on form pages (desktop-only, mobile-friendly
+   alternatives)
+10. THE System SHALL track form analytics: views, starts, abandonments, completions, conversion rate
+11. THE System SHALL support reCAPTCHA/hCaptcha for spam prevention without blocking legitimate users
+12. WHEN a form submission includes suspicious patterns, THE System SHOULD flag for manual review
+
+### Requirement 29: Personalization and Dynamic Content
+
+**User Story:** As a salon owner, I want to show personalized content and recommendations to visitors
+based on their behavior and interests, so that I can improve engagement and conversion rates.
+
+#### Acceptance Criteria
+
+1. THE System SHALL track visitor behavior (pages visited, time on page, scroll depth, clicks)
+2. WHEN a visitor returns to the site, THE System SHOULD remember their previous interest (service
+   category viewed)
+3. THE System SHALL display service recommendations based on pages viewed (e.g., "Explore more color
+   services")
+4. WHEN a visitor has viewed 3+ pages without converting, THE System SHOULD show a contextual CTA
+   (chat, call, form)
+5. THE System SHALL support hiding already-viewed content (don't show same testimonial twice)
+6. THE System SHALL display personalized email greetings when marketing emails are opened
+7. WHEN a visitor comes from a paid ad campaign, THE System SHOULD tailor the landing page message to
+   match ad copy
+8. THE System SHALL support A/B testing content variations (headline, CTA text, image) by visitor segment
+9. WHEN a visitor is from a repeat lead source, THE System SHOULD adjust CTAs (e.g., "Schedule your
+   second appointment")
+10. THE System SHALL do not rely on PII for personalization; use behavioral signals and anonymous cookies
+
+### Requirement 30: Payment and Transaction Management
+
+**User Story:** As a salon owner, I want to manage deposits, payments, gift cards, and promotions so
+that I can reduce no-shows and increase revenue.
+
+#### Acceptance Criteria
+
+1. THE System SHALL support collecting service deposits or non-refundable booking fees
+2. WHEN a payment is requested, THE System SHALL provide secure payment options (Stripe, Square, PayPal)
+3. THE System SHALL issue digital receipts and payment confirmations via email
+4. WHEN a customer requests a refund, THE System SHALL process refunds through the original payment
+   method
+5. THE System SHALL track payment status (pending, completed, failed, refunded) per booking
+6. THE System SHALL support creating and managing digital gift cards
+7. WHEN a gift card is used, THE System SHALL deduct balance and record transaction history
+8. THE System SHALL allow discount codes/coupons with:
+   - Fixed dollar amount or percentage discounts
+   - Expiration dates
+   - Usage limits (per code, per customer)
+   - Service-specific restrictions
+9. WHEN a discount is applied, THE System SHALL update pricing in real-time across all booking flows
+10. THE System SHALL provide revenue reporting by payment method, discount, and source
+11. THE System SHALL support payment plans (e.g., 50% deposit, 50% before service)
+12. THE System SHALL handle failed payments with automatic retry logic and customer notification
+
+### Requirement 31: Enhanced Appointment and Booking Management
+
+**User Story:** As a salon owner, I want to prevent no-shows and optimize appointment scheduling through
+automated reminders and availability management.
+
+#### Acceptance Criteria
+
+1. THE System SHALL sync with booking provider calendar in real-time (if provider supports)
+2. WHEN an appointment is booked, THE System SHALL send automated confirmation email and SMS (if opted-in)
+3. THE System SHALL send appointment reminders (24 hours before, 2 hours before) via email and SMS
+4. WHEN a customer misses an appointment, THE System SHALL record no-show and notify the salon
+5. THE System SHALL support rescheduling requests through email links (one-click reschedule)
+6. THE System SHALL allow setting minimum lead time (e.g., 48 hours) for bookings
+7. THE System SHALL prevent double-booking stylists through real-time availability checks
+8. WHEN a stylist's availability changes, THE System SHALL update booking availability instantly
+9. THE System SHALL support buffer time between appointments (e.g., 15-min cleanup between appointments)
+10. THE System SHALL track appointment history per customer for upsell opportunities
+
+### Requirement 32: Customer Retention and Lifecycle Marketing
+
+**User Story:** As a salon owner, I want to identify at-risk customers and implement retention campaigns
+to reduce churn and increase lifetime value.
+
+#### Acceptance Criteria
+
+1. THE System SHALL track customer visit frequency and time between visits
+2. WHEN a customer hasn't visited in X days (customize per service), THE System SHALL flag as "at-risk"
+3. WHEN a customer is at-risk, THE System SHOULD trigger a re-engagement email or offer
+4. THE System SHALL segment customers by lifecycle stage (new, regular, at-risk, churned)
+5. WHEN a customer books after being at-risk, THE System SHALL track win-back success
+6. THE System SHALL identify upsell opportunities (suggest new services based on service history)
+7. WHEN a customer has booked service A multiple times, THE System SHOULD recommend complementary
+   services (cross-sell)
+8. THE System SHALL calculate customer lifetime value (LTV) based on visit frequency and average service
+   price
+9. THE System SHALL provide loyalty/VIP tiers based on visit count or spending
+10. WHEN a VIP customer books, THE System SHOULD:
+    - Provide priority available times
+    - Offer exclusive perks or discounts
+    - Assign preferred stylist if available
+11. THE System SHALL support referral programs (reward customers for referring friends)
+12. THE System SHALL track referral success (referrals that convert to customers)
+
+### Requirement 33: Advanced Analytics, Attribution, and Reporting
+
+**User Story:** As a salon owner, I want to understand which marketing efforts drive the most bookings
+and revenue, so that I can optimize marketing spend and budget allocation.
+
+#### Acceptance Criteria
+
+1. THE System SHALL track all customer touchpoints (web visit, ad click, email open, form submission,
+   etc.)
+2. WHEN a customer converts, THE System SHALL record the conversion path (first click, last click, all
+   touches)
+3. THE System SHALL support multiple attribution models:
+   - First-touch (give credit to first interaction)
+   - Last-touch (give credit to final interaction)
+   - Multi-touch (distribute credit across all interactions)
+4. THE System SHALL identify the highest-performing marketing channels (organic, paid, email, direct)
+5. THE System SHALL calculate cost-per-lead and cost-per-acquisition by channel
+6. WHEN budget is limited, THE System SHOULD recommend channel reallocation based on performance data
+7. THE System SHALL track revenue per marketing channel (not just bookings)
+8. THE System SHALL provide weekly/monthly reporting on:
+   - New leads by source
+   - Conversion rate by source
+   - Cost per conversion
+   - Customer lifetime value
+   - Marketing ROI
+9. THE System SHALL allow custom date ranges and filtering in reports
+10. THE System SHALL support exporting reports (PDF, CSV) for stakeholder distribution
+11. THE System SHALL identify seasonal trends in booking patterns
+12. THE System SHALL forecast future demand based on historical trends
+
+### Requirement 34: Promotional and Incentive Management
+
+**User Story:** As a salon owner, I want to create limited-time offers and promotions to drive bookings
+during slow periods without devaluing services.
+
+#### Acceptance Criteria
+
+1. THE System SHALL allow creating time-limited promotions with:
+   - Discount amount or percentage
+   - Specific services included
+   - Customer eligibility (new customers only, all customers, specific segment)
+   - Start and end dates
+2. WHEN a promotion is active, THE System SHALL display it on relevant service pages
+3. THE System SHALL show countdown timers for expiring promotions (when truthfully limited in time)
+4. WHEN a customer applies a promotion code, THE System SHALL validate eligibility and apply discount
+5. THE System SHALL track promotion performance:
+   - Number of times viewed
+   - Number of times redeemed
+   - Revenue generated
+   - Customer acquisition cost (attributable to promotion)
+6. THE System SHALL prevent promotion stacking (limit to one promotion per booking)
+7. WHEN a promotion ends, THE System SHALL automatically remove it from display
+8. THE System SHALL support seasonal promotions (e.g., holiday specials) with recurring start/end dates
+9. WHEN a promotion is ending in <48 hours, THE System SHOULD send reminder emails to leads who viewed
+   but didn't convert
+10. THE System SHALL allow test different promotion messages (A/B test) to identify most effective offers
+
+### Requirement 35: Mobile-Optimized Conversion Elements
+
+**User Story:** As a mobile user, I want a seamless booking experience on my phone with minimal
+friction and clear CTAs.
+
+#### Acceptance Criteria
+
+1. WHEN viewing on mobile, THE System SHALL display prominent "Call Now" button (tel: links)
+2. THE System SHALL implement click-to-call functionality for all phone numbers
+3. THE System SHALL optimize checkout/booking for mobile (1-handed use)
+4. WHEN a mobile user is on a service page, THE System SHALL show sticky CTA button at bottom
+5. THE System SHALL detect if user is on Google Maps and display direction-to-salon deep link
+6. WHEN viewing a booking provider's date picker on mobile, THE System SHALL expand date selection for
+   easier interaction
+7. THE System SHALL support mobile app deep links for booking apps (Square, Fresha, etc.)
+8. THE System SHALL minimize form fields on mobile (use smart defaults, conditional logic)
+9. WHEN a mobile user taps a review or testimonial, THE System SHALL expand it without leaving the page
+10. THE System SHALL show appointment reminders via SMS (with opt-in) or push notification
+
+### Requirement 36: Reporting, Business Intelligence, and Dashboards
+
+**User Story:** As a salon owner, I want a comprehensive dashboard showing my most important metrics so
+I can make data-driven business decisions.
+
+#### Acceptance Criteria
+
+1. THE System SHALL provide a customizable admin dashboard with drag-drop widgets
+2. THE System SHALL display key performance indicators (KPIs):
+   - New bookings (MoM, YoY)
+   - New leads (by source)
+   - Conversion rate (lead to booking)
+   - Cancellation/no-show rate
+   - Average booking value
+   - Revenue (daily, weekly, monthly)
+3. WHEN viewing the dashboard, THE System SHOULD highlight trends (↑ or ↓ vs. previous period)
+4. THE System SHALL provide automated alerts when metrics fall below thresholds (e.g., bookings down 20%)
+5. THE System SHALL generate weekly/monthly business health reports (email or in-app)
+6. THE System SHALL support custom date ranges (today, this week, this month, custom)
+7. THE System SHALL provide drill-down capability (click "leads" to see detail by source)
+8. WHEN a metric is underperforming, THE System SHOULD suggest actions (e.g., "Increase Google Ads
+   spending")
+9. THE System SHALL allow comparing current period to previous periods to identify trends
+10. THE System SHALL export reports as PDF or CSV for sharing with team or stakeholders
+
+### Requirement 37: Admin Controls, Team Collaboration, and Audit Logs
+
+**User Story:** As a salon owner/manager, I want to control who can access what data and take actions,
+and maintain a log of changes for accountability.
+
+#### Acceptance Criteria
+
+1. THE System SHALL support role-based access control (Owner, Manager, Stylist, Receptionist)
+2. WHEN assigning roles, THE System SHALL restrict access by feature:
+   - Owner: Full access
+   - Manager: Access to leads, bookings, team, reports (no billing)
+   - Stylist: View own bookings and reviews only
+   - Receptionist: Manage bookings and contact requests
+3. THE System SHALL require authentication (login) for all admin features
+4. THE System SHALL support multi-user accounts with invite flow
+5. WHEN a team member is removed, THE System SHALL revoke access immediately
+6. THE System SHALL maintain an audit log recording:
+   - Who made changes
+   - What changed (e.g., "Discount 20% applied")
+   - When the change occurred
+   - IP address/device used
+7. THE System SHALL allow exporting audit logs for compliance purposes
+8. WHEN sensitive data is accessed (customer details, payment info), THE System SHOULD log the access
+9. THE System SHALL support password resets and account recovery
+10. THE System SHALL provide activity feed showing recent actions by team members
+11. THE System SHALL send weekly summaries of system activity to Owner/Managers
+12. WHEN unauthorized access is attempted, THE System SHALL log the attempt and alert administrators
+
+---
