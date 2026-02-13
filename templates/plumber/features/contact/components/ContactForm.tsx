@@ -14,7 +14,7 @@ import { trackFormSubmission } from '@/features/analytics/lib/analytics';
 import { UI_TIMING } from '@/lib/constants';
 import { Input, Select, Textarea, Button } from '@repo/ui';
 import { Loader2 } from 'lucide-react';
-import { setSentryContext, setSentryUser, withSentrySpan } from '@/lib/sentry-client';
+import { setSentryContext, setSentryUser, withSentrySpan } from '@repo/infra/client';
 
 /**
  * Contact form with full validation and server submission.
@@ -33,7 +33,8 @@ export default function ContactForm() {
     formState: { errors, touchedFields, dirtyFields },
     reset,
   } = useForm<ContactFormData>({
-    resolver: zodResolver(contactFormSchema),
+    // Type assertion: zodResolver expects Zod 3.23+ internal types; we use Zod 3.22
+    resolver: zodResolver(contactFormSchema as unknown as Parameters<typeof zodResolver>[0]),
     mode: 'onBlur', // Validate on blur for better UX
     reValidateMode: 'onChange', // Re-validate on change after first validation
     delayError: UI_TIMING.FORM_ERROR_DEBOUNCE_MS, // Debounce error display

@@ -1,4 +1,7 @@
-
+/**
+ * Sentry event sanitization — redacts PII (email, phone, etc.) before sending.
+ * @module @repo/infra/sentry/sanitize
+ */
 
 import type { Event } from '@sentry/nextjs';
 

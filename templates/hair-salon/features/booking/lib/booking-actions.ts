@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 import { BookingFormData, validateBookingSecurity, SERVICE_LABELS } from './booking-schema';
 import { getBookingProviders, BookingProviderResponse } from './booking-providers';
-import { checkRateLimit } from '@/lib/rate-limit';
+import { checkRateLimit } from '@repo/infra';
 
 /**
  * Booking submission result interface

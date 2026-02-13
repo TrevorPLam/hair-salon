@@ -45,7 +45,8 @@ export default function BookingForm({
     formState: { errors, isValid, isDirty },
     setValue,
   } = useForm<BookingFormData>({
-    resolver: zodResolver(bookingFormSchema),
+    // Type assertion: zodResolver expects Zod 3.23+ internal types (~standard, ~validate); we use Zod 3.22
+    resolver: zodResolver(bookingFormSchema as unknown as Parameters<typeof zodResolver>[0]),
     defaultValues: {
       ...bookingFormDefaults,
       serviceType: (prefilledService as any) || 'consultation',

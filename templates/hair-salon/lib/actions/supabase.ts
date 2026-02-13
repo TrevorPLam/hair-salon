@@ -1,7 +1,6 @@
 
 
-import { logWarn, logInfo, logError } from '../logger';
-import { withServerSpan } from '../sentry-server';
+import { logWarn, logInfo, logError, withServerSpan } from '@repo/infra';
 import {
   insertSupabaseLead,
   updateSupabaseLead,

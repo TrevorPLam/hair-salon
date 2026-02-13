@@ -1,12 +1,10 @@
-
-
 import { createHash } from 'crypto';
 import type { ContactFormData } from '@/features/contact/lib/contact-form-schema';
-import { escapeHtml, sanitizeEmail, sanitizeName } from '../sanitize';
-import { logError, logWarn } from '../logger';
-import { validateOrigin } from '../request-validation';
+import { escapeHtml, sanitizeEmail, sanitizeName, logError, logWarn } from '@repo/infra';
+import { validateOrigin, createValidationConfig } from '@repo/infra/security/request-validation';
+import { validatedEnv } from '../env';
 import type { SanitizedContactData } from './types';
-import type { SpanAttributes } from '../sentry-server';
+import type { SpanAttributes } from '@repo/infra';
 
 /**
  * Salts for hashing to prevent rainbow table attacks.
@@ -85,7 +83,8 @@ export function normalizeError(error: unknown) {
 }
 
 export function getBlockedSubmissionResponse(requestHeaders: Headers, data: ContactFormData) {
-  if (!validateOrigin(requestHeaders)) {
+  const config = createValidationConfig(validatedEnv.NEXT_PUBLIC_SITE_URL, { warn: logWarn });
+  if (!validateOrigin(requestHeaders, config).isValid) {
     logError('CSRF: Invalid origin detected');
     return {
       success: false,

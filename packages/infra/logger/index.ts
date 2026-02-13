@@ -1,7 +1,12 @@
-
+/**
+ * Structured logger — server-only.
+ * Production: JSON output (Vercel Log Drain compatible). Dev/test: human-readable.
+ * Sanitizes context (OWASP logging); enriches with request ID when available.
+ * @module @repo/infra/logger
+ */
 
 import * as Sentry from '@sentry/nextjs';
-import { getRequestId } from '@/lib/request-context';
+import { getRequestId } from '../context/request-context.server';
 
 function isDevelopment(): boolean {
   return process.env.NODE_ENV === 'development';
@@ -11,9 +16,9 @@ function isTest(): boolean {
   return process.env.NODE_ENV === 'test';
 }
 
-type LogLevel = 'info' | 'warn' | 'error';
+export type LogLevel = 'info' | 'warn' | 'error';
 
-interface LogContext {
+export interface LogContext {
   [key: string]: unknown;
 }
 
@@ -66,8 +71,6 @@ function isSensitiveKey(key: string): boolean {
   if (SENSITIVE_KEYS.has(normalized)) {
     return true;
   }
-
-  // Prefer over-redaction to avoid leaking secrets with variable naming.
   return SENSITIVE_KEY_SUBSTRINGS.some((fragment) => normalized.includes(fragment));
 }
 
@@ -115,18 +118,14 @@ function logJson(level: LogLevel, message: string, context?: LogContext, error?:
 }
 
 function shouldPreserveObject(value: object): boolean {
-  // Preserve structured objects so stacks and timestamps remain useful in logs.
   return value instanceof Error || value instanceof Date || value instanceof RegExp;
 }
 
 function sanitizeArray(values: unknown[]): unknown[] {
-  // Recursively sanitize arrays to keep nested structures safe.
   return values.map((item) => sanitizeValue(item));
 }
 
 function sanitizeObject(value: Record<string, unknown>): Record<string, unknown> {
-  // Treat every key as potentially sensitive to avoid leaking secrets.
-  // Use a null-prototype object to avoid prototype pollution from keys like "__proto__".
   return Object.entries(value).reduce<Record<string, unknown>>(
     (acc, [key, entryValue]) => {
       acc[key] = isSensitiveKey(key) ? '[REDACTED]' : sanitizeValue(entryValue);
@@ -153,10 +152,7 @@ function sanitizeValue(value: unknown): unknown {
 }
 
 /**
- * Sanitize log context objects for safe external usage.
- *
- * NOTE: Exported for tests and future integrations that need log-safe context
- * without sending logs directly. (Currently used internally as well.)
+ * Sanitize log context for safe external usage (tests, integrations).
  */
 export function sanitizeLogContext(context?: LogContext): LogContext | undefined {
   if (!context) {
@@ -182,16 +178,12 @@ function serializeError(error?: Error | unknown): unknown {
   return sanitizeValue(error);
 }
 
-/**
- * Check if Sentry is properly configured and available
- */
 function isSentryAvailable(): boolean {
   return Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN);
 }
 
 /**
- * Log an informational message
- * In production, sends to Sentry
+ * Log an informational message. In production: JSON + Sentry if configured.
  */
 export function logInfo(message: string, context?: LogContext) {
   const enrichedContext = sanitizeLogContext(buildLogContext(context));
@@ -207,8 +199,7 @@ export function logInfo(message: string, context?: LogContext) {
 }
 
 /**
- * Log a warning
- * In production, sends to Sentry
+ * Log a warning. In production: JSON + Sentry if configured.
  */
 export function logWarn(message: string, context?: LogContext) {
   const enrichedContext = sanitizeLogContext(buildLogContext(context));
@@ -224,8 +215,7 @@ export function logWarn(message: string, context?: LogContext) {
 }
 
 /**
- * Log an error
- * In production, sends to Sentry with full error details
+ * Log an error. In production: JSON + Sentry with full error details if configured.
  */
 export function logError(message: string, error?: Error | unknown, context?: LogContext) {
   const enrichedContext = sanitizeLogContext(buildLogContext(context));
@@ -250,7 +240,7 @@ export function logError(message: string, error?: Error | unknown, context?: Log
 }
 
 /**
- * Generic log function
+ * Generic log by level.
  */
 export function log(level: LogLevel, message: string, context?: LogContext) {
   switch (level) {

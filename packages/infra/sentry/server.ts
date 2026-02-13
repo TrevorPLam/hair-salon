@@ -1,4 +1,7 @@
-
+/**
+ * Sentry server helpers — server-only.
+ * @module @repo/infra/sentry/server
+ */
 
 import * as Sentry from '@sentry/nextjs';
 

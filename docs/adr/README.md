@@ -33,6 +33,7 @@ Each ADR follows this structure:
 | [ADR-009](./009-testing-strategy.md)            | Testing Strategy (Jest + RTL)             | Accepted | 2024-06-15 |
 | [ADR-010](./010-deployment-strategy.md)         | Deployment Strategy (Vercel/Netlify)      | Accepted | 2024-06-15 |
 | [ADR-011](./011-multi-template-architecture.md) | Multi-Template, Multi-Client Architecture | Accepted | 2026-02-10 |
+| [ADR-012](./012-middleware-factory.md)            | Shared Middleware Factory (CSP, CVE, CSRF) | Accepted | 2026-02-13 |
 
 ## How to Add a New ADR
 

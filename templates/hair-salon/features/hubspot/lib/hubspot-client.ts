@@ -1,6 +1,6 @@
 
 
-import { logError } from '@/lib/logger';
+import { logError } from '@repo/infra';
 import { validatedEnv } from '@/lib/env';
 
 const HUBSPOT_API_BASE_URL = 'https://api.hubapi.com';

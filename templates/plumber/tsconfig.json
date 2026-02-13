@@ -13,6 +13,8 @@
       "@/*": ["./*"],
       "@repo/ui": ["../../packages/ui/src"],
       "@repo/utils": ["../../packages/utils/src"],
+      "@repo/infra": ["../../packages/infra"],
+      "@repo/infra/*": ["../../packages/infra/*"],
       "@repo/shared/*": ["../shared/*"]
     },
     "allowJs": true,

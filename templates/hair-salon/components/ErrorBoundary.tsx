@@ -3,7 +3,7 @@
 'use client';
 
 import React, { Component, ReactNode } from 'react';
-import { logError } from '@/lib/logger';
+import { logError } from '@repo/infra/client';
 
 interface Props {
   children: ReactNode;

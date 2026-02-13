@@ -1,0 +1,247 @@
+/**
+ * Content Security Policy (CSP) utilities
+ * Implements 2026 best practices with nonce-based CSP, strict-dynamic, and violation reporting
+ */
+
+const NONCE_BYTE_LENGTH = 16;
+export const CSP_NONCE_HEADER = 'x-csp-nonce';
+export const CSP_REPORT_TO_HEADER = 'Report-To';
+export const CSP_REPORT_ONLY_HEADER = 'Content-Security-Policy-Report-Only';
+
+interface CspOptions {
+  nonce: string;
+  isDevelopment: boolean;
+  reportEndpoint?: string;
+  enableStrictDynamic?: boolean;
+}
+
+interface CspViolationReport {
+  cspReport: {
+    documentURI: string;
+    referrer: string;
+    blockedURI: string;
+    violatedDirective: string;
+    effectiveDirective: string;
+    originalPolicy: string;
+    sourceFile?: string;
+    lineNumber?: number;
+    columnNumber?: number;
+    statusCode?: number;
+  };
+}
+
+function encodeBase64(bytes: Uint8Array): string {
+  // Use Buffer in Node.js environment, fallback to browser API
+  if (typeof window === 'undefined' && typeof Buffer !== 'undefined') {
+    return Buffer.from(bytes).toString('base64');
+  }
+
+  let binary = '';
+  bytes.forEach((byte) => {
+    binary += String.fromCharCode(byte);
+  });
+  return btoa(binary);
+}
+
+function getCryptoProvider(): Crypto {
+  if (!globalThis.crypto?.getRandomValues) {
+    throw new Error('Crypto.getRandomValues is required to create a CSP nonce.');
+  }
+  return globalThis.crypto;
+}
+
+/**
+ * Creates a cryptographically secure CSP nonce
+ * Uses 16 bytes (128 bits) of entropy for optimal security/size balance
+ */
+export function createCspNonce(): string {
+  const bytes = new Uint8Array(NONCE_BYTE_LENGTH);
+  getCryptoProvider().getRandomValues(bytes);
+  return encodeBase64(bytes);
+}
+
+/**
+ * Builds a Content Security Policy header value with 2026 best practices
+ *
+ * Features:
+ * - Nonce-based script execution
+ * - strict-dynamic for modern CSP (when enabled)
+ * - Violation reporting endpoint
+ * - Environment-specific hardening
+ * - Zero-trust approach to third-party resources
+ */
+export function buildContentSecurityPolicy({
+  nonce,
+  isDevelopment,
+  reportEndpoint,
+  enableStrictDynamic = !isDevelopment,
+}: CspOptions): string {
+  if (!nonce) {
+    throw new Error('CSP nonce must be a non-empty string.');
+  }
+
+  // Base script sources with nonce and self
+  const scriptSources = ["'self'", `'nonce-${nonce}'`];
+
+  // Add strict-dynamic for production (replaces unsafe-inline/unsafe-eval)
+  if (enableStrictDynamic) {
+    scriptSources.push("'strict-dynamic'");
+  }
+
+  // Development: allow unsafe-eval for Next.js HMR (temporary)
+  if (isDevelopment) {
+    scriptSources.push("'unsafe-eval'");
+  }
+
+  // Trusted third-party domains
+  const trustedDomains = ['https://www.googletagmanager.com', 'https://www.google-analytics.com'];
+  scriptSources.push(...trustedDomains);
+
+  // Build CSP directives
+  const directives = [
+    "default-src 'self'",
+    `script-src ${scriptSources.join(' ')}`,
+
+    // Style sources: allow inline for CSS-in-JS libraries in dev, hash-based in prod
+    isDevelopment ? "style-src 'self' 'unsafe-inline'" : "style-src 'self'",
+
+    // Image sources: allow data URLs and HTTPS images
+    "img-src 'self' data: https:",
+
+    // Font sources: self and data URLs
+    "font-src 'self' data:",
+
+    // Connect sources: analytics and API endpoints
+    "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com",
+
+    // Frame security: prevent clickjacking
+    "frame-ancestors 'none'",
+
+    // Object sources: prevent plugin execution
+    "object-src 'none'",
+
+    // Base URI: restrict base tag usage
+    "base-uri 'self'",
+
+    // Form action: restrict form submissions
+    "form-action 'self'",
+  ];
+
+  // Add violation reporting if endpoint provided
+  if (reportEndpoint) {
+    directives.push(`report-to ${reportEndpoint}`);
+    directives.push(`report-uri ${reportEndpoint}`);
+  }
+
+  return directives.join('; ');
+}
+
+/**
+ * Creates a Report-To endpoint configuration for CSP violation reporting
+ * Follows 2026 reporting API standards
+ */
+export function buildReportToConfig({
+  endpoint,
+  groupName = 'csp-endpoint',
+  maxAge = 86400, // 24 hours
+}: {
+  endpoint: string;
+  groupName?: string;
+  maxAge?: number;
+}): string {
+  return JSON.stringify({
+    group: groupName,
+    max_age: maxAge,
+    endpoints: [
+      {
+        url: endpoint,
+      },
+    ],
+    include_subdomains: false,
+  });
+}
+
+/**
+ * Validates a CSP nonce format and entropy
+ * Ensures nonce meets security requirements
+ */
+export function validateCspNonce(nonce: string): boolean {
+  if (!nonce || typeof nonce !== 'string') {
+    return false;
+  }
+
+  // Check base64 format and minimum length
+  const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
+  if (!base64Regex.test(nonce) || nonce.length < 16) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Processes CSP violation reports for security monitoring
+ * Implements 2026 observability patterns
+ */
+export function processCspViolationReport(report: CspViolationReport): {
+  severity: 'low' | 'medium' | 'high' | 'critical';
+  category: 'script' | 'style' | 'image' | 'connect' | 'frame' | 'other';
+  recommendation: string;
+} {
+  const { violatedDirective, blockedURI, documentURI } = report.cspReport;
+
+  // Determine severity based on directive
+  const severity =
+    violatedDirective.indexOf('script-src') !== -1
+      ? 'critical'
+      : violatedDirective.indexOf('script-src-elem') !== -1
+        ? 'high'
+        : violatedDirective.indexOf('style-src') !== -1
+          ? 'medium'
+          : 'low';
+
+  // Categorize violation type
+  const category =
+    violatedDirective.indexOf('script') !== -1
+      ? 'script'
+      : violatedDirective.indexOf('style') !== -1
+        ? 'style'
+        : violatedDirective.indexOf('img') !== -1
+          ? 'image'
+          : violatedDirective.indexOf('connect') !== -1
+            ? 'connect'
+            : violatedDirective.indexOf('frame') !== -1
+              ? 'frame'
+              : 'other';
+
+  // Generate recommendation
+  const recommendation =
+    blockedURI.indexOf(documentURI) !== -1
+      ? 'Consider adding hash or nonce for inline content'
+      : `Review if ${blockedURI} should be added to trusted domains`;
+
+  return {
+    severity,
+    category,
+    recommendation,
+  };
+}
+
+/**
+ * Legacy compatibility wrapper for existing implementations
+ * Maintains backward compatibility while encouraging migration
+ * @deprecated Use buildContentSecurityPolicy with full options
+ */
+export function buildLegacyContentSecurityPolicy({
+  nonce,
+  isDevelopment,
+}: {
+  nonce: string;
+  isDevelopment: boolean;
+}): string {
+  return buildContentSecurityPolicy({
+    nonce,
+    isDevelopment,
+    enableStrictDynamic: !isDevelopment,
+  });
+}

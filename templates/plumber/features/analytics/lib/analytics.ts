@@ -1,6 +1,6 @@
 
 
-import { logInfo } from '@/lib/logger';
+import { logInfo } from '@repo/infra/client';
 import { hasAnalyticsConsent } from './analytics-consent';
 
 function isDevelopment(): boolean {

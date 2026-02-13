@@ -1,5 +1,3 @@
-
-
 'use server';
 
 import { headers } from 'next/headers';
@@ -8,11 +6,9 @@ import {
   contactFormSchema,
   type ContactFormData,
 } from '@/features/contact/lib/contact-form-schema';
-import { logError } from '../logger';
-import { runWithRequestId } from '../request-context.server';
-import { withServerSpan } from '../sentry-server';
-import { checkRateLimit } from '../rate-limit';
-import { getValidatedClientIp } from '../request-validation';
+import { logError, checkRateLimit, withServerSpan } from '@repo/infra';
+import { runWithRequestId } from '@repo/infra/context/request-context.server';
+import { getValidatedClientIp } from '@repo/infra/security/request-validation';
 import {
   getCorrelationIdFromHeaders,
   hashSpanValue,
@@ -32,7 +28,7 @@ import { insertLeadWithSpan, syncHubSpotLead } from './supabase';
  */
 async function getClientIp(): Promise<string> {
   const requestHeaders = await headers();
-  return getValidatedClientIp(requestHeaders);
+  return getValidatedClientIp(requestHeaders, { environment: process.env.NODE_ENV as any });
 }
 
 async function handleContactFormSubmission(data: ContactFormData, requestHeaders: Headers) {

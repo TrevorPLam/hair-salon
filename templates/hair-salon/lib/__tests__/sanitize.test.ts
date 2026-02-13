@@ -7,7 +7,7 @@ const {
   sanitizeEmail,
   sanitizeName,
   sanitizeUrl,
-} = require('../sanitize');
+} = require('@repo/infra');
 
 describe('lib/sanitize', () => {
   // ─────────────────────────────────────────────────────────────────

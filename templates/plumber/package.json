@@ -4,9 +4,9 @@
   "private": true,
   "description": "Professional plumbing website template - base template for client projects",
   "scripts": {
-    "dev": "next dev --port 3100",
+    "dev": "next dev -p 3101",
     "build": "next build",
-    "start": "next start --port 3100",
+    "start": "next start -p 3101",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "test": "jest",
@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "3.9.1",
+    "@repo/infra": "workspace:*",
     "@repo/ui": "workspace:*",
     "@repo/utils": "workspace:*",
     "@repo/shared": "workspace:*",

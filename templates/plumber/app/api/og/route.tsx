@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 import { z } from 'zod';
 
-import { escapeHtml } from '@/lib/sanitize';
+import { escapeHtml } from '@repo/infra';
 import siteConfig from '@/site.config';
 
 export const runtime = 'edge';

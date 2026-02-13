@@ -1,6 +1,6 @@
 
 
-import { logError } from '@/lib/logger';
+import { logError } from '@repo/infra/client';
 
 export type AnalyticsConsentState = 'granted' | 'denied' | 'unknown';
 

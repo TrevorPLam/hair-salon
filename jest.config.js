@@ -88,6 +88,8 @@ module.exports = {
   moduleNameMapper: {
     '^@repo/ui$': '<rootDir>/packages/ui/src/index.ts',
     '^@repo/utils$': '<rootDir>/packages/utils/src/index.ts',
+    '^@repo/infra$': '<rootDir>/packages/infra/index.ts',
+    '^@repo/infra/(.*)$': '<rootDir>/packages/infra/$1',
     '^@repo/shared/(.*)$': '<rootDir>/templates/shared/$1',
     '^@/(.*)$': '<rootDir>/templates/hair-salon/$1',
   },

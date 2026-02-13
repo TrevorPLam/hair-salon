@@ -1,4 +1,8 @@
-
+/**
+ * Sentry client helpers — for browser/client bundles only.
+ * Dynamic import of @sentry/nextjs to avoid pulling server code into client.
+ * @module @repo/infra/sentry/client
+ */
 
 let sentryPromise: Promise<typeof import('@sentry/nextjs')> | null = null;
 export type SpanAttributeValue = string | number | boolean;

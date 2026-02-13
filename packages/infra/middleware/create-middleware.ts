@@ -1,0 +1,113 @@
+/**
+ * Next.js middleware factory — CSP, security headers, CVE mitigation, and optional CSRF allowlist.
+ *
+ * Implements:
+ * - Nonce-based CSP and security headers (X-Frame-Options, etc.)
+ * - CVE-2025-29927 mitigation: strips x-middleware-subrequest so it cannot be spoofed by clients
+ * - Optional allowedOrigins for edge CSRF: when set, requests with an Origin header are allowed
+ *   only if the origin is in the list; otherwise returns 403.
+ *
+ * Templates must export config.matcher themselves; this factory only returns the middleware function.
+ */
+
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import {
+  buildContentSecurityPolicy,
+  CSP_NONCE_HEADER,
+  createCspNonce,
+} from '../security/csp';
+import { getSecurityHeaders } from '../security/security-headers';
+
+/** Header that must be stripped to mitigate CVE-2025-29927 (middleware bypass). */
+const X_MIDDLEWARE_SUBREQUEST = 'x-middleware-subrequest';
+
+export interface CreateMiddlewareOptions {
+  /** Optional CSP violation report endpoint (report-uri / report-to). */
+  cspReportEndpoint?: string;
+  /** Optional list of allowed origins for CSRF; when set, requests with Origin must match. */
+  allowedOrigins?: string[];
+  /** Override strict-dynamic in CSP (default: true in production, false in development). */
+  enableStrictDynamic?: boolean;
+}
+
+/**
+ * Normalizes an Origin header value to a canonical origin (scheme + host, no path).
+ * Returns null if the value is not a valid URL.
+ */
+function normalizeOrigin(value: string): string | null {
+  try {
+    const url = new URL(value);
+    return url.origin;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Creates a Next.js middleware that applies CSP, security headers, strips
+ * x-middleware-subrequest (CVE-2025-29927), and optionally enforces allowedOrigins for CSRF.
+ *
+ * @param options - Optional configuration (cspReportEndpoint, allowedOrigins, enableStrictDynamic)
+ * @returns Middleware function compatible with Next.js middleware
+ */
+export function createMiddleware(
+  options: CreateMiddlewareOptions = {}
+): (request: NextRequest) => NextResponse {
+  const {
+    cspReportEndpoint,
+    allowedOrigins,
+    enableStrictDynamic,
+  } = options;
+
+  return function middleware(request: NextRequest): NextResponse {
+    // CVE-2025-29927: Strip x-middleware-subrequest so clients cannot bypass middleware
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.delete(X_MIDDLEWARE_SUBREQUEST);
+
+    // allowedOrigins: edge CSRF allowlist — reject if Origin present and not in list
+    if (allowedOrigins && allowedOrigins.length > 0) {
+      const originHeader = requestHeaders.get('origin');
+      if (originHeader) {
+        const normalized = normalizeOrigin(originHeader);
+        const allowedSet = new Set(
+          allowedOrigins.map((o) => normalizeOrigin(o)).filter((o): o is string => o !== null)
+        );
+        if (normalized === null || !allowedSet.has(normalized)) {
+          return NextResponse.json(
+            { error: 'Forbidden' },
+            { status: 403 }
+          );
+        }
+      }
+    }
+
+    const nonce = createCspNonce();
+    const isDevelopment = process.env.NODE_ENV !== 'production';
+    const csp = buildContentSecurityPolicy({
+      nonce,
+      isDevelopment,
+      reportEndpoint: cspReportEndpoint,
+      enableStrictDynamic,
+    });
+
+    requestHeaders.set(CSP_NONCE_HEADER, nonce);
+
+    const response = NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      },
+    });
+
+    response.headers.set('Content-Security-Policy', csp);
+
+    const securityHeaders = getSecurityHeaders({
+      environment: isDevelopment ? 'development' : 'production',
+    });
+    Object.entries(securityHeaders).forEach(([key, value]) => {
+      response.headers.set(key, value);
+    });
+
+    return response;
+  };
+}

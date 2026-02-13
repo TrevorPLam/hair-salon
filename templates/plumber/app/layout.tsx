@@ -8,9 +8,8 @@ import SkipToContent from '@/components/SkipToContent';
 import AnalyticsConsentBanner from '@/components/AnalyticsConsentBanner';
 import Providers from '@/app/providers';
 import InstallPrompt from '@/components/InstallPrompt';
-import { createCspNonce, CSP_NONCE_HEADER } from '@/lib/csp';
+import { createCspNonce, CSP_NONCE_HEADER, logError, logWarn } from '@repo/infra';
 import { getPublicBaseUrl, validatedPublicEnv } from '@/lib/env.public';
-import { logError, logWarn } from '@/lib/logger';
 import { getSearchIndex } from '@/lib/search';
 import siteConfig from '@/site.config';
 

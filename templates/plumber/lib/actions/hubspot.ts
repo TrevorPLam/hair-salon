@@ -1,7 +1,6 @@
 
 
-import { logWarn } from '../logger';
-import { withServerSpan } from '../sentry-server';
+import { logWarn, withServerSpan } from '@repo/infra';
 import {
   searchHubSpotContact,
   upsertHubSpotContact,

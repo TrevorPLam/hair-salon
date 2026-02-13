@@ -1,6 +1,6 @@
 
 
-import type { SpanAttributes } from '../sentry-server';
+import type { SpanAttributes } from '@repo/infra';
 
 export type SanitizedContactData = {
   safeEmail: string;

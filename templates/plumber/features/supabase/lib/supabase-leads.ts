@@ -1,6 +1,6 @@
 
 
-import { logError } from '@/lib/logger';
+import { logError } from '@repo/infra';
 import { validatedEnv } from '@/lib/env';
 
 const SUPABASE_LEADS_PATH = '/rest/v1/leads';
