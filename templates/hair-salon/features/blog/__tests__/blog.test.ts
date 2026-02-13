@@ -4,7 +4,19 @@
  * @summary Blog data helpers tests.
  */
 
+const path = require('path');
+
+// blog.ts computes postsDirectory at module load via process.cwd(),
+// so we must override cwd BEFORE requiring the module.
+const templateRoot = path.resolve(__dirname, '../../..');
+const originalCwd = process.cwd;
+process.cwd = () => templateRoot;
+
 const { getAllPosts, getAllCategories, getPostBySlug, getFeaturedPosts } = require('../lib/blog');
+
+afterAll(() => {
+  process.cwd = originalCwd;
+});
 
 describe('features/blog/lib/blog', () => {
   test('loads posts with required fields', () => {

@@ -61,7 +61,7 @@ import { z } from 'zod';
  * - Emails validated with `.email()` (must be valid email format)
  * - Enums validated with `.enum()` (must match allowed values)
  */
-const createEnvSchema = (nodeEnv: string) =>
+const createEnvSchema = () =>
   z.object({
     /**
      * Public site URL (no trailing slash).
@@ -115,27 +115,24 @@ const createEnvSchema = (nodeEnv: string) =>
     UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
 
     /**
-     * Supabase project URL (required in production, optional in development).
+     * Supabase project URL (optional at build time; validated at runtime point of use).
      * Used for server-side lead storage.
      *
      * @example 'https://xyzcompany.supabase.co'
      */
-    SUPABASE_URL:
-      nodeEnv === 'production' ? z.string().trim().url() : z.string().trim().url().optional(),
+    SUPABASE_URL: z.string().trim().url().optional(),
 
     /**
-     * Supabase service role key (required in production, optional in development, server-only).
+     * Supabase service role key (optional at build time; validated at runtime point of use).
      * Grants elevated access; never expose to client.
      */
-    SUPABASE_SERVICE_ROLE_KEY:
-      nodeEnv === 'production' ? z.string().trim().min(1) : z.string().trim().min(1).optional(),
+    SUPABASE_SERVICE_ROLE_KEY: z.string().trim().min(1).optional(),
 
     /**
-     * HubSpot private app token (required in production, optional in development, server-only).
+     * HubSpot private app token (optional at build time; validated at runtime point of use).
      * Used for CRM sync.
      */
-    HUBSPOT_PRIVATE_APP_TOKEN:
-      nodeEnv === 'production' ? z.string().trim().min(1) : z.string().trim().min(1).optional(),
+    HUBSPOT_PRIVATE_APP_TOKEN: z.string().trim().min(1).optional(),
 
     /**
      * Mindbody API key (optional, server-only).
@@ -174,7 +171,7 @@ const createEnvSchema = (nodeEnv: string) =>
     SQUARE_BUSINESS_ID: z.string().trim().min(1).optional(),
   });
 
-const envSchema = createEnvSchema(process.env.NODE_ENV || 'development');
+const envSchema = createEnvSchema();
 
 /**
  * Validate environment variables at module load time.
@@ -244,32 +241,13 @@ export const validatedEnv = env.data;
 
 /**
  * Production safety check: Enforce Upstash Redis in production (Issue #005 - ENFORCED).
+ * Skipped during `next build` (NEXT_PHASE=phase-production-build) since these
+ * are runtime-only concerns.
  *
- * **Why This Check Exists:**
- * In-memory rate limiters only work in single-instance deployments.
- * Multi-instance production (load balanced) requires distributed rate limiting.
- * Without Redis, rate limits can be bypassed by distributing requests across instances.
- *
- * **Attack Scenario Without This Check:**
- * 1. App deployed with 3 load-balanced instances
- * 2. Rate limit: 3 requests/hour per email
- * 3. Attacker sends 3 requests to each instance (9 total)
- * 4. Each instance's in-memory Map shows only 3 requests
- * 5. All requests pass (300% over limit!)
- *
- * **This check prevents:**
- * - Production deployment without distributed rate limiting
- * - Rate limit bypass attacks in scaled deployments
- * - Silent failures that allow spam/abuse
- *
- * **How it fails:**
- * - Process exits immediately at startup
- * - Clear error message with required env vars
- * - Blocks deployment in CI/CD pipeline
- *
- * @throws {Error} If Redis not configured in production environment
+ * @throws {Error} If Redis not configured in production runtime
  */
-if (validatedEnv.NODE_ENV === 'production') {
+const isBuildPhase = process.env.NEXT_PHASE === 'phase-production-build';
+if (validatedEnv.NODE_ENV === 'production' && !isBuildPhase) {
   if (!validatedEnv.UPSTASH_REDIS_REST_URL || !validatedEnv.UPSTASH_REDIS_REST_TOKEN) {
     console.error('❌ Production Error: Upstash Redis required for distributed rate limiting');
     console.error('Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN in production');

@@ -54,13 +54,14 @@ export const metadata: Metadata = {
 };
 
 interface BlogPageProps {
-  searchParams?: { category?: string };
+  searchParams?: Promise<{ category?: string }>;
 }
 
-export default function BlogPage({ searchParams }: BlogPageProps) {
+export default async function BlogPage({ searchParams }: BlogPageProps) {
   const posts = getAllPosts();
   const categories = getAllCategories();
-  const requestedCategory = searchParams?.category?.trim();
+  const resolvedParams = await searchParams;
+  const requestedCategory = resolvedParams?.category?.trim();
   const activeCategory =
     requestedCategory && categories.includes(requestedCategory) ? requestedCategory : undefined;
   const filteredPosts = activeCategory

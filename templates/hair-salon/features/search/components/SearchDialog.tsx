@@ -59,25 +59,11 @@ export default function SearchDialog({ items = [], variant = 'desktop' }: Search
   const [searchItems, setSearchItems] = useState<SearchItem[]>(items);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // Load search items on mount
+  // Sync search items from props (provided by server component via layout.tsx)
   useEffect(() => {
     if (items.length > 0) {
       setSearchItems(items);
-      return;
     }
-
-    const loadSearchItems = async () => {
-      try {
-        const { getSearchIndex } = await import('@/lib/search');
-        const index = await getSearchIndex();
-        setSearchItems(index);
-      } catch (error) {
-        console.warn('Failed to load search index:', error);
-        setSearchItems([]);
-      }
-    };
-
-    loadSearchItems();
   }, [items]);
 
   // Case-insensitive substring match across title/description/tags; default to a small sample when empty to avoid overwhelming the dialog

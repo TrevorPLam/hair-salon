@@ -4,8 +4,19 @@
  * @summary Search index tests for blog integration.
  */
 
+const path = require('path');
+
+// blog.ts computes postsDirectory at module load via process.cwd()
+const templateRoot = path.resolve(__dirname, '../..');
+const originalCwd = process.cwd;
+process.cwd = () => templateRoot;
+
 const { getSearchIndex } = require('../search');
 const { getAllPosts } = require('../../features/blog/lib/blog');
+
+afterAll(() => {
+  process.cwd = originalCwd;
+});
 
 describe('lib/search', () => {
   test('includes blog posts in the search index', async () => {
