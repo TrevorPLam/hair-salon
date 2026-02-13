@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/hubspot/index.ts
+ * @file templates/hair-salon/features/hubspot/index.ts
  * @role runtime
  * @summary HubSpot feature public exports.
  *
@@ -13,7 +13,7 @@
  * - Internal: ./lib/hubspot-client
  *
  * @used_by
- * - apps/web/lib/actions.ts
+ * - templates/hair-salon/lib/actions.ts
  *
  * @runtime
  * - environment: server

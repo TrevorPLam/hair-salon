@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/page.tsx
+ * @file templates/hair-salon/app/page.tsx
  * @role runtime
  * @summary Home page composition for the main landing experience.
  *
@@ -10,11 +10,11 @@
  * - default HomePage
  *
  * @depends_on
- * - Internal: apps/web/components/Hero.tsx
- * - Internal: apps/web/components/ValueProps.tsx
- * - Internal: apps/web/components/ServicesOverview.tsx
- * - Internal: apps/web/components/SocialProof.tsx
- * - Internal: apps/web/components/FinalCTA.tsx
+ * - Internal: templates/hair-salon/components/Hero.tsx
+ * - Internal: templates/hair-salon/components/ValueProps.tsx
+ * - Internal: templates/hair-salon/components/ServicesOverview.tsx
+ * - Internal: templates/hair-salon/components/SocialProof.tsx
+ * - Internal: templates/hair-salon/components/FinalCTA.tsx
  *
  * @used_by
  * - Next.js app router

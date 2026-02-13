@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/search.ts
+ * @file templates/hair-salon/lib/search.ts
  * @role runtime
  * @summary Search index generation for pages and blog posts.
  *
@@ -14,8 +14,8 @@
  * - Internal: @/features/blog/lib/blog (getAllPosts)
  *
  * @used_by
- * - apps/web/app/search/page.tsx
- * - apps/web/components/Navigation.tsx
+ * - templates/hair-salon/app/search/page.tsx
+ * - templates/hair-salon/components/Navigation.tsx
  *
  * @runtime
  * - environment: server

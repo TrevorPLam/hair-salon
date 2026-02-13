@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/blog/lib/blog-images.ts
+ * @file templates/hair-salon/features/blog/lib/blog-images.ts
  * @role runtime
  * @summary Resolve blog image URLs from public assets.
  *
@@ -13,7 +13,7 @@
  * - Node: fs, path
  *
  * @used_by
- * - apps/web/app/blog/[slug]/page.tsx
+ * - templates/hair-salon/app/blog/[slug]/page.tsx
  *
  * @runtime
  * - environment: server

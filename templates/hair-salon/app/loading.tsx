@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/loading.tsx
+ * @file templates/hair-salon/app/loading.tsx
  * @role runtime
  * @summary Global loading UI for route-level suspense boundaries.
  *

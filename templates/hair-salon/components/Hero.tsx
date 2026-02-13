@@ -1,5 +1,5 @@
 /**
- * @file apps/web/components/Hero.tsx
+ * @file templates/hair-salon/components/Hero.tsx
  * @role runtime
  * @summary Homepage hero with brand pitch and primary CTAs.
  *
@@ -16,7 +16,7 @@
  * - Internal: @repo/ui (Button, Container)
  *
  * @used_by
- * - apps/web/app/page.tsx
+ * - templates/hair-salon/app/page.tsx
  *
  * @runtime
  * - environment: server
@@ -52,7 +52,7 @@ export default function Hero() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Text Content */}
           <div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight">
               Professional hair care that makes you shine.
             </h1>
             <p className="text-lg md:text-xl text-slate-800 mb-8 leading-relaxed">
@@ -71,14 +71,14 @@ export default function Hero() {
                 </Button>
               </Link>
             </div>
-            <p className="text-sm text-slate mt-4">
+            <p className="text-sm text-muted-foreground mt-4">
               Walk-ins welcome · Free consultations · Satisfaction guaranteed
             </p>
           </div>
 
           {/* Right Column - Hero Image/Illustration */}
           <div className="hidden lg:block">
-            <div className="bg-gradient-to-br from-charcoal to-teal/20 rounded-2xl p-4 aspect-square flex items-center justify-center shadow-lg">
+            <div className="bg-gradient-to-br from-secondary to-primary/20 rounded-2xl p-4 aspect-square flex items-center justify-center shadow-lg">
               <Image
                 src="/images/hero-salon.svg"
                 alt="Stylized illustration of hair salon services"

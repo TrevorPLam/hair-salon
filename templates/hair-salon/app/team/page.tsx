@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/team/page.tsx
+ * @file templates/hair-salon/app/team/page.tsx
  * @role runtime
  * @summary Team page with stylist bios and social placeholders.
  *
@@ -84,7 +84,7 @@ export default function TeamPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-gradient-to-r from-charcoal to-slate-800 text-white py-20">
+      <section className="bg-gradient-to-r from-secondary to-slate-800 text-white py-20">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Meet The Artists</h1>
@@ -108,19 +108,19 @@ export default function TeamPage() {
                     [Photo of {member.name}]
                   </div>
                   {/* Overlay */}
-                  <div className="absolute inset-0 bg-teal/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
-                    <a href="#" className="text-white hover:text-charcoal transition-colors">
+                  <div className="absolute inset-0 bg-primary/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-4">
+                    <a href="#" className="text-white hover:text-foreground transition-colors">
                       <Instagram className="w-6 h-6" />
                     </a>
-                    <a href="#" className="text-white hover:text-charcoal transition-colors">
+                    <a href="#" className="text-white hover:text-foreground transition-colors">
                       <Twitter className="w-6 h-6" />
                     </a>
                   </div>
                 </div>
 
                 <div className="p-2">
-                  <h3 className="text-xl font-bold text-charcoal mb-1">{member.name}</h3>
-                  <p className="text-teal font-medium text-sm mb-3 uppercase tracking-wide">
+                  <h3 className="text-xl font-bold text-foreground mb-1">{member.name}</h3>
+                  <p className="text-primary font-medium text-sm mb-3 uppercase tracking-wide">
                     {member.role}
                   </p>
                   <p className="text-slate-600 text-sm mb-4 leading-relaxed line-clamp-4">
@@ -133,7 +133,7 @@ export default function TeamPage() {
                       {member.specialties.map((tag) => (
                         <span
                           key={tag}
-                          className="text-xs bg-off-white text-slate-700 px-2 py-1 rounded-full border border-slate-200"
+                          className="text-xs bg-muted text-slate-700 px-2 py-1 rounded-full border border-slate-200"
                         >
                           {tag}
                         </span>
@@ -148,15 +148,15 @@ export default function TeamPage() {
       </Section>
 
       {/* Join Us CTA */}
-      <section className="py-20 bg-off-white">
+      <section className="py-20 bg-muted">
         <Container>
           <div className="max-w-4xl mx-auto bg-white rounded-2xl p-10 shadow-sm border border-slate-200 text-center">
-            <h2 className="text-3xl font-bold text-charcoal mb-4">Join Our Team</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Join Our Team</h2>
             <p className="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
               We are always looking for talented, passionate individuals to grow with us. If you
               love hair and people, we&apos;d love to meet you.
             </p>
-            <button className="px-8 py-3 bg-charcoal text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors">
+            <button className="px-8 py-3 bg-secondary text-white font-semibold rounded-lg hover:bg-slate-800 transition-colors">
               View Careers
             </button>
           </div>

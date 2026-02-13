@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/search/components/SearchPage.tsx
+ * @file templates/hair-salon/features/search/components/SearchPage.tsx
  * @role runtime
  * @summary Client search page rendering filtered results.
  *
@@ -17,7 +17,7 @@
  * - Internal: @/lib/search (SearchItem)
  *
  * @used_by
- * - apps/web/app/search/page.tsx
+ * - templates/hair-salon/app/search/page.tsx
  *
  * @runtime
  * - environment: client

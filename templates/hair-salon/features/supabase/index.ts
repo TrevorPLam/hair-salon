@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/supabase/index.ts
+ * @file templates/hair-salon/features/supabase/index.ts
  * @role runtime
  * @summary Supabase feature public exports.
  *
@@ -13,7 +13,7 @@
  * - Internal: ./lib/supabase-leads
  *
  * @used_by
- * - apps/web/lib/actions.ts
+ * - templates/hair-salon/lib/actions.ts
  *
  * @runtime
  * - environment: server

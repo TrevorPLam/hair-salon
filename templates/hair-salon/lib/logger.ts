@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/logger.ts
+ * @file templates/hair-salon/lib/logger.ts
  * @role runtime
  * @summary Logging utility with Sentry integration and sanitization.
  *

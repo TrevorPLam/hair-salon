@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/analytics/lib/analytics-consent.ts
+ * @file templates/hair-salon/features/analytics/lib/analytics-consent.ts
  * @role runtime
  * @summary Consent storage utilities for analytics gating.
  *
@@ -16,8 +16,8 @@
  * - Internal: @/lib/logger
  *
  * @used_by
- * - apps/web/components/AnalyticsConsentBanner.tsx
- * - apps/web/features/analytics/lib/analytics.ts
+ * - templates/hair-salon/components/AnalyticsConsentBanner.tsx
+ * - templates/hair-salon/features/analytics/lib/analytics.ts
  *
  * @runtime
  * - environment: client

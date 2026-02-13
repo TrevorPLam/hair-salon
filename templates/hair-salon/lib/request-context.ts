@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/request-context.ts
+ * @file templates/hair-salon/lib/request-context.ts
  * @role runtime
  * @summary Client-safe stubs for request context API.
  *

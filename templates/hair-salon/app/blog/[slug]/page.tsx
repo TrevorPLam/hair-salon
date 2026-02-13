@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/blog/[slug]/page.tsx
+ * @file templates/hair-salon/app/blog/[slug]/page.tsx
  * @role runtime
  * @summary Blog post detail page with structured data and CTA.
  *

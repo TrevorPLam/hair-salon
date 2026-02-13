@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/services/special-occasions/page.tsx
+ * @file templates/hair-salon/app/services/special-occasions/page.tsx
  * @role runtime
  * @summary Service detail page for special occasions styling.
  *

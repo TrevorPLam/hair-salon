@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/rate-limit.ts
+ * @file templates/hair-salon/lib/rate-limit.ts
  * @role runtime
  * @summary Rate limiting helpers for contact submissions.
  *
@@ -18,7 +18,7 @@
  * - External: @upstash/ratelimit (dynamic)
  *
  * @used_by
- * - apps/web/lib/actions/submit.ts
+ * - templates/hair-salon/lib/actions/submit.ts
  *
  * @runtime
  * - environment: server

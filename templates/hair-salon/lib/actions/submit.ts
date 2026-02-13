@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/actions/submit.ts
+ * @file templates/hair-salon/lib/actions/submit.ts
  * @role runtime
  * @summary Server action to validate, rate-limit, and store contact submissions.
  *
@@ -21,7 +21,7 @@
  * - Internal: ./supabase
  *
  * @used_by
- * - apps/web/lib/actions.ts
+ * - templates/hair-salon/lib/actions.ts
  *
  * @runtime
  * - environment: server

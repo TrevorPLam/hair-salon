@@ -1,20 +1,20 @@
 /**
- * @file apps/web/app/providers.tsx
+ * @file templates/hair-salon/app/providers.tsx
  * @role runtime
  * @summary Client-only wrapper for global UI providers and error boundaries.
  *
  * @entrypoints
- * - Used by apps/web/app/layout.tsx
+ * - Used by templates/hair-salon/app/layout.tsx
  *
  * @exports
  * - default Providers
  *
  * @depends_on
- * - Internal: apps/web/components/ErrorBoundary.tsx
- * - Internal: apps/web/components/Breadcrumbs.tsx
+ * - Internal: templates/hair-salon/components/ErrorBoundary.tsx
+ * - Internal: templates/hair-salon/components/Breadcrumbs.tsx
  *
  * @used_by
- * - apps/web/app/layout.tsx
+ * - templates/hair-salon/app/layout.tsx
  *
  * @runtime
  * - environment: client

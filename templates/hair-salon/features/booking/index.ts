@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/booking/index.ts
+ * @file templates/hair-salon/features/booking/index.ts
  * @role barrel
  * @summary Booking feature barrel exports.
  *
@@ -19,7 +19,7 @@
  * - Internal: ./lib/booking-providers
  *
  * @used_by
- * - apps/web/app/book/page.tsx
+ * - templates/hair-salon/app/book/page.tsx
  * - Service pages
  *
  * @runtime

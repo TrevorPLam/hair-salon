@@ -1,5 +1,5 @@
 /**
- * @file apps/web/components/AnalyticsConsentBanner.tsx
+ * @file templates/hair-salon/components/AnalyticsConsentBanner.tsx
  * @role runtime
  * @summary Client banner to capture analytics consent and gate GA scripts.
  *
@@ -16,7 +16,7 @@
  * - Internal: @/features/analytics/lib/analytics-consent
  *
  * @used_by
- * - apps/web/app/layout.tsx
+ * - templates/hair-salon/app/layout.tsx
  *
  * @runtime
  * - environment: client
@@ -104,7 +104,7 @@ function ConsentPrompt({ onAccept, onDecline }: { onAccept: () => void; onDeclin
       aria-live="polite"
       aria-labelledby="analytics-consent-heading"
     >
-      <h2 id="analytics-consent-heading" className="text-sm font-semibold text-charcoal">
+      <h2 id="analytics-consent-heading" className="text-sm font-semibold text-foreground">
         Analytics consent
       </h2>
       <p className="mt-2 text-xs text-slate-600">

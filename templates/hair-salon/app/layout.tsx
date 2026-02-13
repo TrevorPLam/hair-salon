@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/layout.tsx
+ * @file templates/hair-salon/app/layout.tsx
  * @role runtime
  * @summary Root app layout defining document shell, metadata, CSP nonce, and global UI.
  *
@@ -11,18 +11,18 @@
  * - default RootLayout
  *
  * @depends_on
- * - Internal: apps/web/app/globals.css
- * - Internal: apps/web/app/providers.tsx
- * - Internal: apps/web/components/Navigation.tsx
- * - Internal: apps/web/components/Footer.tsx
- * - Internal: apps/web/components/SkipToContent.tsx
- * - Internal: apps/web/components/InstallPrompt.tsx
- * - Internal: apps/web/components/AnalyticsConsentBanner.tsx
- * - Internal: apps/web/lib/csp.ts
- * - Internal: apps/web/lib/env.public.ts
- * - Internal: apps/web/lib/logger.ts
- * - Internal: apps/web/lib/search.ts
- * - Internal: apps/web/lib/constants.ts
+ * - Internal: templates/hair-salon/app/globals.css
+ * - Internal: templates/hair-salon/app/providers.tsx
+ * - Internal: templates/hair-salon/components/Navigation.tsx
+ * - Internal: templates/hair-salon/components/Footer.tsx
+ * - Internal: templates/hair-salon/components/SkipToContent.tsx
+ * - Internal: templates/hair-salon/components/InstallPrompt.tsx
+ * - Internal: templates/hair-salon/components/AnalyticsConsentBanner.tsx
+ * - Internal: templates/hair-salon/lib/csp.ts
+ * - Internal: templates/hair-salon/lib/env.public.ts
+ * - Internal: templates/hair-salon/lib/logger.ts
+ * - Internal: templates/hair-salon/lib/search.ts
+ * - Internal: templates/hair-salon/lib/constants.ts
  * - External: next, next/headers, next/font/google
  *
  * @used_by
@@ -255,7 +255,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           }}
         />
       </head>
-      <body className="font-sans bg-off-white text-charcoal">
+      <body className="font-sans bg-muted text-foreground">
         <SkipToContent />
         <Navigation searchItems={searchItems} />
         <Providers>

@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/contact/lib/contact-form-schema.ts
+ * @file templates/hair-salon/features/contact/lib/contact-form-schema.ts
  * @role runtime
  * @summary Zod schema for contact form validation.
  *
@@ -15,8 +15,8 @@
  * - Internal: @/lib/constants (FORM_VALIDATION)
  *
  * @used_by
- * - apps/web/features/contact/components/ContactForm.tsx
- * - apps/web/lib/actions.ts
+ * - templates/hair-salon/features/contact/components/ContactForm.tsx
+ * - templates/hair-salon/lib/actions.ts
  *
  * @runtime
  * - environment: shared

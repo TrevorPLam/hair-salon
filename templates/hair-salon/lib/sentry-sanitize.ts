@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/sentry-sanitize.ts
+ * @file templates/hair-salon/lib/sentry-sanitize.ts
  * @role runtime
  * @summary Sanitizes Sentry events to redact PII.
  *

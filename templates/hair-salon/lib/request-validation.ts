@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/request-validation.ts
+ * @file templates/hair-salon/lib/request-validation.ts
  * @role runtime
  * @summary CSRF validation and trusted client IP extraction.
  *
@@ -17,7 +17,7 @@
  * - Internal: ./env
  *
  * @used_by
- * - apps/web/lib/actions/submit.ts
+ * - templates/hair-salon/lib/actions/submit.ts
  *
  * @runtime
  * - environment: server

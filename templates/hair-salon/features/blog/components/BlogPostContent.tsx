@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/blog/components/BlogPostContent.tsx
+ * @file templates/hair-salon/features/blog/components/BlogPostContent.tsx
  * @role runtime
  * @summary MDX renderer for blog post content.
  *
@@ -16,7 +16,7 @@
  * - External: rehype-pretty-code
  *
  * @used_by
- * - apps/web/app/blog/[slug]/page.tsx
+ * - templates/hair-salon/app/blog/[slug]/page.tsx
  *
  * @runtime
  * - environment: server

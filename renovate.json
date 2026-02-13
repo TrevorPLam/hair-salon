@@ -55,8 +55,8 @@
   "timezone": "UTC",
   "schedule": ["before 6am on monday"],
   "labels": ["dependencies", "renovate"],
-  "assignees": ["@maintainer-team"],
-  "reviewers": ["@maintainer-team"],
+  "assignees": ["TrevorPLam"],
+  "reviewers": ["TrevorPLam"],
 
   "automerge": true,
   "automergeType": "pr",
@@ -105,7 +105,7 @@
   "vulnerabilityAlerts": {
     "enabled": true,
     "labels": ["security", "critical"],
-    "assignees": ["@maintainer-team"],
+    "assignees": ["TrevorPLam"],
     "schedule": ["at any time"]
   },
 

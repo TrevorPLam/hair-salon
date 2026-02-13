@@ -1,5 +1,5 @@
 /**
- * @file apps/web/components/Footer.tsx
+ * @file templates/hair-salon/components/Footer.tsx
  * @role runtime
  * @summary Global site footer with navigation and social links.
  *
@@ -15,7 +15,7 @@
  * - External: lucide-react
  *
  * @used_by
- * - apps/web/app/layout.tsx
+ * - templates/hair-salon/app/layout.tsx
  *
  * @runtime
  * - environment: server
@@ -72,7 +72,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-charcoal text-white/80">
+    <footer className="bg-secondary text-white/80">
       <div className="max-w-7xl mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand Column */}

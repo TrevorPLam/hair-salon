@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/book/page.tsx
+ * @file templates/hair-salon/app/book/page.tsx
  * @role runtime
  * @summary Booking request page with service form and salon info sidebar.
  *
@@ -52,9 +52,9 @@ export const metadata: Metadata = {
 
 export default function BookPage() {
   return (
-    <div className="min-h-screen bg-off-white">
+    <div className="min-h-screen bg-muted">
       {/* Hero */}
-      <section className="bg-charcoal text-white py-16">
+      <section className="bg-secondary text-white py-16">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">Book Your Visit</h1>
@@ -75,9 +75,9 @@ export default function BookPage() {
 
             {/* Sidebar Info */}
             <div className="space-y-6">
-              <Card variant="service" className="bg-teal/5 border-teal/20">
-                <h3 className="text-xl font-bold text-charcoal mb-4 flex items-center gap-2">
-                  <Clock className="w-5 h-5 text-teal" />
+              <Card variant="service" className="bg-primary/5 border-primary/20">
+                <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-primary" />
                   Hours of Operation
                 </h3>
                 <ul className="space-y-2 text-slate-700">
@@ -101,8 +101,8 @@ export default function BookPage() {
               </Card>
 
               <Card variant="default">
-                <h3 className="text-xl font-bold text-charcoal mb-4 flex items-center gap-2">
-                  <Scissors className="w-5 h-5 text-teal" />
+                <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                  <Scissors className="w-5 h-5 text-primary" />
                   Cancellation Policy
                 </h3>
                 <p className="text-slate-600 text-sm leading-relaxed">
@@ -112,8 +112,8 @@ export default function BookPage() {
               </Card>
 
               <div className="bg-white p-6 rounded-lg border border-slate-200 shadow-sm text-center">
-                <h3 className="font-bold text-charcoal mb-2">Prefer to call?</h3>
-                <p className="text-2xl font-bold text-teal mb-1">(555) 123-4567</p>
+                <h3 className="font-bold text-foreground mb-2">Prefer to call?</h3>
+                <p className="text-2xl font-bold text-primary mb-1">(555) 123-4567</p>
                 <p className="text-sm text-slate-500">
                   We&apos;re available during business hours.
                 </p>

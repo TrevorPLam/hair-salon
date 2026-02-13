@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/security-headers.ts
+ * @file templates/hair-salon/lib/security-headers.ts
  * @role runtime
  * @summary OWASP-inspired security headers configuration.
  *
@@ -15,7 +15,7 @@
  * - None
  *
  * @used_by
- * - apps/web/middleware.ts
+ * - templates/hair-salon/middleware.ts
  *
  * @runtime
  * - environment: server/edge

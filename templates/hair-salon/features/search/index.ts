@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/search/index.ts
+ * @file templates/hair-salon/features/search/index.ts
  * @role runtime
  * @summary Search feature public exports.
  *
@@ -17,8 +17,8 @@
  * - Internal: ./components/SearchPage
  *
  * @used_by
- * - apps/web/app/search/page.tsx
- * - apps/web/components/Navigation.tsx
+ * - templates/hair-salon/app/search/page.tsx
+ * - templates/hair-salon/components/Navigation.tsx
  *
  * @runtime
  * - environment: shared

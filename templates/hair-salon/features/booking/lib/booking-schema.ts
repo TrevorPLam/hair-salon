@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/booking/lib/booking-schema.ts
+ * @file templates/hair-salon/features/booking/lib/booking-schema.ts
  * @role library
  * @summary Booking form validation schema with 2026 security patterns.
  *

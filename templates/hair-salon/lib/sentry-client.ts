@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/sentry-client.ts
+ * @file templates/hair-salon/lib/sentry-client.ts
  * @role runtime
  * @summary Client-side Sentry helpers and span wrapper.
  *
@@ -19,7 +19,7 @@
  * - External: @sentry/nextjs (dynamic import)
  *
  * @used_by
- * - apps/web/features/contact/components/ContactForm.tsx
+ * - templates/hair-salon/features/contact/components/ContactForm.tsx
  *
  * @runtime
  * - environment: client

@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/blog/lib/blog.ts
+ * @file templates/hair-salon/features/blog/lib/blog.ts
  * @role runtime
  * @summary File-based blog CMS for MDX posts.
  *
@@ -19,10 +19,10 @@
  * - External: gray-matter, reading-time
  *
  * @used_by
- * - apps/web/app/blog/page.tsx
- * - apps/web/app/blog/[slug]/page.tsx
- * - apps/web/app/sitemap.ts
- * - apps/web/lib/search.ts
+ * - templates/hair-salon/app/blog/page.tsx
+ * - templates/hair-salon/app/blog/[slug]/page.tsx
+ * - templates/hair-salon/app/sitemap.ts
+ * - templates/hair-salon/lib/search.ts
  *
  * @runtime
  * - environment: server

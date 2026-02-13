@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/blog/__tests__/blog.test.ts
+ * @file templates/hair-salon/features/blog/__tests__/blog.test.ts
  * @role test
  * @summary Blog data helpers tests.
  */

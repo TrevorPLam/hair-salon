@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/privacy/page.tsx
+ * @file templates/hair-salon/app/privacy/page.tsx
  * @role runtime
  * @summary Privacy policy page with legal disclosures.
  *

@@ -1,5 +1,5 @@
 /**
- * @file apps/web/components/Navigation.tsx
+ * @file templates/hair-salon/components/Navigation.tsx
  * @role runtime
  * @summary Primary navigation with desktop links, mobile menu, and search.
  *
@@ -20,7 +20,7 @@
  * - Internal: @/lib/utils (cn)
  *
  * @used_by
- * - apps/web/app/layout.tsx
+ * - templates/hair-salon/app/layout.tsx
  *
  * @runtime
  * - environment: client
@@ -153,7 +153,7 @@ export default function Navigation({ searchItems }: NavigationProps) {
   }, [isMobileMenuOpen]);
 
   return (
-    <nav className="bg-charcoal shadow-sm sticky top-0 z-50" role="navigation" aria-label="Primary">
+    <nav className="bg-secondary shadow-sm sticky top-0 z-50" role="navigation" aria-label="Primary">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -208,7 +208,7 @@ export default function Navigation({ searchItems }: NavigationProps) {
         <div
           id="mobile-menu"
           ref={mobileMenuRef}
-          className="md:hidden bg-charcoal border-t border-white/10"
+          className="md:hidden bg-secondary border-t border-white/10"
           role="menu"
           aria-label="Mobile navigation"
           onKeyDown={(event) => {

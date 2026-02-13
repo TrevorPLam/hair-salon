@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/constants.ts
+ * @file templates/hair-salon/lib/constants.ts
  * @role runtime
  * @summary Shared constants for validation, timing, and org metadata.
  *

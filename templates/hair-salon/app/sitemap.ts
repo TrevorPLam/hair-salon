@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/sitemap.ts
+ * @file templates/hair-salon/app/sitemap.ts
  * @role runtime
  * @summary Generates sitemap.xml with static routes and blog posts.
  *
@@ -10,7 +10,7 @@
  * - default sitemap
  *
  * @depends_on
- * - Internal: apps/web/lib/env.public.ts
+ * - Internal: templates/hair-salon/lib/env.public.ts
  * - Internal: @/features/blog/lib/blog
  * - External: next (MetadataRoute)
  *

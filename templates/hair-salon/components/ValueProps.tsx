@@ -1,5 +1,5 @@
 /**
- * @file apps/web/components/ValueProps.tsx
+ * @file templates/hair-salon/components/ValueProps.tsx
  * @role runtime
  * @summary Value proposition cards describing salon differentiators.
  *
@@ -15,7 +15,7 @@
  * - Internal: @repo/ui (Container, Section, Card)
  *
  * @used_by
- * - apps/web/app/page.tsx
+ * - templates/hair-salon/app/page.tsx
  *
  * @runtime
  * - environment: server
@@ -109,11 +109,11 @@ function ValueProps() {
             const Icon = prop.icon;
             return (
               <Card key={prop.title} variant="default">
-                <div className="w-12 h-12 bg-teal/10 rounded-lg flex items-center justify-center mb-4">
-                  <Icon className="w-6 h-6 text-teal" />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <Icon className="w-6 h-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-semibold text-charcoal mb-3">{prop.title}</h3>
-                <div className="text-slate leading-relaxed space-y-4">{prop.description}</div>
+                <h3 className="text-xl font-semibold text-foreground mb-3">{prop.title}</h3>
+                <div className="text-muted-foreground leading-relaxed space-y-4">{prop.description}</div>
               </Card>
             );
           })}

@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/booking/lib/booking-providers.ts
+ * @file templates/hair-salon/features/booking/lib/booking-providers.ts
  * @role library
  * @summary External booking provider integrations with toggle-based configuration.
  *

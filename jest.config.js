@@ -71,10 +71,10 @@ module.exports = {
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   collectCoverageFrom: [
-    // Web app
-    'apps/web/lib/**/*.{ts,tsx}',
-    'apps/web/components/**/*.{ts,tsx}',
-    'apps/web/features/**/*.{ts,tsx}',
+    // Hair salon template
+    'templates/hair-salon/lib/**/*.{ts,tsx}',
+    'templates/hair-salon/components/**/*.{ts,tsx}',
+    'templates/hair-salon/features/**/*.{ts,tsx}',
     // UI library
     'packages/ui/src/**/*.{ts,tsx}',
     // Utils library
@@ -88,7 +88,7 @@ module.exports = {
   moduleNameMapper: {
     '^@repo/ui$': '<rootDir>/packages/ui/src/index.ts',
     '^@repo/utils$': '<rootDir>/packages/utils/src/index.ts',
-    '^@/(.*)$': '<rootDir>/apps/web/$1',
+    '^@/(.*)$': '<rootDir>/templates/hair-salon/$1',
   },
   testPathIgnorePatterns: ['/node_modules/', '.next', 'dist'],
 };

@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/actions/supabase.ts
+ * @file templates/hair-salon/lib/actions/supabase.ts
  * @role runtime
  * @summary Supabase lead insert/update helpers and HubSpot sync trigger.
  *
@@ -19,7 +19,7 @@
  * - Internal: ./hubspot
  *
  * @used_by
- * - apps/web/lib/actions/submit.ts
+ * - templates/hair-salon/lib/actions/submit.ts
  *
  * @runtime
  * - environment: server

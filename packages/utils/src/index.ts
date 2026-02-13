@@ -1,4 +1,7 @@
-// @repo/utils - Shared Utility Functions
-// This is a placeholder. Add your shared utilities here.
+/**
+ * @repo/utils — Shared Utility Functions
+ *
+ * Provides cross-cutting utilities used by @repo/ui and all templates.
+ */
 
-export {};
+export { cn } from './cn';

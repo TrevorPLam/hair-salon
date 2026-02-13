@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/actions/helpers.ts
+ * @file templates/hair-salon/lib/actions/helpers.ts
  * @role runtime
  * @summary Helper utilities for contact form actions.
  *
@@ -17,9 +17,9 @@
  * - Internal: ../sanitize, ../logger, ../request-validation
  *
  * @used_by
- * - apps/web/lib/actions/submit.ts
- * - apps/web/lib/actions/hubspot.ts
- * - apps/web/lib/actions/supabase.ts
+ * - templates/hair-salon/lib/actions/submit.ts
+ * - templates/hair-salon/lib/actions/hubspot.ts
+ * - templates/hair-salon/lib/actions/supabase.ts
  *
  * @runtime
  * - environment: server

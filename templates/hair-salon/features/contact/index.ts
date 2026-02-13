@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/contact/index.ts
+ * @file templates/hair-salon/features/contact/index.ts
  * @role runtime
  * @summary Contact feature public exports.
  *
@@ -15,7 +15,7 @@
  * - Internal: ./components/ContactForm
  *
  * @used_by
- * - apps/web/app/contact/page.tsx
+ * - templates/hair-salon/app/contact/page.tsx
  *
  * @runtime
  * - environment: shared

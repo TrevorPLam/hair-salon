@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/__tests__/env-setup.ts
+ * @file templates/hair-salon/lib/__tests__/env-setup.ts
  * @role test
  * @summary Sets required env vars for env validation tests.
  *
@@ -13,7 +13,7 @@
  * - Node: process.env
  *
  * @used_by
- * - apps/web/lib/__tests__/env.test.ts
+ * - templates/hair-salon/lib/__tests__/env.test.ts
  *
  * @runtime
  * - environment: test

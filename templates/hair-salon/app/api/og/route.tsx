@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/api/og/route.tsx
+ * @file templates/hair-salon/app/api/og/route.tsx
  * @role runtime
  * @summary Edge route that generates dynamic OG images.
  *

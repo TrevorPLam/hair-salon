@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/search/page.tsx
+ * @file templates/hair-salon/app/search/page.tsx
  * @role runtime
  * @summary Search page that renders the site search experience.
  *

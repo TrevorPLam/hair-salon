@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/__tests__/sanitize.test.ts
+ * @file templates/hair-salon/lib/__tests__/sanitize.test.ts
  * @role test
  * @summary Security tests for sanitization utilities.
  *

@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/actions/types.ts
+ * @file templates/hair-salon/lib/actions/types.ts
  * @role runtime
  * @summary Shared types for contact form actions.
  *
@@ -13,7 +13,7 @@
  * - Internal: ../sentry-server (SpanAttributes)
  *
  * @used_by
- * - apps/web/lib/actions/*
+ * - templates/hair-salon/lib/actions/*
  *
  * @runtime
  * - environment: server

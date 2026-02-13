@@ -1,5 +1,5 @@
 /**
- * @file apps/web/components/ErrorBoundary.tsx
+ * @file templates/hair-salon/components/ErrorBoundary.tsx
  * @role runtime
  * @summary Client error boundary with retry and home navigation.
  *
@@ -16,7 +16,7 @@
  * - Internal: @/lib/logger
  *
  * @used_by
- * - apps/web/app/providers.tsx
+ * - templates/hair-salon/app/providers.tsx
  *
  * @runtime
  * - environment: client

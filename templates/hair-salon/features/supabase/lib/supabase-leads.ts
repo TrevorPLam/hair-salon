@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/supabase/lib/supabase-leads.ts
+ * @file templates/hair-salon/features/supabase/lib/supabase-leads.ts
  * @role runtime
  * @summary Supabase REST adapter for lead inserts and updates.
  *
@@ -17,7 +17,7 @@
  * - Internal: @/lib/env (validatedEnv)
  *
  * @used_by
- * - apps/web/lib/actions.ts
+ * - templates/hair-salon/lib/actions.ts
  *
  * @runtime
  * - environment: server

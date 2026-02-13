@@ -1,5 +1,5 @@
 /**
- * @file apps/web/postcss.config.js
+ * @file templates/hair-salon/postcss.config.js
  * @role config
  * @summary PostCSS configuration for Tailwind and Autoprefixer.
  *

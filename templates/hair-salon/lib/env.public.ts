@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/env.public.ts
+ * @file templates/hair-salon/lib/env.public.ts
  * @role runtime
  * @summary Validates and exposes NEXT_PUBLIC_* environment variables.
  *

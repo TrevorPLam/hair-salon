@@ -11,7 +11,12 @@
   "scripts": {
     "lint": "eslint src"
   },
+  "dependencies": {
+    "clsx": "2.1.1",
+    "tailwind-merge": "2.6.1"
+  },
   "devDependencies": {
+    "eslint": "^9.18.0",
     "typescript": "^5.7.2"
   }
 }

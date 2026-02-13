@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/services/haircuts/page.tsx
+ * @file templates/hair-salon/app/services/haircuts/page.tsx
  * @role runtime
  * @summary Service detail page for haircuts and styling.
  *

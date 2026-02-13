@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/robots.ts
+ * @file templates/hair-salon/app/robots.ts
  * @role runtime
  * @summary Generates robots.txt metadata for crawlers.
  *
@@ -10,7 +10,7 @@
  * - default robots
  *
  * @depends_on
- * - Internal: apps/web/lib/env.public.ts
+ * - Internal: templates/hair-salon/lib/env.public.ts
  * - External: next (MetadataRoute)
  *
  * @used_by
@@ -25,7 +25,7 @@
  * - outputs: robots rules and sitemap URL
  *
  * @invariants
- * - sitemap must match apps/web/app/sitemap.ts output
+ * - sitemap must match templates/hair-salon/app/sitemap.ts output
  *
  * @gotchas
  * - Disallow list should align with actual private routes

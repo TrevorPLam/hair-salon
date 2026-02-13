@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/gallery/page.tsx
+ * @file templates/hair-salon/app/gallery/page.tsx
  * @role runtime
  * @summary Gallery page with category filters and portfolio grid.
  *
@@ -67,7 +67,7 @@ export default function GalleryPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}
-      <section className="bg-charcoal text-white py-16">
+      <section className="bg-secondary text-white py-16">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Our Work</h1>
@@ -88,8 +88,8 @@ export default function GalleryPage() {
                 key={cat}
                 className={`px-6 py-2 rounded-full text-sm font-semibold transition-colors ${
                   idx === 0
-                    ? 'bg-teal text-white'
-                    : 'bg-off-white text-slate-600 hover:bg-slate-200'
+                    ? 'bg-primary text-white'
+                    : 'bg-muted text-slate-600 hover:bg-slate-200'
                 }`}
               >
                 {cat}
@@ -112,8 +112,8 @@ export default function GalleryPage() {
                 </div>
 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
-                  <span className="text-teal text-xs font-bold uppercase tracking-wider mb-1">
+                <div className="absolute inset-0 bg-gradient-to-t from-secondary/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+                  <span className="text-primary text-xs font-bold uppercase tracking-wider mb-1">
                     {item.category}
                   </span>
                   <h3 className="text-white font-bold text-lg">{item.title}</h3>

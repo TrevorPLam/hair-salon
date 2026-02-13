@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/analytics/index.ts
+ * @file templates/hair-salon/features/analytics/index.ts
  * @role runtime
  * @summary Analytics feature public exports.
  *

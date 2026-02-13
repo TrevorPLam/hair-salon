@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/pricing/page.tsx
+ * @file templates/hair-salon/app/pricing/page.tsx
  * @role runtime
  * @summary Pricing page with service lists, FAQs, and booking CTA.
  *
@@ -110,14 +110,14 @@ function PricingList({
 }) {
   return (
     <Card variant="default" className="h-full">
-      <h3 className="text-2xl font-bold text-charcoal mb-6 border-b border-teal/20 pb-4">
+      <h3 className="text-2xl font-bold text-foreground mb-6 border-b border-primary/20 pb-4">
         {title}
       </h3>
       <ul className="space-y-4">
         {items.map((item) => (
-          <li key={item.name} className="flex justify-between items-center text-slate">
+          <li key={item.name} className="flex justify-between items-center text-muted-foreground">
             <span className="font-medium">{item.name}</span>
-            <span className="font-semibold text-teal">{item.price}</span>
+            <span className="font-semibold text-primary">{item.price}</span>
           </li>
         ))}
       </ul>
@@ -129,7 +129,7 @@ export default function PricingPage() {
   return (
     <>
       {/* Hero Section */}
-      <Section className="bg-gradient-to-b from-charcoal to-charcoal/95 text-white">
+      <Section className="bg-gradient-to-b from-secondary to-secondary/95 text-white">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
@@ -151,17 +151,17 @@ export default function PricingPage() {
             <PricingList title="Treatments" items={treatmentPricing} />
             <PricingList title="Special Occasions" items={occasionPricing} />
           </div>
-          <div className="text-center mt-12 text-slate italic">
+          <div className="text-center mt-12 text-muted-foreground italic">
             * Prices are subject to change. Please consult with your stylist for an accurate quote.
           </div>
         </Container>
       </Section>
 
       {/* FAQs */}
-      <Section className="bg-off-white">
+      <Section className="bg-muted">
         <Container>
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl font-bold text-charcoal mb-8 text-center">
+            <h2 className="text-3xl font-bold text-foreground mb-8 text-center">
               Frequently Asked Questions
             </h2>
             <Accordion items={faqs} />
@@ -170,11 +170,11 @@ export default function PricingPage() {
       </Section>
 
       {/* CTA Section */}
-      <Section className="bg-gradient-to-br from-teal/10 to-teal/5">
+      <Section className="bg-gradient-to-br from-primary/10 to-primary/5">
         <Container>
           <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">Ready to Book?</h2>
-            <p className="text-lg text-slate mb-8">Secure your spot today.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Ready to Book?</h2>
+            <p className="text-lg text-muted-foreground mb-8">Secure your spot today.</p>
             <Link href="/contact">
               <Button variant="primary" size="large">
                 Schedule Appointment

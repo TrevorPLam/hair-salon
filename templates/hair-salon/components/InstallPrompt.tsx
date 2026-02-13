@@ -1,5 +1,5 @@
 /**
- * @file apps/web/components/InstallPrompt.tsx
+ * @file templates/hair-salon/components/InstallPrompt.tsx
  * @role runtime
  * @summary PWA install prompt with deferred beforeinstallprompt handling.
  *
@@ -16,7 +16,7 @@
  * - Internal: @/lib/constants (UI_TIMING)
  *
  * @used_by
- * - apps/web/app/layout.tsx
+ * - templates/hair-salon/app/layout.tsx
  *
  * @runtime
  * - environment: client

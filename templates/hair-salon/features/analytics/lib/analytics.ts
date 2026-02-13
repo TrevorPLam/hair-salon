@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/analytics/lib/analytics.ts
+ * @file templates/hair-salon/features/analytics/lib/analytics.ts
  * @role runtime
  * @summary Analytics tracking abstraction with consent gating.
  *

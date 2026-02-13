@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/contact/components/ContactForm.tsx
+ * @file templates/hair-salon/features/contact/components/ContactForm.tsx
  * @role runtime
  * @summary Contact form with validation, submission, and analytics tracking.
  *
@@ -20,7 +20,7 @@
  * - Internal: @/lib/sentry-client
  *
  * @used_by
- * - apps/web/app/contact/page.tsx
+ * - templates/hair-salon/app/contact/page.tsx
  *
  * @runtime
  * - environment: client

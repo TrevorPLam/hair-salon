@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/not-found.tsx
+ * @file templates/hair-salon/app/not-found.tsx
  * @role runtime
  * @summary Custom 404 page with navigation to key routes.
  *

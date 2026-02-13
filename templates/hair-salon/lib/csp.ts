@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/csp.ts
+ * @file templates/hair-salon/lib/csp.ts
  * @role runtime
  * @summary CSP nonce generation and policy builder.
  *
@@ -16,8 +16,8 @@
  * - Web Crypto / Node Buffer
  *
  * @used_by
- * - apps/web/middleware.ts
- * - apps/web/app/layout.tsx
+ * - templates/hair-salon/middleware.ts
+ * - templates/hair-salon/app/layout.tsx
  *
  * @runtime
  * - environment: server/edge

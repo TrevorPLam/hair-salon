@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/sentry-server.ts
+ * @file templates/hair-salon/lib/sentry-server.ts
  * @role runtime
  * @summary Server-side Sentry span helper.
  *
@@ -15,7 +15,7 @@
  * - External: @sentry/nextjs
  *
  * @used_by
- * - apps/web/lib/actions/*
+ * - templates/hair-salon/lib/actions/*
  *
  * @runtime
  * - environment: server

@@ -1,5 +1,5 @@
 /**
- * @file apps/web/next.config.js
+ * @file templates/hair-salon/next.config.js
  * @role config
  * @summary Next.js build configuration for the web app.
  *

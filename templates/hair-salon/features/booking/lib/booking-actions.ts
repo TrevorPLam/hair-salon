@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/booking/lib/booking-actions.ts
+ * @file templates/hair-salon/features/booking/lib/booking-actions.ts
  * @role server-action
  * @summary Server-side booking submission handlers with 2026 security patterns.
  *

@@ -1,5 +1,5 @@
 /**
- * @file apps/web/components/SkipToContent.tsx
+ * @file templates/hair-salon/components/SkipToContent.tsx
  * @role runtime
  * @summary Accessibility skip link to jump to main content.
  *
@@ -13,7 +13,7 @@
  * - None
  *
  * @used_by
- * - apps/web/app/layout.tsx
+ * - templates/hair-salon/app/layout.tsx
  *
  * @runtime
  * - environment: server

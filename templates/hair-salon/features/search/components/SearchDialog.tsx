@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/search/components/SearchDialog.tsx
+ * @file templates/hair-salon/features/search/components/SearchDialog.tsx
  * @role runtime
  * @summary Client search modal with keyboard shortcut.
  *
@@ -17,7 +17,7 @@
  * - Internal: @/lib/search (SearchItem)
  *
  * @used_by
- * - apps/web/components/Navigation.tsx
+ * - templates/hair-salon/components/Navigation.tsx
  *
  * @runtime
  * - environment: client
@@ -178,7 +178,7 @@ export default function SearchDialog({ items = [], variant = 'desktop' }: Search
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search blog posts, services, and pages"
-                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
+                className="w-full rounded-lg border border-gray-300 px-4 py-3 text-base focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring"
                 aria-label="Search"
               />
             </div>
@@ -192,12 +192,12 @@ export default function SearchDialog({ items = [], variant = 'desktop' }: Search
                     <li key={item.id}>
                       <Link
                         href={item.href}
-                        className="block rounded-lg border border-gray-200 px-4 py-3 transition hover:border-teal-200 hover:bg-teal-50"
+                        className="block rounded-lg border border-gray-200 px-4 py-3 transition hover:border-primary/30 hover:bg-primary/90-50"
                         onClick={() => setIsOpen(false)}
                       >
                         <div className="flex items-center justify-between">
                           <span className="font-semibold text-gray-900">{item.title}</span>
-                          <span className="text-xs uppercase tracking-wide text-teal-600">
+                          <span className="text-xs uppercase tracking-wide text-primary">
                             {item.type}
                           </span>
                         </div>

@@ -1,5 +1,5 @@
 /**
- * @file apps/web/middleware.ts
+ * @file templates/hair-salon/middleware.ts
  * @role runtime
  * @summary Middleware applying CSP nonce and security headers.
  *

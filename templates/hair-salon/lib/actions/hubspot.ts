@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/actions/hubspot.ts
+ * @file templates/hair-salon/lib/actions/hubspot.ts
  * @role runtime
  * @summary HubSpot sync helpers for contact submissions.
  *
@@ -18,7 +18,7 @@
  * - Internal: ./helpers
  *
  * @used_by
- * - apps/web/lib/actions/supabase.ts
+ * - templates/hair-salon/lib/actions/supabase.ts
  *
  * @runtime
  * - environment: server

@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/__tests__/env.test.ts
+ * @file templates/hair-salon/lib/__tests__/env.test.ts
  * @role test
  * @summary Tests for server env validation helpers.
  *

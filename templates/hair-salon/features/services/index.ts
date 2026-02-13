@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/services/index.ts
+ * @file templates/hair-salon/features/services/index.ts
  * @role runtime
  * @summary Services feature public exports.
  *

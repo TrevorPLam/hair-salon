@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/sanitize.ts
+ * @file templates/hair-salon/lib/sanitize.ts
  * @role runtime
  * @summary Sanitization utilities for user input and email safety.
  *
@@ -18,7 +18,7 @@
  * - Internal: ./constants
  *
  * @used_by
- * - apps/web/lib/actions/*
+ * - templates/hair-salon/lib/actions/*
  * - email and UI rendering paths
  *
  * @runtime

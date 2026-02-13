@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/booking/components/BookingForm.tsx
+ * @file templates/hair-salon/features/booking/components/BookingForm.tsx
  * @role component
  * @summary Interactive booking form with 2026 validation patterns and analytics.
  *
@@ -20,7 +20,7 @@
  * - Internal: @/features/analytics/lib/analytics
  *
  * @used_by
- * - apps/web/app/book/page.tsx
+ * - templates/hair-salon/app/book/page.tsx
  * - Service detail pages
  *
  * @runtime
@@ -194,8 +194,8 @@ export default function BookingForm({
               />
             </svg>
           </div>
-          <h3 className="text-2xl font-bold text-charcoal mb-4">Booking Request Received!</h3>
-          <p className="text-slate mb-6">
+          <h3 className="text-2xl font-bold text-foreground mb-4">Booking Request Received!</h3>
+          <p className="text-muted-foreground mb-6">
             Thank you for your booking request. We'll review your request and send you a
             confirmation email shortly.
           </p>
@@ -225,11 +225,11 @@ export default function BookingForm({
   return (
     <Card variant="default" className={`p-8 ${className}`}>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-charcoal mb-2 flex items-center gap-2">
-          <Calendar className="w-6 h-6 text-teal" />
+        <h2 className="text-2xl font-bold text-foreground mb-2 flex items-center gap-2">
+          <Calendar className="w-6 h-6 text-primary" />
           Request an Appointment
         </h2>
-        <p className="text-slate">
+        <p className="text-muted-foreground">
           Fill out the form below and we'll confirm your appointment shortly.
         </p>
       </div>

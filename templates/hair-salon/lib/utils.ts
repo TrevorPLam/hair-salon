@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/utils.ts
+ * @file templates/hair-salon/lib/utils.ts
  * @role runtime
  * @summary Local className merge helper for app components.
  *
@@ -14,7 +14,7 @@
  * - External: tailwind-merge
  *
  * @used_by
- * - apps/web/components and features
+ * - templates/hair-salon/components and features
  *
  * @runtime
  * - environment: shared

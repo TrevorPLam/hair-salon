@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/services/page.tsx
+ * @file templates/hair-salon/app/services/page.tsx
  * @role runtime
  * @summary Services overview page with core and additional offerings.
  *
@@ -114,7 +114,7 @@ export default function ServicesPage() {
   return (
     <>
       {/* Hero Section */}
-      <Section className="bg-gradient-to-b from-charcoal to-charcoal/95 text-white">
+      <Section className="bg-gradient-to-b from-secondary to-secondary/95 text-white">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
@@ -137,8 +137,8 @@ export default function ServicesPage() {
       <Section className="bg-white">
         <Container>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">Our Menu</h2>
-            <p className="text-lg text-slate max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Our Menu</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               We offer a comprehensive range of services to meet all your hair care needs.
             </p>
           </div>
@@ -148,19 +148,19 @@ export default function ServicesPage() {
               const Icon = service.icon;
               return (
                 <Card key={service.title} variant="service">
-                  <div className="w-12 h-12 bg-teal/10 rounded-lg flex items-center justify-center mb-4">
-                    <Icon className="w-6 h-6 text-teal" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                    <Icon className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="text-2xl font-semibold text-charcoal mb-3">{service.title}</h3>
-                  <p className="text-slate mb-4 leading-relaxed">{service.description}</p>
+                  <h3 className="text-2xl font-semibold text-foreground mb-3">{service.title}</h3>
+                  <p className="text-muted-foreground mb-4 leading-relaxed">{service.description}</p>
 
                   <ul className="space-y-2 mb-6">
                     {service.features.map((feature) => (
                       <li
                         key={`${service.title}-${feature}`}
-                        className="flex items-center text-slate"
+                        className="flex items-center text-muted-foreground"
                       >
-                        <span className="w-1.5 h-1.5 bg-teal rounded-full mr-2"></span>
+                        <span className="w-1.5 h-1.5 bg-primary rounded-full mr-2"></span>
                         {feature}
                       </li>
                     ))}
@@ -168,7 +168,7 @@ export default function ServicesPage() {
 
                   <Link
                     href={service.href}
-                    className="text-teal font-semibold hover:text-teal-dark transition-colors inline-flex items-center"
+                    className="text-primary font-semibold hover:text-primary/80 transition-colors inline-flex items-center"
                   >
                     Learn More →
                   </Link>
@@ -180,13 +180,13 @@ export default function ServicesPage() {
       </Section>
 
       {/* Additional Services */}
-      <Section className="bg-off-white">
+      <Section className="bg-muted">
         <Container>
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               More Ways to Experience
             </h2>
-            <p className="text-lg text-slate max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Enhance your visit with these additional offerings.
             </p>
           </div>
@@ -196,11 +196,11 @@ export default function ServicesPage() {
               const Icon = service.icon;
               return (
                 <Card key={service.title} variant="default">
-                  <div className="w-10 h-10 bg-teal/10 rounded-lg flex items-center justify-center mb-3">
-                    <Icon className="w-5 h-5 text-teal" />
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center mb-3">
+                    <Icon className="w-5 h-5 text-primary" />
                   </div>
-                  <h3 className="text-lg font-semibold text-charcoal mb-2">{service.title}</h3>
-                  <p className="text-sm text-slate mb-3 leading-relaxed">{service.description}</p>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">{service.title}</h3>
+                  <p className="text-sm text-muted-foreground mb-3 leading-relaxed">{service.description}</p>
                 </Card>
               );
             })}
@@ -209,13 +209,13 @@ export default function ServicesPage() {
       </Section>
 
       {/* CTA Section */}
-      <Section className="bg-gradient-to-br from-teal/10 to-teal/5">
+      <Section className="bg-gradient-to-br from-primary/10 to-primary/5">
         <Container>
           <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Ready for a Transformation?
             </h2>
-            <p className="text-lg text-slate mb-8">
+            <p className="text-lg text-muted-foreground mb-8">
               Schedule your appointment today and let our experts take care of the rest.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

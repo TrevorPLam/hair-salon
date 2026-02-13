@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/blog/page.tsx
+ * @file templates/hair-salon/app/blog/page.tsx
  * @role runtime
  * @summary Blog index with category filters and post cards.
  *
@@ -70,7 +70,7 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-charcoal via-slate-800 to-teal/20 text-white py-20">
+      <section className="bg-gradient-to-br from-secondary via-slate-800 to-primary/20 text-white py-20">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Salon Tips & Trends</h1>
@@ -91,8 +91,8 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
                 href="/blog"
                 className={`px-4 py-2 rounded-full font-medium transition-colors ${
                   !activeCategory
-                    ? 'bg-charcoal text-white hover:bg-slate-800'
-                    : 'bg-off-white text-charcoal hover:bg-slate-200'
+                    ? 'bg-secondary text-white hover:bg-slate-800'
+                    : 'bg-muted text-foreground hover:bg-slate-200'
                 }`}
               >
                 All Posts
@@ -103,8 +103,8 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
                   href={`/blog?category=${encodeURIComponent(category)}`}
                   className={`px-4 py-2 rounded-full font-medium transition-colors ${
                     activeCategory === category
-                      ? 'bg-charcoal text-white hover:bg-slate-800'
-                      : 'bg-off-white text-charcoal hover:bg-slate-200'
+                      ? 'bg-secondary text-white hover:bg-slate-800'
+                      : 'bg-muted text-foreground hover:bg-slate-200'
                   }`}
                 >
                   {category}
@@ -116,16 +116,16 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
       )}
 
       {/* Blog Posts */}
-      <section className="py-20 bg-off-white">
+      <section className="py-20 bg-muted">
         <Container>
           {filteredPosts.length === 0 ? (
             <div className="max-w-2xl mx-auto text-center">
               {activeCategory ? (
-                <p className="text-slate text-lg">
+                <p className="text-muted-foreground text-lg">
                   No posts found for {activeCategory}. Check back soon for more updates.
                 </p>
               ) : (
-                <p className="text-slate text-lg">
+                <p className="text-muted-foreground text-lg">
                   No blog posts yet. Check back soon for hair care tips!
                 </p>
               )}
@@ -140,20 +140,20 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
                 >
                   <div className="p-8">
                     {/* Category Badge */}
-                    <div className="inline-block px-3 py-1 bg-teal/10 text-teal text-sm font-semibold rounded-full mb-4">
+                    <div className="inline-block px-3 py-1 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-4">
                       {post.category}
                     </div>
 
                     {/* Title */}
-                    <h2 className="text-2xl font-bold text-charcoal mb-3 group-hover:text-teal transition-colors">
+                    <h2 className="text-2xl font-bold text-foreground mb-3 group-hover:text-primary/80 transition-colors">
                       {post.title}
                     </h2>
 
                     {/* Description */}
-                    <p className="text-slate mb-6 line-clamp-3">{post.description}</p>
+                    <p className="text-muted-foreground mb-6 line-clamp-3">{post.description}</p>
 
                     {/* Meta Info */}
-                    <div className="flex items-center gap-4 text-sm text-slate/70 mb-6">
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground/70 mb-6">
                       <div className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
                         <span>
@@ -171,7 +171,7 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
                     </div>
 
                     {/* CTA */}
-                    <div className="flex items-center text-teal font-semibold group-hover:gap-3 transition-all">
+                    <div className="flex items-center text-primary font-semibold group-hover:gap-3 transition-all">
                       Read More
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -187,15 +187,15 @@ export default function BlogPage({ searchParams }: BlogPageProps) {
       <section className="py-20 bg-white">
         <Container>
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-charcoal mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
               Ready for a Transformation?
             </h2>
-            <p className="text-xl text-slate mb-8">
+            <p className="text-xl text-muted-foreground mb-8">
               Book your appointment today and let our experts take care of you.
             </p>
             <Link
               href="/book"
-              className="inline-flex items-center justify-center px-8 py-4 bg-teal text-white font-semibold rounded-lg hover:bg-teal-dark transition-all shadow-lg hover:shadow-xl"
+              className="inline-flex items-center justify-center px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl"
             >
               Book Appointment
               <ArrowRight className="ml-2 w-5 h-5" />

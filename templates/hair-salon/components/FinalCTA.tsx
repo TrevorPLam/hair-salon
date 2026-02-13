@@ -1,5 +1,5 @@
 /**
- * @file apps/web/components/FinalCTA.tsx
+ * @file templates/hair-salon/components/FinalCTA.tsx
  * @role runtime
  * @summary Reusable CTA section for booking and services links.
  *
@@ -15,7 +15,7 @@
  * - Internal: @repo/ui (Button, Container, Section)
  *
  * @used_by
- * - apps/web/app/page.tsx
+ * - templates/hair-salon/app/page.tsx
  *
  * @runtime
  * - environment: server
@@ -45,7 +45,7 @@ import { Button, Container, Section } from '@repo/ui';
 
 function FinalCTA() {
   return (
-    <Section className="bg-charcoal text-white">
+    <Section className="bg-secondary text-white">
       <Container>
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
@@ -64,7 +64,7 @@ function FinalCTA() {
               <Button
                 variant="secondary"
                 size="large"
-                className="border-white text-charcoal bg-white hover:bg-off-white"
+                className="border-white text-foreground bg-white hover:bg-muted"
               >
                 Contact Us
               </Button>

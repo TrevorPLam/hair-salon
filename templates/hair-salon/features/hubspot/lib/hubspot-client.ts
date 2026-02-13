@@ -1,5 +1,5 @@
 /**
- * @file apps/web/features/hubspot/lib/hubspot-client.ts
+ * @file templates/hair-salon/features/hubspot/lib/hubspot-client.ts
  * @role runtime
  * @summary HubSpot CRM adapter for contact search and upsert.
  *
@@ -17,7 +17,7 @@
  * - Internal: @/lib/env (validatedEnv)
  *
  * @used_by
- * - apps/web/lib/actions.ts
+ * - templates/hair-salon/lib/actions.ts
  *
  * @runtime
  * - environment: server

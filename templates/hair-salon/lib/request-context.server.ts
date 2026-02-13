@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/request-context.server.ts
+ * @file templates/hair-salon/lib/request-context.server.ts
  * @role runtime
  * @summary AsyncLocalStorage request context for request IDs.
  *
@@ -15,8 +15,8 @@
  * - Node: async_hooks
  *
  * @used_by
- * - apps/web/lib/logger.ts
- * - apps/web/middleware.ts
+ * - templates/hair-salon/lib/logger.ts
+ * - templates/hair-salon/middleware.ts
  *
  * @runtime
  * - environment: server

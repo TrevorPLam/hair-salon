@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/__tests__/search.test.ts
+ * @file templates/hair-salon/lib/__tests__/search.test.ts
  * @role test
  * @summary Search index tests for blog integration.
  */

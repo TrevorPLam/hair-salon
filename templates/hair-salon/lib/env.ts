@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/env.ts
+ * @file templates/hair-salon/lib/env.ts
  * @role runtime
  * @summary Server-only environment validation and access helpers.
  *

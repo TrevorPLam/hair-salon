@@ -1,5 +1,5 @@
 /**
- * @file apps/web/app/terms/page.tsx
+ * @file templates/hair-salon/app/terms/page.tsx
  * @role runtime
  * @summary Terms of Service page with legal template content.
  *

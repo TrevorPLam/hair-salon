@@ -1,5 +1,5 @@
 /**
- * @file apps/web/lib/actions.ts
+ * @file templates/hair-salon/lib/actions.ts
  * @role runtime
  * @summary Server action barrel for contact submissions.
  *
@@ -13,7 +13,7 @@
  * - Internal: ./actions/submit
  *
  * @used_by
- * - apps/web/features/contact/components/ContactForm.tsx
+ * - templates/hair-salon/features/contact/components/ContactForm.tsx
  *
  * @runtime
  * - environment: server
