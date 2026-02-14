@@ -1,24 +1,24 @@
-const path = require('path');
+const plumberTestPath = require('path');
 
 // blog.ts computes postsDirectory at module load via process.cwd(),
 // so we must override cwd BEFORE requiring the module.
-const templateRoot = path.resolve(__dirname, '../../..');
-const originalCwd = process.cwd;
-process.cwd = () => templateRoot;
+const plumberTemplateRoot = plumberTestPath.resolve(__dirname, '../../..');
+const originalPlumberCwdFunction = process.cwd;
+process.cwd = () => plumberTemplateRoot;
 
-const { getAllPosts, getAllCategories, getPostBySlug, getFeaturedPosts } = require('../lib/blog');
+const { getAllPosts: getAllPlumberPosts, getAllCategories, getPostBySlug, getFeaturedPosts } = require('../lib/blog');
 
 afterAll(() => {
-  process.cwd = originalCwd;
+  process.cwd = originalPlumberCwdFunction;
 });
 
 describe('features/blog/lib/blog', () => {
   test('loads posts with required fields', () => {
-    const posts = getAllPosts();
+    const posts = getAllPlumberPosts();
 
     expect(posts.length).toBeGreaterThan(0);
 
-    posts.forEach((post) => {
+    posts.forEach((post: { slug: string; title: string; description: string; author: string; category: string; date: string; readingTime: string }) => {
       expect(post.slug).toBeTruthy();
       expect(post.title).toBeTruthy();
       expect(post.description).toBeTruthy();
@@ -33,11 +33,11 @@ describe('features/blog/lib/blog', () => {
     const categories = getAllCategories();
 
     expect(categories.length).toBeGreaterThan(0);
-    categories.forEach((category) => expect(category).toBeTruthy());
+    categories.forEach((category: string) => expect(category).toBeTruthy());
   });
 
   test('resolves a post by slug', () => {
-    const posts = getAllPosts();
+    const posts = getAllPlumberPosts();
     const post = getPostBySlug(posts[0].slug);
 
     expect(post).toBeDefined();
@@ -45,11 +45,11 @@ describe('features/blog/lib/blog', () => {
   });
 
   test('featured posts are a subset of all posts', () => {
-    const posts = getAllPosts();
+    const posts = getAllPlumberPosts();
     const featured = getFeaturedPosts();
 
-    featured.forEach((post) => {
-      expect(posts.find((item) => item.slug === post.slug)).toBeDefined();
+    featured.forEach((post: { slug: string }) => {
+      expect(posts.find((item: { slug: string }) => item.slug === post.slug)).toBeDefined();
     });
   });
 });

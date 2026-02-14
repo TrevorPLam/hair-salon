@@ -11,7 +11,7 @@ import { z } from 'zod';
  * - Provides performance monitoring configuration options
  *
  * **Variables:**
- * - SENTRY_DSN: Sentry Data Source Name for error tracking
+ * - NEXT_PUBLIC_SENTRY_DSN: Sentry Data Source Name for error tracking
  * - SENTRY_SAMPLE_RATE: Error sampling rate (0.0 to 1.0)
  *
  * **Security Notes:**
@@ -41,7 +41,9 @@ export const sentryEnvSchema = z.object({
    * @see {@link https://docs.sentry.io/product/sentry-basics/dsn-explainer/ Sentry DSN Documentation}
    * @security DSN contains project credentials - keep secret
    */
-  SENTRY_DSN: z
+  // [Task 1.3.3] Renamed from SENTRY_DSN to NEXT_PUBLIC_SENTRY_DSN
+  // Client-side access requires the NEXT_PUBLIC_ prefix in Next.js
+  NEXT_PUBLIC_SENTRY_DSN: z
     .coerce
     .string()
     .url('Must be a valid URL')
@@ -75,7 +77,7 @@ export const sentryEnvSchema = z.object({
  * @example
  * ```typescript
  * type SentryEnv = z.infer<typeof sentryEnvSchema>;
- * // => { SENTRY_DSN?: string | undefined; SENTRY_SAMPLE_RATE?: number | undefined; }
+ * // => { NEXT_PUBLIC_SENTRY_DSN?: string | undefined; SENTRY_SAMPLE_RATE?: number | undefined; }
  * ```
  */
 export type SentryEnv = z.infer<typeof sentryEnvSchema>;
@@ -100,7 +102,7 @@ export type SentryEnv = z.infer<typeof sentryEnvSchema>;
  *
  * try {
  *   const sentryEnv = validateSentryEnv();
- *   if (sentryEnv.SENTRY_DSN) {
+ *   if (sentryEnv.NEXT_PUBLIC_SENTRY_DSN) {
  *     console.log('Sentry error tracking enabled');
  *     console.log(`Sample rate: ${sentryEnv.SENTRY_SAMPLE_RATE}`);
  *   } else {
@@ -124,13 +126,13 @@ export const validateSentryEnv = (env: Record<string, unknown> = process.env): S
     throw new Error(
       `❌ Invalid Sentry environment variables: ${errorMessages}\n\n` +
       `Configuration options:\n` +
-      `- Production: SENTRY_DSN required for error tracking\n` +
+      `- Production: NEXT_PUBLIC_SENTRY_DSN required for error tracking\n` +
       `- Development: Optional, can use local error logging\n` +
       `- Testing: Optional, uses test error reporting\n\n` +
       `Setup instructions:\n` +
       `1. Create Sentry project at https://sentry.io\n` +
       `2. Copy DSN from Settings > Client Keys (DSN)\n` +
-      `3. Set SENTRY_DSN environment variable\n` +
+      `3. Set NEXT_PUBLIC_SENTRY_DSN environment variable\n` +
       `4. Optionally set SENTRY_SAMPLE_RATE (0.0-1.0)\n\n` +
       `Sample rate recommendations:\n` +
       `- Production: 0.1-1.0 (10%-100%)\n` +
@@ -155,7 +157,7 @@ export const validateSentryEnv = (env: Record<string, unknown> = process.env): S
  * import { safeValidateSentryEnv } from '@repo/infra/env/schemas/sentry';
  *
  * const sentryEnv = safeValidateSentryEnv();
- * if (sentryEnv?.SENTRY_DSN) {
+ * if (sentryEnv?.NEXT_PUBLIC_SENTRY_DSN) {
  *   console.log('Sentry error tracking available');
  *   console.log(`Sample rate: ${sentryEnv.SENTRY_SAMPLE_RATE}`);
  * } else {
@@ -188,7 +190,7 @@ export const safeValidateSentryEnv = (env: Record<string, unknown> = process.env
  */
 export const isSentryEnabled = (env: Record<string, unknown> = process.env): boolean => {
   const sentryEnv = safeValidateSentryEnv(env);
-  return !!sentryEnv?.SENTRY_DSN;
+  return !!sentryEnv?.NEXT_PUBLIC_SENTRY_DSN;
 };
 
 /**

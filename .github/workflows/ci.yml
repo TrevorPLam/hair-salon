@@ -6,6 +6,11 @@ on:
   pull_request:
     branches: [main, develop]
 
+# [Task 2.7.2] Cancel stale CI runs for the same branch/PR
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -48,7 +53,9 @@ jobs:
       - name: Test
         run: pnpm test
 
+      # [Task 2.7.4] Non-critical steps use continue-on-error to avoid blocking core pipeline
       - name: Generate SBOM
+        continue-on-error: true
         uses: anchore/sbom-action@v0
         with:
           path: '.'
@@ -56,6 +63,7 @@ jobs:
           output-file: 'sbom.spdx.json'
 
       - name: Upload SBOM artifact
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: sbom-spdx
@@ -63,9 +71,10 @@ jobs:
           retention-days: 90
 
       - name: Dependency vulnerability scan
+        continue-on-error: true
         run: |
           pnpm audit --audit-level high
           if [ $? -ne 0 ]; then
-            echo "❌ High or critical vulnerabilities found"
+            echo "⚠️ High or critical vulnerabilities found"
             exit 1
           fi

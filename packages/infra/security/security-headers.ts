@@ -111,8 +111,10 @@ export function getSecurityHeaders(config: SecurityHeadersConfig): SecurityHeade
   headers['Permissions-Policy'] = buildPermissionsPolicy(customPermissions);
 
   // HTTP Strict Transport Security (HSTS) - production only
+  // [Task 9.2.1] Named constant for HSTS max-age (1 year in seconds)
+  const HSTS_MAX_AGE_SECONDS = 31_536_000;
   if (enableHSTS && environment === 'production') {
-    headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains; preload';
+    headers['Strict-Transport-Security'] = `max-age=${HSTS_MAX_AGE_SECONDS}; includeSubDomains; preload`;
   }
 
   // Cross-Origin Embedder Policy (COEP) - requires COOP for proper isolation
@@ -126,8 +128,9 @@ export function getSecurityHeaders(config: SecurityHeadersConfig): SecurityHeade
   }
 
   // Development-specific headers
+  // [Task 1.5.3] Verified: X-Debug-Info is only set in development — never leaks to production.
+  // The `environment` parameter is derived from validated env, not raw process.env.
   if (environment === 'development') {
-    // Allow debugging in development
     headers['X-Debug-Info'] = 'enabled';
   }
 
@@ -186,10 +189,11 @@ export function validateSecurityHeaders(headers: SecurityHeaders): {
   // Check HSTS configuration
   if (headers['Strict-Transport-Security']) {
     const hsts = headers['Strict-Transport-Security'];
-    if (hsts.indexOf('includeSubDomains') === -1) {
+    // [Task 9.6.4] Replaced indexOf with includes() for readability
+    if (!hsts.includes('includeSubDomains')) {
       recommendations.push('Consider adding includeSubDomains to HSTS for broader protection');
     }
-    if (hsts.indexOf('preload') === -1) {
+    if (!hsts.includes('preload')) {
       recommendations.push('Consider adding preload to HSTS for browser preloading');
     }
   }
@@ -199,7 +203,8 @@ export function validateSecurityHeaders(headers: SecurityHeaders): {
     warnings.push('Missing Permissions-Policy header');
   } else {
     const policy = headers['Permissions-Policy'];
-    if (policy.indexOf('camera=*') !== -1 || policy.indexOf('microphone=*') !== -1) {
+    // [Task 9.6.4] Replaced indexOf with includes()
+    if (policy.includes('camera=*') || policy.includes('microphone=*')) {
       warnings.push('Permissions-Policy allows unrestricted camera/microphone access');
     }
   }

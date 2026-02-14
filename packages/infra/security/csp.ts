@@ -63,11 +63,8 @@ function encodeBase64(bytes: Uint8Array): string {
     return Buffer.from(bytes).toString('base64');
   }
 
-  let binary = '';
-  bytes.forEach((byte) => {
-    binary += String.fromCharCode(byte);
-  });
-  return btoa(binary);
+  // [Task 9.7.1] Fixed O(n^2) string concatenation — use Array.from().join()
+  return btoa(Array.from(bytes, (b) => String.fromCharCode(b)).join(''));
 }
 
 // [TRACE:FUNC=packages.infra.security.csp.getCryptoProvider]
@@ -165,7 +162,8 @@ export function buildContentSecurityPolicy({
 export function buildReportToConfig({
   endpoint,
   groupName = 'csp-endpoint',
-  maxAge = 86400, // 24 hours
+  // [Task 9.2.2] Named constant for CSP report max-age (24 hours in seconds)
+  maxAge = 86_400
 }: {
   endpoint: string;
   groupName?: string;
@@ -194,7 +192,8 @@ export function validateCspNonce(nonce: string): boolean {
 
   // Check base64 format and minimum length
   const base64Regex = /^[A-Za-z0-9+/]*={0,2}$/;
-  if (!base64Regex.test(nonce) || nonce.length < 16) {
+  // [Task 9.2.4] Use NONCE_BYTE_LENGTH constant for consistency (single source of truth)
+  if (!base64Regex.test(nonce) || nonce.length < NONCE_BYTE_LENGTH) {
     return false;
   }
 

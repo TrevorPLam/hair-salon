@@ -350,7 +350,8 @@ export const validateEnvForEnvironment = (
       warnings.push('Production should use distributed rate limiting with Redis');
     }
 
-    if (!data.SENTRY_DSN) {
+    // [Task 1.3.3] Updated to use NEXT_PUBLIC_SENTRY_DSN (client-side needs NEXT_PUBLIC_ prefix)
+    if (!data.NEXT_PUBLIC_SENTRY_DSN) {
       warnings.push('Production should have Sentry error tracking enabled');
     }
   }

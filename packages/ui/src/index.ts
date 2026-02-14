@@ -1,3 +1,25 @@
+// File: packages/ui/src/index.ts  [TRACE:FILE=packages.ui.index]
+// Purpose: Shared UI component library entry point for the monorepo. Provides themeable
+//          React components driven by CSS custom properties, enabling consistent design
+//          systems across all template applications.
+//
+// Exports / Entry: All UI components (Container, Section, Button, Card, Input, Select, Textarea, Accordion)
+// Used by: All template applications, any workspace needing UI components
+//
+// Invariants:
+// - Components must be themeable via CSS custom properties
+// - Must maintain backward compatibility for existing props
+// - Components should be framework-agnostic within React ecosystem
+// - No direct styling dependencies that conflict with site themes
+//
+// Status: @public
+// Features:
+// - [FEAT:UI_COMPONENTS] Reusable React component library
+// - [FEAT:THEMING] CSS custom properties for theme support
+// - [FEAT:DESIGN_SYSTEM] Consistent component design patterns
+// - [FEAT:ACCESSIBILITY] Built-in accessibility features
+// - [FEAT:RESPONSIVE] Mobile-first responsive design
+
 /**
  * @repo/ui — Shared UI Component Library
  *

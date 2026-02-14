@@ -1,16 +1,7 @@
 import { BookingFormData } from './booking-schema';
 import { validatedEnv } from '@/lib/env';
 
-/**
- * Provider configuration schema (unused but kept for validation reference)
- * const providerConfigSchema = z.object({
- *   enabled: z.boolean(),
- *   apiKey: z.string().optional(),
- *   apiSecret: z.string().optional(),
- *   businessId: z.string().optional(),
- *   webhookUrl: z.string().optional(),
- * });
- */
+// [Task 9.3.2] Removed dead commented-out providerConfigSchema Zod definition
 
 /**
  * External booking provider types

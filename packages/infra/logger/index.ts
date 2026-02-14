@@ -1,3 +1,26 @@
+// File: packages/infra/logger/index.ts  [TRACE:FILE=packages.infra.logger.index]
+// Purpose: Structured logging system entry point providing server-side logging with
+//          environment-aware output formatting, security sanitization, and Sentry
+//          integration for production error tracking and monitoring.
+//
+// Exports / Entry: logInfo, logWarn, logError, log, sanitizeLogContext, LogLevel, LogContext
+// Used by: Server-side code, API routes, middleware, any infrastructure components
+//
+// Invariants:
+// - Must be server-only (browser usage is not supported)
+// - Production output must be JSON formatted for log drains
+// - Sensitive data must be sanitized before logging
+// - Request context must be enriched when available
+// - Sentry integration must be conditional on DSN availability
+//
+// Status: @internal
+// Features:
+// - [FEAT:LOGGING] Structured logging with multiple levels
+// - [FEAT:SECURITY] OWASP-compliant data sanitization
+// - [FEAT:MONITORING] Sentry error tracking integration
+// - [FEAT:PERFORMANCE] Environment-aware output formatting
+// - [FEAT:CONTEXT] Request ID enrichment and tracing
+
 /**
  * Structured logger — server-only.
  * Production: JSON output (Vercel Log Drain compatible). Dev/test: human-readable.
@@ -30,7 +53,9 @@ interface LogRecord {
   error?: unknown;
 }
 
-const SENSITIVE_KEYS = new Set([
+// [Task 9.6.5] Single source of truth for sensitive key fragments.
+// Used for both exact-match and substring-match PII detection.
+const SENSITIVE_KEY_FRAGMENTS = [
   'password',
   'passcode',
   'token',
@@ -44,23 +69,12 @@ const SENSITIVE_KEYS = new Set([
   'access_token',
   'session_id',
   'sessionid',
-]);
+] as const;
 
-const SENSITIVE_KEY_SUBSTRINGS = [
-  'password',
-  'passcode',
-  'token',
-  'secret',
-  'authorization',
-  'cookie',
-  'apikey',
-  'api_key',
-  'client_secret',
-  'refresh_token',
-  'access_token',
-  'session_id',
-  'sessionid',
-];
+const SENSITIVE_KEYS = new Set<string>(SENSITIVE_KEY_FRAGMENTS);
+
+// [Task 9.7.4] Pre-compiled regex for substring matching — avoids per-call iteration
+const SENSITIVE_KEY_PATTERN = new RegExp(SENSITIVE_KEY_FRAGMENTS.join('|'), 'i');
 
 function normalizeKey(key: string): string {
   return key.toLowerCase().replace(/[^a-z0-9]/g, '_');
@@ -71,7 +85,8 @@ function isSensitiveKey(key: string): boolean {
   if (SENSITIVE_KEYS.has(normalized)) {
     return true;
   }
-  return SENSITIVE_KEY_SUBSTRINGS.some((fragment) => normalized.includes(fragment));
+  // [Task 9.7.4] Uses pre-compiled regex instead of Array.some() loop
+  return SENSITIVE_KEY_PATTERN.test(normalized);
 }
 
 function buildLogContext(context?: LogContext): LogContext | undefined {
@@ -121,23 +136,31 @@ function shouldPreserveObject(value: object): boolean {
   return value instanceof Error || value instanceof Date || value instanceof RegExp;
 }
 
-function sanitizeArray(values: unknown[]): unknown[] {
-  return values.map((item) => sanitizeValue(item));
+// [Task 1.5.7] maxDepth parameter prevents stack overflow on deeply nested objects
+const MAX_SANITIZE_DEPTH = 10;
+
+function sanitizeArray(values: unknown[], depth: number): unknown[] {
+  return values.map((item) => sanitizeValue(item, depth));
 }
 
-function sanitizeObject(value: Record<string, unknown>): Record<string, unknown> {
+function sanitizeObject(value: Record<string, unknown>, depth: number): Record<string, unknown> {
   return Object.entries(value).reduce<Record<string, unknown>>(
     (acc, [key, entryValue]) => {
-      acc[key] = isSensitiveKey(key) ? '[REDACTED]' : sanitizeValue(entryValue);
+      acc[key] = isSensitiveKey(key) ? '[REDACTED]' : sanitizeValue(entryValue, depth);
       return acc;
     },
     Object.create(null) as Record<string, unknown>
   );
 }
 
-function sanitizeValue(value: unknown): unknown {
+function sanitizeValue(value: unknown, depth = 0): unknown {
+  // [Task 1.5.7] Bail out at max depth to prevent stack overflow on cyclic/deep objects
+  if (depth >= MAX_SANITIZE_DEPTH) {
+    return '[too deep]';
+  }
+
   if (Array.isArray(value)) {
-    return sanitizeArray(value);
+    return sanitizeArray(value, depth + 1);
   }
 
   if (value && typeof value === 'object') {
@@ -145,7 +168,7 @@ function sanitizeValue(value: unknown): unknown {
       return value;
     }
 
-    return sanitizeObject(value as Record<string, unknown>);
+    return sanitizeObject(value as Record<string, unknown>, depth + 1);
   }
 
   return value;
@@ -171,7 +194,11 @@ function serializeError(error?: Error | unknown): unknown {
     return {
       name: error.name,
       message: error.message,
-      stack: error.stack,
+      // [Task 1.5.8] In production, redact internal file paths from stack traces
+      // to prevent information disclosure about server directory structure
+      stack: isDevelopment() || isTest()
+        ? error.stack
+        : error.stack?.replace(/\(?\/([\w./-]+)\)?/g, '[redacted path]'),
     };
   }
 

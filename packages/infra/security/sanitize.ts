@@ -45,13 +45,15 @@ const HTML_ESCAPE_MAP: Record<string, string> = {
  * Allowed HTML tags for basic formatting (when allowBasicHtml is true)
  * Whitelist approach for maximum security
  */
-const ALLOWED_HTML_TAGS = ['p', 'br', 'strong', 'b', 'em', 'i', 'a', 'ul', 'ol', 'li'];
+// [Task 9.7.2] Converted from Array to Set for O(1) lookup instead of O(n) indexOf scans
+const ALLOWED_HTML_TAGS = new Set(['p', 'br', 'strong', 'b', 'em', 'i', 'a', 'ul', 'ol', 'li']);
 
 /**
  * Allowed HTML attributes for basic formatting
  * Extremely restrictive to prevent XSS
  */
-const ALLOWED_HTML_ATTRIBUTES = ['href', 'title'];
+// [Task 9.7.2] Converted from Array to Set for O(1) lookup
+const ALLOWED_HTML_ATTRIBUTES = new Set(['href', 'title']);
 
 /**
  * Escape HTML special characters to prevent XSS attacks.
@@ -116,7 +118,8 @@ export function sanitizeHtml(html: string, config: SanitizeConfig = {}): string 
   return html
     .replace(/<(\w+)([^>]*)>/g, (match, tag, attrs) => {
       const lowerTag = tag.toLowerCase();
-      if (ALLOWED_HTML_TAGS.indexOf(lowerTag) === -1) {
+      // [Task 9.6.4] Replaced indexOf with Set.has() for clarity and performance
+      if (!ALLOWED_HTML_TAGS.has(lowerTag)) {
         return escapeHtml(match);
       }
 
@@ -126,7 +129,7 @@ export function sanitizeHtml(html: string, config: SanitizeConfig = {}): string 
           /(\w+)=["']([^"']*)["']/g,
           (_attrMatch: string, attrName: string, attrValue: string) => {
             const lowerAttr = attrName.toLowerCase();
-            if (ALLOWED_HTML_ATTRIBUTES.indexOf(lowerAttr) === -1) {
+            if (!ALLOWED_HTML_ATTRIBUTES.has(lowerAttr)) {
               return '';
             }
 
@@ -145,7 +148,8 @@ export function sanitizeHtml(html: string, config: SanitizeConfig = {}): string 
     })
     .replace(/<\/(\w+)>/g, (match: string, tag: string) => {
       const lowerTag = tag.toLowerCase();
-      return ALLOWED_HTML_TAGS.indexOf(lowerTag) !== -1 ? `</${lowerTag}>` : escapeHtml(match);
+      // [Task 9.6.4] Replaced indexOf with Set.has()
+      return ALLOWED_HTML_TAGS.has(lowerTag) ? `</${lowerTag}>` : escapeHtml(match);
     });
 }
 

@@ -1,5 +1,19 @@
 packages:
   - 'packages/*'
   - 'packages/config/*'
+  - 'packages/integrations/*'
   - 'templates/*'
   - 'clients/*'
+
+# [Task 0.5.1] Centralized version catalog for monorepo-wide consistency
+catalog:
+  next: '15.2.9'
+  react: '19.0.0'
+  react-dom: '19.0.0'
+  typescript: '5.7.2'
+  '@sentry/nextjs': '10.38.0'
+  '@types/node': '^22.0.0'
+  '@types/react': '^19.0.2'
+  '@types/react-dom': '^19.0.2'
+  zod: '^3.22.0'
+  eslint: '^9.18.0'

@@ -1,0 +1,13 @@
+// [Task 2.5.6] ESLint config for @repo/infra — extends shared library rules
+import config from '@repo/eslint-config/library.js';
+
+export default [
+  ...config,
+  {
+    files: ['**/*.ts'],
+    rules: {
+      // Infrastructure code may need console for structured logging internals
+      'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
+    },
+  },
+];

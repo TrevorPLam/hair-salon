@@ -46,7 +46,7 @@
  */
 -->
 
-# Multi-Industry Marketing Website Template System
+# Websites Platform - Multi-Industry Marketing Template System
 
 ## Audit Status (NEEDS ATTENTION)
 
@@ -93,8 +93,8 @@ ls templates/
 **Step 2: Copy template to clients directory**
 
 ```bash
-# Copy hair salon template for new client
-cp -r templates/hair-salon clients/my-client-name
+# Copy website template for new client
+cp -r templates/websites clients/my-client-name
 ```
 
 **Step 3: Configure and customize**
@@ -132,7 +132,7 @@ pnpm install
 
 ```bash
 # Work on a specific template
-cd templates/hair-salon
+cd templates/websites
 pnpm dev --port 3100
 
 # Or work on a client project
@@ -144,7 +144,7 @@ pnpm dev --port 3001
 
 ```bash
 # Build specific project
-pnpm --filter @templates/hair-salon build
+pnpm --filter @templates/websites build
 
 # Build all projects
 pnpm build
@@ -170,7 +170,7 @@ pnpm format:check
 
 ```text
 ├── templates/               # Industry-specific templates
-│   ├── hair-salon/         # Service business template (hair salon example)
+│   ├── websites/            # Multi-industry website template
 │   ├── nail-salon/         # Service business template (nail salon example)
 │   ├── restaurant/         # Hospitality template (coming soon)
 │   ├── law-firm/           # Professional services template (coming soon)
@@ -205,9 +205,9 @@ See [Template Architecture](docs/architecture/TEMPLATE_ARCHITECTURE.md) for deta
 
 ## Technology Stack
 
-- **Frontend Framework:** Next.js 15.2.9 (Maintenance LTS) ([templates/hair-salon/package.json](templates/hair-salon/package.json))
-- **UI Library:** React 19.0.0 ([templates/hair-salon/package.json](templates/hair-salon/package.json))
-- **Styling:** Tailwind CSS 3.4.17 ([templates/hair-salon/package.json](templates/hair-salon/package.json))
+- **Frontend Framework:** Next.js 15.2.9 (Maintenance LTS) ([templates/websites/package.json](templates/websites/package.json))
+- **UI Library:** React 19.0.0 ([templates/websites/package.json](templates/websites/package.json))
+- **Styling:** Tailwind CSS 3.4.17 ([templates/websites/package.json](templates/websites/package.json))
 - **Type Safety:** TypeScript 5.7.2 (strict mode) ([package.json](package.json))
 - **Linting:** ESLint 9 with flat config ([packages/config/eslint-config/](packages/config/eslint-config/))
 - **Code Formatting:** Prettier 3.2.5 ([package.json](package.json))
@@ -215,7 +215,7 @@ See [Template Architecture](docs/architecture/TEMPLATE_ARCHITECTURE.md) for deta
 - **Monorepo Tool:** Turbo 2.2.3 ([package.json](package.json))
 - **Runtime:** Node.js >=24.0.0 (recommended) ([package.json](package.json))
 - **Database:** Supabase (PostgreSQL) with RLS
-- **Error Tracking:** Sentry 8.0.0 ([templates/hair-salon/package.json](templates/hair-salon/package.json))
+- **Error Tracking:** Sentry 8.0.0 ([templates/websites/package.json](templates/websites/package.json))
 - **Container:** Docker & Docker Compose ([docker-compose.yml](docker-compose.yml))
 - **Security:** Automated dependency scanning, SBOM generation, secret scanning, vulnerability remediation
 
@@ -267,8 +267,8 @@ See [Template Architecture](docs/architecture/TEMPLATE_ARCHITECTURE.md) for deta
 
 ```bash
 # Work on specific template
-pnpm --filter @templates/hair-salon dev
-pnpm --filter @templates/hair-salon build
+pnpm --filter @templates/websites dev
+pnpm --filter @templates/websites build
 
 # Work on specific client
 pnpm --filter @clients/my-client dev

@@ -117,8 +117,9 @@ export async function submitBookingRequest(formData: FormData): Promise<BookingS
       // Allow but flag for review
     }
 
-    // Generate booking ID and confirmation number
-    const bookingId = `booking_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    // [Task 1.1.6] Use cryptographically random UUID instead of sequential Date.now()-based ID
+    // Prevents booking ID enumeration and makes IDs non-guessable
+    const bookingId = crypto.randomUUID();
     const confirmationNumber = generateConfirmationNumber();
 
     // Store booking internally

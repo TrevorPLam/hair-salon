@@ -1,6 +1,7 @@
 
 
-import React, { memo } from 'react';
+// [Task 8.2.7] React.memo removed — has no effect on Server Components
+import React from 'react';
 import { Scissors, Heart, Sparkles } from 'lucide-react';
 import { Container, Section, Card } from '@repo/ui';
 
@@ -84,4 +85,4 @@ function ValueProps() {
   );
 }
 
-export default memo(ValueProps);
+export default ValueProps;

@@ -1,14 +1,48 @@
-version: '3.8'
+# [Tasks 2.6.1-2.6.6] Docker Compose configuration
+# Removed deprecated 'version' key (2.6.5)
+# Fixed NODE_ENV to production (2.6.1)
+# Removed volume mount overriding built files (2.6.2)
+# Added env_file directive (2.6.3)
+# Added restart policy and resource limits (2.6.4)
+# Added plumber service (2.6.6)
 
 services:
-  web:
+  hair-salon:
     build:
       context: .
       dockerfile: templates/hair-salon/Dockerfile
     ports:
       - '3100:3100'
     environment:
-      - NODE_ENV=development
-    volumes:
-      - ./templates/hair-salon:/app/templates/hair-salon
-      - /app/node_modules
+      - NODE_ENV=production
+    env_file:
+      - .env.production.local
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+          cpus: '0.25'
+
+  plumber:
+    build:
+      context: .
+      dockerfile: templates/plumber/Dockerfile
+    ports:
+      - '3101:3101'
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env.production.local
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+        reservations:
+          memory: 256M
+          cpus: '0.25'

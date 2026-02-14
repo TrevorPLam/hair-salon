@@ -65,7 +65,9 @@ export const bookingFormSchema = z.object({
       try {
         const date = new Date(dateStr);
         const today = startOfDay(new Date());
-        const maxDate = addDays(today, 90); // Allow booking up to 90 days in advance
+        // [Task 9.2.3] Named constant for max booking window
+        const MAX_BOOKING_DAYS_AHEAD = 90;
+        const maxDate = addDays(today, MAX_BOOKING_DAYS_AHEAD);
 
         return (
           date instanceof Date &&
@@ -76,7 +78,7 @@ export const bookingFormSchema = z.object({
       } catch {
         return false;
       }
-    }, 'Date must be within the next 90 days'),
+    }, 'Date must be within the allowed booking window'),
 
   timeSlot: z.enum(TIME_SLOTS, {
     errorMap: () => ({ message: 'Please select a preferred time slot' }),

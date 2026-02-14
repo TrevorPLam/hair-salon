@@ -1,28 +1,28 @@
-const path = require('path');
+const plumberSearchTestPath = require('path');
 
 // blog.ts computes postsDirectory at module load via process.cwd()
-const templateRoot = path.resolve(__dirname, '../..');
-const originalCwd = process.cwd;
-process.cwd = () => templateRoot;
+const plumberSearchTemplateRoot = plumberSearchTestPath.resolve(__dirname, '../..');
+const originalPlumberSearchCwdFunction = process.cwd;
+process.cwd = () => plumberSearchTemplateRoot;
 
 const { getSearchIndex } = require('../search');
-const { getAllPosts } = require('../../features/blog/lib/blog');
+const { getAllPosts: getAllPlumberSearchPosts } = require('../../features/blog/lib/blog');
 
 afterAll(() => {
-  process.cwd = originalCwd;
+  process.cwd = originalPlumberSearchCwdFunction;
 });
 
 describe('lib/search', () => {
   test('includes blog posts in the search index', async () => {
     const items = await getSearchIndex();
-    const blogItems = items.filter((item) => item.type === 'Blog');
+    const blogItems = items.filter((item: { type: string }) => item.type === 'Blog');
 
     expect(blogItems.length).toBeGreaterThan(0);
   });
 
   test('maps blog slugs into search hrefs', async () => {
     const items = await getSearchIndex();
-    const posts = getAllPosts();
+    const posts = getAllPlumberSearchPosts();
 
     expect(posts.length).toBeGreaterThan(0);
     expect(items).toEqual(

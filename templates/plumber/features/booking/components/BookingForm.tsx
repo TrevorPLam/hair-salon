@@ -20,8 +20,6 @@ import {
   bookingFormDefaults,
 } from '../lib/booking-schema';
 import { submitBookingRequest, BookingSubmissionResult } from '../lib/booking-actions';
-// TODO: Implement analytics tracking
-// import { trackBookingEvent } from '@/features/analytics/lib/analytics';
 
 interface BookingFormProps {
   className?: string;
@@ -67,14 +65,6 @@ export default function BookingForm({
   const onSubmit = async (data: BookingFormData) => {
     startTransition(async () => {
       try {
-        // Track booking attempt
-        // trackBookingEvent('booking_attempted', {
-        //   serviceType: data.serviceType,
-        //   serviceLabel: SERVICE_LABELS[data.serviceType],
-        //   preferredDate: data.preferredDate,
-        //   timeSlot: data.timeSlot,
-        // });
-
         // Create FormData for server action
         const formData = new FormData();
         Object.entries(data).forEach(([key, value]) => {
@@ -91,37 +81,14 @@ export default function BookingForm({
 
         if (result.success) {
           setIsSubmitted(true);
-
-          // Track successful booking
-          // trackBookingEvent('booking_submitted', {
-          //   bookingId: result.bookingId,
-          //   confirmationNumber: result.confirmationNumber,
-          //   serviceType: data.serviceType,
-          //   serviceLabel: SERVICE_LABELS[data.serviceType],
-          //   providerResults: result.providerResults?.length || 0,
-          // });
-
           toast.success('Booking request submitted successfully!');
           onSuccess?.(result);
         } else {
-          // Track booking error
-          // trackBookingEvent('booking_error', {
-          //   error: result.error,
-          //   serviceType: data.serviceType,
-          // });
-
           toast.error(result.error || 'Failed to submit booking');
           onError?.(result.error || 'Failed to submit booking');
         }
       } catch (error) {
         const errorMessage = 'An unexpected error occurred. Please try again.';
-
-        // Track unexpected error
-        // trackBookingEvent('booking_error', {
-        //   error: errorMessage,
-        //   serviceType: data.serviceType,
-        // });
-
         toast.error(errorMessage);
         onError?.(errorMessage);
       }

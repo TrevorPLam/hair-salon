@@ -9,13 +9,15 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "clsx": "2.1.1",
     "tailwind-merge": "2.6.1"
   },
   "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
     "eslint": "^9.18.0",
     "typescript": "^5.7.2"
   }
