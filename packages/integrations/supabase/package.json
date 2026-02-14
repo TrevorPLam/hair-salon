@@ -1,0 +1,31 @@
+{
+  "name": "@repo/integrations-supabase",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Supabase integration package for lead management and database operations",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./client": "./client.ts",
+    "./types": "./types.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "type-check": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "next": "^15.2.3"
+  },
+  "dependencies": {
+    "@repo/infra": "workspace:*",
+    "@repo/utils": "workspace:*",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "eslint": "^9.18.0",
+    "typescript": "^5.7.2",
+    "zod": "^3.23.0"
+  }
+}

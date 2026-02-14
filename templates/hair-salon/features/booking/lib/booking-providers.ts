@@ -1,5 +1,3 @@
-
-
 import { BookingFormData } from './booking-schema';
 import { validatedEnv } from '@/lib/env';
 
@@ -317,10 +315,10 @@ export class BookingProviders {
 
     return {
       enabled: validatedEnv[`${prefix}_ENABLED` as keyof typeof validatedEnv] === 'true',
-      apiKey: validatedEnv[`${prefix}_API_KEY` as keyof typeof validatedEnv],
-      apiSecret: validatedEnv[`${prefix}_API_SECRET` as keyof typeof validatedEnv],
-      businessId: validatedEnv[`${prefix}_BUSINESS_ID` as keyof typeof validatedEnv],
-      webhookUrl: validatedEnv[`${prefix}_WEBHOOK_URL` as keyof typeof validatedEnv],
+      apiKey: String(validatedEnv[`${prefix}_API_KEY` as keyof typeof validatedEnv] || ''),
+      apiSecret: String(validatedEnv[`${prefix}_API_SECRET` as keyof typeof validatedEnv] || ''),
+      businessId: String(validatedEnv[`${prefix}_BUSINESS_ID` as keyof typeof validatedEnv] || ''),
+      webhookUrl: String(validatedEnv[`${prefix}_WEBHOOK_URL` as keyof typeof validatedEnv] || ''),
     };
   }
 

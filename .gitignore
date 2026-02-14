@@ -102,15 +102,15 @@ coverage/
 # IDE
 .idea/
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-ENV/
+# Python virtual environments (specific paths to avoid conflicts with packages/infra/env/)
+**/python/env/
+**/python/venv/
+**/python/ENV/
+./env/
+./venv/
+./ENV/
+.env/
+.env.*.local
 
 # Misc
 *.egg-info/

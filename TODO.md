@@ -142,32 +142,32 @@
 
 **Depends on**: 1.1.1 | **Paths**: `packages/infra/env/**`, `templates/*/lib/env.ts`
 
-- [ ] **1.2.1** Create base env schema
+- [x] **1.2.1** Create base env schema
 
   - **Path**: `packages/infra/env/schemas/base.ts`
   - **Verify**: Zod schema with `NODE_ENV`, `SITE_URL`, `SITE_NAME`, `ANALYTICS_ID`; use `z.coerce`/`.transform()` where needed
 
-- [ ] **1.2.2** Create rate-limit env schema
+- [x] **1.2.2** Create rate-limit env schema
 
   - **Path**: `packages/infra/env/schemas/rate-limit.ts`
   - **Verify**: `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` (optional)
 
-- [ ] **1.2.3** Create supabase, hubspot, booking, sentry env schemas
+- [x] **1.2.3** Create supabase, hubspot, booking, sentry env schemas
 
   - **Paths**: `packages/infra/env/schemas/supabase.ts`, `hubspot.ts`, `booking.ts`, `sentry.ts`
   - **Verify**: Each schema validates; compose via `.merge()`
 
-- [ ] **1.2.4** Create public env schema
+- [x] **1.2.4** Create public env schema
 
   - **Path**: `packages/infra/env/schemas/public.ts`
   - **Verify**: `NEXT_PUBLIC_*` vars only; safe for client
 
-- [ ] **1.2.5** Create validate and compose helpers
+- [x] **1.2.5** Create validate and compose helpers
 
   - **Path**: `packages/infra/env/validate.ts`, `packages/infra/env/types.ts`
   - **Verify**: `z.infer<typeof schema>` for types; fail early with descriptive Zod errors
 
-- [ ] **1.2.6** Update templates to use composable env
+- [x] **1.2.6** Update templates to use composable env
   - **Paths**: `templates/hair-salon/lib/env.ts`, `templates/plumber/lib/env.ts`
   - **Depends on**: 1.2.1–1.2.5
   - **Verify**: `pnpm dev` and `pnpm build` for both; env validation runs at startup
@@ -178,18 +178,18 @@
 
 **Depends on**: 1.1.1 | **Paths**: `packages/integrations/supabase/**`, `templates/hair-salon/features/supabase/**`
 
-- [ ] **1.3.1** Create package
+- [x] **1.3.1** Create package
 
   - **Path**: `packages/integrations/supabase/package.json`
   - **Verify**: `pnpm install`; package builds
 
-- [ ] **1.3.2** Move supabase-leads and client
+- [x] **1.3.2** Move supabase-leads and client
 
   - **Paths**: `packages/integrations/supabase/leads.ts`, `client.ts`
   - **Source**: `templates/hair-salon/features/supabase/lib/`
   - **Verify**: Import from `@repo/integrations-supabase` in submit action; lead insert works (or mocked)
 
-- [ ] **1.3.3** Export types
+- [x] **1.3.3** Export types
 
   - **Path**: `packages/integrations/supabase/types.ts`
   - **Verify**: `SupabaseLeadRow` etc. exported

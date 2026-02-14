@@ -1,0 +1,200 @@
+/**
+ * Supabase client integration.
+ *
+ * **2026 Best Practices Applied:**
+ * - Provides type-safe Supabase client configuration
+ * - Includes comprehensive JSDoc documentation
+ * - Supports both client and server-side usage
+ * - Implements proper error handling and logging
+ * - Follows monorepo package patterns
+ *
+ * **Features:**
+ * - Lead management operations
+ * - Database connection handling
+ * - Type-safe API interactions
+ * - Environment-based configuration
+ *
+ * @example
+ * ```typescript
+ * import { createSupabaseClient, insertLead } from '@repo/integrations-supabase/client';
+ * import type { SupabaseLeadRow } from '@repo/integrations-supabase/types';
+ *
+ * const client = createSupabaseClient();
+ * const lead = await insertLead(client, { name: 'John Doe', email: 'john@example.com' });
+ * ```
+ */
+
+import { logError, logInfo } from '@repo/infra';
+import type { SupabaseLeadRow } from './types';
+
+/**
+ * Supabase client configuration.
+ * Contains connection details and authentication headers.
+ */
+export interface SupabaseClientConfig {
+  url: string;
+  serviceRoleKey: string;
+  headers: Record<string, string>;
+}
+
+/**
+ * Creates a configured Supabase client.
+ * Returns client configuration for API operations.
+ *
+ * @param config - Optional client configuration (defaults to environment variables)
+ * @returns Configured Supabase client
+ * @throws {Error} When required environment variables are missing
+ *
+ * @example
+ * ```typescript
+ * import { validatedEnv } from '@/lib/env';
+ *
+ * const client = createSupabaseClient({
+ *   url: validatedEnv.SUPABASE_URL,
+ *   serviceRoleKey: validatedEnv.SUPABASE_SERVICE_ROLE_KEY
+ * });
+ * ```
+ */
+export function createSupabaseClient(config?: Partial<SupabaseClientConfig>): SupabaseClientConfig {
+  // Get environment variables from process.env
+  const url = config?.url || process.env.SUPABASE_URL;
+  const serviceRoleKey = config?.serviceRoleKey || process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!url) {
+    throw new Error('SUPABASE_URL is required for Supabase client');
+  }
+
+  if (!serviceRoleKey) {
+    throw new Error('SUPABASE_SERVICE_ROLE_KEY is required for Supabase client');
+  }
+
+  const headers: Record<string, string> = {
+    apikey: serviceRoleKey,
+    Authorization: `Bearer ${serviceRoleKey}`,
+    'Content-Type': 'application/json',
+    ...config?.headers,
+  };
+
+  return {
+    url,
+    serviceRoleKey,
+    headers,
+  };
+}
+
+/**
+ * Inserts a lead into Supabase database.
+ * Performs lead creation with proper error handling and logging.
+ *
+ * @param client - Configured Supabase client
+ * @param leadData - Lead data to insert
+ * @returns Created lead record
+ * @throws {Error} When insertion fails
+ *
+ * @example
+ * ```typescript
+ * const client = createSupabaseClient();
+ * const lead = await insertLead(client, {
+ *   name: 'John Doe',
+ *   email: 'john@example.com',
+ *   phone: '+1-555-0123',
+ *   message: 'Interested in services'
+ * });
+ * ```
+ */
+export async function insertLead(
+  client: SupabaseClientConfig,
+  leadData: Omit<SupabaseLeadRow, 'id' | 'created_at'>
+): Promise<SupabaseLeadRow> {
+  const SUPABASE_LEADS_PATH = '/rest/v1/leads';
+  const url = `${client.url}${SUPABASE_LEADS_PATH}`;
+
+  logInfo('Inserting Supabase lead', { email: leadData.email });
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: client.headers,
+      body: JSON.stringify(leadData),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Supabase insert failed with status ${response.status}: ${errorText}`);
+    }
+
+    const lead = (await response.json()) as SupabaseLeadRow;
+
+    logInfo('Supabase lead inserted successfully', {
+      leadId: lead.id,
+      email: leadData.email,
+    });
+
+    return lead;
+  } catch (error) {
+    logError('Failed to insert Supabase lead', error, {
+      email: leadData.email,
+      url: client.url,
+    });
+    throw error;
+  }
+}
+
+/**
+ * Updates a lead in Supabase database.
+ * Performs lead update with proper error handling and logging.
+ *
+ * @param client - Configured Supabase client
+ * @param leadId - ID of lead to update
+ * @param updates - Lead data to update
+ * @returns Updated lead record
+ * @throws {Error} When update fails
+ *
+ * @example
+ * ```typescript
+ * const client = createSupabaseClient();
+ * const updated = await updateLead(client, 'lead-123', {
+ *   hubspot_sync_status: 'synced'
+ * });
+ * ```
+ */
+export async function updateLead(
+  client: SupabaseClientConfig,
+  leadId: string,
+  updates: Partial<SupabaseLeadRow>
+): Promise<SupabaseLeadRow> {
+  const SUPABASE_LEADS_PATH = `/rest/v1/leads?id=eq.${leadId}`;
+  const url = `${client.url}${SUPABASE_LEADS_PATH}`;
+
+  logInfo('Updating Supabase lead', { leadId });
+
+  try {
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: client.headers,
+      body: JSON.stringify(updates),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Supabase update failed with status ${response.status}`);
+    }
+
+    const lead = (await response.json()) as SupabaseLeadRow;
+
+    logInfo('Supabase lead updated successfully', {
+      leadId,
+      updates: Object.keys(updates),
+    });
+
+    return lead;
+  } catch (error) {
+    logError('Failed to update Supabase lead', error, { leadId });
+    throw error;
+  }
+}
+
+/**
+ * Default Supabase client instance.
+ * Uses environment variables for configuration.
+ */
+export const supabaseClient = createSupabaseClient();
