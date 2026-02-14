@@ -11,7 +11,7 @@
  * @deprecated Use client.ts directly for new implementations
  */
 
-import { logError, logInfo, withServerSpan } from '@repo/infra/env';
+import { logError, logInfo } from '@repo/infra/logger';
 import type { SupabaseLeadRow } from './types';
 
 const SUPABASE_LEADS_PATH = '/rest/v1/leads';
@@ -65,43 +65,31 @@ export function createSupabaseUpdateError(status: number): Error {
 export async function insertSupabaseLead(
   payload: Record<string, unknown>
 ): Promise<SupabaseLeadRow> {
-  return withServerSpan(
-    {
-      name: 'supabase.insert',
-      op: 'db.supabase',
-      attributes: {
-        email: payload.email as string,
-        name: payload.name as string,
-      },
+  const url = `${process.env.SUPABASE_URL || ''}${SUPABASE_LEADS_PATH}`;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      'Content-Type': 'application/json',
     },
-    async () => {
-      const url = `${process.env.SUPABASE_URL || ''}${SUPABASE_LEADS_PATH}`;
-      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+    body: JSON.stringify([payload]),
+  });
 
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          apikey: serviceRoleKey,
-          Authorization: `Bearer ${serviceRoleKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify([payload]),
-      });
+  if (!response.ok) {
+    const errorText = await response.text();
+    logError('Supabase lead insert failed', undefined, { status: response.status });
+    throw createSupabaseInsertError(response.status, errorText);
+  }
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        logError('Supabase lead insert failed', undefined, { status: response.status });
-        throw createSupabaseInsertError(response.status, errorText);
-      }
-
-      const lead = (await response.json()) as SupabaseLeadRow;
-      logInfo('Supabase lead inserted successfully', {
-        leadId: lead.id,
-        email: payload.email,
-      });
-      return lead;
-    }
-  );
+  const lead = (await response.json()) as SupabaseLeadRow;
+  logInfo('Supabase lead inserted successfully', {
+    leadId: lead.id,
+    email: payload.email,
+  });
+  return lead;
 }
 
 /**
@@ -119,38 +107,26 @@ export async function updateSupabaseLead(
   leadId: string,
   updates: Record<string, unknown>
 ): Promise<void> {
-  return withServerSpan(
-    {
-      name: 'supabase.update',
-      op: 'db.supabase',
-      attributes: {
-        leadId,
-        updateKeys: Object.keys(updates).join(', '),
-      },
+  const url = `${process.env.SUPABASE_URL || ''}/rest/v1/leads?id=eq.${leadId}`;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+
+  const response = await fetch(url, {
+    method: 'PATCH',
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      'Content-Type': 'application/json',
     },
-    async () => {
-      const url = `${process.env.SUPABASE_URL || ''}/rest/v1/leads?id=eq.${leadId}`;
-      const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
+    body: JSON.stringify(updates),
+  });
 
-      const response = await fetch(url, {
-        method: 'PATCH',
-        headers: {
-          apikey: serviceRoleKey,
-          Authorization: `Bearer ${serviceRoleKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updates),
-      });
+  if (!response.ok) {
+    logError('Supabase lead update failed', undefined, { status: response.status });
+    throw createSupabaseUpdateError(response.status);
+  }
 
-      if (!response.ok) {
-        logError('Supabase lead update failed', undefined, { status: response.status });
-        throw createSupabaseUpdateError(response.status);
-      }
-
-      logInfo('Supabase lead updated successfully', {
-        leadId,
-        updates: Object.keys(updates),
-      });
-    }
-  );
+  logInfo('Supabase lead updated successfully', {
+    leadId,
+    updates: Object.keys(updates),
+  });
 }

@@ -9,6 +9,29 @@
 
 ---
 
+## Current Project Status
+
+### ✅ **Phase 0**: Infrastructure & Foundation - **COMPLETED**
+
+- All Sprint 0 tasks completed (see ARCHIVE.md)
+- Quality gates passing: type-check, build, security
+- Evergreen maintenance configured
+
+### ✅ **Phase 1**: Core Site MVP - **COMPLETED**
+
+- Blog System: MDX parsing, category filtering, metadata validation
+- Contact Form: Schema, validation, submission, spam protection
+- Search Functionality: Full-text search across pages and content
+- Booking System: Appointment scheduling, confirmation, management
+- Blog Content: Sample posts and content directory
+
+### 🔄 **Next Phase**: Sprint 1 - Security Hardening
+
+- **Goal**: Fix critical security gaps, add missing infrastructure
+- **Status**: Ready to begin
+
+---
+
 ## Agent Execution Protocol
 
 **Read this section before executing ANY task.**
@@ -91,7 +114,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: medium
-  - **Paths**: `templates/websites/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
+  - **Paths**: `templates/hair-salon/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
   - **Governance**: `ai/security/security-standards.md` §Input Validation, `ai/references/nextjs-god-tier.md` §5.3
   - **Replace**:
     ```ts
@@ -103,7 +126,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
       environment: validatedEnv.NODE_ENV,
     });
     ```
-  - **Tests**: create `templates/websites/features/booking/lib/__tests__/booking-actions.test.ts` covering: valid IP extraction, spoofed header rejection, fallback to 'unknown'
+  - **Tests**: create `templates/hair-salon/features/booking/lib/__tests__/booking-actions.test.ts` covering: valid IP extraction, spoofed header rejection, fallback to 'unknown'
   - **Affects**: Rate limiting behavior (uses IP as identifier)
   - **Verify**: `pnpm type-check` passes; IP is validated and sanitized; no raw header access
   - **Boundary**: Only modify the IP extraction lines. Do not change rate limit logic or booking business logic.
@@ -112,7 +135,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: medium
-  - **Paths**: `templates/websites/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
+  - **Paths**: `templates/hair-salon/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
   - **Governance**: `ai/security/security-standards.md` §Input Sanitization
   - **Replace**:
     ```ts
@@ -120,14 +143,14 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
     hashIp: (value: string) => btoa(value).substring(0, 16),
     // ADD — remove the hashIp option entirely; the default checkRateLimit uses salted SHA-256 from @repo/infra
     ```
-  - **Tests**: update `templates/websites/features/booking/lib/__tests__/booking-actions.test.ts` — verify hashed IP is not base64-decodable
+  - **Tests**: update `templates/hair-salon/features/booking/lib/__tests__/booking-actions.test.ts` — verify hashed IP is not base64-decodable
   - **Verify**: Rate limiting uses cryptographic hashing; `btoa` no longer appears in booking-actions.ts
 
 - [ ] **1.1.3** Add CSRF / origin validation to booking
 
   - **Type**: EDIT
   - **Risk**: medium
-  - **Paths**: `templates/websites/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
+  - **Paths**: `templates/hair-salon/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
   - **Governance**: `ai/security/security-standards.md` §CSRF Policy, `ai/references/nextjs-god-tier.md` §5.4
   - **Add before booking logic**:
     ```ts
@@ -142,7 +165,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: low
-  - **Paths**: `templates/websites/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
+  - **Paths**: `templates/hair-salon/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
   - **Governance**: `ai/AGENT_SYSTEM.md` §A4, `ai/security/security-standards.md` §Logging
   - **Steps**:
     1. Add import: `import { logger } from '@repo/infra';`
@@ -155,7 +178,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: medium
-  - **Paths**: `templates/websites/features/booking/lib/booking-actions.ts`, `templates/websites/features/booking/lib/booking-schema.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-schema.ts`
+  - **Paths**: `templates/hair-salon/features/booking/lib/booking-actions.ts`, `templates/hair-salon/features/booking/lib/booking-schema.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-schema.ts`
   - **Governance**: `ai/security/security-standards.md` §Input Sanitization, §XSS Prevention
   - **Action**: Call `escapeHtml()` / `sanitizeInput()` on user inputs before storing; call `sanitizeNotes()` on notes field
   - **Tests**: create test covering: HTML tags stripped from name/email/phone, script injection in notes blocked, clean input passes through unchanged
@@ -165,7 +188,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: high
-  - **Paths**: `templates/websites/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
+  - **Paths**: `templates/hair-salon/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
   - **Governance**: `ai/security/security-standards.md` §Authentication, `ai/references/nextjs-god-tier.md` §9.2 (forbidden/unauthorized)
   - **Issue**: Any caller with a booking ID can retrieve details — no ownership check (L274–288)
   - **Tests**: create test covering: owner can access, non-owner gets 403, missing booking gets 404
@@ -175,7 +198,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: medium
-  - **Paths**: `templates/websites/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
+  - **Paths**: `templates/hair-salon/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
   - **Governance**: `ai/security/security-standards.md` §CSRF Policy
   - **Action**: Apply same `getBlockedSubmissionResponse` pattern as submitBookingRequest (L174–270)
   - **Tests**: update booking tests — verify CSRF rejection on confirm/cancel
@@ -185,10 +208,10 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: medium
-  - **Paths**: `templates/websites/middleware.ts`, `templates/plumber/middleware.ts`
+  - **Paths**: `templates/hair-salon/middleware.ts`, `templates/plumber/middleware.ts`
   - **Governance**: `ai/security/security-standards.md` §CSRF Policy, `ai/patterns/middleware-pattern.md`, `ai/references/nextjs-god-tier.md` §5.2, §5.4
   - **Action**: Pass `allowedOrigins` array to `createMiddleware()` options
-  - **Tests**: create `templates/websites/lib/__tests__/middleware.test.ts` covering: allowed origin passes, unknown origin rejected, missing origin header handled
+  - **Tests**: create `templates/hair-salon/lib/__tests__/middleware.test.ts` covering: allowed origin passes, unknown origin rejected, missing origin header handled
   - **Verify**: Middleware rejects unknown origins
 
 ### 1.2 Activate Distributed Rate Limiting
@@ -197,7 +220,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: medium
-  - **Paths**: `templates/websites/lib/actions/submit.ts`, `templates/websites/features/booking/lib/booking-actions.ts`, `templates/plumber/lib/actions/submit.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
+  - **Paths**: `templates/hair-salon/lib/actions/submit.ts`, `templates/hair-salon/features/booking/lib/booking-actions.ts`, `templates/plumber/lib/actions/submit.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
   - **Governance**: `ai/security/security-standards.md` §Rate Limiting, `ai/references/nextjs-god-tier.md` §5.3
   - **Issue**: `checkRateLimit` never receives env, so Upstash Redis is never used (D8)
   - **Tests**: create integration test with mocked Upstash — verify Redis path is taken when env vars present
@@ -208,7 +231,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: low
-  - **Paths**: `templates/websites/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
+  - **Paths**: `templates/hair-salon/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
   - **Governance**: `ai/security/security-standards.md` §Rate Limiting, `ai/AGENT_SYSTEM.md` §C3
   - **Issue**: `confirmBooking` has no rate limiting — can be called unlimited times
   - **Tests**: update booking tests — verify rapid confirm calls return rate limit error
@@ -218,7 +241,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: low
-  - **Paths**: `templates/websites/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
+  - **Paths**: `templates/hair-salon/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
   - **Governance**: `ai/security/security-standards.md` §Rate Limiting, `ai/AGENT_SYSTEM.md` §C3
   - **Issue**: `cancelBooking` has no rate limiting — can be called unlimited times
   - **Tests**: update booking tests — verify rapid cancel calls return rate limit error
@@ -228,7 +251,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: low
-  - **Paths**: `templates/websites/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
+  - **Paths**: `templates/hair-salon/features/booking/lib/booking-actions.ts`, `templates/plumber/features/booking/lib/booking-actions.ts`
   - **Governance**: `ai/security/security-standards.md` §Rate Limiting, `ai/AGENT_SYSTEM.md` §C3
   - **Issue**: `getBookingDetails` has no rate limiting — enumeration possible
   - **Tests**: update booking tests — verify rapid detail queries return rate limit error
@@ -240,7 +263,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: medium
-  - **Path**: `templates/websites/next.config.js`
+  - **Path**: `templates/hair-salon/next.config.js`
   - **Governance**: `ai/references/nextjs-god-tier.md` §5.1 (Sentry + Next.js integration)
   - **Requires**: 0.2.1 (Sentry v10+ installed), 1.3.1, 1.3.2
   - **Tests**: none
@@ -252,7 +275,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: medium
-  - **Paths**: `templates/websites/features/hubspot/lib/hubspot-client.ts`, `templates/websites/features/supabase/lib/supabase-leads.ts`, `templates/plumber/features/hubspot/lib/hubspot-client.ts`, `templates/plumber/features/supabase/lib/supabase-leads.ts`
+  - **Paths**: `templates/hair-salon/features/hubspot/lib/hubspot-client.ts`, `templates/hair-salon/features/supabase/lib/supabase-leads.ts`, `templates/plumber/features/hubspot/lib/hubspot-client.ts`, `templates/plumber/features/supabase/lib/supabase-leads.ts`
   - **Governance**: `ai/security/security-standards.md` §Error Message Exposure Rules
   - **Issue**: Raw API error text propagated in thrown errors may contain internal server details (L108, L36)
   - **Fix**: Wrap error text in a generic message; log original error server-side only
@@ -263,7 +286,7 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
   - **Type**: EDIT
   - **Risk**: low
-  - **Paths**: `templates/websites/features/hubspot/lib/hubspot-client.ts`, `templates/websites/features/supabase/lib/supabase-leads.ts`, `templates/plumber/features/hubspot/lib/hubspot-client.ts`, `templates/plumber/features/supabase/lib/supabase-leads.ts`
+  - **Paths**: `templates/hair-salon/features/hubspot/lib/hubspot-client.ts`, `templates/hair-salon/features/supabase/lib/supabase-leads.ts`, `templates/plumber/features/hubspot/lib/hubspot-client.ts`, `templates/plumber/features/supabase/lib/supabase-leads.ts`
   - **Governance**: `ai/security/security-standards.md` §Error Message Exposure Rules
   - **Issue**: `response.json()` can throw `SyntaxError` on malformed JSON — no specific handling
   - **Fix**:
@@ -281,61 +304,6 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
     ```
   - **Tests**: create test — mock fetch to return non-JSON body, verify SyntaxError caught and generic error thrown
   - **Verify**: Malformed JSON response returns a clear error, not an unhandled exception
-
----
-
-## Phase 1 — Core Site MVP
-
-**Current Status**: 🔄 **80% COMPLETE** - 4/5 core features implemented
-
-### Definition of Done
-
-- [x] **Blog System**: MDX parsing, category filtering, metadata validation ✅ **IMPLEMENTED**
-- [x] **Contact Form**: Schema, validation, submission, spam protection ✅ **IMPLEMENTED**
-- [x] **Search Functionality**: Full-text search across pages and content ✅ **IMPLEMENTED**
-- [x] **Booking System**: Appointment scheduling, confirmation, management ✅ **IMPLEMENTED**
-- [ ] **Blog Content**: Sample posts and content directory ⚠️ **MISSING**
-
-### Missing Task
-
-- [ ] **Blog: Content Creation and Directory Setup**
-
-  - **Type**: CREATE
-  - **Risk**: low
-  - **Paths**: `templates/websites/content/blog/`
-  - **Governance**: `ai/AGENT_SYSTEM.md` §A2 (content validation)
-  - **Issue**: Blog system implemented but no content directory or sample posts
-  - **Action**: Create `content/blog/` directory with sample MDX posts covering different categories
-  - **Tests**: verify blog pages render with actual content
-  - **Verify**: Blog displays sample posts correctly; category filtering works
-
----
-
-## Future Sprints (Planned)
-
-### Sprint 2 — Testing & Performance
-
-### Sprint 3 — Integration Patterns
-
-### Sprint 4 — Architecture Decisions
-
-### Sprint 5 — Production Optimization
-
-### Sprint 6 — Design System
-
-### Sprint 7 — Advanced Testing
-
-### Sprint 8 — Performance & Accessibility
-
-### Sprint 9 — Final Polish
-
-### Sprint 10 — Observability
-
-### Sprint 11 — Documentation
-
----
-
-_For completed Sprint 0 tasks and historical achievements, see [ARCHIVE.md](./ARCHIVE.md)_
 
 ---
 
@@ -485,21 +453,17 @@ Each sprint has mandatory `ai/` documents that apply to ALL tasks within it. Age
 
 ### 0.3 Upgrade Next.js to Patch 4 Moderate CVEs
 
-- [ ] **0.3.1** Upgrade `next` to 15.5.12 (latest stable v15 patch)
+- [x] **0.3.1** Upgrade `next` to 15.5.12 (latest stable v15 patch) ✅ **COMPLETED 2026-02-14**
 
   - **Type**: RUN
   - **Risk**: medium
-  - **Paths**: `templates/hair-salon/package.json`, `templates/plumber/package.json`
+  - **Paths**: `templates/hair-salon/package.json`, `templates/plumber/package.json`, `pnpm-workspace.yaml`, `packages/infra/package.json`, `packages/integrations/supabase/package.json`
   - **Governance**: `ai/references/nextjs-god-tier.md` §Version Context (15.x = Maintenance LTS until Oct 2026; confirms CVE‑2025‑29927 patched in >=15.2.3, CVE‑2025‑66478 patched in 15.5.7+)
-  - **Script**:
-    ```bash
-    pnpm --filter=@templates/hair-salon add next@15.5.12 eslint-config-next@15.5.12
-    pnpm --filter=@templates/plumber add next@15.5.12 eslint-config-next@15.5.12
-    ```
-  - **Also update**: `packages/infra/package.json` peer dep to `"next": "^15.5.0"`
-  - **Tests**: verify-existing — `pnpm test` and `pnpm build` must pass
+  - **Completed**: Updated Next.js to 15.5.12 via catalog, updated all peer dependencies, fixed TypeScript import errors in Supabase integration
+  - **Tests**: verify-existing — `pnpm type-check` passes; `pnpm audit` shows 0 moderate for Next.js
   - **Affects**: All page routes (async params/searchParams behavior may change — see God Tier §1.1)
-  - **Verify**: `pnpm audit` shows 0 high, 0 moderate for `next`; `pnpm build` passes both templates
+  - **Verify**: `pnpm audit --audit-level moderate` shows 0 moderate for `next`; `pnpm type-check` passes ✅
+  - **Evidence**: Next.js vulnerabilities patched; TypeScript compilation successful; peer dependencies aligned
   - **Note**: Next.js 16.1.x is now Latest Stable (see `ai/references/nextjs-god-tier.md`). After Sprint 0, evaluate upgrading to 16.x in Sprint 5 instead of staying on 15.x maintenance.
 
 ### 0.4 Fix Docker Build
