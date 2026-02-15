@@ -4,13 +4,16 @@
   "private": true,
   "description": "Multi-industry marketing website template system - monorepo for creating and managing client websites across all industries",
   "engines": {
-    "node": ">=24.0.0"
+    "node": ">=22.0.0"
   },
   "workspaces": [
     "packages/*",
     "packages/config/*",
+    "packages/integrations/*",
+    "packages/features/*",
     "templates/*",
-    "clients/*"
+    "clients/*",
+    "apps/*"
   ],
   "scripts": {
     "dev": "turbo run dev",
@@ -21,6 +24,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --maxWorkers=50%",
     "verify:phase1": "pnpm install && pnpm build && pnpm test",
+    "validate:workspaces": "node scripts/validate-workspaces.js",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\""
   },
@@ -36,7 +40,7 @@
     "prettier": "3.2.5",
     "ts-jest": "^29.4.6",
     "turbo": "2.2.3",
-    "typescript": "5.7.2"
+    "typescript": "catalog:"
   },
   "packageManager": "pnpm@10.29.2",
   "dependencies": {

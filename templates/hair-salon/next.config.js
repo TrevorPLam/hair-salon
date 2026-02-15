@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // [Task 0.4.1] Enable standalone output for Docker deployments
-  // Temporarily disabled for Windows development due to symlink permissions
-  // output: 'standalone',
+  // [Task 0.16] Re-enabled standalone output — required for Docker deployments.
+  // Standalone output bundles all dependencies into .next/standalone for minimal container size.
+  // Note: If developing locally on Windows with symlink issues, use `next dev` (which ignores this).
+  output: 'standalone',
   // [Task 1.5.4] Suppress X-Powered-By header to avoid tech stack disclosure
   poweredByHeader: false,
   // Include all workspace packages that need transpilation

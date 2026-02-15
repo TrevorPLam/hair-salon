@@ -61,7 +61,7 @@ Thank you for your interest in contributing to the Multi-Industry Marketing Webs
 
 ### Prerequisites
 
-- **Node.js** `>=24.0.0` (see engines in [package.json](package.json))
+- **Node.js** `>=22.0.0` (see engines in [package.json](package.json))
 - **pnpm** `10.29.2` exactly (see packageManager in [package.json](package.json))
 
 ### Initial Setup
@@ -170,6 +170,34 @@ The repository uses modern tooling:
 - **Turbo 2.2.3** - Monorepo task runner
 - **Next.js 15.1.6** - React framework for web app
 - **Tailwind CSS 3.4.17** - Utility-first CSS
+
+## Docker Deployment
+
+The repository includes Docker support for production deployments. Each template has its own `Dockerfile` and the root `docker-compose.yml` orchestrates services.
+
+### Quick Start
+
+```bash
+# 1. Create your production environment file
+cp .env.production.local.example .env.production.local
+# 2. Fill in all required values in .env.production.local
+# 3. Build and run
+docker compose up --build
+```
+
+### Key Files
+
+- **`docker-compose.yml`** — Service definitions, port mappings, resource limits
+- **`templates/hair-salon/Dockerfile`** — Multi-stage build (deps → builder → runtime)
+- **`.env.production.local.example`** — Template for all required environment variables
+- **`.env.production.local`** — Your actual secrets (git-ignored, never commit this)
+
+### Notes
+
+- The Dockerfile uses `output: 'standalone'` from Next.js to create a minimal production bundle.
+- Containers run as a non-root `nextjs` user for security.
+- A `HEALTHCHECK` is configured at `/api/health` for container orchestration.
+- Resource limits are set in `docker-compose.yml` (512 MB memory, 1.0 CPU).
 
 ## License
 

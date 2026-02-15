@@ -50,3 +50,7 @@ export type { TextareaProps } from './components/Textarea';
 // Disclosure
 export { Accordion } from './components/Accordion';
 export type { AccordionItem, AccordionProps } from './components/Accordion';
+
+// Theme
+export { ThemeInjector } from './components/ThemeInjector';
+export type { ThemeInjectorProps, ThemeColors } from './components/ThemeInjector';

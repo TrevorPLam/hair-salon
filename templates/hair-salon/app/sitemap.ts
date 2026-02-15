@@ -1,4 +1,4 @@
-
+// TODO: [Task 0.25] Refactor to consume routes from lib/routes.ts
 
 import { MetadataRoute } from 'next';
 import { getAllPosts } from '@/features/blog/lib/blog';

@@ -97,6 +97,7 @@ export const TEST = {
   PLAYWRIGHT_TIMEOUT_MS: 60 * 1000,
   /** Default timeout for Playwright expect assertions (milliseconds) */
   PLAYWRIGHT_EXPECT_TIMEOUT_MS: 10 * 1000,
-  /** Default local development URL */
-  DEFAULT_DEV_URL: 'http://localhost:3000',
+  /** Default local development URL — aligned with package.json dev script (port 3100) */
+  // [Task 0.20] Changed from port 3000 to 3100 to match `next dev --port 3100`
+  DEFAULT_DEV_URL: 'http://localhost:3100',
 } as const;

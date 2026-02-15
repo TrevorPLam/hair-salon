@@ -2,13 +2,14 @@
 
 /**
  * Route-level error boundary for the hair-salon template.
- * Captures rendering errors via Sentry and displays a recovery UI.
+ * Captures rendering errors via logError and displays a recovery UI.
  *
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/error
  * @task 1.4.1
  */
 
-import * as Sentry from '@sentry/nextjs';
+// [Task 0.26] Replaced direct @sentry/nextjs import with @repo/infra/client logError
+import { logError } from '@repo/infra/client';
 import { useEffect } from 'react';
 
 export default function Error({
@@ -19,7 +20,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    Sentry.captureException(error);
+    logError(error);
   }, [error]);
 
   return (

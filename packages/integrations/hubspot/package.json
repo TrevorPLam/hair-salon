@@ -16,8 +16,8 @@
     "@repo/infra": "workspace:*"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "eslint": "^9.18.0",
-    "typescript": "^5.7.2"
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
   }
 }

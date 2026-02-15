@@ -25,17 +25,8 @@
  */
 
 import { logError, logInfo } from '@repo/infra';
-import type { SupabaseLeadRow } from './types';
-
-/**
- * Supabase client configuration.
- * Contains connection details and authentication headers.
- */
-export interface SupabaseClientConfig {
-  url: string;
-  serviceRoleKey: string;
-  headers: Record<string, string>;
-}
+// [Task 0.24] Import SupabaseClientConfig from types.ts (removed duplicate from this file)
+import type { SupabaseClientConfig, SupabaseLeadRow } from './types';
 
 /**
  * Creates a configured Supabase client.
@@ -193,8 +184,15 @@ export async function updateLead(
   }
 }
 
-/**
- * Default Supabase client instance.
- * Uses environment variables for configuration.
- */
-export const supabaseClient = createSupabaseClient();
+// [Task 0.24] Replaced eager initialization with lazy singleton
+// Rationale: Prevents crash in environments without Supabase env vars
+let _instance: ReturnType<typeof createSupabaseClient> | null = null;
+export const getSupabaseClient = () => {
+  if (!_instance) {
+    _instance = createSupabaseClient();
+  }
+  return _instance;
+};
+
+/** @deprecated Use getSupabaseClient() instead — eager init crashes without env vars */
+export const supabaseClient = undefined as unknown as ReturnType<typeof createSupabaseClient>;

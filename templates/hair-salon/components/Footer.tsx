@@ -23,7 +23,7 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Facebook, Twitter, Linkedin, Instagram, Youtube } from 'lucide-react';
+import { Facebook, Twitter, Linkedin, Instagram, Youtube, Music2 } from 'lucide-react';
 import siteConfig from '@/site.config';
 
 // [TRACE:CONST=components.footer.socialIcons]
@@ -35,7 +35,7 @@ const socialIcons = {
   linkedin: Linkedin,
   instagram: Instagram,
   youtube: Youtube,
-  tiktok: Instagram, // fallback icon
+  tiktok: Music2, // [Task 0.23] Added target/rel for security; replaced TikTok icon fallback
 } as const;
 
 // [TRACE:FUNC=components.Footer]
@@ -62,6 +62,8 @@ export default function Footer() {
                   <a
                     key={social.platform}
                     href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-white/60 hover:text-white transition-colors"
                     aria-label={social.platform}
                   >

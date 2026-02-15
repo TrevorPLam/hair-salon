@@ -1,4 +1,4 @@
-
+// [Task 0.22] Fixed hardcoded color to use semantic token
 
 export default function Loading() {
   return (
@@ -7,7 +7,7 @@ export default function Loading() {
         {/* Spinner placeholder shown during Suspense boundaries */}
         <div className="relative w-20 h-20 mx-auto mb-6">
           <div className="absolute top-0 left-0 w-full h-full">
-            <div className="w-20 h-20 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
+            <div className="w-20 h-20 border-4 border-gray-200 border-t-primary rounded-full animate-spin"></div>
           </div>
         </div>
 

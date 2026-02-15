@@ -426,8 +426,4 @@ export function getBookingProviders(): BookingProviders {
   return _bookingProviders;
 }
 
-/**
- * Legacy export for backward compatibility
- * @deprecated Use getBookingProviders() instead
- */
-export const bookingProviders = getBookingProviders();
+// [Task 0.31] Removed deprecated eager-init bookingProviders — use getBookingProviders() instead

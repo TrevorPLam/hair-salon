@@ -5,6 +5,9 @@
 @layer base {
   :root {
     /* ── Site palette (change these to rebrand) ────────────────── */
+    /* [Task 0.14] These are FALLBACK defaults. When ThemeInjector runs in layout.tsx,
+       it overrides these with values from site.config.ts theme object.
+       Keep these in sync as a no-JS/no-config fallback. */
     --background: #f6f7f9;
     --foreground: #0f1115;
 

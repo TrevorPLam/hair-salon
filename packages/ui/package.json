@@ -13,15 +13,15 @@
     "type-check": "tsc --noEmit"
   },
   "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
-    "@types/react": "^19.0.2",
-    "@types/react-dom": "^19.0.2",
-    "eslint": "^9.18.0",
-    "typescript": "^5.7.2"
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:"
   },
   "dependencies": {
     "@repo/utils": "workspace:*"

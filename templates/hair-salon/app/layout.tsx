@@ -30,6 +30,7 @@ import SkipToContent from '@/components/SkipToContent';
 import AnalyticsConsentBanner from '@/components/AnalyticsConsentBanner';
 import Providers from '@/app/providers';
 import InstallPrompt from '@/components/InstallPrompt';
+import { ThemeInjector } from '@repo/ui';
 import { createCspNonce, CSP_NONCE_HEADER, logError, logWarn } from '@repo/infra';
 import { getPublicBaseUrl, validatedPublicEnv } from '@/lib/env.public';
 import { getSearchIndex } from '@/lib/search';
@@ -162,6 +163,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${inter.variable} ${plexSans.variable}`}>
       <head>
+        {/* [Task 0.14] Config-driven theme — overrides globals.css fallback values */}
+        <ThemeInjector theme={siteConfig.theme} />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#0ea5e9" />
         <meta name="mobile-web-app-capable" content="yes" />

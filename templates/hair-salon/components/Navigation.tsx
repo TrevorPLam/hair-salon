@@ -30,7 +30,7 @@ import { Menu, X } from 'lucide-react';
 import { Button } from '@repo/ui';
 import { SearchDialog } from '@/features/search';
 import type { SearchItem } from '@/lib/search';
-import { cn } from '@/lib/utils';
+import { cn } from '@repo/utils'; // [Task 0.21] Migrated from @/lib/utils to canonical @repo/utils
 import siteConfig from '@/site.config';
 
 const { navLinks } = siteConfig;

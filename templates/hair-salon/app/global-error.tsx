@@ -8,14 +8,21 @@
  * @task 1.4.2
  */
 
+// [Task 0.26] Added error reporting to last-resort error boundary
+import { logError } from '@repo/infra/client';
+import { useEffect } from 'react';
+
 export default function GlobalError({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  error: _error,
+  error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  useEffect(() => {
+    logError(error);
+  }, [error]);
+
   return (
     <html>
       <body>

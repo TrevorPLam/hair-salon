@@ -138,7 +138,8 @@ export default function SearchDialog({ items = [], variant = 'desktop' }: Search
                     <li key={item.id}>
                       <Link
                         href={item.href}
-                        className="block rounded-lg border border-gray-200 px-4 py-3 transition hover:border-primary/30 hover:bg-primary/90-50"
+                        // [Task 0.30] Fixed invalid Tailwind class: was hover:bg-primary/90-50
+                        className="block rounded-lg border border-gray-200 px-4 py-3 transition hover:border-primary/30 hover:bg-primary/5"
                         onClick={() => setIsOpen(false)}
                       >
                         <div className="flex items-center justify-between">

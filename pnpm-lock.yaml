@@ -6,9 +6,36 @@ settings:
 
 catalogs:
   default:
+    '@sentry/nextjs':
+      specifier: 10.38.0
+      version: 10.38.0
+    '@types/node':
+      specifier: ^22.0.0
+      version: 22.19.11
+    '@types/react':
+      specifier: ^19.0.2
+      version: 19.0.2
+    '@types/react-dom':
+      specifier: ^19.0.2
+      version: 19.0.2
+    eslint:
+      specifier: ^9.18.0
+      version: 9.18.0
     next:
       specifier: 15.5.12
       version: 15.5.12
+    react:
+      specifier: 19.0.0
+      version: 19.0.0
+    react-dom:
+      specifier: 19.0.0
+      version: 19.0.0
+    typescript:
+      specifier: 5.7.2
+      version: 5.7.2
+    zod:
+      specifier: ^3.22.0
+      version: 3.25.76
 
 importers:
 
@@ -52,7 +79,7 @@ importers:
         specifier: 2.2.3
         version: 2.2.3
       typescript:
-        specifier: 5.7.2
+        specifier: 'catalog:'
         version: 5.7.2
 
   packages/config: {}
@@ -80,34 +107,66 @@ importers:
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
-      next:
-        specifier: ^15.5.0
-        version: 15.5.12(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-      server-only:
-        specifier: ^0.0.1
-        version: 0.0.1
-    devDependencies:
-      '@sentry/nextjs':
-        specifier: ^10.38.0
-        version: 10.38.0(@opentelemetry/context-async-hooks@2.5.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.5.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.5.1(@opentelemetry/api@1.9.0))(next@15.5.12(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(webpack@5.105.0)
-      '@types/node':
-        specifier: ^22.0.0
-        version: 22.19.11
       '@upstash/ratelimit':
         specifier: ^2.0.0
         version: 2.0.5(@upstash/redis@1.34.3)
       '@upstash/redis':
         specifier: ^1.34.0
         version: 1.34.3
-      eslint:
-        specifier: ^9.18.0
-        version: 9.18.0(jiti@1.21.7)
-      typescript:
-        specifier: ^5.7.2
-        version: 5.7.2
+      next:
+        specifier: ^15.5.0
+        version: 15.5.12(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      server-only:
+        specifier: ^0.0.1
+        version: 0.0.1
       zod:
         specifier: ^3.23.0
         version: 3.25.76
+    devDependencies:
+      '@sentry/nextjs':
+        specifier: 'catalog:'
+        version: 10.38.0(@opentelemetry/context-async-hooks@2.5.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.5.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.5.1(@opentelemetry/api@1.9.0))(next@15.5.12(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(webpack@5.105.0)
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.19.11
+      eslint:
+        specifier: 'catalog:'
+        version: 9.18.0(jiti@1.21.7)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.7.2
+
+  packages/integrations/analytics:
+    dependencies:
+      '@repo/infra':
+        specifier: workspace:*
+        version: link:../../infra
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.19.11
+      eslint:
+        specifier: 'catalog:'
+        version: 9.18.0(jiti@1.21.7)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.7.2
+
+  packages/integrations/hubspot:
+    dependencies:
+      '@repo/infra':
+        specifier: workspace:*
+        version: link:../../infra
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 22.19.11
+      eslint:
+        specifier: 'catalog:'
+        version: 9.18.0(jiti@1.21.7)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.7.2
 
   packages/integrations/supabase:
     dependencies:
@@ -118,7 +177,7 @@ importers:
         specifier: workspace:*
         version: link:../../utils
       next:
-        specifier: ^15.5.0
+        specifier: 'catalog:'
         version: 15.5.12(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       server-only:
         specifier: ^0.0.1
@@ -131,10 +190,10 @@ importers:
         specifier: ^9.18.0
         version: 9.18.0(jiti@1.21.7)
       typescript:
-        specifier: ^5.7.2
+        specifier: 'catalog:'
         version: 5.7.2
       zod:
-        specifier: ^3.23.0
+        specifier: 'catalog:'
         version: 3.25.76
 
   packages/ui:
@@ -143,26 +202,26 @@ importers:
         specifier: workspace:*
         version: link:../utils
       react:
-        specifier: ^19.0.0
+        specifier: 'catalog:'
         version: 19.0.0
       react-dom:
-        specifier: ^19.0.0
+        specifier: 'catalog:'
         version: 19.0.0(react@19.0.0)
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../config/eslint-config
       '@types/react':
-        specifier: ^19.0.2
+        specifier: 'catalog:'
         version: 19.0.2
       '@types/react-dom':
-        specifier: ^19.0.2
+        specifier: 'catalog:'
         version: 19.0.2(@types/react@19.0.2)
       eslint:
-        specifier: ^9.18.0
+        specifier: 'catalog:'
         version: 9.18.0(jiti@1.21.7)
       typescript:
-        specifier: ^5.7.2
+        specifier: 'catalog:'
         version: 5.7.2
 
   packages/utils:
@@ -178,10 +237,10 @@ importers:
         specifier: workspace:*
         version: link:../config/eslint-config
       eslint:
-        specifier: ^9.18.0
+        specifier: 'catalog:'
         version: 9.18.0(jiti@1.21.7)
       typescript:
-        specifier: ^5.7.2
+        specifier: 'catalog:'
         version: 5.7.2
 
   templates/hair-salon:
@@ -192,6 +251,12 @@ importers:
       '@repo/infra':
         specifier: workspace:*
         version: link:../../packages/infra
+      '@repo/integrations-analytics':
+        specifier: workspace:*
+        version: link:../../packages/integrations/analytics
+      '@repo/integrations-hubspot':
+        specifier: workspace:*
+        version: link:../../packages/integrations/hubspot
       '@repo/integrations-supabase':
         specifier: workspace:*
         version: link:../../packages/integrations/supabase
@@ -205,7 +270,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/utils
       '@sentry/nextjs':
-        specifier: 10.38.0
+        specifier: 'catalog:'
         version: 10.38.0(@opentelemetry/context-async-hooks@2.5.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@2.5.1(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@2.5.1(@opentelemetry/api@1.9.0))(next@15.5.12(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react@19.0.0)(webpack@5.105.0)
       '@upstash/ratelimit':
         specifier: 2.0.5
@@ -232,10 +297,10 @@ importers:
         specifier: 5.0.0
         version: 5.0.0(@types/react@19.0.2)(react@19.0.0)
       react:
-        specifier: 19.0.0
+        specifier: 'catalog:'
         version: 19.0.0
       react-dom:
-        specifier: 19.0.0
+        specifier: 'catalog:'
         version: 19.0.0(react@19.0.0)
       react-hook-form:
         specifier: 7.55.0
@@ -259,8 +324,8 @@ importers:
         specifier: 2.6.1
         version: 2.6.1
       zod:
-        specifier: 3.22.4
-        version: 3.22.4
+        specifier: 'catalog:'
+        version: 3.25.76
     devDependencies:
       '@eslint/eslintrc':
         specifier: 3.2.0
@@ -293,7 +358,7 @@ importers:
         specifier: 3.4.17
         version: 3.4.17
       typescript:
-        specifier: 5.7.2
+        specifier: 'catalog:'
         version: 5.7.2
 
   templates/shared:
@@ -4716,9 +4781,6 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
-
-  zod@3.22.4:
-    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
 
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
@@ -10263,8 +10325,6 @@ snapshots:
       yargs-parser: 21.1.1
 
   yocto-queue@0.1.0: {}
-
-  zod@3.22.4: {}
 
   zod@3.25.76: {}
 

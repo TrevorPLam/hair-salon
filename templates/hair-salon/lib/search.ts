@@ -1,3 +1,4 @@
+// TODO: [Task 0.25] Refactor to consume routes from lib/routes.ts
 // File: lib/search.ts  [TRACE:FILE=lib.search]
 // Purpose: Search functionality providing site-wide search index generation and search
 //          capabilities for pages and blog content. Caches search results for performance

@@ -137,7 +137,8 @@ export interface SupabaseLeadUpdate {
  * Supabase API response interface.
  * Standard response structure from Supabase REST API.
  */
-export interface SupabaseApiResponse<T = any> {
+// [Task 0.24] Replaced `any` with `unknown` for type safety
+export interface SupabaseApiResponse<T = unknown> {
   /** Response data */
   data?: T;
   
@@ -147,7 +148,8 @@ export interface SupabaseApiResponse<T = any> {
     message: string;
     
     /** Error details */
-    details?: any;
+    // [Task 0.24] Replaced `any` with `unknown` for type safety
+    details?: unknown;
   };
   
   /** Response metadata */

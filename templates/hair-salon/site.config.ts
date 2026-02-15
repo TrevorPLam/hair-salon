@@ -29,7 +29,8 @@ const siteConfig: SiteConfig = {
   tagline: 'Professional hair care that makes you shine.',
   description:
     'Professional hair salon website template with modern design, booking system, and service showcase. Built with Next.js and Tailwind CSS.',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
+  // [Task 0.20] Aligned fallback port to 3100 — matches `next dev --port 3100` in package.json
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3100',
 
   navLinks: [
     { href: '/services', label: 'Services' },

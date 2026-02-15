@@ -1,8 +1,9 @@
 # Hair Salon Template — Production Dockerfile
 # [Task 0.4.3] Pinned pnpm version, added non-root user, added HEALTHCHECK
+# [Task 0.16] Aligned Node version with engines.node >= 22.0.0 (Task 0.28)
 
 # Stage 1: Dependencies
-FROM node:24-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 
 RUN corepack enable && corepack prepare pnpm@10.29.2 --activate
@@ -14,7 +15,7 @@ COPY templates/hair-salon/package.json ./templates/hair-salon/
 RUN pnpm install --frozen-lockfile
 
 # Stage 2: Builder
-FROM node:24-alpine AS builder
+FROM node:22-alpine AS builder
 WORKDIR /app
 
 RUN corepack enable && corepack prepare pnpm@10.29.2 --activate
@@ -26,7 +27,7 @@ COPY . .
 RUN pnpm run build --filter=@templates/hair-salon
 
 # Stage 3: Runtime
-FROM node:24-alpine AS runtime
+FROM node:22-alpine AS runtime
 WORKDIR /app
 
 ENV NODE_ENV=production

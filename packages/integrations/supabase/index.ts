@@ -23,7 +23,10 @@
  */
 
 // Client exports
-export { insertLead, updateLead, supabaseClient, type SupabaseClientConfig } from './client';
+// [Task 0.24] Added getSupabaseClient; supabaseClient kept for backward compat (deprecated)
+export { insertLead, updateLead, getSupabaseClient, supabaseClient } from './client';
+// [Task 0.24] SupabaseClientConfig now re-exported from types.ts (removed duplicate from client.ts)
+export type { SupabaseClientConfig } from './types';
 
 // Lead management exports (backward compatibility)
 export {
