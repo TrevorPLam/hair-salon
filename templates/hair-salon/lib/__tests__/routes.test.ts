@@ -48,13 +48,17 @@ describe('lib/routes', () => {
     it('returns sitemap entries with correct URLs for baseUrl', () => {
       const entries = getSitemapEntries('https://example.com');
       expect(entries).toHaveLength(16);
-      expect(entries[0].url).toBe('https://example.com');
+      expect(entries.length).toBeGreaterThan(0);
+      const first = entries[0]!;
+      expect(first.url).toBe('https://example.com');
       expect(entries.find((e) => e.url?.endsWith('/about'))).toBeDefined();
     });
 
     it('handles baseUrl with trailing slash', () => {
       const entries = getSitemapEntries('https://example.com/');
-      expect(entries[0].url).toBe('https://example.com');
+      expect(entries.length).toBeGreaterThan(0);
+      const first = entries[0]!;
+      expect(first.url).toBe('https://example.com');
     });
   });
 

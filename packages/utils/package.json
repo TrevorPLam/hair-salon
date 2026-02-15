@@ -17,6 +17,7 @@
     "tailwind-merge": "2.6.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.18.0",
     "@repo/eslint-config": "workspace:*",
     "eslint": "catalog:",
     "typescript": "catalog:",

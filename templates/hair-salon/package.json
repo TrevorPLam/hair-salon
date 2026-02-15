@@ -18,7 +18,7 @@
     "@repo/integrations-analytics": "workspace:*",
     "@repo/integrations-hubspot": "workspace:*",
     "@repo/integrations-supabase": "workspace:*",
-    "@repo/shared": "workspace:*",
+    "@repo/types": "workspace:*",
     "@repo/ui": "workspace:*",
     "@repo/utils": "workspace:*",
     "@sentry/nextjs": "catalog:",
@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.18.0",
     "@repo/config": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@types/node": "^22.0.0",
@@ -54,6 +55,7 @@
     "eslint-config-next": "^16.1.0",
     "postcss": "8.4.49",
     "tailwindcss": "^4.1.0",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "typescript-eslint": "8.19.1"
   }
 }

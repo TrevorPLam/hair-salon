@@ -15,3 +15,5 @@ export type {
   SeoDefaults,
   ThemeColors,
 } from './site-config';
+
+export { siteConfigSchema } from './site-config';

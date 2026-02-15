@@ -15,7 +15,8 @@
       "@repo/utils": ["../../packages/utils/src"],
       "@repo/infra": ["../../packages/infra"],
       "@repo/infra/*": ["../../packages/infra/*"],
-      "@repo/shared/*": ["../shared/*"]
+      "@repo/types": ["../../packages/types/src"],
+      "@repo/types/*": ["../../packages/types/src/*"]
     },
     "allowJs": true,
     "noEmit": true,

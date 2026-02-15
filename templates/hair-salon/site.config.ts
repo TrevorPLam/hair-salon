@@ -21,7 +21,7 @@
 // - [FEAT:NAVIGATION] Site navigation and footer structure
 // - [FEAT:CONVERSION] Booking flow configuration
 
-import type { SiteConfig } from '@repo/shared/types';
+import type { SiteConfig } from '@repo/types';
 
 const siteConfig: SiteConfig = {
   id: 'hair-salon',
@@ -31,6 +31,28 @@ const siteConfig: SiteConfig = {
     'Professional hair salon website template with modern design, booking system, and service showcase. Built with Next.js and Tailwind CSS.',
   // [Task 0.20] Aligned fallback port to 3100 — matches `next dev --port 3100` in package.json
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3100',
+  industry: 'salon',
+
+  features: {
+    hero: 'split',
+    services: 'grid',
+    team: 'grid',
+    testimonials: 'carousel',
+    pricing: 'cards',
+    contact: 'simple',
+    gallery: 'grid',
+    blog: true,
+    booking: true,
+    faq: false,
+  },
+
+  integrations: {
+    analytics: { provider: 'none' },
+    crm: { provider: 'none' },
+    booking: { provider: 'internal' },
+    email: { provider: 'none' },
+    chat: { provider: 'none' },
+  },
 
   navLinks: [
     { href: '/services', label: 'Services' },

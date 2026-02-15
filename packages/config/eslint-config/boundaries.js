@@ -18,13 +18,6 @@
  * ESLint no-restricted-imports configuration for monorepo boundary enforcement.
  * Blocks imports that bypass package public APIs or violate the dependency matrix.
  *
- * Reasoning for each pattern:
- * - @repo/*/src*: Packages like @repo/ui and @repo/utils expose only "." (main barrel).
- *   Importing @repo/ui/src/components/Button bypasses the public API and ties consumers
- *   to internal file layout. Use "import { Button } from '@repo/ui'" instead.
- * - **/packages/** and **/templates/**: Relative imports like ../../packages/ui or
- *   templates/other-app/lib create tight coupling. Use @repo/* workspace protocol.
- *
  * @see docs/architecture/module-boundaries.md
  */
 export const boundaryRules = {
